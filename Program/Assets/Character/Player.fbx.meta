@@ -1,74 +1,71 @@
 fileFormatVersion: 2
-guid: cad632342ca9b6b41999168e83caf41a
-timeCreated: 1459665291
+guid: 304b0415fa5a39e4396935ff6b188db7
+timeCreated: 1459856886
 licenseType: Free
 ModelImporter:
   serializedVersion: 19
   fileIDToRecycleName:
     100000: Aho
-    100002: Body
-    100004: Hand
-    100006: Hand 1
-    100008: Head
-    100010: Heart
-    100012: Left
-    100014: Lefteye
-    100016: Leg
-    100018: Leg 1
-    100020: //RootNode
-    100022: Right
-    100024: Righteye
-    100026: Weapon
+    100002: Hand
+    100004: Hand 1
+    100006: Head
+    100008: Heart
+    100010: Left
+    100012: Lefteye
+    100014: Leg
+    100016: Leg 1
+    100018: //RootNode
+    100020: Right
+    100022: Righteye
+    100024: Weapon
     400000: Aho
-    400002: Body
-    400004: Hand
-    400006: Hand 1
-    400008: Head
-    400010: Heart
-    400012: Left
-    400014: Lefteye
-    400016: Leg
-    400018: Leg 1
-    400020: //RootNode
-    400022: Right
-    400024: Righteye
-    400026: Weapon
+    400002: Hand
+    400004: Hand 1
+    400006: Head
+    400008: Heart
+    400010: Left
+    400012: Lefteye
+    400014: Leg
+    400016: Leg 1
+    400018: //RootNode
+    400020: Right
+    400022: Righteye
+    400024: Weapon
     2300000: Aho
-    2300002: Body
-    2300004: Hand
-    2300006: Hand 1
-    2300008: Head
-    2300010: Heart
-    2300012: Lefteye
-    2300014: Leg
-    2300016: Leg 1
+    2300002: Hand
+    2300004: Hand 1
+    2300006: Head
+    2300008: Heart
+    2300010: Lefteye
+    2300012: Leg
+    2300014: Leg 1
+    2300016: //RootNode
     2300018: Righteye
     2300020: Weapon
     3300000: Aho
-    3300002: Body
-    3300004: Hand
-    3300006: Hand 1
-    3300008: Head
-    3300010: Heart
-    3300012: Lefteye
-    3300014: Leg
-    3300016: Leg 1
+    3300002: Hand
+    3300004: Hand 1
+    3300006: Head
+    3300008: Heart
+    3300010: Lefteye
+    3300012: Leg
+    3300014: Leg 1
+    3300016: //RootNode
     3300018: Righteye
     3300020: Weapon
     4300000: Body
-    4300002: Hand
-    4300004: Leg
-    4300006: Head
-    4300008: Aho
-    4300010: Righteye
-    4300012: Lefteye
-    4300014: Hand
-    4300016: Weapon
-    4300018: Leg
-    4300020: Heart
-    7400000: Take 001
+    4300002: Head
+    4300004: Aho
+    4300006: Righteye
+    4300008: Lefteye
+    4300010: Hand
+    4300012: Weapon
+    4300014: Leg
+    4300016: Heart
+    4300018: Hand
+    4300020: Leg
+    7400000: Idle
     7400002: Walk
-    7400004: Idle
     9500000: //RootNode
   materials:
     importMaterials: 1
@@ -92,10 +89,10 @@ ModelImporter:
     extraExposedTransformPaths: []
     clipAnimations:
     - serializedVersion: 16
-      name: Walk
-      takeName: Walk
-      firstFrame: 101
-      lastFrame: 148
+      name: Idle
+      takeName: Idle
+      firstFrame: 1
+      lastFrame: 72
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
@@ -118,40 +115,38 @@ ModelImporter:
       transformMask:
       - path: 
         weight: 1
-      - path: Body
+      - path: Head
         weight: 1
-      - path: Body/Head
+      - path: Head/Aho
         weight: 1
-      - path: Body/Head/Aho
+      - path: Head/Lefteye
         weight: 1
-      - path: Body/Head/Lefteye
+      - path: Head/Righteye
         weight: 1
-      - path: Body/Head/Righteye
+      - path: Heart
         weight: 1
-      - path: Body/Heart
+      - path: Left
         weight: 1
-      - path: Body/Left
+      - path: Left/Hand
         weight: 1
-      - path: Body/Left/Hand
+      - path: Left/Leg
         weight: 1
-      - path: Body/Left/Leg
+      - path: Right
         weight: 1
-      - path: Body/Right
+      - path: Right/Hand 1
         weight: 1
-      - path: Body/Right/Hand 1
+      - path: Right/Hand 1/Weapon
         weight: 1
-      - path: Body/Right/Hand 1/Weapon
-        weight: 1
-      - path: Body/Right/Leg 1
+      - path: Right/Leg 1
         weight: 1
       maskType: 0
       maskSource: {instanceID: 0}
       additiveReferencePoseFrame: 1
     - serializedVersion: 16
-      name: Idle
-      takeName: Idle
-      firstFrame: 1
-      lastFrame: 96
+      name: Walk
+      takeName: Walk
+      firstFrame: 101
+      lastFrame: 124
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
@@ -174,35 +169,33 @@ ModelImporter:
       transformMask:
       - path: 
         weight: 1
-      - path: Body
+      - path: Head
         weight: 1
-      - path: Body/Head
+      - path: Head/Aho
         weight: 1
-      - path: Body/Head/Aho
+      - path: Head/Lefteye
         weight: 1
-      - path: Body/Head/Lefteye
+      - path: Head/Righteye
         weight: 1
-      - path: Body/Head/Righteye
+      - path: Heart
         weight: 1
-      - path: Body/Heart
+      - path: Left
         weight: 1
-      - path: Body/Left
+      - path: Left/Hand
         weight: 1
-      - path: Body/Left/Hand
+      - path: Left/Leg
         weight: 1
-      - path: Body/Left/Leg
+      - path: Right
         weight: 1
-      - path: Body/Right
+      - path: Right/Hand 1
         weight: 1
-      - path: Body/Right/Hand 1
+      - path: Right/Hand 1/Weapon
         weight: 1
-      - path: Body/Right/Hand 1/Weapon
-        weight: 1
-      - path: Body/Right/Leg 1
+      - path: Right/Leg 1
         weight: 1
       maskType: 0
       maskSource: {instanceID: 0}
-      additiveReferencePoseFrame: 1
+      additiveReferencePoseFrame: 101
     isReadable: 1
   meshes:
     lODScreenPercentages: []
