@@ -1,6 +1,6 @@
 fileFormatVersion: 2
 guid: 304b0415fa5a39e4396935ff6b188db7
-timeCreated: 1459856886
+timeCreated: 1460022124
 licenseType: Free
 ModelImporter:
   serializedVersion: 19
@@ -66,6 +66,10 @@ ModelImporter:
     4300020: Leg
     7400000: Idle
     7400002: Walk
+    7400004: Attack
+    7400006: SlashStart
+    7400008: Slashing
+    7400010: SlashEnd
     9500000: //RootNode
   materials:
     importMaterials: 1
@@ -145,8 +149,8 @@ ModelImporter:
     - serializedVersion: 16
       name: Walk
       takeName: Walk
-      firstFrame: 101
-      lastFrame: 124
+      firstFrame: 81
+      lastFrame: 104
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
@@ -195,7 +199,223 @@ ModelImporter:
         weight: 1
       maskType: 0
       maskSource: {instanceID: 0}
-      additiveReferencePoseFrame: 101
+      additiveReferencePoseFrame: 81
+    - serializedVersion: 16
+      name: Attack
+      takeName: Attack
+      firstFrame: 111
+      lastFrame: 125
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: Head
+        weight: 1
+      - path: Head/Aho
+        weight: 1
+      - path: Head/Lefteye
+        weight: 1
+      - path: Head/Righteye
+        weight: 1
+      - path: Heart
+        weight: 1
+      - path: Left
+        weight: 1
+      - path: Left/Hand
+        weight: 1
+      - path: Left/Leg
+        weight: 1
+      - path: Right
+        weight: 1
+      - path: Right/Hand 1
+        weight: 1
+      - path: Right/Hand 1/Weapon
+        weight: 1
+      - path: Right/Leg 1
+        weight: 1
+      maskType: 0
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: SlashStart
+      takeName: SlashStart
+      firstFrame: 131
+      lastFrame: 142
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: Head
+        weight: 1
+      - path: Head/Aho
+        weight: 1
+      - path: Head/Lefteye
+        weight: 1
+      - path: Head/Righteye
+        weight: 1
+      - path: Heart
+        weight: 1
+      - path: Left
+        weight: 1
+      - path: Left/Hand
+        weight: 1
+      - path: Left/Leg
+        weight: 1
+      - path: Right
+        weight: 1
+      - path: Right/Hand 1
+        weight: 1
+      - path: Right/Hand 1/Weapon
+        weight: 1
+      - path: Right/Leg 1
+        weight: 1
+      maskType: 0
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: Slashing
+      takeName: Slashing
+      firstFrame: 142
+      lastFrame: 151
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 1
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: Head
+        weight: 1
+      - path: Head/Aho
+        weight: 1
+      - path: Head/Lefteye
+        weight: 1
+      - path: Head/Righteye
+        weight: 1
+      - path: Heart
+        weight: 1
+      - path: Left
+        weight: 1
+      - path: Left/Hand
+        weight: 1
+      - path: Left/Leg
+        weight: 1
+      - path: Right
+        weight: 1
+      - path: Right/Hand 1
+        weight: 1
+      - path: Right/Hand 1/Weapon
+        weight: 1
+      - path: Right/Leg 1
+        weight: 1
+      maskType: 0
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 142
+    - serializedVersion: 16
+      name: SlashEnd
+      takeName: SlashEnd
+      firstFrame: 151
+      lastFrame: 160
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: Head
+        weight: 1
+      - path: Head/Aho
+        weight: 1
+      - path: Head/Lefteye
+        weight: 1
+      - path: Head/Righteye
+        weight: 1
+      - path: Heart
+        weight: 1
+      - path: Left
+        weight: 1
+      - path: Left/Hand
+        weight: 1
+      - path: Left/Leg
+        weight: 1
+      - path: Right
+        weight: 1
+      - path: Right/Hand 1
+        weight: 1
+      - path: Right/Hand 1/Weapon
+        weight: 1
+      - path: Right/Leg 1
+        weight: 1
+      maskType: 0
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
     isReadable: 1
   meshes:
     lODScreenPercentages: []

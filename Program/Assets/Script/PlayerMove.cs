@@ -6,7 +6,7 @@ public class PlayerMove : MonoBehaviour {
 	public float speed = 1;
 
 	bool IsMoving = false;
-	Animator anim;
+	PlayerStateControl stateCtl;
 	Rigidbody rb;
 
 	int floorMask;                      // A layer mask so that a ray can be cast just at gameobjects on the floor layer.
@@ -15,28 +15,41 @@ public class PlayerMove : MonoBehaviour {
 	void Awake() {
 		floorMask = LayerMask.GetMask ("Floor");
 
-		anim = GetComponent<Animator>();
+		stateCtl = GetComponent<PlayerStateControl>();
 		rb = GetComponent<Rigidbody>();
 	}
 
-	void Update () {
+	public bool ProcessInput()
+	{
 		if (Input.GetMouseButtonDown (0)) {
 			IsMoving = true;
+			return true;
 		}
 
 		if (Input.GetMouseButtonUp (0)) {
 			IsMoving = false;
+			return true;
 		}
+
+		return false;
+	}
+
+	void Update () {
+		
+	}
+
+	public void StopMove()
+	{
+		IsMoving = false;
 	}
 
 	void FixedUpdate() {
-		anim.SetBool ("IsWalking", IsMoving);
+		stateCtl.SetState (IsMoving ? PlayerState.PLAYER_STATE_MOVE : PlayerState.PLAYER_STATE_IDLE);
 
 		if (IsMoving) {
 			Turning ();
 			rb.MovePosition (transform.position + transform.forward * speed * Time.deltaTime);
 		}
-
 	}
 
 	void Turning () {
