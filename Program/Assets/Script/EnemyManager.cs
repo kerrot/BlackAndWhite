@@ -7,7 +7,7 @@ public class EnemyManager : MonoBehaviour
 	public GameObject player;
     public float spawnTime = 3f;
 
-	PlayerStateControl stateCtl;
+	Animator anim;
 
 	int enermyMask;
 	float camRayLength = 100f;
@@ -19,7 +19,7 @@ public class EnemyManager : MonoBehaviour
     {
 		enermyMask = LayerMask.GetMask ("Enermy");
         InvokeRepeating ("Spawn", spawnTime, spawnTime);
-		stateCtl = player.GetComponent<PlayerStateControl> ();
+		anim = player.GetComponent<Animator> ();
     }
 
 
@@ -54,24 +54,19 @@ public class EnemyManager : MonoBehaviour
 		// Create a RaycastHit variable to store information about what was hit by the ray.
 		RaycastHit enermyHit;
 
-
 		if(Physics.Raycast (camRay, out enermyHit, camRayLength, enermyMask)){
 			if (enermyHit.collider != null) {
 				if (Input.GetMouseButtonDown (0)) {
 					inputTime = Time.time;
 				} else if (Input.GetMouseButtonUp (0)) {
-					if (inputTime != 0 && Time.time - inputTime < 1.0f) {
-						
-						stateCtl.SetState (PlayerState.PLAYER_STATE_ATTACK);
+					if (inputTime != 0 && Time.time - inputTime < 0.3f) {
+						anim.SetTrigger ("Attack");
 						inputTime = 0;
+						return true;
 					}
 				}
-
-
 			}
 		}
-
-
 
 		return false;
 	}

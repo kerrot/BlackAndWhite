@@ -4,9 +4,10 @@ using System.Collections;
 public class PlayerMove : MonoBehaviour {
 
 	public float speed = 1;
+	public bool canMove = true;
 
 	bool IsMoving = false;
-	PlayerStateControl stateCtl;
+	Animator anim;
 	Rigidbody rb;
 
 	int floorMask;                      // A layer mask so that a ray can be cast just at gameobjects on the floor layer.
@@ -14,24 +15,17 @@ public class PlayerMove : MonoBehaviour {
 
 	void Awake() {
 		floorMask = LayerMask.GetMask ("Floor");
-
-		stateCtl = GetComponent<PlayerStateControl>();
+		anim = GetComponent<Animator>();
 		rb = GetComponent<Rigidbody>();
 	}
 
 	public bool ProcessInput()
 	{
-		if (Input.GetMouseButtonDown (0)) {
-			IsMoving = true;
-			return true;
-		}
+		
+		IsMoving = Input.GetKey (KeyCode.Mouse0);
+		anim.SetBool ("IsMove", IsMoving);
 
-		if (Input.GetMouseButtonUp (0)) {
-			IsMoving = false;
-			return true;
-		}
-
-		return false;
+		return true;
 	}
 
 	void Update () {
@@ -44,8 +38,7 @@ public class PlayerMove : MonoBehaviour {
 	}
 
 	void FixedUpdate() {
-		stateCtl.SetState (IsMoving ? PlayerState.PLAYER_STATE_MOVE : PlayerState.PLAYER_STATE_IDLE);
-
+		
 		if (IsMoving) {
 			Turning ();
 			rb.MovePosition (transform.position + transform.forward * speed * Time.deltaTime);
