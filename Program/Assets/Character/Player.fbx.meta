@@ -1,56 +1,58 @@
 fileFormatVersion: 2
-guid: 304b0415fa5a39e4396935ff6b188db7
-timeCreated: 1460022124
+guid: 666383fa8e21fbc4db657d938f86a02e
+timeCreated: 1461336401
 licenseType: Free
 ModelImporter:
   serializedVersion: 19
   fileIDToRecycleName:
     100000: Aho
-    100002: Hand
-    100004: Hand 1
-    100006: Head
-    100008: Heart
-    100010: Left
-    100012: Lefteye
-    100014: Leg
-    100016: Leg 1
-    100018: //RootNode
-    100020: Right
-    100022: Righteye
-    100024: Weapon
+    100002: Body
+    100004: Hand
+    100006: Hand 1
+    100008: Head
+    100010: Heart
+    100012: Left
+    100014: Lefteye
+    100016: Leg
+    100018: Leg 1
+    100020: //RootNode
+    100022: Right
+    100024: Righteye
+    100026: Weapon
     400000: Aho
-    400002: Hand
-    400004: Hand 1
-    400006: Head
-    400008: Heart
-    400010: Left
-    400012: Lefteye
-    400014: Leg
-    400016: Leg 1
-    400018: //RootNode
-    400020: Right
-    400022: Righteye
-    400024: Weapon
+    400002: Body
+    400004: Hand
+    400006: Hand 1
+    400008: Head
+    400010: Heart
+    400012: Left
+    400014: Lefteye
+    400016: Leg
+    400018: Leg 1
+    400020: //RootNode
+    400022: Right
+    400024: Righteye
+    400026: Weapon
     2300000: Aho
-    2300002: Hand
-    2300004: Hand 1
-    2300006: Head
-    2300008: Heart
-    2300010: Lefteye
-    2300012: Leg
-    2300014: Leg 1
-    2300016: //RootNode
+    2300002: Body
+    2300004: Hand
+    2300006: Hand 1
+    2300008: Head
+    2300010: Heart
+    2300012: Lefteye
+    2300014: Leg
+    2300016: Leg 1
     2300018: Righteye
     2300020: Weapon
     3300000: Aho
-    3300002: Hand
-    3300004: Hand 1
-    3300006: Head
-    3300008: Heart
-    3300010: Lefteye
-    3300012: Leg
-    3300014: Leg 1
-    3300016: //RootNode
+    3300002: Body
+    3300004: Hand
+    3300006: Hand 1
+    3300008: Head
+    3300010: Heart
+    3300012: Lefteye
+    3300014: Leg
+    3300016: Leg 1
     3300018: Righteye
     3300020: Weapon
     4300000: Body
@@ -70,6 +72,7 @@ ModelImporter:
     7400006: SlashStart
     7400008: Slashing
     7400010: SlashEnd
+    7400012: Guard
     9500000: //RootNode
   materials:
     importMaterials: 1
@@ -108,9 +111,9 @@ ModelImporter:
       loopBlendOrientation: 0
       loopBlendPositionY: 0
       loopBlendPositionXZ: 0
-      keepOriginalOrientation: 0
+      keepOriginalOrientation: 1
       keepOriginalPositionY: 1
-      keepOriginalPositionXZ: 0
+      keepOriginalPositionXZ: 1
       heightFromFeet: 0
       mirror: 0
       bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
@@ -119,29 +122,31 @@ ModelImporter:
       transformMask:
       - path: 
         weight: 1
-      - path: Head
+      - path: Body
         weight: 1
-      - path: Head/Aho
+      - path: Body/Head
         weight: 1
-      - path: Head/Lefteye
+      - path: Body/Head/Aho
         weight: 1
-      - path: Head/Righteye
+      - path: Body/Head/Lefteye
         weight: 1
-      - path: Heart
+      - path: Body/Head/Righteye
         weight: 1
-      - path: Left
+      - path: Body/Heart
         weight: 1
-      - path: Left/Hand
+      - path: Body/Left
         weight: 1
-      - path: Left/Leg
+      - path: Body/Left/Hand
         weight: 1
-      - path: Right
+      - path: Body/Left/Leg
         weight: 1
-      - path: Right/Hand 1
+      - path: Body/Right
         weight: 1
-      - path: Right/Hand 1/Weapon
+      - path: Body/Right/Hand 1
         weight: 1
-      - path: Right/Leg 1
+      - path: Body/Right/Hand 1/Weapon
+        weight: 1
+      - path: Body/Right/Leg 1
         weight: 1
       maskType: 0
       maskSource: {instanceID: 0}
@@ -162,9 +167,9 @@ ModelImporter:
       loopBlendOrientation: 0
       loopBlendPositionY: 0
       loopBlendPositionXZ: 0
-      keepOriginalOrientation: 0
+      keepOriginalOrientation: 1
       keepOriginalPositionY: 1
-      keepOriginalPositionXZ: 0
+      keepOriginalPositionXZ: 1
       heightFromFeet: 0
       mirror: 0
       bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
@@ -173,29 +178,31 @@ ModelImporter:
       transformMask:
       - path: 
         weight: 1
-      - path: Head
+      - path: Body
         weight: 1
-      - path: Head/Aho
+      - path: Body/Head
         weight: 1
-      - path: Head/Lefteye
+      - path: Body/Head/Aho
         weight: 1
-      - path: Head/Righteye
+      - path: Body/Head/Lefteye
         weight: 1
-      - path: Heart
+      - path: Body/Head/Righteye
         weight: 1
-      - path: Left
+      - path: Body/Heart
         weight: 1
-      - path: Left/Hand
+      - path: Body/Left
         weight: 1
-      - path: Left/Leg
+      - path: Body/Left/Hand
         weight: 1
-      - path: Right
+      - path: Body/Left/Leg
         weight: 1
-      - path: Right/Hand 1
+      - path: Body/Right
         weight: 1
-      - path: Right/Hand 1/Weapon
+      - path: Body/Right/Hand 1
         weight: 1
-      - path: Right/Leg 1
+      - path: Body/Right/Hand 1/Weapon
+        weight: 1
+      - path: Body/Right/Leg 1
         weight: 1
       maskType: 0
       maskSource: {instanceID: 0}
@@ -227,29 +234,31 @@ ModelImporter:
       transformMask:
       - path: 
         weight: 1
-      - path: Head
+      - path: Body
         weight: 1
-      - path: Head/Aho
+      - path: Body/Head
         weight: 1
-      - path: Head/Lefteye
+      - path: Body/Head/Aho
         weight: 1
-      - path: Head/Righteye
+      - path: Body/Head/Lefteye
         weight: 1
-      - path: Heart
+      - path: Body/Head/Righteye
         weight: 1
-      - path: Left
+      - path: Body/Heart
         weight: 1
-      - path: Left/Hand
+      - path: Body/Left
         weight: 1
-      - path: Left/Leg
+      - path: Body/Left/Hand
         weight: 1
-      - path: Right
+      - path: Body/Left/Leg
         weight: 1
-      - path: Right/Hand 1
+      - path: Body/Right
         weight: 1
-      - path: Right/Hand 1/Weapon
+      - path: Body/Right/Hand 1
         weight: 1
-      - path: Right/Leg 1
+      - path: Body/Right/Hand 1/Weapon
+        weight: 1
+      - path: Body/Right/Leg 1
         weight: 1
       maskType: 0
       maskSource: {instanceID: 0}
@@ -281,29 +290,31 @@ ModelImporter:
       transformMask:
       - path: 
         weight: 1
-      - path: Head
+      - path: Body
         weight: 1
-      - path: Head/Aho
+      - path: Body/Head
         weight: 1
-      - path: Head/Lefteye
+      - path: Body/Head/Aho
         weight: 1
-      - path: Head/Righteye
+      - path: Body/Head/Lefteye
         weight: 1
-      - path: Heart
+      - path: Body/Head/Righteye
         weight: 1
-      - path: Left
+      - path: Body/Heart
         weight: 1
-      - path: Left/Hand
+      - path: Body/Left
         weight: 1
-      - path: Left/Leg
+      - path: Body/Left/Hand
         weight: 1
-      - path: Right
+      - path: Body/Left/Leg
         weight: 1
-      - path: Right/Hand 1
+      - path: Body/Right
         weight: 1
-      - path: Right/Hand 1/Weapon
+      - path: Body/Right/Hand 1
         weight: 1
-      - path: Right/Leg 1
+      - path: Body/Right/Hand 1/Weapon
+        weight: 1
+      - path: Body/Right/Leg 1
         weight: 1
       maskType: 0
       maskSource: {instanceID: 0}
@@ -319,7 +330,7 @@ ModelImporter:
       cycleOffset: 0
       loop: 0
       hasAdditiveReferencePose: 0
-      loopTime: 1
+      loopTime: 0
       loopBlend: 0
       loopBlendOrientation: 0
       loopBlendPositionY: 0
@@ -335,33 +346,35 @@ ModelImporter:
       transformMask:
       - path: 
         weight: 1
-      - path: Head
+      - path: Body
         weight: 1
-      - path: Head/Aho
+      - path: Body/Head
         weight: 1
-      - path: Head/Lefteye
+      - path: Body/Head/Aho
         weight: 1
-      - path: Head/Righteye
+      - path: Body/Head/Lefteye
         weight: 1
-      - path: Heart
+      - path: Body/Head/Righteye
         weight: 1
-      - path: Left
+      - path: Body/Heart
         weight: 1
-      - path: Left/Hand
+      - path: Body/Left
         weight: 1
-      - path: Left/Leg
+      - path: Body/Left/Hand
         weight: 1
-      - path: Right
+      - path: Body/Left/Leg
         weight: 1
-      - path: Right/Hand 1
+      - path: Body/Right
         weight: 1
-      - path: Right/Hand 1/Weapon
+      - path: Body/Right/Hand 1
         weight: 1
-      - path: Right/Leg 1
+      - path: Body/Right/Hand 1/Weapon
+        weight: 1
+      - path: Body/Right/Leg 1
         weight: 1
       maskType: 0
       maskSource: {instanceID: 0}
-      additiveReferencePoseFrame: 142
+      additiveReferencePoseFrame: 0
     - serializedVersion: 16
       name: SlashEnd
       takeName: SlashEnd
@@ -389,29 +402,87 @@ ModelImporter:
       transformMask:
       - path: 
         weight: 1
-      - path: Head
+      - path: Body
         weight: 1
-      - path: Head/Aho
+      - path: Body/Head
         weight: 1
-      - path: Head/Lefteye
+      - path: Body/Head/Aho
         weight: 1
-      - path: Head/Righteye
+      - path: Body/Head/Lefteye
         weight: 1
-      - path: Heart
+      - path: Body/Head/Righteye
         weight: 1
-      - path: Left
+      - path: Body/Heart
         weight: 1
-      - path: Left/Hand
+      - path: Body/Left
         weight: 1
-      - path: Left/Leg
+      - path: Body/Left/Hand
         weight: 1
-      - path: Right
+      - path: Body/Left/Leg
         weight: 1
-      - path: Right/Hand 1
+      - path: Body/Right
         weight: 1
-      - path: Right/Hand 1/Weapon
+      - path: Body/Right/Hand 1
         weight: 1
-      - path: Right/Leg 1
+      - path: Body/Right/Hand 1/Weapon
+        weight: 1
+      - path: Body/Right/Leg 1
+        weight: 1
+      maskType: 0
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: Guard
+      takeName: Guard
+      firstFrame: 161
+      lastFrame: 172
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: Body
+        weight: 1
+      - path: Body/Head
+        weight: 1
+      - path: Body/Head/Aho
+        weight: 1
+      - path: Body/Head/Lefteye
+        weight: 1
+      - path: Body/Head/Righteye
+        weight: 1
+      - path: Body/Heart
+        weight: 1
+      - path: Body/Left
+        weight: 1
+      - path: Body/Left/Hand
+        weight: 1
+      - path: Body/Left/Leg
+        weight: 1
+      - path: Body/Right
+        weight: 1
+      - path: Body/Right/Hand 1
+        weight: 1
+      - path: Body/Right/Hand 1/Weapon
+        weight: 1
+      - path: Body/Right/Leg 1
         weight: 1
       maskType: 0
       maskSource: {instanceID: 0}
@@ -450,7 +521,7 @@ ModelImporter:
     armStretch: 0.05
     legStretch: 0.05
     feetSpacing: 0
-    rootMotionBoneName: 
+    rootMotionBoneName: Body
     hasTranslationDoF: 0
   lastHumanDescriptionAvatarSource: {instanceID: 0}
   animationType: 2

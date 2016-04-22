@@ -29,8 +29,9 @@ public class PlayerMove : MonoBehaviour {
 	}
 
 	void Update () {
-		
-	}
+        ProcessInput();
+
+    }
 
 	public void StopMove()
 	{
@@ -41,7 +42,7 @@ public class PlayerMove : MonoBehaviour {
 		
 		if (IsMoving) {
 			Turning ();
-			rb.MovePosition (transform.position + transform.forward * speed * Time.deltaTime);
+			//rb.MovePosition (transform.position + transform.forward * speed * Time.deltaTime);
 		}
 	}
 
