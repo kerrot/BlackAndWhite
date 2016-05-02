@@ -7,8 +7,8 @@ public class PlayerMove : MonoBehaviour {
 	public bool canMove = true;
 
 	bool IsMoving = false;
-	Animator anim;
-	Rigidbody rb;
+	public Animator anim;
+    public Rigidbody rb;
 
 	int floorMask;                      // A layer mask so that a ray can be cast just at gameobjects on the floor layer.
 	float camRayLength = 100f;          // The length of the ray from the camera into the scene.
