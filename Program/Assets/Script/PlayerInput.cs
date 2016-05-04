@@ -33,7 +33,7 @@ public class PlayerInput : MonoBehaviour {
 
 		if (!HasLock(PlayerLock.PLAYER_LOCK_ACTION) && !enemymgr.ProcessInput ()) {
 			if (!HasLock(PlayerLock.PLAYER_LOCK_MOVE)) {
-				playermv.ProcessInput ();
+				
 			}
 		}
 	}
@@ -43,7 +43,7 @@ public class PlayerInput : MonoBehaviour {
 		playerLock |= (int)flag;
 
 		if (HasLock (PlayerLock.PLAYER_LOCK_MOVE)) {
-			playermv.StopMove ();
+			
 		}
 	}
 
