@@ -36,30 +36,25 @@ public class InputController : MonoBehaviour {
             firstClickTime = secondClickTime;
             secondClickTime = now;
 
-            if (firstClickTime > 0)
+            if (firstClickTime > 0 && secondClickTime - firstClickTime < ClickPeriod)
             {
-                if (secondClickTime - firstClickTime < ClickPeriod)
+                if (OnMouseDoubleClick != null)
                 {
-                    if (OnMouseDoubleClick != null)
-                    {
-                        OnMouseDoubleClick(Input.mousePosition);
-                    }
+                    OnMouseDoubleClick(Input.mousePosition);
                 }
-                else
-                {
-                    if (now - pressTime < ClickPeriod)
-                    {
-                        if (OnMouseSingleClick != null)
-                        {
-                            OnMouseSingleClick(position);
-                        }
-                    }
+            }
 
-                    if (OnMouseUp != null)
-                    {
-                        OnMouseUp(position);
-                    }
+            if (now - pressTime < ClickPeriod)
+            {
+                if (OnMouseSingleClick != null)
+                {
+                    OnMouseSingleClick(position);
                 }
+            }
+
+            if (OnMouseUp != null)
+            {
+                OnMouseUp(position);
             }
         }
 
