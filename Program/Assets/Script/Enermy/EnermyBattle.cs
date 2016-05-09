@@ -6,6 +6,8 @@ public class EnermyBattle : MonoBehaviour {
     public bool CanSlash { get { return Slashable.activeSelf; } }
     public float SlashTime = 3;
 
+	public GameObject DeadAction;
+
     float slashStartTime;
 
     GameObject Slashable;
@@ -27,6 +29,7 @@ public class EnermyBattle : MonoBehaviour {
         if (attack.Type == AttackType.ATTACK_TYPE_SLASH && CanSlash)
         {
             OnDie(gameObject);
+			//StartCoroutine (Bomb);
         }
         else
         {
@@ -34,12 +37,10 @@ public class EnermyBattle : MonoBehaviour {
             slashStartTime = Time.time;
         }
     }
+	/*
+	 * 
+	IEnumerator Bomb(){
+		yield return  new WaitForSeconds(0.5f);
 
-    void OnCollisionEnter(Collision collision)
-    {
-        if (collision.collider != null && collision.collider.gameObject.tag == "Player")
-        {
-            
-        }
-    }
+	}*/
 }

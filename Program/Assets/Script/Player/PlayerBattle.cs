@@ -3,19 +3,24 @@ using System.Collections;
 using System.Collections.Generic;
 
 public class PlayerBattle : MonoBehaviour {
-    public EnemyGenerator enermies;
+    static public EnemyGenerator Enermies;
+    public GameObject AttackRegion;
+    public GameObject SlashRegion;
     public float AttackAngle = 60;
 
     Animator anim;
-    float AttackRadius;
-    float SlashRadius;
+    float AttackRadius = 1.3f;
+    float SlashRadius = 3f;
 
     void Start()
     {
-        enermies.OnEnermyClicked += AttackEnermy;
+        Enermies = GetComponent<EnemyGenerator>();
+        Enermies.OnEnermyClicked += AttackEnermy;
         anim = GetComponent<Animator>();
-        AttackRadius = transform.FindChild("AttackRegion").transform.localScale.x / 2;
-        SlashRadius = transform.FindChild("SlashRegion").transform.localScale.x / 2;
+        AttackRadius = AttackRegion.transform.localScale.x / 2;
+        SlashRadius = SlashRegion.transform.localScale.x / 2;
+
+        SlashingAnim.PlayerCollider = GetComponent<Collider>();
     }
 
     void AttackEnermy (GameObject enermy)
@@ -25,17 +30,20 @@ public class PlayerBattle : MonoBehaviour {
         
         if (direction.magnitude < AttackRadius && !battle.CanSlash)
         {
+            PlayerMove.CanRotate = false;
             anim.SetTrigger("Attack");
         }
         else if(direction.magnitude < SlashRadius && battle.CanSlash)
         {
+            GetComponent<PlayerSlash>().TargetObject = enermy;
+            PlayerMove.CanRotate = false;
             anim.SetTrigger("Slash");
         }
     }
 
     void AttackHit()
     {
-        List<GameObject> list = enermies.GetEnermy(transform.position, AttackRadius, transform.rotation * Vector3.forward, AttackAngle);
+        List<GameObject> list = Enermies.GetEnermy(transform.position, AttackRadius, transform.rotation * Vector3.forward, AttackAngle);
         list.ForEach(o =>
         {
             EnermyBattle enermy = o.GetComponent<EnermyBattle>();

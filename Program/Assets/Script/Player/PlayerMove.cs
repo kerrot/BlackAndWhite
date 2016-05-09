@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿using UniRx;
+using UniRx.Triggers;
+using UnityEngine;
 using System.Collections;
 
 public class PlayerMove : MonoBehaviour {

@@ -1,4 +1,7 @@
-﻿using UnityEngine;
+﻿using UniRx;
+using UniRx.Triggers;
+using System;
+using UnityEngine;
 using System.Collections;
 
 public class InputController : MonoBehaviour {
@@ -16,7 +19,12 @@ public class InputController : MonoBehaviour {
     private float secondClickTime;
     private bool mousePressed = false;
 
-    void Update () {
+	void Start()
+	{
+		this.UpdateAsObservable ().Subscribe (_ => UniRxUpdate ());
+	}
+
+    void UniRxUpdate () {
         float now = Time.time;
         Vector2 position = Input.mousePosition;
 

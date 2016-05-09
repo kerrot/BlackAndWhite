@@ -3,10 +3,10 @@ using System.Collections;
 using System.Collections.Generic;
 
 public class PlayerSlash : MonoBehaviour {
-    public float slashSpeed = 5;
+    public float SlashSpeed = 5;
     public GameObject TargetObject;
-
-    public float angle;
+    public float SlashRadius = 0.5f;
+    public float SlashAngle = 30;
 
     Animator anim;
 
@@ -16,40 +16,29 @@ public class PlayerSlash : MonoBehaviour {
     }
     void FixedUpdate()
     {
-        if (anim.GetBool("IsSlashing"))
+        if (TargetObject != null)
         {
-            angle = Vector3.Angle(transform.forward, TargetObject.transform.position - transform.position);
-            if (angle > 90)
-            {
-                anim.SetTrigger("SlashEnd");
-                anim.SetBool("IsSlashing", false);
-            }
+            transform.LookAt(TargetObject.transform);
 
             Vector3 direction = transform.forward;
             direction.y = 0;
-            transform.position += direction * slashSpeed * Time.deltaTime;
-        }
-    }
+            transform.position += direction * SlashSpeed * Time.deltaTime;
 
-    void OnCollisionEnter(Collision collision)
-    {
-        CheckSlash(collision.gameObject);
-    }
-
-    void OnCollisionStay(Collision collision)
-    {
-        CheckSlash(collision.gameObject);
-    }
-
-    void CheckSlash(GameObject obj)
-    {
-        if (anim.GetBool("IsSlashing"))
-        {
-            EnermyBattle enermy = obj.GetComponent<EnermyBattle>();
-            if (enermy != null && enermy.CanSlash)
+            if ((TargetObject.transform.position - transform.position).magnitude < SlashRadius)
             {
-                enermy.Attacked(new AttackBase() { Type = AttackType.ATTACK_TYPE_SLASH });
+                anim.SetTrigger("SlashEnd");
+                TargetObject = null;
             }
         }
+    }
+
+    void CheckSlash()
+    {
+        List<GameObject> list = PlayerBattle.Enermies.GetEnermy(transform.position, SlashRadius * 2, transform.rotation * Vector3.forward, SlashAngle);
+        list.ForEach(o =>
+        {
+            EnermyBattle enermy = o.GetComponent<EnermyBattle>();
+            enermy.Attacked(new AttackBase() { Type = AttackType.ATTACK_TYPE_SLASH });
+        });
     }
 }
