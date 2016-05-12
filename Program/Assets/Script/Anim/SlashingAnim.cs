@@ -23,7 +23,6 @@ public class SlashingAnim : StateMachineBehaviour {
     {
         PlayerCollider.enabled = true;
         animator.SetBool("IsSlashing", false);
-        PlayerMove.CanRotate = true;
     }
 
     // OnStateMove is called right after Animator.OnAnimatorMove(). Code that processes and affects root motion should be implemented here

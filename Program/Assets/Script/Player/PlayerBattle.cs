@@ -7,10 +7,10 @@ public class PlayerBattle : MonoBehaviour {
     public GameObject AttackRegion;
     public GameObject SlashRegion;
     public float AttackAngle = 60;
+    static public float AttackRadius = 1.3f;
+    static public float SlashRadius = 3f;
 
     Animator anim;
-    float AttackRadius = 1.3f;
-    float SlashRadius = 3f;
 
     void Start()
     {
@@ -27,7 +27,7 @@ public class PlayerBattle : MonoBehaviour {
     {
         EnermyBattle battle = enermy.GetComponent<EnermyBattle>();
         Vector3 direction = enermy.transform.position - transform.position;
-        
+   
         if (direction.magnitude < AttackRadius && !battle.CanSlash)
         {
             PlayerMove.CanRotate = false;
@@ -47,7 +47,7 @@ public class PlayerBattle : MonoBehaviour {
         list.ForEach(o =>
         {
             EnermyBattle enermy = o.GetComponent<EnermyBattle>();
-            enermy.Attacked(new AttackBase());
+            enermy.Attacked(new Attack());
         });
     }
 }

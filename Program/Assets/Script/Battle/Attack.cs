@@ -17,7 +17,7 @@ public enum AttackType
     ATTACK_TYPE_SLASH,
 };
 
-public class AttackBase {
+public class Attack {
     public ElementType Element { get; set; }
     public int Strength { get; set; }
     public AttackType Type { get; set; }

@@ -8,8 +8,9 @@ public class EnemyGenerator : MonoBehaviour
     public GameObject enemy;
     public float spawnTime = 3f;
     public UnitAction OnEnermyClicked;
+    public List<GameObject> Enermies { get { return monsters; } }
 
-	int enermyMask;
+    int enermyMask;
 	float camRayLength = 100f;
 
 	List<GameObject> monsters = new List<GameObject>();
@@ -63,11 +64,19 @@ public class EnemyGenerator : MonoBehaviour
 	{
 		if (enermy != null && monsters.Contains (enermy)) {
 			monsters.Remove (enermy);
+
+            EnermyBattle battle = enermy.GetComponent<EnermyBattle>();
+            if (battle != null)
+            {
+                GameObject obj = Instantiate(battle.DeadAction, enermy.transform.position, Quaternion.identity) as GameObject;
+                obj.layer = 0;
+            }
+
             DestroyObject(enermy);
 		}
 	}
 
-    public List<GameObject> GetEnermy(Vector3 position, float radius, Vector3 direction, float angle)
+    public List<GameObject> GetEnermy(Vector3 position, float radius)
     {
         List<GameObject> tmpList = new List<GameObject>();
 
@@ -77,10 +86,24 @@ public class EnemyGenerator : MonoBehaviour
             float dis = tmpDirection.magnitude;
             if (dis <= radius)
             {
-                if (Vector3.Angle(direction, tmpDirection) <= angle)
-                {
-                    tmpList.Add(obj);
-                }
+                tmpList.Add(obj);
+            }
+        }
+
+        return tmpList;
+    }
+
+    public List<GameObject> GetEnermy(Vector3 position, float radius, Vector3 direction, float angle)
+    {
+        List<GameObject> radiusList = GetEnermy(position, radius);
+        List<GameObject> tmpList = new List<GameObject>();
+
+        foreach (GameObject obj in radiusList)
+        {
+            Vector3 tmpDirection = obj.transform.position - position;
+            if (Vector3.Angle(direction, tmpDirection) <= angle)
+            {
+                tmpList.Add(obj);
             }
         }
 

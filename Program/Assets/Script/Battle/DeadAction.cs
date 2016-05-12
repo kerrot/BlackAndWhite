@@ -1,14 +1,23 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
-public enum DeadType
+public class DeadAction : MonoBehaviour
 {
-	DEAD_TYPE_EXPLOSION,
-}
+    public Attack A = new Attack();
 
-public class DeadActionBase{
+    void Start()
+	{
+		Destroy(gameObject, GetComponent<ParticleSystem>().duration);
 
-	public DeadType Type;
-	public AttackBase Attack;
-	public float Param;
+        List<GameObject> list = PlayerBattle.Enermies.GetEnermy(transform.position, GetComponent<SphereCollider>().radius);
+        foreach (GameObject o in list)
+        {
+            EnermyBattle battle = o.GetComponent<EnermyBattle>();
+            if (battle != null)
+            {
+                battle.Attacked(A);
+            }
+        }
+    }
 }
