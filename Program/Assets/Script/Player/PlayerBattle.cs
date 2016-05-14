@@ -38,6 +38,7 @@ public class PlayerBattle : MonoBehaviour {
             GetComponent<PlayerSlash>().TargetObject = enermy;
             PlayerMove.CanRotate = false;
             anim.SetTrigger("Slash");
+			Debug.Log ("Slash");
         }
     }
 

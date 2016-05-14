@@ -11,6 +11,7 @@ public class SlashingAnim : StateMachineBehaviour {
         PlayerCollider.enabled = false;
         animator.SetBool("IsSlashing", true);
         PlayerMove.CanRotate = false;
+		Debug.Log ("isSlashing");
     }
 
     // OnStateUpdate is called on each Update frame between OnStateEnter and OnStateExit callbacks
@@ -22,6 +23,7 @@ public class SlashingAnim : StateMachineBehaviour {
     override public void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
         PlayerCollider.enabled = true;
+		animator.ResetTrigger ("Slash");
         animator.SetBool("IsSlashing", false);
     }
 
