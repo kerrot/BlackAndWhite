@@ -12,6 +12,7 @@ public class PlayerSlash : MonoBehaviour {
 	int slashingHash;
     Animator anim;
 	bool continueSlash = false;
+    private GameObject NextTarget;
 
     void Awake()
     {
@@ -40,27 +41,37 @@ public class PlayerSlash : MonoBehaviour {
         }
     }
 
-	public void SlashEnermy(GameObject enermy)
+    bool CanSlashEnermy(GameObject enermy)
+    {
+        Vector3 direction = enermy.transform.position - transform.position;
+        EnermyBattle battle = enermy.GetComponent<EnermyBattle>();
+        if (direction.magnitude < SlashRadius && battle.CanSlash && !anim.GetBool("IsSlashing"))
+        {
+            return true;
+        }
+
+        return false;
+    }
+
+
+    public void SlashEnermy(GameObject enermy)
 	{
-		Vector3 direction = enermy.transform.position - transform.position;
-		EnermyBattle battle = enermy.GetComponent<EnermyBattle> ();
-		if (direction.magnitude < SlashRadius && battle.CanSlash && !anim.GetBool("IsSlashing")) {
+		if (CanSlashEnermy(enermy)) {
 			TargetObject = enermy;
 			PlayerMove.CanRotate = false;
 			anim.SetTrigger("Slash");
-		}
+        }
 	}
 
     void CheckSlash()
-    {
-		bool reFind = false;
+    {        bool reFind = false;
         PlayerMove.CanRotate = true;
         List<GameObject> list = PlayerBattle.Enermies.GetEnermy(transform.position, SlashRadius * 2, transform.rotation * Vector3.forward, SlashAngle);
         list.ForEach(o =>
         {
-			if (o == TargetObject)
+			if (o == NextTarget)
 			{
-				reFind = true;
+                reFind = true;
 			}
 
             EnermyBattle enermy = o.GetComponent<EnermyBattle>();
@@ -70,36 +81,40 @@ public class PlayerSlash : MonoBehaviour {
 		if (continueSlash) {
 			continueSlash = false;
 			if (reFind) {
-				AutoNextSlashTartget ();
+                NextTarget = AutoNextSlashTartget();
+                if (NextTarget != null)
+                {
+                    SlashEnermy(NextTarget);
+                    NextTarget = null;
+                }
 			}
 		}
     }
 
     void MultiSlash(Vector2 mousePosition)
     {
-		if (continueSlash)
+		if (!continueSlash)
 		{
 			AnimatorStateInfo info = anim.GetCurrentAnimatorStateInfo(0);
 			if (info.fullPathHash == slashEndHash)
 			{
 				continueSlash = true;
-				AutoNextSlashTartget ();
+				NextTarget = AutoNextSlashTartget ();
 			}
 		}
     }
 
-	void AutoNextSlashTartget()
+	GameObject AutoNextSlashTartget()
 	{
 		List<GameObject> list = PlayerBattle.Enermies.Enermies;
 		foreach (GameObject o in list)
 		{
-			if (o != TargetObject)
+			if (o != TargetObject && CanSlashEnermy(o))
 			{
-				SlashEnermy (o);
-				if (o == TargetObject) {
-					return;
-				}
+                return o;
 			}
 		}
+
+        return null;
 	}
 }

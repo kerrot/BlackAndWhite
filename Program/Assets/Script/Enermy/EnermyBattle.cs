@@ -3,7 +3,9 @@ using System.Collections;
 
 public class EnermyBattle : MonoBehaviour {
     public UnitAction OnDie;
-    public bool CanSlash { get { return Slashable.activeSelf; } }
+    public bool CanSlash { get {
+                                return Slashable.activeSelf;
+                                } }
     public float SlashTime = 3;
     public GameObject DeadAction;
 
