@@ -5,7 +5,7 @@ public class GuardAnim : StateMachineBehaviour {
 
 	 // OnStateEnter is called when a transition starts and the state machine starts to evaluate this state
 	override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex) {
-        animator.SetBool("IsGuarding", true);
+        //animator.SetBool("IsGuarding", true);
         PlayerMove.CanRotate = false;
     }
 
@@ -16,7 +16,7 @@ public class GuardAnim : StateMachineBehaviour {
 
 	// OnStateExit is called when a transition ends and the state machine finishes evaluating this state
 	override public void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex) {
-        animator.SetBool("IsGuarding", false);
+        //animator.SetBool("IsGuarding", false);
         PlayerMove.CanRotate = true;
     }
 

@@ -6,7 +6,7 @@ public class AttackAnim : StateMachineBehaviour {
     // OnStateEnter is called when a transition starts and the state machine starts to evaluate this state
     override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
-        animator.SetBool("IsAttacking", true);
+        //animator.SetBool("IsAttacking", true);
         PlayerMove.CanRotate = false;
     }
 
@@ -18,7 +18,7 @@ public class AttackAnim : StateMachineBehaviour {
     // OnStateExit is called when a transition ends and the state machine finishes evaluating this state
     override public void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
-        animator.SetBool("IsAttacking", false);
+        //animator.SetBool("IsAttacking", false);
         PlayerMove.CanRotate = true;
     }
 

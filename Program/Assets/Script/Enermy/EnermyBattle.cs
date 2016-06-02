@@ -14,12 +14,15 @@ public class EnermyBattle : MonoBehaviour {
     GameObject Slashable;
     NavMeshAgent nav;
     Transform player;
+    bool load = false;
 
-    void Start()
+    //Start change to Awake, because Instantiate not call Start but Awake
+    void Awake()
     {
         player = GameObject.FindGameObjectWithTag("Player").transform;
         Slashable = transform.FindChild("Slashable").gameObject;
         nav = GetComponent<NavMeshAgent>();
+        load = true;
     }
 
 	void FixedUpdate() {

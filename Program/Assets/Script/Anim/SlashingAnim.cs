@@ -9,7 +9,6 @@ public class SlashingAnim : StateMachineBehaviour {
     override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
         PlayerCollider.enabled = false;
-        animator.SetBool("IsSlashing", true);
         PlayerMove.CanRotate = false;
     }
 
@@ -22,8 +21,6 @@ public class SlashingAnim : StateMachineBehaviour {
     override public void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
         PlayerCollider.enabled = true;
-		animator.ResetTrigger ("Slash");
-        animator.SetBool("IsSlashing", false);
     }
 
     // OnStateMove is called right after Animator.OnAnimatorMove(). Code that processes and affects root motion should be implemented here
