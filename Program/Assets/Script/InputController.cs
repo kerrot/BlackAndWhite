@@ -2,10 +2,15 @@
 using UniRx.Triggers;
 using System;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using System.Collections;
 
 public class InputController : MonoBehaviour {
-    public float ClickPeriod = 0.3f;
+
+    [SerializeField]
+    private EventSystem InputMonitor;
+    [SerializeField]
+    private float ClickPeriod = 0.3f;
 
     public delegate void MouseAction(Vector2 mousePosition);
     public static MouseAction OnMouseDoubleClick;
@@ -22,7 +27,7 @@ public class InputController : MonoBehaviour {
 	void Start()
 	{
 		this.UpdateAsObservable ().Subscribe (_ => UniRxUpdate ());
-	}
+    }
 
     void UniRxUpdate () {
         float now = Time.time;
@@ -36,6 +41,8 @@ public class InputController : MonoBehaviour {
                 OnMouseDown(position);
             }
             mousePressed = true;
+
+            Debug.Log(InputMonitor.currentSelectedGameObject);
         }
 
         if (Input.GetMouseButtonUp(0))

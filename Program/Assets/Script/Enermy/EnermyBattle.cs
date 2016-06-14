@@ -14,7 +14,6 @@ public class EnermyBattle : MonoBehaviour {
     GameObject Slashable;
     NavMeshAgent nav;
     Transform player;
-    bool load = false;
 
     //Start change to Awake, because Instantiate not call Start but Awake
     void Awake()
@@ -22,7 +21,6 @@ public class EnermyBattle : MonoBehaviour {
         player = GameObject.FindGameObjectWithTag("Player").transform;
         Slashable = transform.FindChild("Slashable").gameObject;
         nav = GetComponent<NavMeshAgent>();
-        load = true;
     }
 
 	void FixedUpdate() {
