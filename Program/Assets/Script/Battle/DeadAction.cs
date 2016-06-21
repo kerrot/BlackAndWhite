@@ -10,7 +10,7 @@ public class DeadAction : MonoBehaviour
 	{
 		Destroy(gameObject, GetComponent<ParticleSystem>().duration);
 
-        List<GameObject> list = PlayerBattle.Enermies.GetEnermy(transform.position, GetComponent<SphereCollider>().radius);
+        List<GameObject> list = PlayerBattle.Instance.Enermies.GetEnermy(transform.position, GetComponent<SphereCollider>().radius);
         foreach (GameObject o in list)
         {
             EnermyBattle battle = o.GetComponent<EnermyBattle>();

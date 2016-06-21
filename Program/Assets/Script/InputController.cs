@@ -23,6 +23,7 @@ public class InputController : MonoBehaviour {
     private float firstClickTime;
     private float secondClickTime;
     private bool mousePressed = false;
+    private bool pressOnUI = false;
 
 	void Start()
 	{
@@ -33,20 +34,30 @@ public class InputController : MonoBehaviour {
         float now = Time.time;
         Vector2 position = Input.mousePosition;
 
-        if (Input.GetMouseButtonDown(0))
+        if (!pressOnUI && Input.GetMouseButtonDown(0))
         {
+            if (InputMonitor.currentSelectedGameObject != null) 
+            {
+                pressOnUI = true;
+                return;
+            }
+
             pressTime = now;
             if (OnMouseDown != null)
             {
                 OnMouseDown(position);
             }
             mousePressed = true;
-
-            Debug.Log(InputMonitor.currentSelectedGameObject);
         }
 
         if (Input.GetMouseButtonUp(0))
         {
+            if (pressOnUI) 
+            {
+                pressOnUI = false;
+                return;
+            }
+
             mousePressed = false;
             firstClickTime = secondClickTime;
             secondClickTime = now;
@@ -71,6 +82,11 @@ public class InputController : MonoBehaviour {
             {
                 OnMouseUp(position);
             }
+        }
+
+        if (pressOnUI) 
+        {
+            return;
         }
 
         if (mousePressed)

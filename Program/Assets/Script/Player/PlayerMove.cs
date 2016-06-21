@@ -3,8 +3,8 @@ using UniRx.Triggers;
 using UnityEngine;
 using System.Collections;
 
-public class PlayerMove : MonoBehaviour {
-    public static bool CanRotate = true;
+public class PlayerMove : SingletonMonoBehaviour<PlayerMove> {
+    public bool CanRotate = true;
 
     public float arriveRadius = 0.1f;
     public float GuardRadius = 0.2f;

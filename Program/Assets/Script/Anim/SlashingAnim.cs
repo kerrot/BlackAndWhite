@@ -9,7 +9,7 @@ public class SlashingAnim : StateMachineBehaviour {
     override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
         PlayerCollider.enabled = false;
-        PlayerMove.CanRotate = false;
+        PlayerMove.Instance.CanRotate = false;
     }
 
     // OnStateUpdate is called on each Update frame between OnStateEnter and OnStateExit callbacks

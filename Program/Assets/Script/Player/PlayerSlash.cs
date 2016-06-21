@@ -2,7 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 
-public class PlayerSlash : MonoBehaviour {
+public class PlayerSlash : SingletonMonoBehaviour<PlayerSlash> {
     public bool AutoSlash = false;
     public float SlashSpeed = 5;
     public float SlashStopRadius = 0.5f;
@@ -69,7 +69,7 @@ public class PlayerSlash : MonoBehaviour {
 		if (CanSlashEnermy(enermy)) {
             isSlashing = true;
 			TargetObject = enermy;
-            PlayerMove.CanRotate = false;
+            PlayerMove.Instance.CanRotate = false;
             anim.SetBool("IsSlashing", true);
             anim.SetTrigger("Slash");
 
@@ -83,9 +83,9 @@ public class PlayerSlash : MonoBehaviour {
     {
         isSlashing = false;
         anim.SetBool("IsSlashing", false);
-        PlayerMove.CanRotate = true;
+        PlayerMove.Instance.CanRotate = true;
 
-        List<GameObject> list = PlayerBattle.Enermies.GetEnermy(transform.position, SlashRadius * 2, transform.rotation * Vector3.forward, SlashAngle);
+        List<GameObject> list = PlayerBattle.Instance.Enermies.GetEnermy(transform.position, SlashRadius * 2, transform.rotation * Vector3.forward, SlashAngle);
         list.ForEach(o =>
         {
             EnermyBattle enermy = o.GetComponent<EnermyBattle>();
@@ -119,7 +119,7 @@ public class PlayerSlash : MonoBehaviour {
 
     void SlashNextTartget()
     {
-        List<GameObject> list = PlayerBattle.Enermies.Enermies;
+        List<GameObject> list = PlayerBattle.Instance.Enermies.Enermies;
         foreach (GameObject o in list)
         {
             SlashEnermy(o);

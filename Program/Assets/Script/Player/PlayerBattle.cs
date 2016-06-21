@@ -2,8 +2,8 @@
 using System.Collections;
 using System.Collections.Generic;
 
-public class PlayerBattle : MonoBehaviour {
-    static public EnemyGenerator Enermies;
+public class PlayerBattle : SingletonMonoBehaviour<PlayerBattle> {
+    public EnemyGenerator Enermies;
     public GameObject AttackRegion;
     public float AttackAngle = 60;
 
@@ -23,7 +23,7 @@ public class PlayerBattle : MonoBehaviour {
 
     void Battle (GameObject enermy)
     {
-        if (!GetComponent<PlayerSlash>().SlashEnermy(enermy))
+        if (!PlayerSlash.Instance.SlashEnermy(enermy))
         {
             AttackEnermy(enermy);
         }
@@ -33,7 +33,7 @@ public class PlayerBattle : MonoBehaviour {
 	{
 		Vector3 direction = enermy.transform.position - transform.position;
 		if (direction.magnitude < AttackRadius) {
-			PlayerMove.CanRotate = false;
+			PlayerMove.Instance.CanRotate = false;
 			anim.SetTrigger("Attack");
 		}
 	}
