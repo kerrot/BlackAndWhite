@@ -5,7 +5,8 @@ public class PlayerTime : SingletonMonoBehaviour<PlayerTime> {
 
     Animator anim;
 
-    float tmpTimeScale;
+    float tmpTimeScale = 1;
+    float timeFactor = 1;
 
     void Awake() 
     {
@@ -20,9 +21,11 @@ public class PlayerTime : SingletonMonoBehaviour<PlayerTime> {
         }
 
         Time.timeScale = speed;
-        Time.fixedDeltaTime = 0.02f * Time.timeScale;    
+        Time.fixedDeltaTime = 0.02f * Time.timeScale;
 
-        anim.speed = playerSpeed / speed;
+        timeFactor = playerSpeed / speed;
+
+        anim.speed = timeFactor;
     }
 
     public void PauseGame()
@@ -36,9 +39,8 @@ public class PlayerTime : SingletonMonoBehaviour<PlayerTime> {
         Time.timeScale = tmpTimeScale;
     }
 
-    public void TestSkill() 
+    public float GetPlayerTimeFactor()
     {
-        SlowMotion(0.2f, 1f);
-
+        return timeFactor;
     }
 }

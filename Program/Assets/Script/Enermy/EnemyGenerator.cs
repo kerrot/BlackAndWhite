@@ -5,6 +5,9 @@ public delegate void UnitAction(GameObject unit);
 
 public class EnemyGenerator : MonoBehaviour
 {
+    [SerializeField]
+    private float RayRadius;
+
     public GameObject enemy;
     public float spawnTime = 3f;
     public UnitAction OnEnermyClicked;
@@ -27,15 +30,31 @@ public class EnemyGenerator : MonoBehaviour
     void EnermyClicked(Vector2 mousePosition)
     {
         Ray camRay = Camera.main.ScreenPointToRay(mousePosition);
-        RaycastHit enermyHit;
-        if (Physics.Raycast(camRay, out enermyHit, camRayLength, enermyMask))
+        RaycastHit[] enermyHit = Physics.SphereCastAll(camRay, RayRadius, camRayLength, enermyMask);
+
+        if (enermyHit.Length > 0)
         {
-            if (enermyHit.collider != null)
+            float min = 0;
+            RaycastHit minHit = enermyHit[0];
+
+            foreach (var hit in enermyHit)
             {
-                if (OnEnermyClicked != null)
+                float tmp = Vector3.Distance(hit.collider.transform.position, camRay.origin);
+
+                if (min == 0)
                 {
-                    OnEnermyClicked(enermyHit.collider.gameObject);
+                    min = tmp;
+                    minHit = hit;
                 }
+                else if (min > tmp)
+                {
+                    minHit = hit;
+                }
+            }
+
+            if (OnEnermyClicked != null)
+            {
+                OnEnermyClicked(minHit.collider.gameObject);
             }
         }
     }
@@ -72,6 +91,7 @@ public class EnemyGenerator : MonoBehaviour
                 obj.layer = 0;
             }
 
+            SkillControler.Instance.AddPower(1);
             DestroyObject(enermy);
 		}
 	}

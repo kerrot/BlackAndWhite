@@ -38,7 +38,7 @@ public class PlayerSlash : SingletonMonoBehaviour<PlayerSlash> {
 
                 Vector3 direction = transform.forward;
                 direction.y = 0;
-                transform.position += direction * SlashSpeed * Time.deltaTime;
+                transform.position += direction * SlashSpeed * Time.deltaTime * PlayerTime.Instance.GetPlayerTimeFactor();
 
                 if ((TargetObject.transform.position - transform.position).magnitude < SlashStopRadius)
                 {
