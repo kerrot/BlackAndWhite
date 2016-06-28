@@ -1,0 +1,268 @@
+fileFormatVersion: 2
+guid: 33fb9645463f21147a7f8cb23311a018
+timeCreated: 1467106731
+licenseType: Pro
+TextureImporter:
+  fileIDToRecycleName:
+    21300000: 0123456789_0
+    21300002: 0123456789_1
+    21300004: 0123456789_2
+    21300006: 0123456789_3
+    21300008: 0123456789_4
+    21300010: 0123456789_5
+    21300012: 0123456789_6
+    21300014: 0123456789_7
+    21300016: 0123456789_8
+    21300018: 0123456789_9
+    21300020: Number_0
+    21300022: Number_1
+    21300024: Number_2
+    21300026: Number_3
+    21300028: Number_4
+    21300030: Number_5
+    21300032: Number_6
+    21300034: Number_7
+    21300036: Number_8
+    21300038: Number_9
+  serializedVersion: 2
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 1
+    linearTexture: 0
+    correctGamma: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+  isReadable: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 0
+  cubemapConvolution: 0
+  cubemapConvolutionSteps: 7
+  cubemapConvolutionExponent: 1.5
+  seamlessCubemap: 0
+  textureFormat: -1
+  maxTextureSize: 2048
+  textureSettings:
+    filterMode: -1
+    aniso: 16
+    mipBias: -1
+    wrapMode: 1
+  nPOTScale: 0
+  lightmap: 0
+  rGBM: 0
+  compressionQuality: 50
+  allowsAlphaSplitting: 0
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spritePixelsToUnits: 100
+  alphaIsTransparency: 1
+  textureType: 8
+  buildTargetSettings: []
+  spriteSheet:
+    sprites:
+    - name: Number_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 55
+        height: 78
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -7.5, y: 38}
+        - {x: -27.5, y: 26}
+        - {x: -27.5, y: -36}
+        - {x: -21.5, y: -39}
+        - {x: 6.5, y: -39}
+        - {x: 25.5, y: -31}
+        - {x: 27.5, y: -14}
+        - {x: 27.5, y: 38}
+    - name: Number_1
+      rect:
+        serializedVersion: 2
+        x: 55
+        y: 0
+        width: 55
+        height: 78
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -11.5, y: 38}
+        - {x: -20.5, y: 21}
+        - {x: -20.5, y: -38}
+        - {x: 3.5, y: -38}
+        - {x: 12.5, y: -34}
+        - {x: 20.5, y: 15}
+        - {x: 20.5, y: 34}
+        - {x: 15.5, y: 38}
+    - name: Number_2
+      rect:
+        serializedVersion: 2
+        x: 110
+        y: 0
+        width: 55
+        height: 78
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -27.5, y: 39}
+        - {x: -27.5, y: -39}
+        - {x: 3.5, y: -39}
+        - {x: 24.5, y: -34}
+        - {x: 27.5, y: -9}
+        - {x: 27.5, y: 34}
+        - {x: 21.5, y: 39}
+    - name: Number_3
+      rect:
+        serializedVersion: 2
+        x: 165
+        y: 0
+        width: 55
+        height: 78
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -9.5, y: 38}
+        - {x: -20.5, y: 34}
+        - {x: -27.5, y: 0}
+        - {x: -27.5, y: -37}
+        - {x: -25.5, y: -38}
+        - {x: 15.5, y: -38}
+        - {x: 27.5, y: -12}
+        - {x: 27.5, y: 37}
+        - {x: 24.5, y: 38}
+      - - {x: 24.5, y: -18}
+        - {x: 26.5, y: -20}
+        - {x: 27.5, y: -20}
+        - {x: 27.5, y: -15}
+        - {x: 25.5, y: -15}
+    - name: Number_4
+      rect:
+        serializedVersion: 2
+        x: 220
+        y: 0
+        width: 55
+        height: 78
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -4.5, y: 39}
+        - {x: -27.5, y: 9}
+        - {x: -27.5, y: -27}
+        - {x: -17.5, y: -38}
+        - {x: 16.5, y: -38}
+        - {x: 17.5, y: -37}
+        - {x: 27.5, y: -25}
+        - {x: 27.5, y: 38}
+        - {x: 25.5, y: 39}
+    - name: Number_5
+      rect:
+        serializedVersion: 2
+        x: 275
+        y: 0
+        width: 55
+        height: 78
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -12.5, y: 39}
+        - {x: -27.5, y: 8}
+        - {x: -27.5, y: -3}
+        - {x: -26.5, y: -5}
+        - {x: -18.5, y: -8}
+        - {x: -27.5, y: -12}
+        - {x: -27.5, y: -37}
+        - {x: -26.5, y: -38}
+        - {x: 21.5, y: -38}
+        - {x: 27.5, y: -19}
+        - {x: 27.5, y: 39}
+    - name: Number_6
+      rect:
+        serializedVersion: 2
+        x: 330
+        y: 0
+        width: 55
+        height: 78
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -8.5, y: 39}
+        - {x: -27.5, y: 3}
+        - {x: -27.5, y: -38}
+        - {x: 14.5, y: -38}
+        - {x: 26.5, y: -34}
+        - {x: 26.5, y: 39}
+    - name: Number_7
+      rect:
+        serializedVersion: 2
+        x: 385
+        y: 0
+        width: 55
+        height: 78
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -26.5, y: 38}
+        - {x: -26.5, y: -39}
+        - {x: 11.5, y: -39}
+        - {x: 27.5, y: 11}
+        - {x: 27.5, y: 38}
+    - name: Number_8
+      rect:
+        serializedVersion: 2
+        x: 440
+        y: 0
+        width: 55
+        height: 78
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -18.5, y: 39}
+        - {x: -27.5, y: 36}
+        - {x: -27.5, y: -38}
+        - {x: 22.5, y: -38}
+        - {x: 27.5, y: -19}
+        - {x: 27.5, y: 39}
+    - name: Number_9
+      rect:
+        serializedVersion: 2
+        x: 495
+        y: 0
+        width: 55
+        height: 78
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -18.5, y: 39}
+        - {x: -26.5, y: 17}
+        - {x: -26.5, y: -26}
+        - {x: -16.5, y: -39}
+        - {x: 1.5, y: -39}
+        - {x: 27.5, y: -10}
+        - {x: 27.5, y: 39}
+    outline: []
+  spritePackingTag: 
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

@@ -97,6 +97,7 @@ ModelImporter:
     7400008: SlashStart
     7400010: Slashing
     7400012: SlashEnd
+    7400014: SlashEnd0
     9500000: //RootNode
   materials:
     importMaterials: 1
@@ -120,10 +121,10 @@ ModelImporter:
     extraExposedTransformPaths: []
     clipAnimations:
     - serializedVersion: 16
-      name: Idle
-      takeName: Idle
-      firstFrame: 1
-      lastFrame: 35
+      name: SlashEnd0
+      takeName: SlashEnd
+      firstFrame: 130
+      lastFrame: 142
       wrapMode: 0
       orientationOffsetY: 0
       level: 0

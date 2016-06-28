@@ -117,7 +117,7 @@ public class PlayerSlash : SingletonMonoBehaviour<PlayerSlash> {
         }
     }
 
-    void SlashNextTartget()
+    bool SlashNextTartget()
     {
         List<GameObject> list = PlayerBattle.Instance.Enermies.Enermies;
         foreach (GameObject o in list)
@@ -125,8 +125,21 @@ public class PlayerSlash : SingletonMonoBehaviour<PlayerSlash> {
             SlashEnermy(o);
             if (TargetObject == o)
             {
-                return;
+                return true;
             }
         }
+
+		return false;
     }
+
+	public void SkillSlash()
+	{
+		if (PlayerSkill.Instance.isSkill && isSlashing == false) 
+		{
+			if (SlashNextTartget ()) 
+			{
+				PlayerSkill.Instance.UsePower (1);
+			}
+		}
+	}
 }

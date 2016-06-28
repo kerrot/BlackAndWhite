@@ -91,7 +91,10 @@ public class EnemyGenerator : MonoBehaviour
                 obj.layer = 0;
             }
 
-            SkillControler.Instance.AddPower(1);
+			if (!PlayerSkill.Instance.isSkill) 
+			{
+				PlayerSkill.Instance.AddPower (1);
+			}
             DestroyObject(enermy);
 		}
 	}
