@@ -15,6 +15,7 @@ public class PlayerSlash : SingletonMonoBehaviour<PlayerSlash> {
     Animator anim;
     bool isSlashing = false;
     bool continueSlash = false;
+    bool comboSlash = false;
     private GameObject TargetObject;
 
     void Awake()
@@ -85,12 +86,23 @@ public class PlayerSlash : SingletonMonoBehaviour<PlayerSlash> {
         anim.SetBool("IsSlashing", false);
         PlayerMove.Instance.CanRotate = true;
 
+        int count = 0;
         List<GameObject> list = PlayerBattle.Instance.Enermies.GetEnermy(transform.position, SlashRadius * 2, transform.rotation * Vector3.forward, SlashAngle);
         list.ForEach(o =>
         {
             EnermyBattle enermy = o.GetComponent<EnermyBattle>();
-            enermy.Attacked(new Attack() { Type = AttackType.ATTACK_TYPE_SLASH });
+            if (enermy.Attacked(new Attack() { Type = AttackType.ATTACK_TYPE_SLASH }))
+            {
+                ++count;
+            }
         });
+
+        GameSystem.Instance.KillInOneTime(count);
+        if (list.Count > 0 && comboSlash)
+        {
+            GameSystem.Instance.ComboSlash();
+            comboSlash = false;
+        }
 
 		if (continueSlash || AutoSlash) {
 			continueSlash = false;
@@ -125,6 +137,7 @@ public class PlayerSlash : SingletonMonoBehaviour<PlayerSlash> {
             SlashEnermy(o);
             if (TargetObject == o)
             {
+                comboSlash = true;
                 return true;
             }
         }

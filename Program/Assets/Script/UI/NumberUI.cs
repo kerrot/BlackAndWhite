@@ -15,6 +15,8 @@ public class NumberUI : MonoBehaviour {
 
 	public void SetNumber(int number)
 	{
+        gameObject.SetActive(true);
+
 		if (number >= 0 && number < 10) 
 		{
 			display.sprite = numbers [number];

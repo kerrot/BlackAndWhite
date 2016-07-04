@@ -46,5 +46,10 @@ public class PlayerBattle : SingletonMonoBehaviour<PlayerBattle> {
             EnermyBattle enermy = o.GetComponent<EnermyBattle>();
             enermy.Attacked(new Attack());
         });
+
+        if (list.Count > 0)
+        {
+            GameSystem.Instance.Attack();
+        }
     }
 }

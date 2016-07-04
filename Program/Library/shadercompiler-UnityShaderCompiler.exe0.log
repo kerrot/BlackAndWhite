@@ -1,5 +1,5 @@
-Base path: C:/Program Files/Unity/Editor/Data
+Base path: D:/Tool/Unity/Editor/Data
 Cmd: getPlatforms
-Cmd: preprocess
-  error: 1 plat 18 at (102): Both vertex and fragment programs must be present in a CGPROGRAM. Excluding it from compilation.
-  insize=2201 outsize=3553 ok=1
+Unhandled exception: Protocol error - failed to read correct magic number
+
+Quitting shader compiler process

@@ -26,7 +26,6 @@ public class EnemyGenerator : MonoBehaviour
         InputController.OnMouseSingleClick += EnermyClicked;
     }
 
-
     void EnermyClicked(Vector2 mousePosition)
     {
         Ray camRay = Camera.main.ScreenPointToRay(mousePosition);

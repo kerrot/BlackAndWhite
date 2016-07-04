@@ -32,11 +32,12 @@ public class EnermyBattle : MonoBehaviour {
         nav.SetDestination(player.position);
     }
 
-    public void Attacked(Attack attack)
+    public bool Attacked(Attack attack)
     {
         if (attack.Type == AttackType.ATTACK_TYPE_SLASH && CanSlash)
         {
             OnDie(gameObject);
+            return true;
 			//StartCoroutine (Bomb);
         }
         else
@@ -44,6 +45,8 @@ public class EnermyBattle : MonoBehaviour {
             Slashable.SetActive(true);
             slashStartTime = Time.time;
         }
+
+        return false;
     }
 	/*
 	 * 

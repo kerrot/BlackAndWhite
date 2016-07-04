@@ -48,7 +48,7 @@ public class PlayerMove : SingletonMonoBehaviour<PlayerMove> {
 	}
 
 	void FixedUpdate() {
-        if ((transform.position - TargetObject.transform.position).magnitude < arriveRadius)
+        if (Vector3.Distance(transform.position, TargetObject.transform.position) < arriveRadius)
         {
             anim.SetBool("IsMove", false);
         }
