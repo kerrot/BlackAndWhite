@@ -23,6 +23,10 @@ public class GameSystem : SingletonMonoBehaviour<GameSystem>
     NumberDisplayUI combo;
     [SerializeField]
     NumberDisplayUI multiSlash;
+	[SerializeField]
+	GameObject inGame;
+	[SerializeField]
+	GameObject endGame;
 
     float startTime;
     int slashCount = 0;
@@ -46,11 +50,17 @@ public class GameSystem : SingletonMonoBehaviour<GameSystem>
 
         if (now < 0)
         {
-            SceneManager.LoadScene("End");
+			TimeUp ();
         }
 
         timeUI.text = now.ToString();
     }
+
+	void TimeUp()
+	{
+		inGame.SetActive (false);
+		endGame.SetActive (true);
+	}
 
     public void Attack()
     {

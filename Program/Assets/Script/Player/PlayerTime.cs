@@ -11,6 +11,8 @@ public class PlayerTime : SingletonMonoBehaviour<PlayerTime> {
     void Awake() 
     {
         anim = GetComponent<Animator>();
+
+		SlowMotion (1, 1); 
     }
 
 	public void SlowMotion(float speed, float playerSpeed) 

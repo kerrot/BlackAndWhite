@@ -17,7 +17,7 @@ public class PlayerMove : SingletonMonoBehaviour<PlayerMove> {
 
 	void Awake() {
 		anim = GetComponent<Animator>();
-		Debug.Log (anim);
+
         floorMask = LayerMask.GetMask("Floor");
 
         InputController.OnMouseDown += StartMove;
