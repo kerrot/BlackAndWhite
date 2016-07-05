@@ -17,13 +17,18 @@ public class PlayerMove : SingletonMonoBehaviour<PlayerMove> {
 
 	void Awake() {
 		anim = GetComponent<Animator>();
-
+		Debug.Log (anim);
         floorMask = LayerMask.GetMask("Floor");
 
         InputController.OnMouseDown += StartMove;
         InputController.OnMousePressed += CheckMotion;
         InputController.OnMouseUp += StopGuard;
     }
+
+	void Start()
+	{
+		anim.SetBool("IsMove", anim.GetBool("IsMove"));
+	}
 
     public void StartMove(Vector2 mousePosition)
     {
@@ -77,4 +82,11 @@ public class PlayerMove : SingletonMonoBehaviour<PlayerMove> {
         TargetObject.transform.position = ComputeDestination(position);
         transform.LookAt(TargetObject.transform);
     }
+
+	void OnDestroy()
+	{
+		InputController.OnMouseDown -= StartMove;
+		InputController.OnMousePressed -= CheckMotion;
+		InputController.OnMouseUp -= StopGuard;
+	}
 }

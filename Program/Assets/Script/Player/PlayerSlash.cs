@@ -155,4 +155,9 @@ public class PlayerSlash : SingletonMonoBehaviour<PlayerSlash> {
 			}
 		}
 	}
+
+	void OnDestroy()
+	{
+		InputController.OnMouseSingleClick -= MultiSlash;
+	}
 }

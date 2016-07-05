@@ -52,4 +52,9 @@ public class PlayerBattle : SingletonMonoBehaviour<PlayerBattle> {
             GameSystem.Instance.Attack();
         }
     }
+
+	void OnDestroy()
+	{
+		Enermies.OnEnermyClicked -= Battle;
+	}
 }

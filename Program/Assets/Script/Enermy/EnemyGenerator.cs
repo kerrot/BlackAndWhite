@@ -131,4 +131,9 @@ public class EnemyGenerator : MonoBehaviour
 
         return tmpList;
     }
+
+	void OnDestroy()
+	{
+		InputController.OnMouseSingleClick -= EnermyClicked;
+	}
 }
