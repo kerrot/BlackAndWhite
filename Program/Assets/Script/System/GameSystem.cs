@@ -28,6 +28,11 @@ public class GameSystem : SingletonMonoBehaviour<GameSystem>
     int slashCount = 0;
     int score = 0;
 
+    void Awake()
+    {
+        DontDestroyOnLoad(scoreUI.gameObject);
+    }
+
     void Start()
     {
         this.UpdateAsObservable().Subscribe(_ => UniRxUpdate());
