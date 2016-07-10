@@ -1,6 +1,6 @@
 fileFormatVersion: 2
-guid: e4ef63c0850b13249875ec07e92aea65
-timeCreated: 1462201225
+guid: eb0774c606cd92048bb44e59108bef25
+timeCreated: 1468158788
 licenseType: Free
 ModelImporter:
   serializedVersion: 19
@@ -94,10 +94,8 @@ ModelImporter:
     7400002: Run
     7400004: Guard
     7400006: Attack
-    7400008: SlashStart
-    7400010: Slashing
-    7400012: SlashEnd
-    7400014: SlashEnd0
+    7400008: Slashing
+    7400010: SlashEnd
     9500000: //RootNode
   materials:
     importMaterials: 1
@@ -121,10 +119,10 @@ ModelImporter:
     extraExposedTransformPaths: []
     clipAnimations:
     - serializedVersion: 16
-      name: SlashEnd0
-      takeName: SlashEnd
-      firstFrame: 130
-      lastFrame: 142
+      name: Idle
+      takeName: Idle
+      firstFrame: 1
+      lastFrame: 35
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
@@ -364,7 +362,7 @@ ModelImporter:
       name: Attack
       takeName: Attack
       firstFrame: 90
-      lastFrame: 102
+      lastFrame: 106
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
@@ -384,7 +382,7 @@ ModelImporter:
       bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
       curves: []
       events:
-      - time: 0.63829803
+      - time: 0.4641353
         functionName: AttackHit
         data: 
         objectReferenceParameter: {instanceID: 0}
@@ -448,90 +446,10 @@ ModelImporter:
       maskSource: {instanceID: 0}
       additiveReferencePoseFrame: 90
     - serializedVersion: 16
-      name: SlashStart
-      takeName: SlashStart
-      firstFrame: 110
-      lastFrame: 120
-      wrapMode: 0
-      orientationOffsetY: 0
-      level: 0
-      cycleOffset: 0
-      loop: 0
-      hasAdditiveReferencePose: 0
-      loopTime: 0
-      loopBlend: 0
-      loopBlendOrientation: 0
-      loopBlendPositionY: 0
-      loopBlendPositionXZ: 0
-      keepOriginalOrientation: 0
-      keepOriginalPositionY: 1
-      keepOriginalPositionXZ: 0
-      heightFromFeet: 0
-      mirror: 0
-      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
-      curves: []
-      events: []
-      transformMask:
-      - path: 
-        weight: 1
-      - path: JRoot
-        weight: 1
-      - path: JRoot/JHip
-        weight: 1
-      - path: JRoot/JHip/JBody
-        weight: 1
-      - path: JRoot/JHip/JBody/Body
-        weight: 1
-      - path: JRoot/JHip/JBody/Body/Heart
-        weight: 1
-      - path: JRoot/JHip/JBody/JHead
-        weight: 1
-      - path: JRoot/JHip/JBody/JHead/Head
-        weight: 1
-      - path: JRoot/JHip/JBody/JHead/Head/Lefteye
-        weight: 1
-      - path: JRoot/JHip/JBody/JHead/Head/Righteye
-        weight: 1
-      - path: JRoot/JHip/JBody/JHead/JAho
-        weight: 1
-      - path: JRoot/JHip/JBody/JHead/JAho/Aho
-        weight: 1
-      - path: JRoot/JHip/JBody/JHead/JAho/JAho1
-        weight: 1
-      - path: JRoot/JHip/JBody/JHead/JAho/JAho1/JAho2
-        weight: 1
-      - path: JRoot/JHip/JBody/JHead/JAho/JAho1/JAho2/JAho3
-        weight: 1
-      - path: JRoot/JHip/JBody/JLeftHand
-        weight: 1
-      - path: JRoot/JHip/JBody/JLeftHand/JLeftWeapon
-        weight: 1
-      - path: JRoot/JHip/JBody/JLeftHand/LeftHand
-        weight: 1
-      - path: JRoot/JHip/JBody/JRightHand
-        weight: 1
-      - path: JRoot/JHip/JBody/JRightHand/JRightWeapon
-        weight: 1
-      - path: JRoot/JHip/JBody/JRightHand/JRightWeapon/RightWeapon
-        weight: 1
-      - path: JRoot/JHip/JBody/JRightHand/RightHand
-        weight: 1
-      - path: JRoot/JHip/JLeftLeg
-        weight: 1
-      - path: JRoot/JHip/JLeftLeg/LeftLeg
-        weight: 1
-      - path: JRoot/JHip/JRightLeg
-        weight: 1
-      - path: JRoot/JHip/JRightLeg/RightLeg
-        weight: 1
-      maskType: 0
-      maskSource: {instanceID: 0}
-      additiveReferencePoseFrame: 0
-    - serializedVersion: 16
       name: Slashing
       takeName: Slashing
-      firstFrame: 120
-      lastFrame: 130
+      firstFrame: 110
+      lastFrame: 120
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
@@ -606,12 +524,12 @@ ModelImporter:
         weight: 1
       maskType: 0
       maskSource: {instanceID: 0}
-      additiveReferencePoseFrame: 120
+      additiveReferencePoseFrame: 110
     - serializedVersion: 16
       name: SlashEnd
       takeName: SlashEnd
-      firstFrame: 130
-      lastFrame: 142
+      firstFrame: 120
+      lastFrame: 140
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
@@ -623,15 +541,15 @@ ModelImporter:
       loopBlendOrientation: 0
       loopBlendPositionY: 0
       loopBlendPositionXZ: 0
-      keepOriginalOrientation: 0
+      keepOriginalOrientation: 1
       keepOriginalPositionY: 1
-      keepOriginalPositionXZ: 1
+      keepOriginalPositionXZ: 0
       heightFromFeet: 0
       mirror: 0
       bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
       curves: []
       events:
-      - time: 0.6751051
+      - time: 0.6033753
         functionName: CheckSlash
         data: 
         objectReferenceParameter: {instanceID: 0}
@@ -693,7 +611,7 @@ ModelImporter:
         weight: 1
       maskType: 0
       maskSource: {instanceID: 0}
-      additiveReferencePoseFrame: 130
+      additiveReferencePoseFrame: 120
     isReadable: 1
   meshes:
     lODScreenPercentages: []

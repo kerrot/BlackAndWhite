@@ -40,6 +40,7 @@ public class PlayerSkill : SingletonMonoBehaviour<PlayerSkill>
         {
             PlayerTime.Instance.SlowMotion(0.2f, 0.5f);
             skillStartTime = Time.realtimeSinceStartup;
+            CameraEffect.Instance.WhiteSkillEffect(true);
             usingSkill = true;
         }
     }
@@ -60,7 +61,8 @@ public class PlayerSkill : SingletonMonoBehaviour<PlayerSkill>
 		if (usingSkill && power == 0) 
 		{
 			PlayerTime.Instance.SlowMotion(1, 1);
-			usingSkill = false;
+            CameraEffect.Instance.WhiteSkillEffect(false);
+            usingSkill = false;
 		}
 
 		UpdatePowerUI();

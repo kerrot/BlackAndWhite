@@ -60,7 +60,12 @@ public class EnemyGenerator : MonoBehaviour
 
     void Spawn ()
     {
-		if(monsters.Count > 10 || enemy == null)
+        //if (GameSystem.Instance.State != GameSystem.GameState.GAME_STATE_INGAME)
+        //{
+        //    return;
+        //}
+
+        if (monsters.Count > 10 || enemy == null)
         {
             return;
         }

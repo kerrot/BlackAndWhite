@@ -37,7 +37,13 @@ public class InputController : MonoBehaviour {
     //    return (result.Count > 0);
     //}
 
-    void UniRxUpdate () {
+    void UniRxUpdate ()
+    {
+        if (GameSystem.Instance.State != GameSystem.GameState.GAME_STATE_INGAME)
+        {
+            return;
+        }
+
         float now = Time.time;
         Vector2 position = Input.mousePosition;
 

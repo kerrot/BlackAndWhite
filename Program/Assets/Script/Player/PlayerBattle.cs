@@ -17,8 +17,6 @@ public class PlayerBattle : SingletonMonoBehaviour<PlayerBattle> {
 		Enermies.OnEnermyClicked += Battle;
         anim = GetComponent<Animator>();
         AttackRadius = AttackRegion.transform.localScale.x / 2;
-        
-        SlashingAnim.PlayerCollider = GetComponent<Collider>();
     }
 
     void Battle (GameObject enermy)

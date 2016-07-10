@@ -70,7 +70,9 @@ public class PlayerSlash : SingletonMonoBehaviour<PlayerSlash> {
 		if (CanSlashEnermy(enermy)) {
             isSlashing = true;
 			TargetObject = enermy;
+
             PlayerMove.Instance.CanRotate = false;
+
             anim.SetBool("IsSlashing", true);
             anim.SetTrigger("Slash");
 
@@ -87,7 +89,7 @@ public class PlayerSlash : SingletonMonoBehaviour<PlayerSlash> {
         PlayerMove.Instance.CanRotate = true;
 
         int count = 0;
-        List<GameObject> list = PlayerBattle.Instance.Enermies.GetEnermy(transform.position, SlashRadius * 2, transform.rotation * Vector3.forward, SlashAngle);
+        List<GameObject> list = PlayerBattle.Instance.Enermies.GetEnermy(transform.position, SlashRadius, transform.rotation * Vector3.forward, SlashAngle);
         list.ForEach(o =>
         {
             EnermyBattle enermy = o.GetComponent<EnermyBattle>();

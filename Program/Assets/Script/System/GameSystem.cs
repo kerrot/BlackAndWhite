@@ -32,6 +32,15 @@ public class GameSystem : SingletonMonoBehaviour<GameSystem>
     int slashCount = 0;
     static int score = 0;
 
+    GameState state = GameState.GAME_STATE_INGAME;
+    public enum GameState
+    {
+        GAME_STATE_INGAME,
+        GAME_STATE_OFFGAME,
+    }
+    public GameState State { get { return state; } }
+
+
 	static public int GetScore()
 	{
 		return score;
@@ -58,9 +67,19 @@ public class GameSystem : SingletonMonoBehaviour<GameSystem>
 
 	void TimeUp()
 	{
-		inGame.SetActive (false);
-		endGame.SetActive (true);
+        state = GameState.GAME_STATE_OFFGAME;
+        inGame.SetActive (false);
+
+        StartCoroutine(GameClear());
 	}
+
+    IEnumerator GameClear()
+    {
+        yield return new WaitForSeconds(0.5f);
+        PlayerSkill.Instance.UsePower(100);
+        Time.timeScale = 0;
+        endGame.SetActive(true);
+    }
 
     public void Attack()
     {

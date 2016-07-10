@@ -38,7 +38,6 @@ public class EnermyBattle : MonoBehaviour {
         {
             OnDie(gameObject);
             return true;
-			//StartCoroutine (Bomb);
         }
         else
         {
@@ -48,10 +47,4 @@ public class EnermyBattle : MonoBehaviour {
 
         return false;
     }
-	/*
-	 * 
-	IEnumerator Bomb(){
-		yield return  new WaitForSeconds(0.5f);
-
-	}*/
 }

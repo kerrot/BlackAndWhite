@@ -2,13 +2,9 @@
 using System.Collections;
 
 public class SlashingAnim : StateMachineBehaviour {
-
-    static public Collider PlayerCollider;
-
     // OnStateEnter is called when a transition starts and the state machine starts to evaluate this state
     override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
-        PlayerCollider.enabled = false;
         PlayerMove.Instance.CanRotate = false;
     }
 
@@ -18,10 +14,10 @@ public class SlashingAnim : StateMachineBehaviour {
     //}
 
     // OnStateExit is called when a transition ends and the state machine finishes evaluating this state
-    override public void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
-    {
-        PlayerCollider.enabled = true;
-    }
+    //override public void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
+    //{
+        
+    //}
 
     // OnStateMove is called right after Animator.OnAnimatorMove(). Code that processes and affects root motion should be implemented here
     //override public void OnStateMove(Animator animator, AnimatorStateInfo stateInfo, int layerIndex) {
