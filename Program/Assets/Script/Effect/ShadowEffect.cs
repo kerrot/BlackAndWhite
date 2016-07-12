@@ -28,24 +28,43 @@ public class ShadowEffect : MonoBehaviour {
         start = Time.realtimeSinceStartup;
 
         MeshRenderer[] renders = GetComponentsInChildren<MeshRenderer>();
+
+
         renders.ToList().ForEach(r =>
         {
+				Material[] tmpMaterial = new Material[r.materials.Length];
+
             for (int i = 0; i < r.materials.Length; ++i)
             {
                 MaterialMapping map = mapping.Find(p => r.materials[i].name.Contains(p.from.name));
                 if (map.to != null)
                 {
-                    r.materials[i] = map.to;
+						tmpMaterial[i] = map.to;
                 }
             }
+			
+			r.materials = tmpMaterial;
         });
     }
 
     void UniRxUpdate()
     {
-        
+		float diff = Time.realtimeSinceStartup - start;
+		float rate = diff / time;
 
-        if (Time.realtimeSinceStartup - start > time)
+		MeshRenderer[] renders = GetComponentsInChildren<MeshRenderer>();
+
+		renders.ToList().ForEach(r =>
+		{
+			r.materials.ToList().ForEach(m =>
+			{
+				Color tmp = m.color;
+				tmp.a = 1.0f - rate;
+				m.color = tmp;
+			});
+		});
+
+		if (diff > time)
         {
             Destroy(gameObject);
         }

@@ -40,3 +40,4 @@ C:\Users\student\Desktop\BAW\Program\Temp\bin\Debug\UnityEngine.Networking.xml
 C:\Users\student\Desktop\BAW\Program\obj\Debug\Assembly-CSharp.csprojResolveAssemblyReference.cache
 C:\Users\student\Desktop\BAW\Program\obj\Debug\Assembly-CSharp.dll
 C:\Users\student\Desktop\BAW\Program\obj\Debug\Assembly-CSharp.pdb
+C:\Users\student\Desktop\baw\Program\Temp\bin\Debug\Assembly-CSharp-firstpass.pdb
