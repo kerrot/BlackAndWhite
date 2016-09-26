@@ -88,6 +88,8 @@ public class PlayerSlash : SingletonMonoBehaviour<PlayerSlash> {
         anim.SetBool("IsSlashing", false);
         PlayerMove.Instance.CanRotate = true;
 
+        GetComponent<TrailEffect>().EffectEnd();
+
         int count = 0;
         List<GameObject> list = PlayerBattle.Instance.Enermies.GetEnermy(transform.position, SlashRadius, transform.rotation * Vector3.forward, SlashAngle);
         list.ForEach(o =>
