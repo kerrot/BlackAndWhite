@@ -8,6 +8,7 @@ public class EnermyBattle : MonoBehaviour {
                                 } }
     public float SlashTime = 3;
     public GameObject DeadAction;
+    public Vector3 DeadEffectOffset;
 
     float slashStartTime;
 

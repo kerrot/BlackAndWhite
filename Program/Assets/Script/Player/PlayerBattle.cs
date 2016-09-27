@@ -11,12 +11,15 @@ public class PlayerBattle : SingletonMonoBehaviour<PlayerBattle> {
     float AttackRadius = 1.3f;
     Animator anim;
 
+    AudioSource swing;
+
     void Start()
     {
         Enermies = GetComponent<EnemyGenerator>();
 		Enermies.OnEnermyClicked += Battle;
         anim = GetComponent<Animator>();
         AttackRadius = AttackRegion.transform.localScale.x / 2;
+        swing = GetComponent<AudioSource>();
     }
 
     void Battle (GameObject enermy)
@@ -33,7 +36,9 @@ public class PlayerBattle : SingletonMonoBehaviour<PlayerBattle> {
 		if (direction.magnitude < AttackRadius) {
 			PlayerMove.Instance.CanRotate = false;
 			anim.SetTrigger("Attack");
-		}
+            swing.Play();
+
+        }
 	}
 
     void AttackHit()

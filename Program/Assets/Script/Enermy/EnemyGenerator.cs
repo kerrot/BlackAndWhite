@@ -91,7 +91,7 @@ public class EnemyGenerator : MonoBehaviour
             EnermyBattle battle = enermy.GetComponent<EnermyBattle>();
             if (battle != null)
             {
-                GameObject obj = Instantiate(battle.DeadAction, enermy.transform.position, Quaternion.identity) as GameObject;
+                GameObject obj = Instantiate(battle.DeadAction, enermy.transform.position + battle.DeadEffectOffset, Quaternion.identity) as GameObject;
                 obj.layer = 0;
             }
 

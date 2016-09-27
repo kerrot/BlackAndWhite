@@ -3,11 +3,18 @@ using System.Collections;
 using System.Collections.Generic;
 
 public class PlayerSlash : SingletonMonoBehaviour<PlayerSlash> {
-    public bool AutoSlash = false;
-    public float SlashSpeed = 5;
-    public float SlashStopRadius = 0.5f;
-    public float SlashAngle = 30;
-    public GameObject SlashRegion;
+    [SerializeField]
+    private bool AutoSlash = false;
+    [SerializeField]
+    private float SlashSpeed = 5f;
+    [SerializeField]
+    private float maxSlashSpeed = 10f;
+    [SerializeField]
+    private float SlashStopRadius = 0.5f;
+    [SerializeField]
+    private float SlashAngle = 30;
+    [SerializeField]
+    private GameObject SlashRegion;
 
     float SlashRadius = 3f;
     int slashEndHash;
@@ -17,16 +24,18 @@ public class PlayerSlash : SingletonMonoBehaviour<PlayerSlash> {
     bool continueSlash = false;
     bool comboSlash = false;
     private GameObject TargetObject;
+    float currentSpeed;
 
     void Awake()
     {
         anim = GetComponent<Animator>();
-
+        
         slashEndHash = Animator.StringToHash("PlayerBase.SlashEnd");
 		slashingHash = Animator.StringToHash("PlayerBase.Slashing");
         InputController.OnMouseSingleClick += MultiSlash;
 
         SlashRadius = SlashRegion.transform.localScale.x / 2;
+        currentSpeed = SlashSpeed;
     }
     void FixedUpdate()
     {
@@ -39,7 +48,7 @@ public class PlayerSlash : SingletonMonoBehaviour<PlayerSlash> {
 
                 Vector3 direction = transform.forward;
                 direction.y = 0;
-                transform.position += direction * SlashSpeed * Time.deltaTime * PlayerTime.Instance.GetPlayerTimeFactor();
+                transform.position += direction * currentSpeed * Time.deltaTime * PlayerTime.Instance.GetPlayerTimeFactor();
 
                 if ((TargetObject.transform.position - transform.position).magnitude < SlashStopRadius)
                 {
@@ -87,8 +96,6 @@ public class PlayerSlash : SingletonMonoBehaviour<PlayerSlash> {
         isSlashing = false;
         anim.SetBool("IsSlashing", false);
         PlayerMove.Instance.CanRotate = true;
-
-        GetComponent<TrailEffect>().EffectEnd();
 
         int count = 0;
         List<GameObject> list = PlayerBattle.Instance.Enermies.GetEnermy(transform.position, SlashRadius, transform.rotation * Vector3.forward, SlashAngle);
@@ -142,11 +149,28 @@ public class PlayerSlash : SingletonMonoBehaviour<PlayerSlash> {
             if (TargetObject == o)
             {
                 comboSlash = true;
+
+                if (anim.speed < 2.0f)
+                {
+                    anim.speed += 0.1f;
+                }
+                
+                if (currentSpeed < maxSlashSpeed)
+                {
+                    currentSpeed += 0.5f;
+                }
+
                 return true;
             }
         }
 
 		return false;
+    }
+
+    public void ResetSlashSpeed()
+    {
+        anim.speed = 1f;
+        currentSpeed = SlashSpeed;
     }
 
 	public void SkillSlash()
