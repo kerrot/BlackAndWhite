@@ -15,7 +15,6 @@ public class PlayerBattle : SingletonMonoBehaviour<PlayerBattle> {
 
     void Start()
     {
-        Enermies = GetComponent<EnemyGenerator>();
 		Enermies.OnEnermyClicked += Battle;
         anim = GetComponent<Animator>();
         AttackRadius = AttackRegion.transform.localScale.x / 2;
