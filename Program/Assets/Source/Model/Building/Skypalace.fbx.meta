@@ -10,23 +10,275 @@ ModelImporter:
     100004: pPyramid2
     100006: pPyramid3
     100008: //RootNode
+    100010: BossBottom
+    100012: BossTop
+    100014: Bottom
+    100016: Center
+    100018: Inner
+    100020: Outer
+    100022: pCone1
+    100024: pCone1 1
+    100026: pCone1 2
+    100028: pCube1
+    100030: pCube11
+    100032: pCube3
+    100034: pCube5
+    100036: pCube7
+    100038: pCube9
+    100040: pCylinder2
+    100042: pCylinder2 1
+    100044: pCylinder2 2
+    100046: pCylinder3
+    100048: pPipe10
+    100050: pPipe11
+    100052: pPipe12
+    100054: pPipe13
+    100056: pPipe14
+    100058: pPipe15
+    100060: pPipe16
+    100062: pPipe17
+    100064: pPipe18
+    100066: pPipe19
+    100068: pPipe5
+    100070: pPipe5 1
+    100072: pPipe5 2
+    100074: pPipe6
+    100076: pPipe6 1
+    100078: pPipe6 2
+    100080: pPipe7
+    100082: pPipe8
+    100084: pPipe9
+    100086: pPyramid1 1
+    100088: pPyramid2 1
+    100090: pPyramid3 1
+    100092: pTorus1
+    100094: pTorus1 1
+    100096: pTorus1 2
+    100098: pTorus2
+    100100: SkyPalace
+    100102: SkyPalace1
+    100104: SkyPalace1_Surrounding_SubThree_SubC_pPipe6
+    100106: SkyPalace1_Top
+    100108: SubA
+    100110: SubB
+    100112: SubC
+    100114: SubThree
+    100116: Surrounding
+    100118: Surrounding 1
+    100120: Top
+    100122: Wall
     400000: pPipe23
     400002: pPyramid1
     400004: pPyramid2
     400006: pPyramid3
     400008: //RootNode
+    400010: BossBottom
+    400012: BossTop
+    400014: Bottom
+    400016: Center
+    400018: Inner
+    400020: Outer
+    400022: pCone1
+    400024: pCone1 1
+    400026: pCone1 2
+    400028: pCube1
+    400030: pCube11
+    400032: pCube3
+    400034: pCube5
+    400036: pCube7
+    400038: pCube9
+    400040: pCylinder2
+    400042: pCylinder2 1
+    400044: pCylinder2 2
+    400046: pCylinder3
+    400048: pPipe10
+    400050: pPipe11
+    400052: pPipe12
+    400054: pPipe13
+    400056: pPipe14
+    400058: pPipe15
+    400060: pPipe16
+    400062: pPipe17
+    400064: pPipe18
+    400066: pPipe19
+    400068: pPipe5
+    400070: pPipe5 1
+    400072: pPipe5 2
+    400074: pPipe6
+    400076: pPipe6 1
+    400078: pPipe6 2
+    400080: pPipe7
+    400082: pPipe8
+    400084: pPipe9
+    400086: pPyramid1 1
+    400088: pPyramid2 1
+    400090: pPyramid3 1
+    400092: pTorus1
+    400094: pTorus1 1
+    400096: pTorus1 2
+    400098: pTorus2
+    400100: SkyPalace
+    400102: SkyPalace1
+    400104: SkyPalace1_Surrounding_SubThree_SubC_pPipe6
+    400106: SkyPalace1_Top
+    400108: SubA
+    400110: SubB
+    400112: SubC
+    400114: SubThree
+    400116: Surrounding
+    400118: Surrounding 1
+    400120: Top
+    400122: Wall
     2300000: pPipe23
     2300002: pPyramid1
     2300004: pPyramid2
     2300006: pPyramid3
+    2300008: BossBottom
+    2300010: BossTop
+    2300012: Bottom
+    2300014: Center
+    2300016: Outer
+    2300018: pCone1
+    2300020: pCone1 1
+    2300022: pCone1 2
+    2300024: pCube1
+    2300026: pCube11
+    2300028: pCube3
+    2300030: pCube5
+    2300032: pCube7
+    2300034: pCube9
+    2300036: pCylinder2
+    2300038: pCylinder2 1
+    2300040: pCylinder2 2
+    2300042: pCylinder3
+    2300044: pPipe10
+    2300046: pPipe11
+    2300048: pPipe12
+    2300050: pPipe13
+    2300052: pPipe14
+    2300054: pPipe15
+    2300056: pPipe16
+    2300058: pPipe17
+    2300060: pPipe18
+    2300062: pPipe19
+    2300064: pPipe5
+    2300066: pPipe5 1
+    2300068: pPipe5 2
+    2300070: pPipe6
+    2300072: pPipe6 1
+    2300074: pPipe6 2
+    2300076: pPipe7
+    2300078: pPipe8
+    2300080: pPipe9
+    2300082: pPyramid1 1
+    2300084: pPyramid2 1
+    2300086: pPyramid3 1
+    2300088: pTorus1
+    2300090: pTorus1 1
+    2300092: pTorus1 2
+    2300094: pTorus2
+    2300096: SkyPalace1_Surrounding_SubThree_SubC_pPipe6
+    2300098: SkyPalace1_Top
     3300000: pPipe23
     3300002: pPyramid1
     3300004: pPyramid2
     3300006: pPyramid3
+    3300008: BossBottom
+    3300010: BossTop
+    3300012: Bottom
+    3300014: Center
+    3300016: Outer
+    3300018: pCone1
+    3300020: pCone1 1
+    3300022: pCone1 2
+    3300024: pCube1
+    3300026: pCube11
+    3300028: pCube3
+    3300030: pCube5
+    3300032: pCube7
+    3300034: pCube9
+    3300036: pCylinder2
+    3300038: pCylinder2 1
+    3300040: pCylinder2 2
+    3300042: pCylinder3
+    3300044: pPipe10
+    3300046: pPipe11
+    3300048: pPipe12
+    3300050: pPipe13
+    3300052: pPipe14
+    3300054: pPipe15
+    3300056: pPipe16
+    3300058: pPipe17
+    3300060: pPipe18
+    3300062: pPipe19
+    3300064: pPipe5
+    3300066: pPipe5 1
+    3300068: pPipe5 2
+    3300070: pPipe6
+    3300072: pPipe6 1
+    3300074: pPipe6 2
+    3300076: pPipe7
+    3300078: pPipe8
+    3300080: pPipe9
+    3300082: pPyramid1 1
+    3300084: pPyramid2 1
+    3300086: pPyramid3 1
+    3300088: pTorus1
+    3300090: pTorus1 1
+    3300092: pTorus1 2
+    3300094: pTorus2
+    3300096: SkyPalace1_Surrounding_SubThree_SubC_pPipe6
+    3300098: SkyPalace1_Top
     4300000: pPyramid1
     4300002: pPyramid2
     4300004: pPyramid3
     4300006: pPipe23
+    4300008: Bottom
+    4300010: Center
+    4300012: pPipe8
+    4300014: pPipe9
+    4300016: pPipe10
+    4300018: pPipe11
+    4300020: pPipe12
+    4300022: pPipe13
+    4300024: pPipe14
+    4300026: pPipe15
+    4300028: pPipe16
+    4300030: pPipe17
+    4300032: pPipe18
+    4300034: pPipe19
+    4300036: BossBottom
+    4300038: pTorus2
+    4300040: BossTop
+    4300042: pPipe7
+    4300044: pCylinder3
+    4300046: Outer
+    4300048: pCube11
+    4300050: pCube9
+    4300052: pCube7
+    4300054: pCube5
+    4300056: pCube3
+    4300058: pCube1
+    4300060: pCylinder2
+    4300062: pCone1
+    4300064: pTorus1
+    4300066: pPipe5
+    4300068: pPipe6
+    4300070: pCylinder2
+    4300072: pCone1
+    4300074: pTorus1
+    4300076: pPipe5
+    4300078: pPipe6
+    4300080: pCylinder2
+    4300082: pCone1
+    4300084: pTorus1
+    4300086: pPipe5
+    4300088: pPipe6
+    4300090: pPyramid1
+    4300092: pPyramid2
+    4300094: pPyramid3
+    4300096: SkyPalace1_Surrounding_SubThree_SubC_pPipe6
+    4300098: SkyPalace1_Top
   materials:
     importMaterials: 1
     materialName: 0
