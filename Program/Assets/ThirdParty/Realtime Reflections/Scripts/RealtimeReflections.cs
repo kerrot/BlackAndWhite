@@ -72,7 +72,7 @@ public class RealtimeReflections : MonoBehaviour
 		{
 			renderTexture = new RenderTexture(cubemapSize, cubemapSize, 16);
 			renderTexture.isPowerOfTwo = true;
-			renderTexture.isCubemap = true;
+            renderTexture.dimension = UnityEngine.Rendering.TextureDimension.Cube;
 			renderTexture.hideFlags = HideFlags.HideAndDontSave;
 			foreach (Renderer r in GetComponentsInChildren<Renderer>())
 			{

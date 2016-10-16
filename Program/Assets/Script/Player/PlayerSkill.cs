@@ -10,6 +10,10 @@ public class PlayerSkill : SingletonMonoBehaviour<PlayerSkill>
     [SerializeField]
     private int maxPower;
 
+
+    public delegate void SkillAction(bool usingSkill, float power, float maxPower);
+    public static SkillAction OnPowerChnaged;
+
     private int power;
 
 	public bool isSkill { get { return usingSkill; } }
@@ -65,7 +69,7 @@ public class PlayerSkill : SingletonMonoBehaviour<PlayerSkill>
             usingSkill = false;
 		}
 
-		UpdatePowerUI();
+		UpdatePower();
 	}
 
     public void AddPower(int v)
@@ -81,11 +85,14 @@ public class PlayerSkill : SingletonMonoBehaviour<PlayerSkill>
             power = maxPower;
         }
 
-        UpdatePowerUI();
+        UpdatePower();
     }
 
-    void UpdatePowerUI() 
+    void UpdatePower() 
     {
-		SkillUI.Instance.UpdatePowerBar(usingSkill, power, maxPower);
+        if (OnPowerChnaged != null)
+        {
+            OnPowerChnaged(usingSkill, power, maxPower);
+        }
     }
 }

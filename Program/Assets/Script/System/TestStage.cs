@@ -1,0 +1,122 @@
+﻿using UniRx;
+using UniRx.Triggers;
+using UnityEngine;
+using UnityEngine.UI;
+using System.Collections;
+
+public class TestStage : MonoBehaviour
+{
+    [SerializeField]
+    Text scoreUI;
+    [SerializeField]
+    Button restart;
+    [SerializeField]
+    int multiBonus;
+    [SerializeField]
+    int comboBonus;
+    [SerializeField]
+    int singleKillScore;
+    [SerializeField]
+    Text scoreText;
+    [SerializeField]
+    Text timeUI;
+    [SerializeField]
+    int limit;
+    [SerializeField]
+    GameObject inGame;
+    [SerializeField]
+    GameObject endGame;
+
+    int now = 0;
+
+    float startTime;
+    static int score = 0;
+
+    void Start()
+    {
+        this.UpdateAsObservable().Subscribe(_ => UniRxUpdate());
+        startTime = Time.realtimeSinceStartup;
+
+        score = 0;
+
+        GameSystem.OnCombo += OnCombo;
+        GameSystem.OnMultiSlash += OnMultiSlash;
+    }
+
+    void UniRxUpdate()
+    {
+        if (GameSystem.Instance.State == GameSystem.GameState.GAME_STATE_INGAME)
+        {
+
+            int nowTime = limit - (int)(Time.realtimeSinceStartup - startTime);
+
+            if (nowTime < 0)
+            {
+                TimeUp();
+            }
+
+            timeUI.text = nowTime.ToString();
+        }
+        else if (GameSystem.Instance.State == GameSystem.GameState.GAME_STATE_OFFGAME)
+        {
+            if (Input.GetMouseButtonDown(0))
+            {
+                now = score;
+            }
+
+            scoreUI.text = now.ToString();
+            if (now < score)
+            {
+                ++now;
+            }
+            else
+            {
+                restart.gameObject.SetActive(true);
+            }
+        }
+    }
+
+    void TimeUp()
+    {
+        GameSystem.Instance.State = GameSystem.GameState.GAME_STATE_OFFGAME;
+        inGame.SetActive(false);
+
+        StartCoroutine(GameClear());
+    }
+
+    IEnumerator GameClear()
+    {
+        yield return new WaitForSeconds(0.5f);
+        PlayerSkill.Instance.UsePower(100);
+        Time.timeScale = 0;
+        endGame.SetActive(true);
+    }
+
+    void OnCombo(int slashCount)
+    {
+        score += comboBonus * slashCount;
+        UpdateScore();
+    }
+
+    void OnMultiSlash(int num)
+    {
+        if (num > 1)
+        {
+            score += multiBonus * num;
+        }
+
+        score += singleKillScore * num;
+        UpdateScore();
+    }
+
+    void UpdateScore()
+    {
+        scoreText.text = score.ToString();
+    }
+
+    void OnDestroy()
+    {
+        GameSystem.OnCombo -= OnCombo;
+        GameSystem.OnMultiSlash -= OnMultiSlash;
+    }
+}

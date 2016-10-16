@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
+using System.Linq;
 
 public delegate void UnitAction(GameObject unit);
 
@@ -24,6 +25,8 @@ public class EnemyGenerator : MonoBehaviour
         InvokeRepeating ("Spawn", spawnTime, spawnTime);
  
         InputController.OnMouseSingleClick += EnermyClicked;
+
+        GameObject.FindObjectsOfType<EnermyBattle>().ToList().ForEach(e => AddMonster(e.gameObject));
     }
 
     void EnermyClicked(Vector2 mousePosition)
@@ -74,8 +77,14 @@ public class EnemyGenerator : MonoBehaviour
 		diection.y = 0;
 
         GameObject obj = Instantiate (enemy, transform.position + diection.normalized, Quaternion.Euler (0, 180, 0)) as GameObject;
-		if (obj != null) {
-			obj.layer = LayerMask.NameToLayer("Enermy");
+        AddMonster(obj);
+    }
+
+    void AddMonster(GameObject obj)
+    {
+        if (obj != null)
+        {
+            obj.layer = LayerMask.NameToLayer("Enermy");
             monsters.Add(obj);
 
             EnermyBattle enermy = obj.GetComponent<EnermyBattle>();
