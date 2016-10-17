@@ -36,7 +36,6 @@ public class PlayerBattle : SingletonMonoBehaviour<PlayerBattle> {
 			PlayerMove.Instance.CanRotate = false;
 			anim.SetTrigger("Attack");
             swing.Play();
-
         }
 	}
 
