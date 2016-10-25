@@ -11,35 +11,35 @@ public class EnemyGenerator : MonoBehaviour
 
     public GameObject enemy;
     public float spawnTime = 3f;
-    public UnitAction OnEnermyClicked;
-    public List<GameObject> Enermies { get { return monsters; } }
+    public UnitAction OnEnemyClicked;
+    public List<GameObject> Enemies { get { return monsters; } }
 
-    int enermyMask;
+    int EnemyMask;
 	float camRayLength = 100f;
 
 	List<GameObject> monsters = new List<GameObject>();
 
     void Start ()
     {
-		enermyMask = LayerMask.GetMask ("Enermy");
+		EnemyMask = LayerMask.GetMask ("Enemy");
         InvokeRepeating ("Spawn", spawnTime, spawnTime);
  
-        InputController.OnMouseSingleClick += EnermyClicked;
+        InputController.OnMouseSingleClick += EnemyClicked;
 
-        GameObject.FindObjectsOfType<EnermyBattle>().ToList().ForEach(e => AddMonster(e.gameObject));
+        GameObject.FindObjectsOfType<EnemyBattle>().ToList().ForEach(e => AddMonster(e.gameObject));
     }
 
-    void EnermyClicked(Vector2 mousePosition)
+    void EnemyClicked(Vector2 mousePosition)
     {
         Ray camRay = Camera.main.ScreenPointToRay(mousePosition);
-        RaycastHit[] enermyHit = Physics.SphereCastAll(camRay, RayRadius, camRayLength, enermyMask);
+        RaycastHit[] EnemyHit = Physics.SphereCastAll(camRay, RayRadius, camRayLength, EnemyMask);
 
-        if (enermyHit.Length > 0)
+        if (EnemyHit.Length > 0)
         {
             float min = 0;
-            RaycastHit minHit = enermyHit[0];
+            RaycastHit minHit = EnemyHit[0];
 
-            foreach (var hit in enermyHit)
+            foreach (var hit in EnemyHit)
             {
                 float tmp = Vector3.Distance(hit.collider.transform.position, camRay.origin);
 
@@ -54,9 +54,9 @@ public class EnemyGenerator : MonoBehaviour
                 }
             }
 
-            if (OnEnermyClicked != null)
+            if (OnEnemyClicked != null)
             {
-                OnEnermyClicked(minHit.collider.gameObject);
+                OnEnemyClicked(minHit.collider.gameObject);
             }
         }
     }
@@ -84,23 +84,23 @@ public class EnemyGenerator : MonoBehaviour
     {
         if (obj != null)
         {
-            obj.layer = LayerMask.NameToLayer("Enermy");
+            obj.layer = LayerMask.NameToLayer("Enemy");
             monsters.Add(obj);
 
-            EnermyBattle enermy = obj.GetComponent<EnermyBattle>();
-            enermy.OnDie += EnermyDie;
+            EnemyBattle Enemy = obj.GetComponent<EnemyBattle>();
+            Enemy.OnDie += EnemyDie;
         }
     }
 
-	void EnermyDie(GameObject enermy)
+	void EnemyDie(GameObject Enemy)
 	{
-		if (enermy != null && monsters.Contains (enermy)) {
-			monsters.Remove (enermy);
+		if (Enemy != null && monsters.Contains (Enemy)) {
+			monsters.Remove (Enemy);
 
-            EnermyBattle battle = enermy.GetComponent<EnermyBattle>();
+            EnemyBattle battle = Enemy.GetComponent<EnemyBattle>();
             if (battle != null)
             {
-                GameObject obj = Instantiate(battle.DeadAction, enermy.transform.position + battle.DeadEffectOffset, Quaternion.identity) as GameObject;
+                GameObject obj = Instantiate(battle.DeadAction, Enemy.transform.position + battle.DeadEffectOffset, Quaternion.identity) as GameObject;
                 obj.layer = 0;
             }
 
@@ -108,11 +108,11 @@ public class EnemyGenerator : MonoBehaviour
 			{
 				PlayerSkill.Instance.AddPower (1);
 			}
-            DestroyObject(enermy);
+            DestroyObject(Enemy);
 		}
 	}
 
-    public List<GameObject> GetEnermy(Vector3 position, float radius)
+    public List<GameObject> GetEnemy(Vector3 position, float radius)
     {
         List<GameObject> tmpList = new List<GameObject>();
 
@@ -129,9 +129,9 @@ public class EnemyGenerator : MonoBehaviour
         return tmpList;
     }
 
-    public List<GameObject> GetEnermy(Vector3 position, float radius, Vector3 direction, float angle)
+    public List<GameObject> GetEnemy(Vector3 position, float radius, Vector3 direction, float angle)
     {
-        List<GameObject> radiusList = GetEnermy(position, radius);
+        List<GameObject> radiusList = GetEnemy(position, radius);
         List<GameObject> tmpList = new List<GameObject>();
 
         foreach (GameObject obj in radiusList)
@@ -148,6 +148,6 @@ public class EnemyGenerator : MonoBehaviour
 
 	void OnDestroy()
 	{
-		InputController.OnMouseSingleClick -= EnermyClicked;
+		InputController.OnMouseSingleClick -= EnemyClicked;
 	}
 }

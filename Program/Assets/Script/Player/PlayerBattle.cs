@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 
 public class PlayerBattle : SingletonMonoBehaviour<PlayerBattle> {
-    public EnemyGenerator Enermies;
+    public EnemyGenerator Enemies;
     public GameObject AttackRegion;
     public float AttackAngle = 60;
 
@@ -15,23 +15,23 @@ public class PlayerBattle : SingletonMonoBehaviour<PlayerBattle> {
 
     void Start()
     {
-		Enermies.OnEnermyClicked += Battle;
+		Enemies.OnEnemyClicked += Battle;
         anim = GetComponent<Animator>();
         AttackRadius = AttackRegion.transform.localScale.x / 2;
         swing = GetComponent<AudioSource>();
     }
 
-    void Battle (GameObject enermy)
+    void Battle (GameObject Enemy)
     {
-        if (!PlayerSlash.Instance.SlashEnermy(enermy))
+        if (!PlayerSlash.Instance.SlashEnemy(Enemy))
         {
-            AttackEnermy(enermy);
+            AttackEnemy(Enemy);
         }
     }
 
-	void AttackEnermy(GameObject enermy)
+	void AttackEnemy(GameObject Enemy)
 	{
-		Vector3 direction = enermy.transform.position - transform.position;
+		Vector3 direction = Enemy.transform.position - transform.position;
 		if (direction.magnitude < AttackRadius) {
 			PlayerMove.Instance.CanRotate = false;
 			anim.SetTrigger("Attack");
@@ -41,11 +41,11 @@ public class PlayerBattle : SingletonMonoBehaviour<PlayerBattle> {
 
     void AttackHit()
     {
-        List<GameObject> list = Enermies.GetEnermy(transform.position, AttackRadius, transform.rotation * Vector3.forward, AttackAngle);
+        List<GameObject> list = Enemies.GetEnemy(transform.position, AttackRadius, transform.rotation * Vector3.forward, AttackAngle);
         list.ForEach(o =>
         {
-            EnermyBattle enermy = o.GetComponent<EnermyBattle>();
-            enermy.Attacked(new Attack());
+            EnemyBattle Enemy = o.GetComponent<EnemyBattle>();
+            Enemy.Attacked(new Attack());
         });
 
         if (list.Count > 0)
@@ -56,6 +56,6 @@ public class PlayerBattle : SingletonMonoBehaviour<PlayerBattle> {
 
 	void OnDestroy()
 	{
-		Enermies.OnEnermyClicked -= Battle;
+		Enemies.OnEnemyClicked -= Battle;
 	}
 }

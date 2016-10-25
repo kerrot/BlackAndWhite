@@ -10,10 +10,10 @@ public class DeadAction : MonoBehaviour
 	{
 		Destroy(gameObject, GetComponent<ParticleSystem>().duration);
 
-        List<GameObject> list = PlayerBattle.Instance.Enermies.GetEnermy(transform.position, GetComponent<SphereCollider>().radius);
+        List<GameObject> list = PlayerBattle.Instance.Enemies.GetEnemy(transform.position, GetComponent<SphereCollider>().radius);
         foreach (GameObject o in list)
         {
-            EnermyBattle battle = o.GetComponent<EnermyBattle>();
+            EnemyBattle battle = o.GetComponent<EnemyBattle>();
             if (battle != null)
             {
                 battle.Attacked(A);

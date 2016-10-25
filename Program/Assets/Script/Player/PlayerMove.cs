@@ -11,7 +11,6 @@ public class PlayerMove : SingletonMonoBehaviour<PlayerMove> {
     public GameObject TargetObject;
 
     Animator anim;
-    NavMeshAgent agent;
 
 	static int floorMask;
     static float camRayLength = 100f;
@@ -24,10 +23,6 @@ public class PlayerMove : SingletonMonoBehaviour<PlayerMove> {
         InputController.OnMouseDown += StartMove;
         InputController.OnMousePressed += CheckMotion;
         InputController.OnMouseUp += StopGuard;
-
-        agent = GetComponent<NavMeshAgent>();
-        agent.updatePosition = false;
-        agent.updateRotation = false;
     }
 
 	void Start()
@@ -63,13 +58,6 @@ public class PlayerMove : SingletonMonoBehaviour<PlayerMove> {
         {
             anim.SetBool("IsMove", false);
         }
-
-        
-
-        Vector3 offset = (agent.steeringTarget == transform.position) ? transform.forward : (agent.steeringTarget - transform.position).normalized;
-        float angle = Vector3.Angle(offset, Vector3.forward) * ((offset.x > 0) ? 1 : -1);
-        transform.rotation = Quaternion.AngleAxis(angle, Vector3.up);
-        agent.nextPosition = transform.position;
     }
 
     public static Vector3 ComputeDestination(Vector2 position)
@@ -94,7 +82,7 @@ public class PlayerMove : SingletonMonoBehaviour<PlayerMove> {
 
         TargetObject.transform.position = ComputeDestination(position);
 
-        agent.destination = TargetObject.transform.position;
+        transform.LookAt(TargetObject.transform);
     }
 
 	void OnDestroy()

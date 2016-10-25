@@ -59,12 +59,12 @@ public class PlayerSlash : SingletonMonoBehaviour<PlayerSlash> {
         }
     }
 
-    bool CanSlashEnermy(GameObject enermy)
+    bool CanSlashEnemy(GameObject Enemy)
     {
-        if (isSlashing == false && enermy != null)
+        if (isSlashing == false && Enemy != null)
         {
-            Vector3 direction = enermy.transform.position - transform.position;
-            EnermyBattle battle = enermy.GetComponent<EnermyBattle>();
+            Vector3 direction = Enemy.transform.position - transform.position;
+            EnemyBattle battle = Enemy.GetComponent<EnemyBattle>();
             if (direction.magnitude < SlashRadius && battle.CanSlash)
             {
                 return true;
@@ -74,11 +74,11 @@ public class PlayerSlash : SingletonMonoBehaviour<PlayerSlash> {
         return false;
     }
 
-    public bool SlashEnermy(GameObject enermy)
+    public bool SlashEnemy(GameObject Enemy)
 	{
-		if (CanSlashEnermy(enermy)) {
+		if (CanSlashEnemy(Enemy)) {
             isSlashing = true;
-			TargetObject = enermy;
+			TargetObject = Enemy;
 
             PlayerMove.Instance.CanRotate = false;
 
@@ -98,11 +98,11 @@ public class PlayerSlash : SingletonMonoBehaviour<PlayerSlash> {
         PlayerMove.Instance.CanRotate = true;
 
         int count = 0;
-        List<GameObject> list = PlayerBattle.Instance.Enermies.GetEnermy(transform.position, SlashRadius, transform.rotation * Vector3.forward, SlashAngle);
+        List<GameObject> list = PlayerBattle.Instance.Enemies.GetEnemy(transform.position, SlashRadius, transform.rotation * Vector3.forward, SlashAngle);
         list.ForEach(o =>
         {
-            EnermyBattle enermy = o.GetComponent<EnermyBattle>();
-            if (enermy.Attacked(new Attack() { Type = AttackType.ATTACK_TYPE_SLASH }))
+            EnemyBattle Enemy = o.GetComponent<EnemyBattle>();
+            if (Enemy.Attacked(new Attack() { Type = AttackType.ATTACK_TYPE_SLASH }))
             {
                 ++count;
             }
@@ -142,10 +142,10 @@ public class PlayerSlash : SingletonMonoBehaviour<PlayerSlash> {
 
     bool SlashNextTartget()
     {
-        List<GameObject> list = PlayerBattle.Instance.Enermies.Enermies;
+        List<GameObject> list = PlayerBattle.Instance.Enemies.Enemies;
         foreach (GameObject o in list)
         {
-            SlashEnermy(o);
+            SlashEnemy(o);
             if (TargetObject == o)
             {
                 comboSlash = true;
