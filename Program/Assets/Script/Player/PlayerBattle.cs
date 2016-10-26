@@ -45,7 +45,7 @@ public class PlayerBattle : SingletonMonoBehaviour<PlayerBattle> {
         list.ForEach(o =>
         {
             EnemyBattle Enemy = o.GetComponent<EnemyBattle>();
-            Enemy.Attacked(new Attack());
+            Enemy.Attacked(new Attack() { Strength = 2f });
         });
 
         if (list.Count > 0)

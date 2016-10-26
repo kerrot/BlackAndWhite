@@ -1,6 +1,6 @@
 //Maya ASCII 2016 scene
-//Name: Monster.ma
-//Last modified: Mon, Oct 24, 2016 11:00:34 PM
+//Name: Dark.ma
+//Last modified: Wed, Oct 26, 2016 10:18:59 AM
 //Codeset: 932
 requires maya "2016";
 requires -nodeType "gameFbxExporter" "gameFbxExporter" "1.0";
@@ -83,7 +83,7 @@ createNode camera -n "leftShape" -p "left";
 	setAttr -k off ".v";
 	setAttr ".rnd" no;
 	setAttr ".coi" 100.1;
-	setAttr ".ow" 85.227359682410864;
+	setAttr ".ow" 72.215549043874844;
 	setAttr ".imn" -type "string" "left1";
 	setAttr ".den" -type "string" "left1_depth";
 	setAttr ".man" -type "string" "left1_mask";
@@ -688,11 +688,11 @@ createNode mesh -n "DarkShape" -p "Dark";
 	setAttr ".pd[0]" -type "dataPolyComponent" Index_Data UV 0 ;
 	setAttr ".hfd" -type "dataPolyComponent" Index_Data Face 0 ;
 createNode lightLinker -s -n "lightLinker1";
-	rename -uid "5E5D0504-44DB-2EA5-BDAB-F9A8F6F2C840";
+	rename -uid "CC3C2F89-4AB5-D1A4-C3CA-75A65EFBED91";
 	setAttr -s 30 ".lnk";
 	setAttr -s 30 ".slnk";
 createNode displayLayerManager -n "layerManager";
-	rename -uid "0AC98DC8-4A00-93A9-ADF8-BEAE79BC0D86";
+	rename -uid "1B50B04B-4844-5911-3536-74AB25BA65EC";
 	setAttr ".cdl" 3;
 	setAttr -s 10 ".dli[1:9]"  10 1 2 3 5 6 7 8 
 		9;
@@ -700,57 +700,10 @@ createNode displayLayerManager -n "layerManager";
 createNode displayLayer -n "defaultLayer";
 	rename -uid "1C6F822D-492B-50D4-7585-3085D30EE82D";
 createNode renderLayerManager -n "renderLayerManager";
-	rename -uid "207EFA0A-4AB7-FEB5-0385-ECA151DDAA89";
+	rename -uid "B7CBB9C8-4271-055D-A171-5BA99DBC0563";
 createNode renderLayer -n "defaultRenderLayer";
 	rename -uid "F480250B-4BD3-C1ED-DA87-FC800CFF15ED";
 	setAttr ".g" yes;
-createNode lambert -n "Player:lambert2";
-	rename -uid "157D4C98-418C-EC69-6AD9-2985C3AA6AD7";
-	setAttr ".c" -type "float3" 0.233 0.22834 0.22834 ;
-createNode shadingEngine -n "Player:BodySG";
-	rename -uid "00E2338F-4E49-8717-4089-B0ACCE0B293E";
-	setAttr ".ihi" 0;
-	setAttr ".ro" yes;
-createNode materialInfo -n "Player:materialInfo1";
-	rename -uid "C8207293-418A-ACE0-0D31-E1AEA6A1BFE3";
-createNode phong -n "Player:blinn2";
-	rename -uid "BE2DE448-479F-8607-575D-C3BD8BFF6F1C";
-	setAttr ".c" -type "float3" 1 1 1 ;
-	setAttr ".cp" 6.311790943145752;
-createNode shadingEngine -n "Player:BodySG1";
-	rename -uid "6A65C4FF-4843-956F-293F-B7818FD13489";
-	setAttr ".ihi" 0;
-	setAttr ".ro" yes;
-createNode materialInfo -n "Player:materialInfo2";
-	rename -uid "83B18284-47CA-2969-F677-7B8C9E3235D9";
-createNode phong -n "Player:blinn1";
-	rename -uid "AE20A7A0-4B0B-B479-F285-5B856B39B68A";
-	setAttr ".c" -type "float3" 1 1 1 ;
-	setAttr ".cp" 6.311790943145752;
-createNode shadingEngine -n "Player:BodySG2";
-	rename -uid "225C03E9-498D-C8C6-4345-A5B902C0517A";
-	setAttr ".ihi" 0;
-	setAttr ".ro" yes;
-createNode materialInfo -n "Player:materialInfo3";
-	rename -uid "78FFA487-4E6A-669D-1C77-929F1F077A74";
-createNode shadingEngine -n "Player:blinn3SG";
-	rename -uid "6D2E19F0-4636-A4F7-3E8B-6EA19B76FD1E";
-	setAttr ".ihi" 0;
-	setAttr ".ro" yes;
-createNode materialInfo -n "Player:materialInfo4";
-	rename -uid "A9A67A39-4014-592C-9B63-F5824F106DBA";
-createNode lambert -n "Player:BodyBlack";
-	rename -uid "755DF1FD-4BE3-99B3-2197-F085BB77E9B0";
-	setAttr ".c" -type "float3" 0 0 0 ;
-createNode blinn -n "Player:BodyWhite";
-	rename -uid "A259603C-42CF-0733-FFBD-8CBC1ACB5816";
-	setAttr ".c" -type "float3" 1 1 1 ;
-createNode shadingEngine -n "Player:blinn4SG";
-	rename -uid "3E6B41A4-45E4-D410-526B-C1B39F30485E";
-	setAttr ".ihi" 0;
-	setAttr ".ro" yes;
-createNode materialInfo -n "Player:materialInfo5";
-	rename -uid "B6977F78-4126-3EF8-6607-8DAFA3DC5D87";
 createNode script -n "Player:uiConfigurationScriptNode";
 	rename -uid "E47A2AAD-44DB-5167-F067-A19A47EBA30E";
 	setAttr ".b" -type "string" (
@@ -764,10 +717,10 @@ createNode script -n "Player:uiConfigurationScriptNode";
 		+ "        modelEditor -e -viewSelected 0 $editorName;\n        modelEditor -e \n            -pluginObjects \"gpuCacheDisplayFilter\" 1 \n            $editorName;\n\t\tif (!$useSceneConfig) {\n\t\t\tpanel -e -l $label $panelName;\n\t\t}\n\t}\n\n\n\t$panelName = `sceneUIReplacement -getNextPanel \"modelPanel\" (localizedPanelLabel(\"Side View\")) `;\n\tif (\"\" == $panelName) {\n\t\tif ($useSceneConfig) {\n\t\t\t$panelName = `modelPanel -unParent -l (localizedPanelLabel(\"Side View\")) -mbv $menusOkayInPanels `;\n\t\t\t$editorName = $panelName;\n            modelEditor -e \n                -camera \"left\" \n                -useInteractiveMode 0\n                -displayLights \"default\" \n                -displayAppearance \"smoothShaded\" \n                -activeOnly 0\n                -ignorePanZoom 0\n                -wireframeOnShaded 0\n                -headsUpDisplay 1\n                -holdOuts 1\n                -selectionHiliteDisplay 1\n                -useDefaultMaterial 0\n                -bufferMode \"double\" \n                -twoSidedLighting 0\n                -backfaceCulling 0\n"
 		+ "                -xray 0\n                -jointXray 1\n                -activeComponentsXray 0\n                -displayTextures 0\n                -smoothWireframe 0\n                -lineWidth 1\n                -textureAnisotropic 0\n                -textureHilight 1\n                -textureSampling 2\n                -textureDisplay \"modulate\" \n                -textureMaxSize 32768\n                -fogging 0\n                -fogSource \"fragment\" \n                -fogMode \"linear\" \n                -fogStart 0\n                -fogEnd 100\n                -fogDensity 0.1\n                -fogColor 0.5 0.5 0.5 1 \n                -depthOfFieldPreview 1\n                -maxConstantTransparency 1\n                -rendererName \"vp2Renderer\" \n                -objectFilterShowInHUD 1\n                -isFiltered 0\n                -colorResolution 256 256 \n                -bumpResolution 512 512 \n                -textureCompression 0\n                -transparencyAlgorithm \"frontAndBackCull\" \n                -transpInShadows 0\n                -cullingOverride \"none\" \n"
 		+ "                -lowQualityLighting 0\n                -maximumNumHardwareLights 1\n                -occlusionCulling 0\n                -shadingModel 0\n                -useBaseRenderer 0\n                -useReducedRenderer 0\n                -smallObjectCulling 0\n                -smallObjectThreshold -1 \n                -interactiveDisableShadows 0\n                -interactiveBackFaceCull 0\n                -sortTransparent 1\n                -nurbsCurves 1\n                -nurbsSurfaces 1\n                -polymeshes 1\n                -subdivSurfaces 1\n                -planes 1\n                -lights 1\n                -cameras 1\n                -controlVertices 1\n                -hulls 1\n                -grid 1\n                -imagePlane 1\n                -joints 1\n                -ikHandles 1\n                -deformers 1\n                -dynamics 1\n                -particleInstancers 1\n                -fluids 1\n                -hairSystems 1\n                -follicles 1\n                -nCloths 1\n                -nParticles 1\n"
-		+ "                -nRigids 1\n                -dynamicConstraints 1\n                -locators 1\n                -manipulators 1\n                -pluginShapes 1\n                -dimensions 1\n                -handles 1\n                -pivots 1\n                -textures 1\n                -strokes 1\n                -motionTrails 1\n                -clipGhosts 1\n                -greasePencils 1\n                -shadows 0\n                -captureSequenceNumber -1\n                -width 786\n                -height 1570\n                -sceneRenderFilter 0\n                $editorName;\n            modelEditor -e -viewSelected 0 $editorName;\n            modelEditor -e \n                -pluginObjects \"gpuCacheDisplayFilter\" 1 \n                $editorName;\n\t\t}\n\t} else {\n\t\t$label = `panel -q -label $panelName`;\n\t\tmodelPanel -edit -l (localizedPanelLabel(\"Side View\")) -mbv $menusOkayInPanels  $panelName;\n\t\t$editorName = $panelName;\n        modelEditor -e \n            -camera \"left\" \n            -useInteractiveMode 0\n            -displayLights \"default\" \n"
+		+ "                -nRigids 1\n                -dynamicConstraints 1\n                -locators 1\n                -manipulators 1\n                -pluginShapes 1\n                -dimensions 1\n                -handles 1\n                -pivots 1\n                -textures 1\n                -strokes 1\n                -motionTrails 1\n                -clipGhosts 1\n                -greasePencils 1\n                -shadows 0\n                -captureSequenceNumber -1\n                -width 576\n                -height 1569\n                -sceneRenderFilter 0\n                $editorName;\n            modelEditor -e -viewSelected 0 $editorName;\n            modelEditor -e \n                -pluginObjects \"gpuCacheDisplayFilter\" 1 \n                $editorName;\n\t\t}\n\t} else {\n\t\t$label = `panel -q -label $panelName`;\n\t\tmodelPanel -edit -l (localizedPanelLabel(\"Side View\")) -mbv $menusOkayInPanels  $panelName;\n\t\t$editorName = $panelName;\n        modelEditor -e \n            -camera \"left\" \n            -useInteractiveMode 0\n            -displayLights \"default\" \n"
 		+ "            -displayAppearance \"smoothShaded\" \n            -activeOnly 0\n            -ignorePanZoom 0\n            -wireframeOnShaded 0\n            -headsUpDisplay 1\n            -holdOuts 1\n            -selectionHiliteDisplay 1\n            -useDefaultMaterial 0\n            -bufferMode \"double\" \n            -twoSidedLighting 0\n            -backfaceCulling 0\n            -xray 0\n            -jointXray 1\n            -activeComponentsXray 0\n            -displayTextures 0\n            -smoothWireframe 0\n            -lineWidth 1\n            -textureAnisotropic 0\n            -textureHilight 1\n            -textureSampling 2\n            -textureDisplay \"modulate\" \n            -textureMaxSize 32768\n            -fogging 0\n            -fogSource \"fragment\" \n            -fogMode \"linear\" \n            -fogStart 0\n            -fogEnd 100\n            -fogDensity 0.1\n            -fogColor 0.5 0.5 0.5 1 \n            -depthOfFieldPreview 1\n            -maxConstantTransparency 1\n            -rendererName \"vp2Renderer\" \n            -objectFilterShowInHUD 1\n"
 		+ "            -isFiltered 0\n            -colorResolution 256 256 \n            -bumpResolution 512 512 \n            -textureCompression 0\n            -transparencyAlgorithm \"frontAndBackCull\" \n            -transpInShadows 0\n            -cullingOverride \"none\" \n            -lowQualityLighting 0\n            -maximumNumHardwareLights 1\n            -occlusionCulling 0\n            -shadingModel 0\n            -useBaseRenderer 0\n            -useReducedRenderer 0\n            -smallObjectCulling 0\n            -smallObjectThreshold -1 \n            -interactiveDisableShadows 0\n            -interactiveBackFaceCull 0\n            -sortTransparent 1\n            -nurbsCurves 1\n            -nurbsSurfaces 1\n            -polymeshes 1\n            -subdivSurfaces 1\n            -planes 1\n            -lights 1\n            -cameras 1\n            -controlVertices 1\n            -hulls 1\n            -grid 1\n            -imagePlane 1\n            -joints 1\n            -ikHandles 1\n            -deformers 1\n            -dynamics 1\n            -particleInstancers 1\n"
-		+ "            -fluids 1\n            -hairSystems 1\n            -follicles 1\n            -nCloths 1\n            -nParticles 1\n            -nRigids 1\n            -dynamicConstraints 1\n            -locators 1\n            -manipulators 1\n            -pluginShapes 1\n            -dimensions 1\n            -handles 1\n            -pivots 1\n            -textures 1\n            -strokes 1\n            -motionTrails 1\n            -clipGhosts 1\n            -greasePencils 1\n            -shadows 0\n            -captureSequenceNumber -1\n            -width 786\n            -height 1570\n            -sceneRenderFilter 0\n            $editorName;\n        modelEditor -e -viewSelected 0 $editorName;\n        modelEditor -e \n            -pluginObjects \"gpuCacheDisplayFilter\" 1 \n            $editorName;\n\t\tif (!$useSceneConfig) {\n\t\t\tpanel -e -l $label $panelName;\n\t\t}\n\t}\n\n\n\t$panelName = `sceneUIReplacement -getNextPanel \"modelPanel\" (localizedPanelLabel(\"Front View\")) `;\n\tif (\"\" == $panelName) {\n\t\tif ($useSceneConfig) {\n\t\t\t$panelName = `modelPanel -unParent -l (localizedPanelLabel(\"Front View\")) -mbv $menusOkayInPanels `;\n"
+		+ "            -fluids 1\n            -hairSystems 1\n            -follicles 1\n            -nCloths 1\n            -nParticles 1\n            -nRigids 1\n            -dynamicConstraints 1\n            -locators 1\n            -manipulators 1\n            -pluginShapes 1\n            -dimensions 1\n            -handles 1\n            -pivots 1\n            -textures 1\n            -strokes 1\n            -motionTrails 1\n            -clipGhosts 1\n            -greasePencils 1\n            -shadows 0\n            -captureSequenceNumber -1\n            -width 576\n            -height 1569\n            -sceneRenderFilter 0\n            $editorName;\n        modelEditor -e -viewSelected 0 $editorName;\n        modelEditor -e \n            -pluginObjects \"gpuCacheDisplayFilter\" 1 \n            $editorName;\n\t\tif (!$useSceneConfig) {\n\t\t\tpanel -e -l $label $panelName;\n\t\t}\n\t}\n\n\n\t$panelName = `sceneUIReplacement -getNextPanel \"modelPanel\" (localizedPanelLabel(\"Front View\")) `;\n\tif (\"\" == $panelName) {\n\t\tif ($useSceneConfig) {\n\t\t\t$panelName = `modelPanel -unParent -l (localizedPanelLabel(\"Front View\")) -mbv $menusOkayInPanels `;\n"
 		+ "\t\t\t$editorName = $panelName;\n            modelEditor -e \n                -camera \"front\" \n                -useInteractiveMode 0\n                -displayLights \"default\" \n                -displayAppearance \"smoothShaded\" \n                -activeOnly 0\n                -ignorePanZoom 0\n                -wireframeOnShaded 0\n                -headsUpDisplay 1\n                -holdOuts 1\n                -selectionHiliteDisplay 1\n                -useDefaultMaterial 0\n                -bufferMode \"double\" \n                -twoSidedLighting 0\n                -backfaceCulling 0\n                -xray 0\n                -jointXray 1\n                -activeComponentsXray 0\n                -displayTextures 0\n                -smoothWireframe 0\n                -lineWidth 1\n                -textureAnisotropic 0\n                -textureHilight 1\n                -textureSampling 2\n                -textureDisplay \"modulate\" \n                -textureMaxSize 32768\n                -fogging 0\n                -fogSource \"fragment\" \n                -fogMode \"linear\" \n"
 		+ "                -fogStart 0\n                -fogEnd 100\n                -fogDensity 0.1\n                -fogColor 0.5 0.5 0.5 1 \n                -depthOfFieldPreview 1\n                -maxConstantTransparency 1\n                -rendererName \"vp2Renderer\" \n                -objectFilterShowInHUD 1\n                -isFiltered 0\n                -colorResolution 256 256 \n                -bumpResolution 512 512 \n                -textureCompression 0\n                -transparencyAlgorithm \"frontAndBackCull\" \n                -transpInShadows 0\n                -cullingOverride \"none\" \n                -lowQualityLighting 0\n                -maximumNumHardwareLights 1\n                -occlusionCulling 0\n                -shadingModel 0\n                -useBaseRenderer 0\n                -useReducedRenderer 0\n                -smallObjectCulling 0\n                -smallObjectThreshold -1 \n                -interactiveDisableShadows 0\n                -interactiveBackFaceCull 0\n                -sortTransparent 1\n                -nurbsCurves 1\n"
 		+ "                -nurbsSurfaces 1\n                -polymeshes 1\n                -subdivSurfaces 1\n                -planes 1\n                -lights 1\n                -cameras 1\n                -controlVertices 1\n                -hulls 1\n                -grid 1\n                -imagePlane 1\n                -joints 1\n                -ikHandles 1\n                -deformers 1\n                -dynamics 1\n                -particleInstancers 1\n                -fluids 1\n                -hairSystems 1\n                -follicles 1\n                -nCloths 1\n                -nParticles 1\n                -nRigids 1\n                -dynamicConstraints 1\n                -locators 1\n                -manipulators 1\n                -pluginShapes 1\n                -dimensions 1\n                -handles 1\n                -pivots 1\n                -textures 1\n                -strokes 1\n                -motionTrails 1\n                -clipGhosts 1\n                -greasePencils 1\n                -shadows 0\n                -captureSequenceNumber -1\n"
@@ -819,8 +772,8 @@ createNode script -n "Player:uiConfigurationScriptNode";
 		+ "\t\t\t$editorName = ($panelName+\"NodeEditorEd\");\n            nodeEditor -e \n                -allAttributes 0\n                -allNodes 0\n                -autoSizeNodes 1\n                -consistentNameSize 1\n                -createNodeCommand \"nodeEdCreateNodeCommand\" \n                -defaultPinnedState 0\n                -additiveGraphingMode 0\n                -settingsChangedCallback \"nodeEdSyncControls\" \n                -traversalDepthLimit -1\n                -keyPressCommand \"nodeEdKeyPressCommand\" \n                -nodeTitleMode \"name\" \n                -gridSnap 0\n                -gridVisibility 1\n                -popupMenuScript \"nodeEdBuildPanelMenus\" \n                -showNamespace 1\n                -showShapes 1\n                -showSGShapes 0\n                -showTransforms 1\n                -useAssets 1\n                -syncedSelection 1\n                -extendToShapes 1\n                -activeTab -1\n                -editorMode \"default\" \n                $editorName;\n\t\t}\n\t} else {\n\t\t$label = `panel -q -label $panelName`;\n"
 		+ "\t\tscriptedPanel -edit -l (localizedPanelLabel(\"Node Editor\")) -mbv $menusOkayInPanels  $panelName;\n\n\t\t\t$editorName = ($panelName+\"NodeEditorEd\");\n            nodeEditor -e \n                -allAttributes 0\n                -allNodes 0\n                -autoSizeNodes 1\n                -consistentNameSize 1\n                -createNodeCommand \"nodeEdCreateNodeCommand\" \n                -defaultPinnedState 0\n                -additiveGraphingMode 0\n                -settingsChangedCallback \"nodeEdSyncControls\" \n                -traversalDepthLimit -1\n                -keyPressCommand \"nodeEdKeyPressCommand\" \n                -nodeTitleMode \"name\" \n                -gridSnap 0\n                -gridVisibility 1\n                -popupMenuScript \"nodeEdBuildPanelMenus\" \n                -showNamespace 1\n                -showShapes 1\n                -showSGShapes 0\n                -showTransforms 1\n                -useAssets 1\n                -syncedSelection 1\n                -extendToShapes 1\n                -activeTab -1\n                -editorMode \"default\" \n"
 		+ "                $editorName;\n\t\tif (!$useSceneConfig) {\n\t\t\tpanel -e -l $label $panelName;\n\t\t}\n\t}\n\n\n\tif ($useSceneConfig) {\n        string $configName = `getPanel -cwl (localizedPanelLabel(\"Current Layout\"))`;\n        if (\"\" != $configName) {\n\t\t\tpanelConfiguration -edit -label (localizedPanelLabel(\"Current Layout\")) \n\t\t\t\t-defaultImage \"vacantCell.xP:/\"\n\t\t\t\t-image \"\"\n\t\t\t\t-sc false\n\t\t\t\t-configString \"global string $gMainPane; paneLayout -e -cn \\\"single\\\" -ps 1 100 100 $gMainPane;\"\n\t\t\t\t-removeAllPanels\n\t\t\t\t-ap false\n\t\t\t\t\t(localizedPanelLabel(\"Side View\")) \n\t\t\t\t\t\"modelPanel\"\n"
-		+ "\t\t\t\t\t\"$panelName = `modelPanel -unParent -l (localizedPanelLabel(\\\"Side View\\\")) -mbv $menusOkayInPanels `;\\n$editorName = $panelName;\\nmodelEditor -e \\n    -camera \\\"left\\\" \\n    -useInteractiveMode 0\\n    -displayLights \\\"default\\\" \\n    -displayAppearance \\\"smoothShaded\\\" \\n    -activeOnly 0\\n    -ignorePanZoom 0\\n    -wireframeOnShaded 0\\n    -headsUpDisplay 1\\n    -holdOuts 1\\n    -selectionHiliteDisplay 1\\n    -useDefaultMaterial 0\\n    -bufferMode \\\"double\\\" \\n    -twoSidedLighting 0\\n    -backfaceCulling 0\\n    -xray 0\\n    -jointXray 1\\n    -activeComponentsXray 0\\n    -displayTextures 0\\n    -smoothWireframe 0\\n    -lineWidth 1\\n    -textureAnisotropic 0\\n    -textureHilight 1\\n    -textureSampling 2\\n    -textureDisplay \\\"modulate\\\" \\n    -textureMaxSize 32768\\n    -fogging 0\\n    -fogSource \\\"fragment\\\" \\n    -fogMode \\\"linear\\\" \\n    -fogStart 0\\n    -fogEnd 100\\n    -fogDensity 0.1\\n    -fogColor 0.5 0.5 0.5 1 \\n    -depthOfFieldPreview 1\\n    -maxConstantTransparency 1\\n    -rendererName \\\"vp2Renderer\\\" \\n    -objectFilterShowInHUD 1\\n    -isFiltered 0\\n    -colorResolution 256 256 \\n    -bumpResolution 512 512 \\n    -textureCompression 0\\n    -transparencyAlgorithm \\\"frontAndBackCull\\\" \\n    -transpInShadows 0\\n    -cullingOverride \\\"none\\\" \\n    -lowQualityLighting 0\\n    -maximumNumHardwareLights 1\\n    -occlusionCulling 0\\n    -shadingModel 0\\n    -useBaseRenderer 0\\n    -useReducedRenderer 0\\n    -smallObjectCulling 0\\n    -smallObjectThreshold -1 \\n    -interactiveDisableShadows 0\\n    -interactiveBackFaceCull 0\\n    -sortTransparent 1\\n    -nurbsCurves 1\\n    -nurbsSurfaces 1\\n    -polymeshes 1\\n    -subdivSurfaces 1\\n    -planes 1\\n    -lights 1\\n    -cameras 1\\n    -controlVertices 1\\n    -hulls 1\\n    -grid 1\\n    -imagePlane 1\\n    -joints 1\\n    -ikHandles 1\\n    -deformers 1\\n    -dynamics 1\\n    -particleInstancers 1\\n    -fluids 1\\n    -hairSystems 1\\n    -follicles 1\\n    -nCloths 1\\n    -nParticles 1\\n    -nRigids 1\\n    -dynamicConstraints 1\\n    -locators 1\\n    -manipulators 1\\n    -pluginShapes 1\\n    -dimensions 1\\n    -handles 1\\n    -pivots 1\\n    -textures 1\\n    -strokes 1\\n    -motionTrails 1\\n    -clipGhosts 1\\n    -greasePencils 1\\n    -shadows 0\\n    -captureSequenceNumber -1\\n    -width 786\\n    -height 1570\\n    -sceneRenderFilter 0\\n    $editorName;\\nmodelEditor -e -viewSelected 0 $editorName;\\nmodelEditor -e \\n    -pluginObjects \\\"gpuCacheDisplayFilter\\\" 1 \\n    $editorName\"\n"
-		+ "\t\t\t\t\t\"modelPanel -edit -l (localizedPanelLabel(\\\"Side View\\\")) -mbv $menusOkayInPanels  $panelName;\\n$editorName = $panelName;\\nmodelEditor -e \\n    -camera \\\"left\\\" \\n    -useInteractiveMode 0\\n    -displayLights \\\"default\\\" \\n    -displayAppearance \\\"smoothShaded\\\" \\n    -activeOnly 0\\n    -ignorePanZoom 0\\n    -wireframeOnShaded 0\\n    -headsUpDisplay 1\\n    -holdOuts 1\\n    -selectionHiliteDisplay 1\\n    -useDefaultMaterial 0\\n    -bufferMode \\\"double\\\" \\n    -twoSidedLighting 0\\n    -backfaceCulling 0\\n    -xray 0\\n    -jointXray 1\\n    -activeComponentsXray 0\\n    -displayTextures 0\\n    -smoothWireframe 0\\n    -lineWidth 1\\n    -textureAnisotropic 0\\n    -textureHilight 1\\n    -textureSampling 2\\n    -textureDisplay \\\"modulate\\\" \\n    -textureMaxSize 32768\\n    -fogging 0\\n    -fogSource \\\"fragment\\\" \\n    -fogMode \\\"linear\\\" \\n    -fogStart 0\\n    -fogEnd 100\\n    -fogDensity 0.1\\n    -fogColor 0.5 0.5 0.5 1 \\n    -depthOfFieldPreview 1\\n    -maxConstantTransparency 1\\n    -rendererName \\\"vp2Renderer\\\" \\n    -objectFilterShowInHUD 1\\n    -isFiltered 0\\n    -colorResolution 256 256 \\n    -bumpResolution 512 512 \\n    -textureCompression 0\\n    -transparencyAlgorithm \\\"frontAndBackCull\\\" \\n    -transpInShadows 0\\n    -cullingOverride \\\"none\\\" \\n    -lowQualityLighting 0\\n    -maximumNumHardwareLights 1\\n    -occlusionCulling 0\\n    -shadingModel 0\\n    -useBaseRenderer 0\\n    -useReducedRenderer 0\\n    -smallObjectCulling 0\\n    -smallObjectThreshold -1 \\n    -interactiveDisableShadows 0\\n    -interactiveBackFaceCull 0\\n    -sortTransparent 1\\n    -nurbsCurves 1\\n    -nurbsSurfaces 1\\n    -polymeshes 1\\n    -subdivSurfaces 1\\n    -planes 1\\n    -lights 1\\n    -cameras 1\\n    -controlVertices 1\\n    -hulls 1\\n    -grid 1\\n    -imagePlane 1\\n    -joints 1\\n    -ikHandles 1\\n    -deformers 1\\n    -dynamics 1\\n    -particleInstancers 1\\n    -fluids 1\\n    -hairSystems 1\\n    -follicles 1\\n    -nCloths 1\\n    -nParticles 1\\n    -nRigids 1\\n    -dynamicConstraints 1\\n    -locators 1\\n    -manipulators 1\\n    -pluginShapes 1\\n    -dimensions 1\\n    -handles 1\\n    -pivots 1\\n    -textures 1\\n    -strokes 1\\n    -motionTrails 1\\n    -clipGhosts 1\\n    -greasePencils 1\\n    -shadows 0\\n    -captureSequenceNumber -1\\n    -width 786\\n    -height 1570\\n    -sceneRenderFilter 0\\n    $editorName;\\nmodelEditor -e -viewSelected 0 $editorName;\\nmodelEditor -e \\n    -pluginObjects \\\"gpuCacheDisplayFilter\\\" 1 \\n    $editorName\"\n"
+		+ "\t\t\t\t\t\"$panelName = `modelPanel -unParent -l (localizedPanelLabel(\\\"Side View\\\")) -mbv $menusOkayInPanels `;\\n$editorName = $panelName;\\nmodelEditor -e \\n    -camera \\\"left\\\" \\n    -useInteractiveMode 0\\n    -displayLights \\\"default\\\" \\n    -displayAppearance \\\"smoothShaded\\\" \\n    -activeOnly 0\\n    -ignorePanZoom 0\\n    -wireframeOnShaded 0\\n    -headsUpDisplay 1\\n    -holdOuts 1\\n    -selectionHiliteDisplay 1\\n    -useDefaultMaterial 0\\n    -bufferMode \\\"double\\\" \\n    -twoSidedLighting 0\\n    -backfaceCulling 0\\n    -xray 0\\n    -jointXray 1\\n    -activeComponentsXray 0\\n    -displayTextures 0\\n    -smoothWireframe 0\\n    -lineWidth 1\\n    -textureAnisotropic 0\\n    -textureHilight 1\\n    -textureSampling 2\\n    -textureDisplay \\\"modulate\\\" \\n    -textureMaxSize 32768\\n    -fogging 0\\n    -fogSource \\\"fragment\\\" \\n    -fogMode \\\"linear\\\" \\n    -fogStart 0\\n    -fogEnd 100\\n    -fogDensity 0.1\\n    -fogColor 0.5 0.5 0.5 1 \\n    -depthOfFieldPreview 1\\n    -maxConstantTransparency 1\\n    -rendererName \\\"vp2Renderer\\\" \\n    -objectFilterShowInHUD 1\\n    -isFiltered 0\\n    -colorResolution 256 256 \\n    -bumpResolution 512 512 \\n    -textureCompression 0\\n    -transparencyAlgorithm \\\"frontAndBackCull\\\" \\n    -transpInShadows 0\\n    -cullingOverride \\\"none\\\" \\n    -lowQualityLighting 0\\n    -maximumNumHardwareLights 1\\n    -occlusionCulling 0\\n    -shadingModel 0\\n    -useBaseRenderer 0\\n    -useReducedRenderer 0\\n    -smallObjectCulling 0\\n    -smallObjectThreshold -1 \\n    -interactiveDisableShadows 0\\n    -interactiveBackFaceCull 0\\n    -sortTransparent 1\\n    -nurbsCurves 1\\n    -nurbsSurfaces 1\\n    -polymeshes 1\\n    -subdivSurfaces 1\\n    -planes 1\\n    -lights 1\\n    -cameras 1\\n    -controlVertices 1\\n    -hulls 1\\n    -grid 1\\n    -imagePlane 1\\n    -joints 1\\n    -ikHandles 1\\n    -deformers 1\\n    -dynamics 1\\n    -particleInstancers 1\\n    -fluids 1\\n    -hairSystems 1\\n    -follicles 1\\n    -nCloths 1\\n    -nParticles 1\\n    -nRigids 1\\n    -dynamicConstraints 1\\n    -locators 1\\n    -manipulators 1\\n    -pluginShapes 1\\n    -dimensions 1\\n    -handles 1\\n    -pivots 1\\n    -textures 1\\n    -strokes 1\\n    -motionTrails 1\\n    -clipGhosts 1\\n    -greasePencils 1\\n    -shadows 0\\n    -captureSequenceNumber -1\\n    -width 576\\n    -height 1569\\n    -sceneRenderFilter 0\\n    $editorName;\\nmodelEditor -e -viewSelected 0 $editorName;\\nmodelEditor -e \\n    -pluginObjects \\\"gpuCacheDisplayFilter\\\" 1 \\n    $editorName\"\n"
+		+ "\t\t\t\t\t\"modelPanel -edit -l (localizedPanelLabel(\\\"Side View\\\")) -mbv $menusOkayInPanels  $panelName;\\n$editorName = $panelName;\\nmodelEditor -e \\n    -camera \\\"left\\\" \\n    -useInteractiveMode 0\\n    -displayLights \\\"default\\\" \\n    -displayAppearance \\\"smoothShaded\\\" \\n    -activeOnly 0\\n    -ignorePanZoom 0\\n    -wireframeOnShaded 0\\n    -headsUpDisplay 1\\n    -holdOuts 1\\n    -selectionHiliteDisplay 1\\n    -useDefaultMaterial 0\\n    -bufferMode \\\"double\\\" \\n    -twoSidedLighting 0\\n    -backfaceCulling 0\\n    -xray 0\\n    -jointXray 1\\n    -activeComponentsXray 0\\n    -displayTextures 0\\n    -smoothWireframe 0\\n    -lineWidth 1\\n    -textureAnisotropic 0\\n    -textureHilight 1\\n    -textureSampling 2\\n    -textureDisplay \\\"modulate\\\" \\n    -textureMaxSize 32768\\n    -fogging 0\\n    -fogSource \\\"fragment\\\" \\n    -fogMode \\\"linear\\\" \\n    -fogStart 0\\n    -fogEnd 100\\n    -fogDensity 0.1\\n    -fogColor 0.5 0.5 0.5 1 \\n    -depthOfFieldPreview 1\\n    -maxConstantTransparency 1\\n    -rendererName \\\"vp2Renderer\\\" \\n    -objectFilterShowInHUD 1\\n    -isFiltered 0\\n    -colorResolution 256 256 \\n    -bumpResolution 512 512 \\n    -textureCompression 0\\n    -transparencyAlgorithm \\\"frontAndBackCull\\\" \\n    -transpInShadows 0\\n    -cullingOverride \\\"none\\\" \\n    -lowQualityLighting 0\\n    -maximumNumHardwareLights 1\\n    -occlusionCulling 0\\n    -shadingModel 0\\n    -useBaseRenderer 0\\n    -useReducedRenderer 0\\n    -smallObjectCulling 0\\n    -smallObjectThreshold -1 \\n    -interactiveDisableShadows 0\\n    -interactiveBackFaceCull 0\\n    -sortTransparent 1\\n    -nurbsCurves 1\\n    -nurbsSurfaces 1\\n    -polymeshes 1\\n    -subdivSurfaces 1\\n    -planes 1\\n    -lights 1\\n    -cameras 1\\n    -controlVertices 1\\n    -hulls 1\\n    -grid 1\\n    -imagePlane 1\\n    -joints 1\\n    -ikHandles 1\\n    -deformers 1\\n    -dynamics 1\\n    -particleInstancers 1\\n    -fluids 1\\n    -hairSystems 1\\n    -follicles 1\\n    -nCloths 1\\n    -nParticles 1\\n    -nRigids 1\\n    -dynamicConstraints 1\\n    -locators 1\\n    -manipulators 1\\n    -pluginShapes 1\\n    -dimensions 1\\n    -handles 1\\n    -pivots 1\\n    -textures 1\\n    -strokes 1\\n    -motionTrails 1\\n    -clipGhosts 1\\n    -greasePencils 1\\n    -shadows 0\\n    -captureSequenceNumber -1\\n    -width 576\\n    -height 1569\\n    -sceneRenderFilter 0\\n    $editorName;\\nmodelEditor -e -viewSelected 0 $editorName;\\nmodelEditor -e \\n    -pluginObjects \\\"gpuCacheDisplayFilter\\\" 1 \\n    $editorName\"\n"
 		+ "\t\t\t\t$configName;\n\n            setNamedPanelLayout (localizedPanelLabel(\"Current Layout\"));\n        }\n\n        panelHistory -e -clear mainPanelHistory;\n        setFocus `paneLayout -q -p1 $gMainPane`;\n        sceneUIReplacement -deleteRemaining;\n        sceneUIReplacement -clear;\n\t}\n\n\ngrid -spacing 5 -size 12 -divisions 5 -displayAxes yes -displayGridLines yes -displayDivisionLines yes -displayPerspectiveLabels no -displayOrthographicLabels no -displayAxesBold yes -perspectiveLabelPosition axis -orthographicLabelPosition edge;\nviewManip -drawCompass 0 -compassAngle 0 -frontParameters \"\" -homeParameters \"\" -selectionLockParameters \"\";\n}\n");
 	setAttr ".st" 3;
 createNode script -n "Player:sceneConfigurationScriptNode";
@@ -901,53 +854,6 @@ createNode gameFbxExporter -n "gameExporterPreset2";
 	setAttr ".ebm" yes;
 	setAttr ".exp" -type "string" "D:/Work/BlackAndWhite/Art/Character/Enermy";
 	setAttr ".exf" -type "string" "Dark";
-createNode lambert -n "Player1:lambert2";
-	rename -uid "82154C54-49BD-9E5B-4A01-9BB36DD37A92";
-	setAttr ".c" -type "float3" 0.233 0.22834 0.22834 ;
-createNode shadingEngine -n "Player1:BodySG";
-	rename -uid "4BD17924-45B8-ACC9-FDAB-3DAFEBAC97E9";
-	setAttr ".ihi" 0;
-	setAttr ".ro" yes;
-createNode materialInfo -n "Player1:materialInfo1";
-	rename -uid "91B4E6F5-4663-C930-DE2A-4E9B1E54FE6D";
-createNode phong -n "Player1:blinn2";
-	rename -uid "16A4928E-43A9-9783-7032-B1AF166E3ED7";
-	setAttr ".c" -type "float3" 1 1 1 ;
-	setAttr ".cp" 6.311790943145752;
-createNode shadingEngine -n "Player1:BodySG1";
-	rename -uid "57B04573-4378-9C4E-3411-DEBB0E6636F4";
-	setAttr ".ihi" 0;
-	setAttr ".ro" yes;
-createNode materialInfo -n "Player1:materialInfo2";
-	rename -uid "2F19E1C1-4640-5AC8-5419-F1AA99E1B4EF";
-createNode phong -n "Player1:blinn1";
-	rename -uid "BD2E4D53-4DDC-F37E-10AE-60B94AD4F393";
-	setAttr ".c" -type "float3" 1 1 1 ;
-	setAttr ".cp" 6.311790943145752;
-createNode shadingEngine -n "Player1:BodySG2";
-	rename -uid "186772A5-4805-106C-9FF6-B3812AD37C2B";
-	setAttr ".ihi" 0;
-	setAttr ".ro" yes;
-createNode materialInfo -n "Player1:materialInfo3";
-	rename -uid "160FB2F0-49E6-03B8-6985-899204A965F5";
-createNode shadingEngine -n "Player1:blinn3SG";
-	rename -uid "56AA610D-4046-95B8-1213-70BDF62BF399";
-	setAttr ".ihi" 0;
-	setAttr ".ro" yes;
-createNode materialInfo -n "Player1:materialInfo4";
-	rename -uid "4C929CC4-4722-A2F5-4AE0-AE85E9CAB560";
-createNode lambert -n "Player1:BodyBlack";
-	rename -uid "A7B5F18F-47BA-7000-B364-81B61ED06EA5";
-	setAttr ".c" -type "float3" 0 0 0 ;
-createNode blinn -n "Player1:BodyWhite";
-	rename -uid "7636480C-458B-73B0-3887-78A5014819DC";
-	setAttr ".c" -type "float3" 1 1 1 ;
-createNode shadingEngine -n "Player1:blinn4SG";
-	rename -uid "42E7601B-4E89-2E88-FE7A-2B9D63688A84";
-	setAttr ".ihi" 0;
-	setAttr ".ro" yes;
-createNode materialInfo -n "Player1:materialInfo5";
-	rename -uid "9B331DC1-4D27-34EC-DABF-FBA8E7A3AD66";
 createNode gameFbxExporter -n "Player1:gameExporterPreset1";
 	rename -uid "3EB29789-49C3-F32C-73FE-40A674F5EC9B";
 	setAttr ".pn" -type "string" "Model Default";
@@ -988,25 +894,7 @@ createNode gameFbxExporter -n "Player1:gameExporterPreset2";
 	setAttr ".ebm" yes;
 	setAttr ".exp" -type "string" "D:/Work/BlackAndWhite/Art/Character/Player";
 	setAttr ".exf" -type "string" "Player";
-createNode materialInfo -n "Player1:pasted__materialInfo4";
-	rename -uid "EB5B240B-4116-B3E4-594E-C3AF70CDC46C";
-createNode shadingEngine -n "Player1:pasted__blinn3SG";
-	rename -uid "E799C1E1-40F7-9267-BC8E-3695662DE8DD";
-	setAttr ".ihi" 0;
-	setAttr ".ro" yes;
-createNode lambert -n "Player1:pasted__BodyBlack";
-	rename -uid "4D731A62-47AF-9A8C-7DA2-48B369ED6362";
-	setAttr ".c" -type "float3" 0 0 0 ;
-createNode materialInfo -n "Player1:pasted__materialInfo5";
-	rename -uid "5DFEFFC9-41FD-9B00-F8A7-4596B722355E";
-createNode shadingEngine -n "Player1:pasted__blinn4SG";
-	rename -uid "88848A0D-475B-7636-8A0C-8F9321C9E04C";
-	setAttr ".ihi" 0;
-	setAttr ".ro" yes;
-createNode blinn -n "Player1:pasted__BodyWhite";
-	rename -uid "B4A70AED-4F06-15C0-38CB-6AA9DD10B127";
-	setAttr ".c" -type "float3" 1 1 1 ;
-createNode blinn -n "blinn1";
+createNode blinn -n "DarkTeeth";
 	rename -uid "B1DDAAA3-4D54-840C-CA0B-B5ABAD11A6EE";
 	setAttr ".c" -type "float3" 1 1 1 ;
 createNode shadingEngine -n "blinn1SG";
@@ -1015,7 +903,7 @@ createNode shadingEngine -n "blinn1SG";
 	setAttr ".ro" yes;
 createNode materialInfo -n "materialInfo1";
 	rename -uid "39CDA4D5-4E9A-CD5A-0088-8DB4ABD57B49";
-createNode lambert -n "lambert2";
+createNode lambert -n "DarkBody";
 	rename -uid "5B1A433B-434A-F9A0-490E-EBA4F7D6B842";
 	setAttr ".c" -type "float3" 0 0 0 ;
 createNode shadingEngine -n "lambert2SG";
@@ -1024,53 +912,6 @@ createNode shadingEngine -n "lambert2SG";
 	setAttr ".ro" yes;
 createNode materialInfo -n "materialInfo2";
 	rename -uid "4E175D61-4855-0595-393B-87A61266290A";
-createNode lambert -n "Player2:lambert2";
-	rename -uid "A9B97CFD-4FF7-108C-D152-AF9B9097374A";
-	setAttr ".c" -type "float3" 0.233 0.22834 0.22834 ;
-createNode shadingEngine -n "Player2:BodySG";
-	rename -uid "70C00C64-4EE5-AFD2-745F-50B1230D3220";
-	setAttr ".ihi" 0;
-	setAttr ".ro" yes;
-createNode materialInfo -n "Player2:materialInfo1";
-	rename -uid "2879F07B-4401-B09A-CB2D-9E88F76F33E4";
-createNode phong -n "Player2:blinn2";
-	rename -uid "B6DF7FFD-4273-6A6A-0465-339E49C99E29";
-	setAttr ".c" -type "float3" 1 1 1 ;
-	setAttr ".cp" 6.311790943145752;
-createNode shadingEngine -n "Player2:BodySG1";
-	rename -uid "9E6C6C6F-4575-DC67-5347-E39E4A6E50FE";
-	setAttr ".ihi" 0;
-	setAttr ".ro" yes;
-createNode materialInfo -n "Player2:materialInfo2";
-	rename -uid "F90CB409-485D-A499-70B9-4096F6C648C8";
-createNode phong -n "Player2:blinn1";
-	rename -uid "2D3CB1B0-4465-6AE4-BA80-ED8CC4F19480";
-	setAttr ".c" -type "float3" 1 1 1 ;
-	setAttr ".cp" 6.311790943145752;
-createNode shadingEngine -n "Player2:BodySG2";
-	rename -uid "E3D7E9B7-4686-1B96-CEB4-358E7EF409DE";
-	setAttr ".ihi" 0;
-	setAttr ".ro" yes;
-createNode materialInfo -n "Player2:materialInfo3";
-	rename -uid "00954AA8-49FB-DA62-223B-25BC4D6B00A5";
-createNode shadingEngine -n "Player2:blinn3SG";
-	rename -uid "14044C35-4081-A190-4F6B-41A1AB93EB2A";
-	setAttr ".ihi" 0;
-	setAttr ".ro" yes;
-createNode materialInfo -n "Player2:materialInfo4";
-	rename -uid "DDA0AA95-4D0C-0B4F-A71C-74BC2007FAC0";
-createNode lambert -n "Player2:BodyBlack";
-	rename -uid "1F64A26F-4733-8D79-1C64-AA913C319753";
-	setAttr ".c" -type "float3" 0 0 0 ;
-createNode blinn -n "Player2:BodyWhite";
-	rename -uid "16B276D7-4276-9A22-1726-02A9080A9E66";
-	setAttr ".c" -type "float3" 1 1 1 ;
-createNode shadingEngine -n "Player2:blinn4SG";
-	rename -uid "E7C02F87-4E8C-75E8-810A-91BCCD97E816";
-	setAttr ".ihi" 0;
-	setAttr ".ro" yes;
-createNode materialInfo -n "Player2:materialInfo5";
-	rename -uid "5D8178C3-4B3B-BC13-1CF1-62997349E79B";
 createNode gameFbxExporter -n "Player2:gameExporterPreset1";
 	rename -uid "D426703A-4612-9196-51FB-98A923B765CA";
 	setAttr ".pn" -type "string" "Model Default";
@@ -1111,71 +952,6 @@ createNode gameFbxExporter -n "Player2:gameExporterPreset2";
 	setAttr ".ebm" yes;
 	setAttr ".exp" -type "string" "D:/Work/BlackAndWhite/Art/Character/Player";
 	setAttr ".exf" -type "string" "Player";
-createNode materialInfo -n "Player2:pasted__materialInfo4";
-	rename -uid "5285C80A-4922-0F9E-FF25-5498EE27EF56";
-createNode shadingEngine -n "Player2:pasted__blinn3SG";
-	rename -uid "8C92EC47-4FDC-EBFD-430C-E8A2E6CA166A";
-	setAttr ".ihi" 0;
-	setAttr ".ro" yes;
-createNode lambert -n "Player2:pasted__BodyBlack";
-	rename -uid "353D1D13-4487-4D0B-3D57-B688299C18A7";
-	setAttr ".c" -type "float3" 0 0 0 ;
-createNode materialInfo -n "Player2:pasted__materialInfo5";
-	rename -uid "D918E726-4357-D325-EC66-05A6AD7071B0";
-createNode shadingEngine -n "Player2:pasted__blinn4SG";
-	rename -uid "199553D9-4B8B-3C1E-B04E-AABFDF07957C";
-	setAttr ".ihi" 0;
-	setAttr ".ro" yes;
-createNode blinn -n "Player2:pasted__BodyWhite";
-	rename -uid "B0C114F4-462A-5EF1-6B51-F5B13DCFDC71";
-	setAttr ".c" -type "float3" 1 1 1 ;
-createNode lambert -n "Player3:lambert2";
-	rename -uid "D38C15EC-425D-F021-E589-FBBD7D4E51A9";
-	setAttr ".c" -type "float3" 0.233 0.22834 0.22834 ;
-createNode shadingEngine -n "Player3:BodySG";
-	rename -uid "1C91BBD8-4C31-6988-3137-B782412D0A36";
-	setAttr ".ihi" 0;
-	setAttr ".ro" yes;
-createNode materialInfo -n "Player3:materialInfo1";
-	rename -uid "2397817A-46B1-B5D6-A858-BF9C394A765A";
-createNode phong -n "Player3:blinn2";
-	rename -uid "67547617-4D01-7F40-F0AC-CDAD470B9582";
-	setAttr ".c" -type "float3" 1 1 1 ;
-	setAttr ".cp" 6.311790943145752;
-createNode shadingEngine -n "Player3:BodySG1";
-	rename -uid "A454DB2D-4893-71D7-D097-2C88BC6BBFAF";
-	setAttr ".ihi" 0;
-	setAttr ".ro" yes;
-createNode materialInfo -n "Player3:materialInfo2";
-	rename -uid "9FA552F9-4530-E034-2F27-1A801B27C0B6";
-createNode phong -n "Player3:blinn1";
-	rename -uid "72F7022D-4916-40FF-9EBD-10B7C6BB89DA";
-	setAttr ".c" -type "float3" 1 1 1 ;
-	setAttr ".cp" 6.311790943145752;
-createNode shadingEngine -n "Player3:BodySG2";
-	rename -uid "A46C9C83-497B-54D0-8F89-BD93DD956287";
-	setAttr ".ihi" 0;
-	setAttr ".ro" yes;
-createNode materialInfo -n "Player3:materialInfo3";
-	rename -uid "8ECDA4EC-4B92-9C85-38E6-1DB47909411D";
-createNode shadingEngine -n "Player3:blinn3SG";
-	rename -uid "1E28FF07-43E3-D18E-4E22-2E88DADE7703";
-	setAttr ".ihi" 0;
-	setAttr ".ro" yes;
-createNode materialInfo -n "Player3:materialInfo4";
-	rename -uid "748B71D0-4859-6B54-4E8B-D8B98B45E5B5";
-createNode lambert -n "Player3:BodyBlack";
-	rename -uid "37781DAC-407F-FABA-6715-73A1785EA6D4";
-	setAttr ".c" -type "float3" 0 0 0 ;
-createNode blinn -n "Player3:BodyWhite";
-	rename -uid "46CCFFD0-4BC3-90CF-DE3C-7CB03D6BEEBB";
-	setAttr ".c" -type "float3" 1 1 1 ;
-createNode shadingEngine -n "Player3:blinn4SG";
-	rename -uid "004B6AE4-4E25-567B-B248-6EA05162ED3B";
-	setAttr ".ihi" 0;
-	setAttr ".ro" yes;
-createNode materialInfo -n "Player3:materialInfo5";
-	rename -uid "3BC68016-4B0A-E885-41D2-7B8B148D7E97";
 createNode gameFbxExporter -n "Player3:gameExporterPreset1";
 	rename -uid "60082CEE-4F55-34AE-31B7-3D9A9AB0095D";
 	setAttr ".pn" -type "string" "Model Default";
@@ -1216,24 +992,6 @@ createNode gameFbxExporter -n "Player3:gameExporterPreset2";
 	setAttr ".ebm" yes;
 	setAttr ".exp" -type "string" "D:/Work/BlackAndWhite/Art/Character/Player";
 	setAttr ".exf" -type "string" "Player";
-createNode materialInfo -n "Player3:pasted__materialInfo4";
-	rename -uid "2B16ABD2-40BE-DD15-5079-E3A542D3899B";
-createNode shadingEngine -n "Player3:pasted__blinn3SG";
-	rename -uid "DACAD130-4D3C-7EE6-7F9E-899C833B7600";
-	setAttr ".ihi" 0;
-	setAttr ".ro" yes;
-createNode lambert -n "Player3:pasted__BodyBlack";
-	rename -uid "E4E8A5DE-4534-AA2B-3149-249B4D86D179";
-	setAttr ".c" -type "float3" 0 0 0 ;
-createNode materialInfo -n "Player3:pasted__materialInfo5";
-	rename -uid "37BA61BF-4CE7-3A55-C318-C6B5D9AA303F";
-createNode shadingEngine -n "Player3:pasted__blinn4SG";
-	rename -uid "F399CAC4-46FB-6291-5312-37A4DE5372CC";
-	setAttr ".ihi" 0;
-	setAttr ".ro" yes;
-createNode blinn -n "Player3:pasted__BodyWhite";
-	rename -uid "645B3F52-4F38-B791-EFCE-ACA97D6DE20B";
-	setAttr ".c" -type "float3" 1 1 1 ;
 createNode displayLayer -n "Model";
 	rename -uid "BFA70339-44B3-28F5-6E9B-249CCF4AFC4A";
 	setAttr ".dt" 2;
@@ -1352,167 +1110,178 @@ createNode animCurveTU -n "CRoot_scaleZ";
 	setAttr -s 3 ".kiy[2]"  0;
 	setAttr -s 3 ".kox[2]"  1;
 	setAttr -s 3 ".koy[2]"  0;
-createNode animCurveTL -n "CBody_translateX";
-	rename -uid "D8663E53-44E4-BA8B-B549-1CAB98DBB952";
-	setAttr ".tan" 18;
-	setAttr ".wgt" no;
-	setAttr -s 24 ".ktv[0:23]"  1 0 10 -2 20 -3 30 -2 40 0 50 2 60 3 70 2
-		 80 0 81 0 90 0 100 0 110 0 120 0 125 0 130 0 140 0 150 0 160 0 170 0 180 0 190 0
-		 200 0 210 0;
-	setAttr -s 24 ".kit[9:23]"  1 18 18 18 18 18 18 18 
-		18 18 18 18 18 18 18;
-	setAttr -s 24 ".kot[9:23]"  1 18 18 18 18 18 18 18 
-		18 18 18 18 18 18 18;
-	setAttr -s 24 ".kix[9:23]"  1 1 1 1 1 1 1 1 1 1 1 1 1 1 1;
-	setAttr -s 24 ".kiy[9:23]"  0 0 0 0 0 0 0 0 0 0 0 0 0 0 0;
-	setAttr -s 24 ".kox[9:23]"  1 1 1 1 1 1 1 1 1 1 1 1 1 1 1;
-	setAttr -s 24 ".koy[9:23]"  0 0 0 0 0 0 0 0 0 0 0 0 0 0 0;
-createNode animCurveTL -n "CBody_translateY";
-	rename -uid "7F197976-4222-5C12-B01F-1581DA0EF6BA";
-	setAttr ".tan" 18;
-	setAttr ".wgt" no;
-	setAttr -s 24 ".ktv[0:23]"  1 0 10 2 20 0 30 -2 40 0 50 2 60 0 70 -2
-		 80 0 81 0 90 -4.1204067022030628 100 -4.1204067022030628 110 7.2649276065159398 120 -2.2770668617437941
-		 125 -2.2770668617437941 130 0 140 2.9276573936706036 150 0 160 6.5059053192680025
-		 170 -4.6625654788087338 180 -4.6625654788087338 190 0 200 2.3854986170649362 210 0;
-	setAttr -s 24 ".kit[9:23]"  1 18 18 18 18 18 18 18 
-		18 18 18 18 18 18 18;
-	setAttr -s 24 ".kot[9:23]"  1 18 18 18 18 18 18 18 
-		18 18 18 18 18 18 18;
-	setAttr -s 24 ".kix[9:23]"  1 1 1 1 1 1 0.11922665685415268 1 1 1 1 
-		1 0.11741784960031509 1 1;
-	setAttr -s 24 ".kiy[9:23]"  0 0 0 0 0 0 0.99286705255508423 0 0 0 0 
-		0 0.99308264255523682 0 0;
-	setAttr -s 24 ".kox[9:23]"  1 1 1 1 1 1 0.11922666430473328 1 1 1 1 
-		1 0.11741784960031509 1 1;
-	setAttr -s 24 ".koy[9:23]"  0 0 0 0 0 0 0.99286705255508423 0 0 0 0 
-		0 0.99308264255523682 0 0;
-createNode animCurveTL -n "CBody_translateZ";
-	rename -uid "14B2AB4C-497A-6149-42EE-F1A8D7283288";
-	setAttr ".tan" 18;
-	setAttr ".wgt" no;
-	setAttr -s 24 ".ktv[0:23]"  1 0 10 0 20 0 30 0 40 0 50 0 60 0 70 0 80 0
-		 81 0 90 -11.385334308719013 100 -11.385334308719013 110 -14.312991702389617 120 14.096128191747351
-		 125 14.096128191747351 130 0 140 -6.0721782979834753 150 0 160 0 170 -2.7107938830283391
-		 180 -2.7107938830283391 190 0 200 0 210 0;
-	setAttr -s 24 ".kit[9:23]"  1 18 18 18 18 18 18 18 
-		18 18 18 18 18 18 18;
-	setAttr -s 24 ".kot[9:23]"  1 18 18 18 18 18 18 18 
-		18 18 18 18 18 18 18;
-	setAttr -s 24 ".kix[9:23]"  1 1 1 1 1 1 0.030974345281720161 1 1 1 
-		1 1 1 1 1;
-	setAttr -s 24 ".kiy[9:23]"  0 0 0 0 0 0 -0.99952018260955811 0 0 0 
-		0 0 0 0 0;
-	setAttr -s 24 ".kox[9:23]"  1 1 1 1 1 1 0.030974347144365311 1 1 1 
-		1 1 1 1 1;
-	setAttr -s 24 ".koy[9:23]"  0 0 0 0 0 0 -0.99952018260955811 0 0 0 
-		0 0 0 0 0;
-createNode animCurveTU -n "CBody_visibility";
-	rename -uid "E4A46109-48FC-3E8C-4AB6-898D08C5BC7A";
-	setAttr ".tan" 5;
-	setAttr ".wgt" no;
-	setAttr -s 24 ".ktv[0:23]"  1 1 10 1 20 1 30 1 40 1 50 1 60 1 70 1 80 1
-		 81 1 90 1 100 1 110 1 120 1 125 1 130 1 140 1 150 1 160 1 170 1 180 1 190 1 200 1
-		 210 1;
-	setAttr -s 24 ".kit[0:23]"  9 9 9 9 9 9 9 9 
-		9 1 9 9 9 9 9 9 9 9 9 9 9 9 9 9;
-	setAttr -s 24 ".kix[9:23]"  1 1 1 1 1 1 1 1 1 1 1 1 1 1 1;
-	setAttr -s 24 ".kiy[9:23]"  0 0 0 0 0 0 0 0 0 0 0 0 0 0 0;
-createNode animCurveTA -n "CBody_rotateX";
-	rename -uid "FCE37143-46B5-2253-EE09-538985680F11";
-	setAttr ".tan" 18;
-	setAttr ".wgt" no;
-	setAttr -s 24 ".ktv[0:23]"  1 0 10 0 20 0 30 0 40 0 50 0 60 0 70 0 80 0
-		 81 0 90 18.943771912843339 100 18.943771912843339 110 -19.526809409174124 120 11.812711930121836
-		 125 11.812711930121836 130 0 140 -33.858801710542117 150 0 160 -17.349170489261706
-		 170 23.867947958935371 180 23.867947958935371 190 0 200 0 210 0;
-	setAttr -s 24 ".kit[9:23]"  1 18 18 18 18 18 18 18 
-		18 18 18 18 18 18 18;
-	setAttr -s 24 ".kot[9:23]"  1 18 18 18 18 18 18 18 
-		18 18 18 18 18 18 18;
-	setAttr -s 24 ".kix[9:23]"  1 1 1 1 1 1 0.6170232892036438 1 1 1 1 
-		1 1 1 1;
-	setAttr -s 24 ".kiy[9:23]"  0 0 0 0 0 0 -0.78694486618041992 0 0 0 
-		0 0 0 0 0;
-	setAttr -s 24 ".kox[9:23]"  1 1 1 1 1 1 0.6170232892036438 1 1 1 1 
-		1 1 1 1;
-	setAttr -s 24 ".koy[9:23]"  0 0 0 0 0 0 -0.7869449257850647 0 0 0 0 
-		0 0 0 0;
 createNode animCurveTA -n "CBody_rotateY";
 	rename -uid "6D1E0B0E-4B53-9760-6280-F9961B67BB1D";
 	setAttr ".tan" 18;
 	setAttr ".wgt" no;
-	setAttr -s 24 ".ktv[0:23]"  1 0 10 0 20 0 30 0 40 0 50 0 60 0 70 0 80 0
-		 81 0 90 0 100 0 110 0 120 0 125 0 130 0 140 0 150 0 160 0 170 0 180 0 190 0 200 0
-		 210 0;
-	setAttr -s 24 ".kit[9:23]"  1 18 18 18 18 18 18 18 
-		18 18 18 18 18 18 18;
-	setAttr -s 24 ".kot[9:23]"  1 18 18 18 18 18 18 18 
-		18 18 18 18 18 18 18;
-	setAttr -s 24 ".kix[9:23]"  1 1 1 1 1 1 1 1 1 1 1 1 1 1 1;
-	setAttr -s 24 ".kiy[9:23]"  0 0 0 0 0 0 0 0 0 0 0 0 0 0 0;
-	setAttr -s 24 ".kox[9:23]"  1 1 1 1 1 1 1 1 1 1 1 1 1 1 1;
-	setAttr -s 24 ".koy[9:23]"  0 0 0 0 0 0 0 0 0 0 0 0 0 0 0;
+	setAttr -s 25 ".ktv[0:24]"  1 0 10 0 20 0 30 0 40 0 50 0 60 0 70 0 80 0
+		 81 0 90 0 100 0 110 0 115 0 125 0 130 0 140 0 150 0 166 0 167 0 173 0 180 0 190 0
+		 200 0 210 0;
+	setAttr -s 25 ".kit[9:24]"  1 18 18 18 1 18 18 18 
+		18 18 18 1 18 18 18 18;
+	setAttr -s 25 ".kot[9:24]"  1 18 18 18 1 18 18 18 
+		18 18 18 1 18 18 18 18;
+	setAttr -s 25 ".kix[9:24]"  1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1;
+	setAttr -s 25 ".kiy[9:24]"  0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0;
+	setAttr -s 25 ".kox[9:24]"  1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1;
+	setAttr -s 25 ".koy[9:24]"  0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0;
 createNode animCurveTA -n "CBody_rotateZ";
 	rename -uid "386E9F50-4EC2-668E-DC4A-2689361A7E2C";
 	setAttr ".tan" 18;
 	setAttr ".wgt" no;
-	setAttr -s 24 ".ktv[0:23]"  1 0 10 0 20 0 30 0 40 0 50 0 60 0 70 0 80 0
-		 81 0 90 0 100 0 110 0 120 0 125 0 130 0 140 0 150 0 160 0 170 0 180 0 190 0 200 0
-		 210 0;
-	setAttr -s 24 ".kit[9:23]"  1 18 18 18 18 18 18 18 
-		18 18 18 18 18 18 18;
-	setAttr -s 24 ".kot[9:23]"  1 18 18 18 18 18 18 18 
-		18 18 18 18 18 18 18;
-	setAttr -s 24 ".kix[9:23]"  1 1 1 1 1 1 1 1 1 1 1 1 1 1 1;
-	setAttr -s 24 ".kiy[9:23]"  0 0 0 0 0 0 0 0 0 0 0 0 0 0 0;
-	setAttr -s 24 ".kox[9:23]"  1 1 1 1 1 1 1 1 1 1 1 1 1 1 1;
-	setAttr -s 24 ".koy[9:23]"  0 0 0 0 0 0 0 0 0 0 0 0 0 0 0;
-createNode animCurveTU -n "CBody_scaleX";
-	rename -uid "CA976D3A-4066-C177-88DB-76B631F96B45";
+	setAttr -s 25 ".ktv[0:24]"  1 0 10 0 20 0 30 0 40 0 50 0 60 0 70 0 80 0
+		 81 0 90 0 100 0 110 0 115 0 125 0 130 0 140 0 150 0 166 0 167 0 173 0 180 0 190 0
+		 200 0 210 0;
+	setAttr -s 25 ".kit[9:24]"  1 18 18 18 1 18 18 18 
+		18 18 18 1 18 18 18 18;
+	setAttr -s 25 ".kot[9:24]"  1 18 18 18 1 18 18 18 
+		18 18 18 1 18 18 18 18;
+	setAttr -s 25 ".kix[9:24]"  1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1;
+	setAttr -s 25 ".kiy[9:24]"  0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0;
+	setAttr -s 25 ".kox[9:24]"  1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1;
+	setAttr -s 25 ".koy[9:24]"  0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0;
+createNode animCurveTA -n "CBody_rotateX";
+	rename -uid "FCE37143-46B5-2253-EE09-538985680F11";
 	setAttr ".tan" 18;
 	setAttr ".wgt" no;
-	setAttr -s 24 ".ktv[0:23]"  1 1 10 1 20 1 30 1 40 1 50 1 60 1 70 1 80 1
-		 81 1 90 1 100 1 110 1 120 1 125 1 130 1 140 1 150 1 160 1 170 1 180 1 190 1 200 1
-		 210 1;
-	setAttr -s 24 ".kit[9:23]"  1 18 18 18 18 18 18 18 
-		18 18 18 18 18 18 18;
-	setAttr -s 24 ".kot[9:23]"  1 18 18 18 18 18 18 18 
-		18 18 18 18 18 18 18;
-	setAttr -s 24 ".kix[9:23]"  1 1 1 1 1 1 1 1 1 1 1 1 1 1 1;
-	setAttr -s 24 ".kiy[9:23]"  0 0 0 0 0 0 0 0 0 0 0 0 0 0 0;
-	setAttr -s 24 ".kox[9:23]"  1 1 1 1 1 1 1 1 1 1 1 1 1 1 1;
-	setAttr -s 24 ".koy[9:23]"  0 0 0 0 0 0 0 0 0 0 0 0 0 0 0;
-createNode animCurveTU -n "CBody_scaleY";
-	rename -uid "27AECB1A-4E1C-315C-4C45-7580C18EE21A";
+	setAttr -s 25 ".ktv[0:24]"  1 0 10 0 20 0 30 0 40 0 50 0 60 0 70 0 80 0
+		 81 0 90 18.943771912843339 100 18.943771912843339 110 -19.526809409174124 115 11.812711930121836
+		 125 11.812711930121836 130 0 140 -33.858801710542117 150 0 166 -330 167 29.999999999999996
+		 173 23.867947958935371 180 23.867947958935371 190 0 200 0 210 0;
+	setAttr -s 25 ".kit[9:24]"  1 18 18 18 1 18 18 18 
+		18 18 18 1 18 18 18 18;
+	setAttr -s 25 ".kot[9:24]"  1 18 18 18 1 18 18 18 
+		18 18 18 1 18 18 18 18;
+	setAttr -s 25 ".kix[9:24]"  1 1 1 1 1 1 0.6170232892036438 1 1 1 1 
+		1 1 1 1 1;
+	setAttr -s 25 ".kiy[9:24]"  0 0 0 0 0 0 -0.78694486618041992 0 0 0 
+		0 0 0 0 0 0;
+	setAttr -s 25 ".kox[9:24]"  1 1 1 1 1 1 0.6170232892036438 1 1 1 1 
+		1 1 1 1 1;
+	setAttr -s 25 ".koy[9:24]"  0 0 0 0 0 0 -0.7869449257850647 0 0 0 0 
+		0 0 0 0 0;
+createNode animCurveTL -n "CBody_translateX";
+	rename -uid "D8663E53-44E4-BA8B-B549-1CAB98DBB952";
 	setAttr ".tan" 18;
 	setAttr ".wgt" no;
-	setAttr -s 24 ".ktv[0:23]"  1 1 10 1 20 1 30 1 40 1 50 1 60 1 70 1 80 1
-		 81 1 90 1 100 1 110 1 120 1 125 1 130 1 140 1 150 1 160 1 170 1 180 1 190 1 200 1
-		 210 1;
-	setAttr -s 24 ".kit[9:23]"  1 18 18 18 18 18 18 18 
-		18 18 18 18 18 18 18;
-	setAttr -s 24 ".kot[9:23]"  1 18 18 18 18 18 18 18 
-		18 18 18 18 18 18 18;
-	setAttr -s 24 ".kix[9:23]"  1 1 1 1 1 1 1 1 1 1 1 1 1 1 1;
-	setAttr -s 24 ".kiy[9:23]"  0 0 0 0 0 0 0 0 0 0 0 0 0 0 0;
-	setAttr -s 24 ".kox[9:23]"  1 1 1 1 1 1 1 1 1 1 1 1 1 1 1;
-	setAttr -s 24 ".koy[9:23]"  0 0 0 0 0 0 0 0 0 0 0 0 0 0 0;
+	setAttr -s 25 ".ktv[0:24]"  1 0 10 -2 20 -3 30 -2 40 0 50 2 60 3 70 2
+		 80 0 81 0 90 0 100 0 110 0 115 0 125 0 130 0 140 0 150 0 166 0 167 0 173 0 180 0
+		 190 0 200 0 210 0;
+	setAttr -s 25 ".kit[9:24]"  1 18 18 18 1 18 18 18 
+		18 18 18 1 18 18 18 18;
+	setAttr -s 25 ".kot[9:24]"  1 18 18 18 1 18 18 18 
+		18 18 18 1 18 18 18 18;
+	setAttr -s 25 ".kix[9:24]"  1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1;
+	setAttr -s 25 ".kiy[9:24]"  0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0;
+	setAttr -s 25 ".kox[9:24]"  1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1;
+	setAttr -s 25 ".koy[9:24]"  0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0;
 createNode animCurveTU -n "CBody_scaleZ";
 	rename -uid "056FE983-4BBB-AE98-E9A2-C38EFB8411B7";
 	setAttr ".tan" 18;
 	setAttr ".wgt" no;
-	setAttr -s 24 ".ktv[0:23]"  1 1 10 1 20 1 30 1 40 1 50 1 60 1 70 1 80 1
-		 81 1 90 1 100 1 110 1 120 1 125 1 130 1 140 1 150 1 160 1 170 1 180 1 190 1 200 1
-		 210 1;
-	setAttr -s 24 ".kit[9:23]"  1 18 18 18 18 18 18 18 
-		18 18 18 18 18 18 18;
-	setAttr -s 24 ".kot[9:23]"  1 18 18 18 18 18 18 18 
-		18 18 18 18 18 18 18;
-	setAttr -s 24 ".kix[9:23]"  1 1 1 1 1 1 1 1 1 1 1 1 1 1 1;
-	setAttr -s 24 ".kiy[9:23]"  0 0 0 0 0 0 0 0 0 0 0 0 0 0 0;
-	setAttr -s 24 ".kox[9:23]"  1 1 1 1 1 1 1 1 1 1 1 1 1 1 1;
-	setAttr -s 24 ".koy[9:23]"  0 0 0 0 0 0 0 0 0 0 0 0 0 0 0;
+	setAttr -s 25 ".ktv[0:24]"  1 1 10 1 20 1 30 1 40 1 50 1 60 1 70 1 80 1
+		 81 1 90 1 100 1 110 1 115 1 125 1 130 1 140 1 150 1 166 1 167 1 173 1 180 1 190 1
+		 200 1 210 1;
+	setAttr -s 25 ".kit[9:24]"  1 18 18 18 1 18 18 18 
+		18 18 18 1 18 18 18 18;
+	setAttr -s 25 ".kot[9:24]"  1 18 18 18 1 18 18 18 
+		18 18 18 1 18 18 18 18;
+	setAttr -s 25 ".kix[9:24]"  1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1;
+	setAttr -s 25 ".kiy[9:24]"  0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0;
+	setAttr -s 25 ".kox[9:24]"  1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1;
+	setAttr -s 25 ".koy[9:24]"  0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0;
+createNode animCurveTL -n "CBody_translateY";
+	rename -uid "7F197976-4222-5C12-B01F-1581DA0EF6BA";
+	setAttr ".tan" 18;
+	setAttr ".wgt" no;
+	setAttr -s 25 ".ktv[0:24]"  1 0 10 2 20 0 30 -2 40 0 50 2 60 0 70 -2
+		 80 0 81 0 90 -4.1204067022030628 100 -4.1204067022030628 110 7.2649276065159398 115 -2.2770668617437941
+		 125 -2.2770668617437941 130 0 140 2.9276573936706036 150 0 166 6.5059053192680025
+		 167 6.1931839957710126 173 -4.6625654788087338 180 -4.6625654788087338 190 0 200 2.3854986170649362
+		 210 0;
+	setAttr -s 25 ".kit[9:24]"  1 18 18 18 1 18 18 18 
+		18 18 18 1 18 18 18 18;
+	setAttr -s 25 ".kot[9:24]"  1 18 18 18 1 18 18 18 
+		18 18 18 1 18 18 18 18;
+	setAttr -s 25 ".kix[9:24]"  1 1 1 1 1 1 0.11922665685415268 1 1 1 0.044369589537382126 
+		1 1 0.11741784960031509 1 1;
+	setAttr -s 25 ".kiy[9:24]"  0 0 0 0 0 0 0.99286705255508423 0 0 0 -0.999015212059021 
+		0 0 0.99308264255523682 0 0;
+	setAttr -s 25 ".kox[9:24]"  1 1 1 1 1 1 0.11922666430473328 1 1 1 0.044369589537382126 
+		1 1 0.11741784960031509 1 1;
+	setAttr -s 25 ".koy[9:24]"  0 0 0 0 0 0 0.99286705255508423 0 0 0 -0.99901515245437622 
+		0 0 0.99308264255523682 0 0;
+createNode animCurveTU -n "CBody_scaleX";
+	rename -uid "CA976D3A-4066-C177-88DB-76B631F96B45";
+	setAttr ".tan" 18;
+	setAttr ".wgt" no;
+	setAttr -s 25 ".ktv[0:24]"  1 1 10 1 20 1 30 1 40 1 50 1 60 1 70 1 80 1
+		 81 1 90 1 100 1 110 1 115 1 125 1 130 1 140 1 150 1 166 1 167 1 173 1 180 1 190 1
+		 200 1 210 1;
+	setAttr -s 25 ".kit[9:24]"  1 18 18 18 1 18 18 18 
+		18 18 18 1 18 18 18 18;
+	setAttr -s 25 ".kot[9:24]"  1 18 18 18 1 18 18 18 
+		18 18 18 1 18 18 18 18;
+	setAttr -s 25 ".kix[9:24]"  1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1;
+	setAttr -s 25 ".kiy[9:24]"  0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0;
+	setAttr -s 25 ".kox[9:24]"  1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1;
+	setAttr -s 25 ".koy[9:24]"  0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0;
+createNode animCurveTU -n "CBody_visibility";
+	rename -uid "E4A46109-48FC-3E8C-4AB6-898D08C5BC7A";
+	setAttr ".tan" 5;
+	setAttr ".wgt" no;
+	setAttr -s 25 ".ktv[0:24]"  1 1 10 1 20 1 30 1 40 1 50 1 60 1 70 1 80 1
+		 81 1 90 1 100 1 110 1 115 1 125 1 130 1 140 1 150 1 166 1 167 1 173 1 180 1 190 1
+		 200 1 210 1;
+	setAttr -s 25 ".kit[0:24]"  9 9 9 9 9 9 9 9 
+		9 1 9 9 9 1 9 9 9 9 9 9 1 9 9 9 9;
+	setAttr -s 25 ".kix[9:24]"  1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1;
+	setAttr -s 25 ".kiy[9:24]"  0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0;
+createNode animCurveTL -n "CBody_translateZ";
+	rename -uid "14B2AB4C-497A-6149-42EE-F1A8D7283288";
+	setAttr ".tan" 18;
+	setAttr ".wgt" no;
+	setAttr -s 25 ".ktv[0:24]"  1 0 10 0 20 0 30 0 40 0 50 0 60 0 70 0 80 0
+		 81 0 90 -11.385334308719013 100 -11.385334308719013 110 -14.312991702389617 115 14.096128191747351
+		 125 14.096128191747351 130 0 140 -6.0721782979834753 150 0 166 0 167 -0.07590323385849293
+		 173 -2.7107938830283391 180 -2.7107938830283391 190 0 200 0 210 0;
+	setAttr -s 25 ".kit[9:24]"  1 18 18 18 1 18 18 18 
+		18 18 18 1 18 18 18 18;
+	setAttr -s 25 ".kot[9:24]"  1 18 18 18 1 18 18 18 
+		18 18 18 1 18 18 18 18;
+	setAttr -s 25 ".kix[9:24]"  1 1 1 1 1 1 0.030974345281720161 1 1 1 
+		0.1799943745136261 1 1 1 1 1;
+	setAttr -s 25 ".kiy[9:24]"  0 0 0 0 0 0 -0.99952018260955811 0 0 0 
+		-0.98366767168045044 0 0 0 0 0;
+	setAttr -s 25 ".kox[9:24]"  1 1 1 1 1 1 0.030974347144365311 1 1 1 
+		0.1799943745136261 1 1 1 1 1;
+	setAttr -s 25 ".koy[9:24]"  0 0 0 0 0 0 -0.99952018260955811 0 0 0 
+		-0.98366761207580566 0 0 0 0 0;
+createNode animCurveTU -n "CBody_scaleY";
+	rename -uid "27AECB1A-4E1C-315C-4C45-7580C18EE21A";
+	setAttr ".tan" 18;
+	setAttr ".wgt" no;
+	setAttr -s 25 ".ktv[0:24]"  1 1 10 1 20 1 30 1 40 1 50 1 60 1 70 1 80 1
+		 81 1 90 1 100 1 110 1 115 1 125 1 130 1 140 1 150 1 166 1 167 1 173 1 180 1 190 1
+		 200 1 210 1;
+	setAttr -s 25 ".kit[9:24]"  1 18 18 18 1 18 18 18 
+		18 18 18 1 18 18 18 18;
+	setAttr -s 25 ".kot[9:24]"  1 18 18 18 1 18 18 18 
+		18 18 18 1 18 18 18 18;
+	setAttr -s 25 ".kix[9:24]"  1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1;
+	setAttr -s 25 ".kiy[9:24]"  0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0;
+	setAttr -s 25 ".kox[9:24]"  1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1;
+	setAttr -s 25 ".koy[9:24]"  0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0;
+createNode nodeGraphEditorInfo -n "MayaNodeEditorSavedTabsInfo";
+	rename -uid "6EB41A7B-454D-71F0-F5D2-43B31CB91FFF";
+	setAttr ".tgi[0].tn" -type "string" "Untitled_1";
+	setAttr ".tgi[0].vl" -type "double2" -276.19046521565321 -142.85713718051028 ;
+	setAttr ".tgi[0].vh" -type "double2" 272.61903678614044 146.42856561002301 ;
+createNode nodeGraphEditorInfo -n "hyperShadePrimaryNodeEditorSavedTabsInfo";
+	rename -uid "0DDC1866-420C-AD03-C697-8BBE96F55EBA";
+	setAttr ".tgi[0].tn" -type "string" "Untitled_1";
+	setAttr ".tgi[0].vl" -type "double2" -354.76189066493379 -340.47617694688279 ;
+	setAttr ".tgi[0].vh" -type "double2" 340.47617694688273 355.95236680810473 ;
 createNode groupId -n "groupId17";
 	rename -uid "29E96E55-4FB5-9D9C-27F7-108C40CF5812";
 	setAttr ".ihi" 0;
@@ -1520,8 +1289,8 @@ createNode groupId -n "groupId16";
 	rename -uid "2F1D61B8-47B1-7E31-A613-0FB9316BE42F";
 	setAttr ".ihi" 0;
 select -ne :time1;
-	setAttr ".o" 195;
-	setAttr ".unw" 195;
+	setAttr ".o" 65;
+	setAttr ".unw" 65;
 select -ne :hardwareRenderingGlobals;
 	setAttr ".otfna" -type "stringArray" 22 "NURBS Curves" "NURBS Surfaces" "Polygons" "Subdiv Surface" "Particles" "Particle Instance" "Fluids" "Strokes" "Image Planes" "UI" "Lights" "Cameras" "Locators" "Joints" "IK Handles" "Deformers" "Motion Trails" "Components" "Hair Systems" "Follicles" "Misc. UI" "Ornaments"  ;
 	setAttr ".otfva" -type "Int32Array" 22 0 1 1 1 1 1
@@ -1529,10 +1298,10 @@ select -ne :hardwareRenderingGlobals;
 		 0 0 0 0 ;
 	setAttr ".fprt" yes;
 select -ne :renderPartition;
-	setAttr -s 30 ".st";
+	setAttr -s 4 ".st";
 select -ne :renderGlobalsList1;
 select -ne :defaultShaderList1;
-	setAttr -s 32 ".s";
+	setAttr -s 6 ".s";
 select -ne :postProcessList1;
 	setAttr -s 2 ".p";
 select -ne :defaultRenderingList1;
@@ -1596,212 +1365,30 @@ connectAttr "groupId17.id" "DarkShape.iog.og[1].gid";
 connectAttr "blinn1SG.mwc" "DarkShape.iog.og[1].gco";
 relationship "link" ":lightLinker1" ":initialShadingGroup.message" ":defaultLightSet.message";
 relationship "link" ":lightLinker1" ":initialParticleSE.message" ":defaultLightSet.message";
-relationship "link" ":lightLinker1" "Player:BodySG.message" ":defaultLightSet.message";
-relationship "link" ":lightLinker1" "Player:BodySG1.message" ":defaultLightSet.message";
-relationship "link" ":lightLinker1" "Player:BodySG2.message" ":defaultLightSet.message";
-relationship "link" ":lightLinker1" "Player:blinn3SG.message" ":defaultLightSet.message";
-relationship "link" ":lightLinker1" "Player:blinn4SG.message" ":defaultLightSet.message";
-relationship "link" ":lightLinker1" "Player1:BodySG.message" ":defaultLightSet.message";
-relationship "link" ":lightLinker1" "Player1:BodySG1.message" ":defaultLightSet.message";
-relationship "link" ":lightLinker1" "Player1:BodySG2.message" ":defaultLightSet.message";
-relationship "link" ":lightLinker1" "Player1:blinn3SG.message" ":defaultLightSet.message";
-relationship "link" ":lightLinker1" "Player1:blinn4SG.message" ":defaultLightSet.message";
-relationship "link" ":lightLinker1" "Player1:pasted__blinn3SG.message" ":defaultLightSet.message";
-relationship "link" ":lightLinker1" "Player1:pasted__blinn4SG.message" ":defaultLightSet.message";
 relationship "link" ":lightLinker1" "blinn1SG.message" ":defaultLightSet.message";
 relationship "link" ":lightLinker1" "lambert2SG.message" ":defaultLightSet.message";
-relationship "link" ":lightLinker1" "Player2:BodySG.message" ":defaultLightSet.message";
-relationship "link" ":lightLinker1" "Player2:BodySG1.message" ":defaultLightSet.message";
-relationship "link" ":lightLinker1" "Player2:BodySG2.message" ":defaultLightSet.message";
-relationship "link" ":lightLinker1" "Player2:blinn3SG.message" ":defaultLightSet.message";
-relationship "link" ":lightLinker1" "Player2:blinn4SG.message" ":defaultLightSet.message";
-relationship "link" ":lightLinker1" "Player2:pasted__blinn3SG.message" ":defaultLightSet.message";
-relationship "link" ":lightLinker1" "Player2:pasted__blinn4SG.message" ":defaultLightSet.message";
-relationship "link" ":lightLinker1" "Player3:BodySG.message" ":defaultLightSet.message";
-relationship "link" ":lightLinker1" "Player3:BodySG1.message" ":defaultLightSet.message";
-relationship "link" ":lightLinker1" "Player3:BodySG2.message" ":defaultLightSet.message";
-relationship "link" ":lightLinker1" "Player3:blinn3SG.message" ":defaultLightSet.message";
-relationship "link" ":lightLinker1" "Player3:blinn4SG.message" ":defaultLightSet.message";
-relationship "link" ":lightLinker1" "Player3:pasted__blinn3SG.message" ":defaultLightSet.message";
-relationship "link" ":lightLinker1" "Player3:pasted__blinn4SG.message" ":defaultLightSet.message";
 relationship "shadowLink" ":lightLinker1" ":initialShadingGroup.message" ":defaultLightSet.message";
 relationship "shadowLink" ":lightLinker1" ":initialParticleSE.message" ":defaultLightSet.message";
-relationship "shadowLink" ":lightLinker1" "Player:BodySG.message" ":defaultLightSet.message";
-relationship "shadowLink" ":lightLinker1" "Player:BodySG1.message" ":defaultLightSet.message";
-relationship "shadowLink" ":lightLinker1" "Player:BodySG2.message" ":defaultLightSet.message";
-relationship "shadowLink" ":lightLinker1" "Player:blinn3SG.message" ":defaultLightSet.message";
-relationship "shadowLink" ":lightLinker1" "Player:blinn4SG.message" ":defaultLightSet.message";
-relationship "shadowLink" ":lightLinker1" "Player1:BodySG.message" ":defaultLightSet.message";
-relationship "shadowLink" ":lightLinker1" "Player1:BodySG1.message" ":defaultLightSet.message";
-relationship "shadowLink" ":lightLinker1" "Player1:BodySG2.message" ":defaultLightSet.message";
-relationship "shadowLink" ":lightLinker1" "Player1:blinn3SG.message" ":defaultLightSet.message";
-relationship "shadowLink" ":lightLinker1" "Player1:blinn4SG.message" ":defaultLightSet.message";
-relationship "shadowLink" ":lightLinker1" "Player1:pasted__blinn3SG.message" ":defaultLightSet.message";
-relationship "shadowLink" ":lightLinker1" "Player1:pasted__blinn4SG.message" ":defaultLightSet.message";
 relationship "shadowLink" ":lightLinker1" "blinn1SG.message" ":defaultLightSet.message";
 relationship "shadowLink" ":lightLinker1" "lambert2SG.message" ":defaultLightSet.message";
-relationship "shadowLink" ":lightLinker1" "Player2:BodySG.message" ":defaultLightSet.message";
-relationship "shadowLink" ":lightLinker1" "Player2:BodySG1.message" ":defaultLightSet.message";
-relationship "shadowLink" ":lightLinker1" "Player2:BodySG2.message" ":defaultLightSet.message";
-relationship "shadowLink" ":lightLinker1" "Player2:blinn3SG.message" ":defaultLightSet.message";
-relationship "shadowLink" ":lightLinker1" "Player2:blinn4SG.message" ":defaultLightSet.message";
-relationship "shadowLink" ":lightLinker1" "Player2:pasted__blinn3SG.message" ":defaultLightSet.message";
-relationship "shadowLink" ":lightLinker1" "Player2:pasted__blinn4SG.message" ":defaultLightSet.message";
-relationship "shadowLink" ":lightLinker1" "Player3:BodySG.message" ":defaultLightSet.message";
-relationship "shadowLink" ":lightLinker1" "Player3:BodySG1.message" ":defaultLightSet.message";
-relationship "shadowLink" ":lightLinker1" "Player3:BodySG2.message" ":defaultLightSet.message";
-relationship "shadowLink" ":lightLinker1" "Player3:blinn3SG.message" ":defaultLightSet.message";
-relationship "shadowLink" ":lightLinker1" "Player3:blinn4SG.message" ":defaultLightSet.message";
-relationship "shadowLink" ":lightLinker1" "Player3:pasted__blinn3SG.message" ":defaultLightSet.message";
-relationship "shadowLink" ":lightLinker1" "Player3:pasted__blinn4SG.message" ":defaultLightSet.message";
 connectAttr "layerManager.dli[0]" "defaultLayer.id";
 connectAttr "renderLayerManager.rlmi[0]" "defaultRenderLayer.rlid";
-connectAttr "Player:lambert2.oc" "Player:BodySG.ss";
-connectAttr "Player:BodySG.msg" "Player:materialInfo1.sg";
-connectAttr "Player:lambert2.msg" "Player:materialInfo1.m";
-connectAttr "Player:blinn2.oc" "Player:BodySG1.ss";
-connectAttr "Player:BodySG1.msg" "Player:materialInfo2.sg";
-connectAttr "Player:blinn2.msg" "Player:materialInfo2.m";
-connectAttr "Player:blinn1.oc" "Player:BodySG2.ss";
-connectAttr "Player:BodySG2.msg" "Player:materialInfo3.sg";
-connectAttr "Player:blinn1.msg" "Player:materialInfo3.m";
-connectAttr "Player:BodyBlack.oc" "Player:blinn3SG.ss";
-connectAttr "Player:blinn3SG.msg" "Player:materialInfo4.sg";
-connectAttr "Player:BodyBlack.msg" "Player:materialInfo4.m";
-connectAttr "Player:BodyWhite.oc" "Player:blinn4SG.ss";
-connectAttr "Player:blinn4SG.msg" "Player:materialInfo5.sg";
-connectAttr "Player:BodyWhite.msg" "Player:materialInfo5.m";
-connectAttr "Player1:lambert2.oc" "Player1:BodySG.ss";
-connectAttr "Player1:BodySG.msg" "Player1:materialInfo1.sg";
-connectAttr "Player1:lambert2.msg" "Player1:materialInfo1.m";
-connectAttr "Player1:blinn2.oc" "Player1:BodySG1.ss";
-connectAttr "Player1:BodySG1.msg" "Player1:materialInfo2.sg";
-connectAttr "Player1:blinn2.msg" "Player1:materialInfo2.m";
-connectAttr "Player1:blinn1.oc" "Player1:BodySG2.ss";
-connectAttr "Player1:BodySG2.msg" "Player1:materialInfo3.sg";
-connectAttr "Player1:blinn1.msg" "Player1:materialInfo3.m";
-connectAttr "Player1:BodyBlack.oc" "Player1:blinn3SG.ss";
-connectAttr "Player1:blinn3SG.msg" "Player1:materialInfo4.sg";
-connectAttr "Player1:BodyBlack.msg" "Player1:materialInfo4.m";
-connectAttr "Player1:BodyWhite.oc" "Player1:blinn4SG.ss";
-connectAttr "Player1:blinn4SG.msg" "Player1:materialInfo5.sg";
-connectAttr "Player1:BodyWhite.msg" "Player1:materialInfo5.m";
-connectAttr "Player1:pasted__blinn3SG.msg" "Player1:pasted__materialInfo4.sg";
-connectAttr "Player1:pasted__BodyBlack.msg" "Player1:pasted__materialInfo4.m";
-connectAttr "Player1:pasted__BodyBlack.oc" "Player1:pasted__blinn3SG.ss";
-connectAttr "Player1:pasted__blinn4SG.msg" "Player1:pasted__materialInfo5.sg";
-connectAttr "Player1:pasted__BodyWhite.msg" "Player1:pasted__materialInfo5.m";
-connectAttr "Player1:pasted__BodyWhite.oc" "Player1:pasted__blinn4SG.ss";
-connectAttr "blinn1.oc" "blinn1SG.ss";
+connectAttr "DarkTeeth.oc" "blinn1SG.ss";
 connectAttr "DarkShape.iog.og[1]" "blinn1SG.dsm" -na;
 connectAttr "groupId17.msg" "blinn1SG.gn" -na;
 connectAttr "blinn1SG.msg" "materialInfo1.sg";
-connectAttr "blinn1.msg" "materialInfo1.m";
-connectAttr "lambert2.oc" "lambert2SG.ss";
+connectAttr "DarkTeeth.msg" "materialInfo1.m";
+connectAttr "DarkBody.oc" "lambert2SG.ss";
 connectAttr "DarkShape.iog.og[0]" "lambert2SG.dsm" -na;
 connectAttr "groupId16.msg" "lambert2SG.gn" -na;
 connectAttr "lambert2SG.msg" "materialInfo2.sg";
-connectAttr "lambert2.msg" "materialInfo2.m";
-connectAttr "Player2:lambert2.oc" "Player2:BodySG.ss";
-connectAttr "Player2:BodySG.msg" "Player2:materialInfo1.sg";
-connectAttr "Player2:lambert2.msg" "Player2:materialInfo1.m";
-connectAttr "Player2:blinn2.oc" "Player2:BodySG1.ss";
-connectAttr "Player2:BodySG1.msg" "Player2:materialInfo2.sg";
-connectAttr "Player2:blinn2.msg" "Player2:materialInfo2.m";
-connectAttr "Player2:blinn1.oc" "Player2:BodySG2.ss";
-connectAttr "Player2:BodySG2.msg" "Player2:materialInfo3.sg";
-connectAttr "Player2:blinn1.msg" "Player2:materialInfo3.m";
-connectAttr "Player2:BodyBlack.oc" "Player2:blinn3SG.ss";
-connectAttr "Player2:blinn3SG.msg" "Player2:materialInfo4.sg";
-connectAttr "Player2:BodyBlack.msg" "Player2:materialInfo4.m";
-connectAttr "Player2:BodyWhite.oc" "Player2:blinn4SG.ss";
-connectAttr "Player2:blinn4SG.msg" "Player2:materialInfo5.sg";
-connectAttr "Player2:BodyWhite.msg" "Player2:materialInfo5.m";
-connectAttr "Player2:pasted__blinn3SG.msg" "Player2:pasted__materialInfo4.sg";
-connectAttr "Player2:pasted__BodyBlack.msg" "Player2:pasted__materialInfo4.m";
-connectAttr "Player2:pasted__BodyBlack.oc" "Player2:pasted__blinn3SG.ss";
-connectAttr "Player2:pasted__blinn4SG.msg" "Player2:pasted__materialInfo5.sg";
-connectAttr "Player2:pasted__BodyWhite.msg" "Player2:pasted__materialInfo5.m";
-connectAttr "Player2:pasted__BodyWhite.oc" "Player2:pasted__blinn4SG.ss";
-connectAttr "Player3:lambert2.oc" "Player3:BodySG.ss";
-connectAttr "Player3:BodySG.msg" "Player3:materialInfo1.sg";
-connectAttr "Player3:lambert2.msg" "Player3:materialInfo1.m";
-connectAttr "Player3:blinn2.oc" "Player3:BodySG1.ss";
-connectAttr "Player3:BodySG1.msg" "Player3:materialInfo2.sg";
-connectAttr "Player3:blinn2.msg" "Player3:materialInfo2.m";
-connectAttr "Player3:blinn1.oc" "Player3:BodySG2.ss";
-connectAttr "Player3:BodySG2.msg" "Player3:materialInfo3.sg";
-connectAttr "Player3:blinn1.msg" "Player3:materialInfo3.m";
-connectAttr "Player3:BodyBlack.oc" "Player3:blinn3SG.ss";
-connectAttr "Player3:blinn3SG.msg" "Player3:materialInfo4.sg";
-connectAttr "Player3:BodyBlack.msg" "Player3:materialInfo4.m";
-connectAttr "Player3:BodyWhite.oc" "Player3:blinn4SG.ss";
-connectAttr "Player3:blinn4SG.msg" "Player3:materialInfo5.sg";
-connectAttr "Player3:BodyWhite.msg" "Player3:materialInfo5.m";
-connectAttr "Player3:pasted__blinn3SG.msg" "Player3:pasted__materialInfo4.sg";
-connectAttr "Player3:pasted__BodyBlack.msg" "Player3:pasted__materialInfo4.m";
-connectAttr "Player3:pasted__BodyBlack.oc" "Player3:pasted__blinn3SG.ss";
-connectAttr "Player3:pasted__blinn4SG.msg" "Player3:pasted__materialInfo5.sg";
-connectAttr "Player3:pasted__BodyWhite.msg" "Player3:pasted__materialInfo5.m";
-connectAttr "Player3:pasted__BodyWhite.oc" "Player3:pasted__blinn4SG.ss";
+connectAttr "DarkBody.msg" "materialInfo2.m";
 connectAttr "layerManager.dli[2]" "Model.id";
 connectAttr "layerManager.dli[3]" "Joint.id";
 connectAttr "layerManager.dli[4]" "Controler.id";
-connectAttr "Player:BodySG.pa" ":renderPartition.st" -na;
-connectAttr "Player:BodySG1.pa" ":renderPartition.st" -na;
-connectAttr "Player:BodySG2.pa" ":renderPartition.st" -na;
-connectAttr "Player:blinn3SG.pa" ":renderPartition.st" -na;
-connectAttr "Player:blinn4SG.pa" ":renderPartition.st" -na;
-connectAttr "Player1:BodySG.pa" ":renderPartition.st" -na;
-connectAttr "Player1:BodySG1.pa" ":renderPartition.st" -na;
-connectAttr "Player1:BodySG2.pa" ":renderPartition.st" -na;
-connectAttr "Player1:blinn3SG.pa" ":renderPartition.st" -na;
-connectAttr "Player1:blinn4SG.pa" ":renderPartition.st" -na;
-connectAttr "Player1:pasted__blinn3SG.pa" ":renderPartition.st" -na;
-connectAttr "Player1:pasted__blinn4SG.pa" ":renderPartition.st" -na;
 connectAttr "blinn1SG.pa" ":renderPartition.st" -na;
 connectAttr "lambert2SG.pa" ":renderPartition.st" -na;
-connectAttr "Player2:BodySG.pa" ":renderPartition.st" -na;
-connectAttr "Player2:BodySG1.pa" ":renderPartition.st" -na;
-connectAttr "Player2:BodySG2.pa" ":renderPartition.st" -na;
-connectAttr "Player2:blinn3SG.pa" ":renderPartition.st" -na;
-connectAttr "Player2:blinn4SG.pa" ":renderPartition.st" -na;
-connectAttr "Player2:pasted__blinn3SG.pa" ":renderPartition.st" -na;
-connectAttr "Player2:pasted__blinn4SG.pa" ":renderPartition.st" -na;
-connectAttr "Player3:BodySG.pa" ":renderPartition.st" -na;
-connectAttr "Player3:BodySG1.pa" ":renderPartition.st" -na;
-connectAttr "Player3:BodySG2.pa" ":renderPartition.st" -na;
-connectAttr "Player3:blinn3SG.pa" ":renderPartition.st" -na;
-connectAttr "Player3:blinn4SG.pa" ":renderPartition.st" -na;
-connectAttr "Player3:pasted__blinn3SG.pa" ":renderPartition.st" -na;
-connectAttr "Player3:pasted__blinn4SG.pa" ":renderPartition.st" -na;
-connectAttr "Player:lambert2.msg" ":defaultShaderList1.s" -na;
-connectAttr "Player:blinn2.msg" ":defaultShaderList1.s" -na;
-connectAttr "Player:blinn1.msg" ":defaultShaderList1.s" -na;
-connectAttr "Player:BodyBlack.msg" ":defaultShaderList1.s" -na;
-connectAttr "Player:BodyWhite.msg" ":defaultShaderList1.s" -na;
-connectAttr "Player1:lambert2.msg" ":defaultShaderList1.s" -na;
-connectAttr "Player1:blinn2.msg" ":defaultShaderList1.s" -na;
-connectAttr "Player1:blinn1.msg" ":defaultShaderList1.s" -na;
-connectAttr "Player1:BodyBlack.msg" ":defaultShaderList1.s" -na;
-connectAttr "Player1:BodyWhite.msg" ":defaultShaderList1.s" -na;
-connectAttr "Player1:pasted__BodyBlack.msg" ":defaultShaderList1.s" -na;
-connectAttr "Player1:pasted__BodyWhite.msg" ":defaultShaderList1.s" -na;
-connectAttr "blinn1.msg" ":defaultShaderList1.s" -na;
-connectAttr "lambert2.msg" ":defaultShaderList1.s" -na;
-connectAttr "Player2:lambert2.msg" ":defaultShaderList1.s" -na;
-connectAttr "Player2:blinn2.msg" ":defaultShaderList1.s" -na;
-connectAttr "Player2:blinn1.msg" ":defaultShaderList1.s" -na;
-connectAttr "Player2:BodyBlack.msg" ":defaultShaderList1.s" -na;
-connectAttr "Player2:BodyWhite.msg" ":defaultShaderList1.s" -na;
-connectAttr "Player2:pasted__BodyBlack.msg" ":defaultShaderList1.s" -na;
-connectAttr "Player2:pasted__BodyWhite.msg" ":defaultShaderList1.s" -na;
-connectAttr "Player3:lambert2.msg" ":defaultShaderList1.s" -na;
-connectAttr "Player3:blinn2.msg" ":defaultShaderList1.s" -na;
-connectAttr "Player3:blinn1.msg" ":defaultShaderList1.s" -na;
-connectAttr "Player3:BodyBlack.msg" ":defaultShaderList1.s" -na;
-connectAttr "Player3:BodyWhite.msg" ":defaultShaderList1.s" -na;
-connectAttr "Player3:pasted__BodyBlack.msg" ":defaultShaderList1.s" -na;
-connectAttr "Player3:pasted__BodyWhite.msg" ":defaultShaderList1.s" -na;
+connectAttr "DarkTeeth.msg" ":defaultShaderList1.s" -na;
+connectAttr "DarkBody.msg" ":defaultShaderList1.s" -na;
 connectAttr "defaultRenderLayer.msg" ":defaultRenderingList1.r" -na;
-// End of Monster.ma
+// End of Dark.ma

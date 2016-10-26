@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿using UniRx;
+using UniRx.Triggers;
+using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -15,8 +17,12 @@ public class PlayerSlash : SingletonMonoBehaviour<PlayerSlash> {
     private float SlashAngle = 30;
     [SerializeField]
     private GameObject SlashRegion;
+    [SerializeField]
+    private GameObject SlashRegionDisplay;
 
-    float SlashRadius = 3f;
+    public float SlashRadius { get { return slashRadius; } }
+
+    float slashRadius = 3f;
     int slashEndHash;
 	int slashingHash;
     Animator anim;
@@ -26,6 +32,8 @@ public class PlayerSlash : SingletonMonoBehaviour<PlayerSlash> {
     private GameObject TargetObject;
     float currentSpeed;
 
+    private List<GameObject> slashList = new List<GameObject>();
+
     void Awake()
     {
         anim = GetComponent<Animator>();
@@ -34,10 +42,16 @@ public class PlayerSlash : SingletonMonoBehaviour<PlayerSlash> {
 		slashingHash = Animator.StringToHash("PlayerBase.Slashing");
         InputController.OnMouseSingleClick += MultiSlash;
 
-        SlashRadius = SlashRegion.transform.localScale.x / 2;
+        slashRadius = SlashRegion.transform.localScale.x / 2;
         currentSpeed = SlashSpeed;
     }
-    void FixedUpdate()
+
+    void Start()
+    {
+        this.UpdateAsObservable().Subscribe(_ => UniRxUpdate());
+    }
+
+    void UniRxUpdate()
     {
 		AnimatorStateInfo info = anim.GetCurrentAnimatorStateInfo(0);
 		if (info.fullPathHash == slashingHash)
@@ -57,6 +71,8 @@ public class PlayerSlash : SingletonMonoBehaviour<PlayerSlash> {
                 }
             }
         }
+
+        SlashRegionDisplay.SetActive(slashList.Count > 0);
     }
 
     bool CanSlashEnemy(GameObject Enemy)
@@ -64,14 +80,29 @@ public class PlayerSlash : SingletonMonoBehaviour<PlayerSlash> {
         if (isSlashing == false && Enemy != null)
         {
             Vector3 direction = Enemy.transform.position - transform.position;
-            EnemyBattle battle = Enemy.GetComponent<EnemyBattle>();
-            if (direction.magnitude < SlashRadius && battle.CanSlash)
+            EnemySlash battle = Enemy.GetComponent<EnemySlash>();
+            if (direction.magnitude < slashRadius && battle.CanSlash)
             {
                 return true;
             }
         }
 
         return false;
+    }
+
+    public void RegisterSlashObject(GameObject obj, bool canSlash)
+    {
+        if (canSlash)
+        {
+            if (!slashList.Contains(obj))
+            {
+                slashList.Add(obj);
+            }
+        }
+        else
+        {
+            slashList.Remove(obj);
+        }
     }
 
     public bool SlashEnemy(GameObject Enemy)
@@ -98,7 +129,7 @@ public class PlayerSlash : SingletonMonoBehaviour<PlayerSlash> {
         PlayerMove.Instance.CanRotate = true;
 
         int count = 0;
-        List<GameObject> list = PlayerBattle.Instance.Enemies.GetEnemy(transform.position, SlashRadius, transform.rotation * Vector3.forward, SlashAngle);
+        List<GameObject> list = PlayerBattle.Instance.Enemies.GetEnemy(transform.position, slashRadius, transform.rotation * Vector3.forward, SlashAngle);
         list.ForEach(o =>
         {
             EnemyBattle Enemy = o.GetComponent<EnemyBattle>();

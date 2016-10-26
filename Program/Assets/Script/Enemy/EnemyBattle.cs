@@ -4,31 +4,42 @@ using UnityEngine;
 using System.Collections;
 
 public class EnemyBattle : MonoBehaviour {
+
+    [SerializeField]
+    private float barrierStrength;
+    [SerializeField]
+    private float recoverSpeed;
+
     public UnitAction OnDie;
-    public bool CanSlash { get { return anim.GetCurrentAnimatorStateInfo(0).fullPathHash == breakHash; } }
-    public float SlashTime = 3;
+    
     public GameObject DeadAction;
     public Vector3 DeadEffectOffset;
 
     EnemyMove movement;
+    EnemySlash slash;
 
     int idleHash;
-    int breakHash;
     Animator anim;
+    
+    float currentBarrier;
+
+
 
     //Start change to Awake, because Instantiate not call Start but Awake
     void Awake()
     {
         movement = GetComponent<EnemyMove>();
+        slash = GetComponent<EnemySlash>();
 
         idleHash = Animator.StringToHash("EnemyBase.Idle");
-        breakHash = Animator.StringToHash("EnemyBase.Break");
         anim = GetComponent<Animator>();
+        
+        currentBarrier = barrierStrength;
     }
 
     void Start()
     {
-        this.UpdateAsObservable().Subscribe(_ => UniRxUpdate());
+        this.UpdateAsObservable().Subscribe(_ => UniRxUpdate());       
     }
 
     void UniRxUpdate()
@@ -42,18 +53,32 @@ public class EnemyBattle : MonoBehaviour {
                 anim.SetTrigger("Attack");
             }
         }
+
+        currentBarrier += recoverSpeed * Time.deltaTime;
+        if (currentBarrier > barrierStrength)
+        {
+            currentBarrier = barrierStrength;
+        }
     }
 
     public bool Attacked(Attack attack)
     {
-        if (attack.Type == AttackType.ATTACK_TYPE_SLASH && CanSlash)
+        if (attack.Type == AttackType.ATTACK_TYPE_SLASH && slash.CanSlash)
         {
             OnDie(gameObject);
             return true;
         }
         else
         {
-            anim.SetTrigger("Break");
+            currentBarrier -= attack.Strength;
+            if (currentBarrier > 0)
+            {
+                anim.SetTrigger("Hitted");
+            }
+            else
+            {
+                slash.TriggerSlash();
+            }
         }
 
         return false;

@@ -19,6 +19,6 @@ public enum AttackType
 
 public class Attack {
     public ElementType Element { get; set; }
-    public int Strength { get; set; }
+    public float Strength { get; set; }
     public AttackType Type { get; set; }
 }
