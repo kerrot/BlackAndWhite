@@ -15,25 +15,17 @@ public class EnemyBattle : MonoBehaviour {
     public GameObject DeadAction;
     public Vector3 DeadEffectOffset;
 
-    EnemyMove movement;
     EnemySlash slash;
 
-    int idleHash;
     Animator anim;
     
     float currentBarrier;
 
-
-
     //Start change to Awake, because Instantiate not call Start but Awake
     void Awake()
     {
-        movement = GetComponent<EnemyMove>();
         slash = GetComponent<EnemySlash>();
-
-        idleHash = Animator.StringToHash("EnemyBase.Idle");
         anim = GetComponent<Animator>();
-        
         currentBarrier = barrierStrength;
     }
 
@@ -44,16 +36,6 @@ public class EnemyBattle : MonoBehaviour {
 
     void UniRxUpdate()
     {
-        PlayerMove player = GameObject.FindObjectOfType<PlayerMove>();
-        if (player)
-        {
-            AnimatorStateInfo info = anim.GetCurrentAnimatorStateInfo(0);
-            if (info.fullPathHash == idleHash && Vector3.Distance(player.transform.position, transform.position) <= movement.StopRadius)
-            {
-                anim.SetTrigger("Attack");
-            }
-        }
-
         currentBarrier += recoverSpeed * Time.deltaTime;
         if (currentBarrier > barrierStrength)
         {

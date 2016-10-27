@@ -41,6 +41,9 @@ public class EnemySlash : MonoBehaviour {
     }
 
     void UniRxUpdate() {
+        effect.SetActive(!canSlash);
+        lockUI.SetActive(canSlash);
+
         if (canSlash)
         {
             PlayerSlash player = GameObject.FindObjectOfType<PlayerSlash>();
@@ -70,9 +73,6 @@ public class EnemySlash : MonoBehaviour {
                     }
                 }
             }
-
-            effect.SetActive(!canSlash);
-            lockUI.SetActive(canSlash);
         }
     }
 

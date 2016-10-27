@@ -96,6 +96,8 @@ ModelImporter:
     7400006: Attack
     7400008: Slashing
     7400010: SlashEnd
+    7400012: Hurt
+    7400014: Die
     9500000: //RootNode
   materials:
     importMaterials: 1
@@ -563,6 +565,166 @@ ModelImporter:
         floatParameter: 0
         intParameter: 0
         messageOptions: 0
+      transformMask:
+      - path: 
+        weight: 1
+      - path: JRoot
+        weight: 1
+      - path: JRoot/JHip
+        weight: 1
+      - path: JRoot/JHip/JBody
+        weight: 1
+      - path: JRoot/JHip/JBody/Body
+        weight: 1
+      - path: JRoot/JHip/JBody/Body/Heart
+        weight: 1
+      - path: JRoot/JHip/JBody/JHead
+        weight: 1
+      - path: JRoot/JHip/JBody/JHead/Head
+        weight: 1
+      - path: JRoot/JHip/JBody/JHead/Head/Lefteye
+        weight: 1
+      - path: JRoot/JHip/JBody/JHead/Head/Righteye
+        weight: 1
+      - path: JRoot/JHip/JBody/JHead/JAho
+        weight: 1
+      - path: JRoot/JHip/JBody/JHead/JAho/Aho
+        weight: 1
+      - path: JRoot/JHip/JBody/JHead/JAho/JAho1
+        weight: 1
+      - path: JRoot/JHip/JBody/JHead/JAho/JAho1/JAho2
+        weight: 1
+      - path: JRoot/JHip/JBody/JHead/JAho/JAho1/JAho2/JAho3
+        weight: 1
+      - path: JRoot/JHip/JBody/JLeftHand
+        weight: 1
+      - path: JRoot/JHip/JBody/JLeftHand/JLeftWeapon
+        weight: 1
+      - path: JRoot/JHip/JBody/JLeftHand/LeftHand
+        weight: 1
+      - path: JRoot/JHip/JBody/JRightHand
+        weight: 1
+      - path: JRoot/JHip/JBody/JRightHand/JRightWeapon
+        weight: 1
+      - path: JRoot/JHip/JBody/JRightHand/JRightWeapon/RightWeapon
+        weight: 1
+      - path: JRoot/JHip/JBody/JRightHand/RightHand
+        weight: 1
+      - path: JRoot/JHip/JLeftLeg
+        weight: 1
+      - path: JRoot/JHip/JLeftLeg/LeftLeg
+        weight: 1
+      - path: JRoot/JHip/JRightLeg
+        weight: 1
+      - path: JRoot/JHip/JRightLeg/RightLeg
+        weight: 1
+      maskType: 0
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 120
+    - serializedVersion: 16
+      name: Hurt
+      takeName: Hurt
+      firstFrame: 140
+      lastFrame: 150
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: JRoot
+        weight: 1
+      - path: JRoot/JHip
+        weight: 1
+      - path: JRoot/JHip/JBody
+        weight: 1
+      - path: JRoot/JHip/JBody/Body
+        weight: 1
+      - path: JRoot/JHip/JBody/Body/Heart
+        weight: 1
+      - path: JRoot/JHip/JBody/JHead
+        weight: 1
+      - path: JRoot/JHip/JBody/JHead/Head
+        weight: 1
+      - path: JRoot/JHip/JBody/JHead/Head/Lefteye
+        weight: 1
+      - path: JRoot/JHip/JBody/JHead/Head/Righteye
+        weight: 1
+      - path: JRoot/JHip/JBody/JHead/JAho
+        weight: 1
+      - path: JRoot/JHip/JBody/JHead/JAho/Aho
+        weight: 1
+      - path: JRoot/JHip/JBody/JHead/JAho/JAho1
+        weight: 1
+      - path: JRoot/JHip/JBody/JHead/JAho/JAho1/JAho2
+        weight: 1
+      - path: JRoot/JHip/JBody/JHead/JAho/JAho1/JAho2/JAho3
+        weight: 1
+      - path: JRoot/JHip/JBody/JLeftHand
+        weight: 1
+      - path: JRoot/JHip/JBody/JLeftHand/JLeftWeapon
+        weight: 1
+      - path: JRoot/JHip/JBody/JLeftHand/LeftHand
+        weight: 1
+      - path: JRoot/JHip/JBody/JRightHand
+        weight: 1
+      - path: JRoot/JHip/JBody/JRightHand/JRightWeapon
+        weight: 1
+      - path: JRoot/JHip/JBody/JRightHand/JRightWeapon/RightWeapon
+        weight: 1
+      - path: JRoot/JHip/JBody/JRightHand/RightHand
+        weight: 1
+      - path: JRoot/JHip/JLeftLeg
+        weight: 1
+      - path: JRoot/JHip/JLeftLeg/LeftLeg
+        weight: 1
+      - path: JRoot/JHip/JRightLeg
+        weight: 1
+      - path: JRoot/JHip/JRightLeg/RightLeg
+        weight: 1
+      maskType: 0
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 120
+    - serializedVersion: 16
+      name: Die
+      takeName: Die
+      firstFrame: 150
+      lastFrame: 170
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
       transformMask:
       - path: 
         weight: 1

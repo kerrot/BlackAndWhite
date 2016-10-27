@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿using UniRx;
+using UniRx.Triggers;
+using UnityEngine;
 using System.Collections;
 
 public class FollowTargetPosition : MonoBehaviour
@@ -10,24 +12,31 @@ public class FollowTargetPosition : MonoBehaviour
     [SerializeField]
     private float smoothing = 5f;       
 
-	Vector3 offset;                     
+	Vector3 offset;
+
+    Vector3 currentPosition;
+    public Vector3 CurrentPosition { get { return currentPosition; } }
+
+    void Awake()
+    {
+        currentPosition = transform.position;
+    }
 
 	void Start ()
 	{
 		offset = transform.position - follow.transform.position;
-	}
+        this.UpdateAsObservable().Subscribe(_ => UniRxUpdate());
+    }
 
-	void FixedUpdate ()
+	void UniRxUpdate()
 	{
-		Vector3 targetCamPos = follow.transform.position + offset;
+		Vector3 currentPosition = follow.transform.position + offset;
 
         if (useSmoothing)
         {
-            transform.position = Vector3.Lerp(transform.position, targetCamPos, smoothing * Time.deltaTime);
+            currentPosition = Vector3.Lerp(transform.position, currentPosition, smoothing * Time.deltaTime);
         }
-		else
-        {
-            transform.position = targetCamPos;
-        }
+		
+        transform.position = currentPosition;
 	}
 }
