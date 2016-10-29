@@ -4,11 +4,16 @@ using UnityEngine;
 using System.Collections;
 
 public class EnemyBattle : MonoBehaviour {
-
+    [SerializeField]
+    private float HPMax;
     [SerializeField]
     private float barrierStrength;
     [SerializeField]
-    private float recoverSpeed;
+    private float recoverTime;
+    [SerializeField]
+    private float showHPTime;
+    [SerializeField]
+    private Transform HPUICenter;
 
     public UnitAction OnDie;
     
@@ -17,9 +22,14 @@ public class EnemyBattle : MonoBehaviour {
 
     EnemySlash slash;
 
+    HPBarUI hpUI;
+    float showHPStart;
+
     Animator anim;
     
     float currentBarrier;
+    float currentHP;
+    float currentRecover;
 
     //Start change to Awake, because Instantiate not call Start but Awake
     void Awake()
@@ -27,24 +37,69 @@ public class EnemyBattle : MonoBehaviour {
         slash = GetComponent<EnemySlash>();
         anim = GetComponent<Animator>();
         currentBarrier = barrierStrength;
+        currentHP = HPMax;
+        currentRecover = 0;
     }
 
     void Start()
     {
+        RunTimeUIGenerator ui = GameObject.FindObjectOfType<RunTimeUIGenerator>();
+        if (ui)
+        { 
+            GameObject tmp = ui.CreateHPUI();
+            hpUI = tmp.GetComponent<HPBarUI>();
+            hpUI.SetHPMax(HPMax);
+            hpUI.SetHPCurrent(currentHP);
+            hpUI.SetBarrierMax(barrierStrength);
+            hpUI.SetBarrierCurrent(currentBarrier);
+            hpUI.SetRecoverMax(recoverTime);
+            hpUI.SetRecoverCurrent(currentRecover);
+            hpUI.SetRecoverEnable(false);
+        }
+
         this.UpdateAsObservable().Subscribe(_ => UniRxUpdate());       
     }
 
     void UniRxUpdate()
     {
-        currentBarrier += recoverSpeed * Time.deltaTime;
-        if (currentBarrier > barrierStrength)
+        if (hpUI.gameObject.activeSelf)
         {
-            currentBarrier = barrierStrength;
+            hpUI.transform.position = Camera.main.WorldToScreenPoint(HPUICenter.transform.position);
+
+            if (currentBarrier <= 0)
+            {
+                hpUI.SetRecoverEnable(true);
+                currentRecover += Time.deltaTime;
+                if (currentRecover > recoverTime)
+                {
+                    currentRecover = 0;
+                    showHPStart = Time.time;
+                    hpUI.SetRecoverEnable(false);
+                    currentBarrier = barrierStrength;
+                }
+            }
+
+            if (currentRecover == 0 && Time.time - showHPStart > showHPTime)
+            {
+                hpUI.gameObject.SetActive(false);
+            }
+
+            UpdateUI();
         }
+    }
+
+    void UpdateUI()
+    {
+        hpUI.SetHPCurrent(currentHP);
+        hpUI.SetBarrierCurrent(currentBarrier);
+        hpUI.SetRecoverCurrent(currentRecover);
     }
 
     public bool Attacked(Attack attack)
     {
+        hpUI.gameObject.SetActive(true);
+        showHPStart = Time.time;
+
         if (attack.Type == AttackType.ATTACK_TYPE_SLASH && slash.CanSlash)
         {
             OnDie(gameObject);
@@ -64,5 +119,13 @@ public class EnemyBattle : MonoBehaviour {
         }
 
         return false;
+    }
+
+    void OnDestroy()
+    {
+        if (hpUI)
+        {
+            Destroy(hpUI.gameObject);
+        }
     }
 }

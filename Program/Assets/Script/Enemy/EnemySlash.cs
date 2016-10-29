@@ -28,7 +28,7 @@ public class EnemySlash : MonoBehaviour {
         se = GetComponent<AudioSource>();
         anim = GetComponent<Animator>();
 
-        LockUIGenerator ui = GameObject.FindObjectOfType<LockUIGenerator>();
+        RunTimeUIGenerator ui = GameObject.FindObjectOfType<RunTimeUIGenerator>();
         if (ui)
         {
             lockUI = ui.CreateLockUI();
