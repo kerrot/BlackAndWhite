@@ -39,7 +39,7 @@ public class InputController : MonoBehaviour {
 
     void UniRxUpdate ()
     {
-        if (GameSystem.Instance.State != GameSystem.GameState.GAME_STATE_INGAME)
+        if (GameSystem.Instance.State != GameSystem.GameState.GAME_STATE_PLAYING)
         {
             return;
         }

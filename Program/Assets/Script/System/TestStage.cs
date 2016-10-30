@@ -45,7 +45,7 @@ public class TestStage : MonoBehaviour
 
     void UniRxUpdate()
     {
-        if (GameSystem.Instance.State == GameSystem.GameState.GAME_STATE_INGAME)
+        if (GameSystem.Instance.State == GameSystem.GameState.GAME_STATE_PLAYING)
         {
 
             int nowTime = limit - (int)(Time.realtimeSinceStartup - startTime);
@@ -57,7 +57,7 @@ public class TestStage : MonoBehaviour
 
             timeUI.text = nowTime.ToString();
         }
-        else if (GameSystem.Instance.State == GameSystem.GameState.GAME_STATE_OFFGAME)
+        else if (GameSystem.Instance.State == GameSystem.GameState.GAME_STATE_PAUSE)
         {
             if (Input.GetMouseButtonDown(0))
             {
@@ -78,7 +78,11 @@ public class TestStage : MonoBehaviour
 
     void TimeUp()
     {
-        GameSystem.Instance.State = GameSystem.GameState.GAME_STATE_OFFGAME;
+        GameSystem system = GameObject.FindObjectOfType<GameSystem>();
+        if (system)
+        {
+            system.GamePause();
+        }
         inGame.SetActive(false);
 
         StartCoroutine(GameClear());

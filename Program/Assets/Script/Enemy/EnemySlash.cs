@@ -12,6 +12,9 @@ public class EnemySlash : MonoBehaviour {
     [SerializeField]
     private GameObject effect;
 
+    
+    public UnitAction OnCanSlash;
+
     GameObject lockUI;
     bool canSlash = false;
     float slashStartTime;
@@ -87,6 +90,11 @@ public class EnemySlash : MonoBehaviour {
         if (player)
         {
             player.RegisterSlashObject(gameObject, true);
+        }
+
+        if (OnCanSlash != null)
+        {
+            OnCanSlash(gameObject);
         }
     }
 

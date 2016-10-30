@@ -18,16 +18,18 @@ public class GameSystem : SingletonMonoBehaviour<GameSystem>
     static public MultiSlashAction OnMultiSlash;
 
     int slashCount = 0;
-    
-    GameState state = GameState.GAME_STATE_INGAME;
+
+    bool pause = false;
+    float tmpTimeScale = 0;
+
+    GameState state = GameState.GAME_STATE_PLAYING;
     public enum GameState
     {
-        GAME_STATE_INGAME,
-        GAME_STATE_OFFGAME,
+        GAME_STATE_PLAYING,
+        GAME_STATE_PAUSE,
+        GAME_STATE_RTM,
     }
-    public GameState State { get { return state; }
-                             set { state = value; }
-                            }
+    public GameState State { get { return state; } }
 
     public void Attack()
     {
@@ -59,5 +61,32 @@ public class GameSystem : SingletonMonoBehaviour<GameSystem>
         {
             OnMultiSlash(num);
         }
+    }
+
+    public void GamePause()
+    {
+        if (pause)
+        {
+            return;
+        }
+
+        tmpTimeScale = Time.timeScale;
+        Time.timeScale = 0;
+        
+        state = GameState.GAME_STATE_PAUSE;
+        pause = true;
+    }
+
+    public void GameResume()
+    {
+        pause = false;
+
+        Time.timeScale = tmpTimeScale;
+        state = GameState.GAME_STATE_PLAYING;
+    }
+
+    public void RTM()
+    {
+        state = GameState.GAME_STATE_RTM;
     }
 }

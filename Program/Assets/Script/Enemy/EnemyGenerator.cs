@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 
 public delegate void UnitAction(GameObject unit);
+public delegate void GameAction();
 
 public class EnemyGenerator : MonoBehaviour
 {
@@ -12,6 +13,9 @@ public class EnemyGenerator : MonoBehaviour
     public GameObject enemy;
     public float spawnTime = 3f;
     public UnitAction OnEnemyClicked;
+    public UnitAction OnEnemyCanSlash;
+    public GameAction OnEnemyEmpty;
+
     public List<GameObject> Enemies { get { return monsters; } }
 
     int EnemyMask;
@@ -27,6 +31,11 @@ public class EnemyGenerator : MonoBehaviour
         InputController.OnMouseSingleClick += EnemyClicked;
 
         GameObject.FindObjectsOfType<EnemyBattle>().ToList().ForEach(e => AddMonster(e.gameObject));
+
+        if (monsters.Count == 0 && OnEnemyEmpty != null)
+        {
+            OnEnemyEmpty();
+        }
     }
 
     void EnemyClicked(Vector2 mousePosition)
@@ -87,12 +96,23 @@ public class EnemyGenerator : MonoBehaviour
             obj.layer = LayerMask.NameToLayer("Enemy");
             monsters.Add(obj);
 
-            EnemyBattle Enemy = obj.GetComponent<EnemyBattle>();
-            Enemy.OnDie += EnemyDie;
+            EnemyBattle battle = obj.GetComponent<EnemyBattle>();
+            battle.OnDie += EnemyDie;
+
+            EnemySlash slash = obj.GetComponent<EnemySlash>();
+            slash.OnCanSlash += EnemySlashTriggered;
         }
     }
 
-	void EnemyDie(GameObject Enemy)
+    void EnemySlashTriggered(GameObject unit)
+    {
+        if (OnEnemyCanSlash != null)
+        {
+            OnEnemyCanSlash(unit);
+        }
+    }
+
+    void EnemyDie(GameObject Enemy)
 	{
 		if (Enemy != null && monsters.Contains (Enemy)) {
 			monsters.Remove (Enemy);
@@ -110,6 +130,11 @@ public class EnemyGenerator : MonoBehaviour
 			}
             DestroyObject(Enemy);
 		}
+
+        if (monsters.Count == 0 && OnEnemyEmpty != null)
+        {
+            OnEnemyEmpty();
+        }
 	}
 
     public List<GameObject> GetEnemy(Vector3 position, float radius)
