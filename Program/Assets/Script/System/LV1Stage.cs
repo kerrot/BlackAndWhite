@@ -70,6 +70,13 @@ public class LV1Stage : MonoBehaviour {
 
     void StageClear()
     {
+        StartCoroutine(ShowNextStage());
+    }
+
+    IEnumerator ShowNextStage()
+    {
+        yield return new WaitForSeconds(2f);
+        
         menu.gameObject.SetActive(true);
         menu.StageClear();
     }

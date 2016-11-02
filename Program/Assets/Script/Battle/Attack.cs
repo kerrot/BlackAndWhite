@@ -15,6 +15,8 @@ public enum AttackType
 {
     ATTACK_TYPE_NORMAL,
     ATTACK_TYPE_SLASH,
+    ATTACK_TYPE_EXPLOSION,
+    ATTACK_TYPE_REFLECT,
 };
 
 public class Attack {

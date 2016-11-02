@@ -12,6 +12,7 @@ public class EnemyGenerator : MonoBehaviour
 
     public GameObject enemy;
     public float spawnTime = 3f;
+
     public UnitAction OnEnemyClicked;
     public UnitAction OnEnemyCanSlash;
     public GameAction OnEnemyEmpty;
@@ -72,10 +73,11 @@ public class EnemyGenerator : MonoBehaviour
 
     void Spawn ()
     {
-        //if (GameSystem.Instance.State != GameSystem.GameState.GAME_STATE_INGAME)
-        //{
-        //    return;
-        //}
+        GameSystem system = GameObject.FindObjectOfType<GameSystem>();
+        if (!system || system.State != GameSystem.GameState.GAME_STATE_PLAYING)
+        {
+            return;
+        }
 
         if (monsters.Count > 10 || enemy == null)
         {

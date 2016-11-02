@@ -29,6 +29,8 @@ public class NumberDisplayUI : MonoBehaviour {
                 gameObject.SetActive(false);
             }
         });
+
+        Display(1234);
     }
 
     public void Display(int number)
@@ -50,8 +52,8 @@ public class NumberDisplayUI : MonoBehaviour {
 
                 RectTransform t = numbers[index - 1].gameObject.GetComponent<RectTransform>();
                 RectTransform r = obj.GetComponent<RectTransform>();
-                r.anchoredPosition = new Vector2(t.anchoredPosition.x - t.rect.width, t.anchoredPosition.y);
-                r.localScale = t.localScale;
+                r.sizeDelta = t.sizeDelta;
+                r.localPosition = new Vector3(t.localPosition.x - t.rect.width, t.localPosition.y, t.localPosition.z);
             }
 
             numbers[index].SetNumber(number % 10);

@@ -23,6 +23,11 @@ public class RunTimeUIGenerator : MonoBehaviour {
         {
             GameObject tmp = Instantiate(ui) as GameObject;
             tmp.transform.SetParent(transform);
+
+            RectTransform t = ui.GetComponent<RectTransform>();
+            RectTransform r = tmp.GetComponent<RectTransform>();
+            r.sizeDelta = t.sizeDelta;
+
             return tmp;
         }
 

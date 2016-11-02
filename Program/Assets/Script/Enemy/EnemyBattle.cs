@@ -105,6 +105,18 @@ public class EnemyBattle : MonoBehaviour {
             OnDie(gameObject);
             return true;
         }
+        else if (attack.Type == AttackType.ATTACK_TYPE_EXPLOSION)
+        {
+            if (slash.CanSlash)
+            {
+                StartCoroutine(LateDie());
+            }
+            else
+            {
+                currentBarrier = 0;
+                slash.TriggerSlash();
+            }
+        }
         else
         {
             currentBarrier -= attack.Strength;
@@ -119,6 +131,12 @@ public class EnemyBattle : MonoBehaviour {
         }
 
         return false;
+    }
+
+    IEnumerator LateDie()
+    {
+        yield return new WaitForSeconds(0.5f);
+        OnDie(gameObject);
     }
 
     void OnDestroy()

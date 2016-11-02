@@ -32,4 +32,9 @@ public class MenuControl : MonoBehaviour {
 
         gameObject.SetActive(false);
     }
+
+    void OnDestroy()
+    {
+        BacktoGame();
+    }
 }

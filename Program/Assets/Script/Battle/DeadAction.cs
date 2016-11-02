@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 public class DeadAction : MonoBehaviour
 {
-    public Attack A = new Attack();
+    public Attack A = new Attack() { Type = AttackType.ATTACK_TYPE_EXPLOSION };
 
     void Start()
 	{
