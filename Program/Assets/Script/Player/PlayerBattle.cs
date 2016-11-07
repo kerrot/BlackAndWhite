@@ -20,7 +20,7 @@ public class PlayerBattle : SingletonMonoBehaviour<PlayerBattle> {
     {
 		Enemies.OnEnemyClicked += Battle;
         anim = GetComponent<Animator>();
-        AttackRadius = AttackRegion.transform.localScale.x / 2;
+        AttackRadius = AttackRegion.GetComponent<SphereCollider>().radius;
         swing = GetComponent<AudioSource>();
     }
 

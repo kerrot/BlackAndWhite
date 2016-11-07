@@ -30,7 +30,7 @@ public class NumberDisplayUI : MonoBehaviour {
             }
         });
 
-        Display(1234);
+        //Display(1234);
     }
 
     public void Display(int number)

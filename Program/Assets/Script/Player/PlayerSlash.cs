@@ -3,6 +3,7 @@ using UniRx.Triggers;
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 
 public class PlayerSlash : SingletonMonoBehaviour<PlayerSlash> {
     [SerializeField]
@@ -14,25 +15,27 @@ public class PlayerSlash : SingletonMonoBehaviour<PlayerSlash> {
     [SerializeField]
     private float SlashStopRadius = 0.5f;
     [SerializeField]
-    private float SlashAngle = 30;
-    [SerializeField]
     private GameObject SlashRegion;
     [SerializeField]
     private GameObject SlashRegionDisplay;
 
     public float SlashRadius { get { return slashRadius; } }
 
-    float slashRadius = 3f;
+    float slashRadius;
+
     int slashEndHash;
 	int slashingHash;
     Animator anim;
     bool isSlashing = false;
     bool continueSlash = false;
     bool comboSlash = false;
-    private GameObject TargetObject;
+    GameObject TargetObject;
     float currentSpeed;
 
-    private List<GameObject> slashList = new List<GameObject>();
+    List<GameObject> slashList = new List<GameObject>();
+
+    BoxCollider slashCollider;
+    int EnemyMask;
 
     void Awake()
     {
@@ -42,8 +45,12 @@ public class PlayerSlash : SingletonMonoBehaviour<PlayerSlash> {
 		slashingHash = Animator.StringToHash("PlayerBase.Slashing");
         InputController.OnMouseSingleClick += MultiSlash;
 
-        slashRadius = SlashRegion.transform.localScale.x / 2;
         currentSpeed = SlashSpeed;
+
+        slashRadius = SlashRegionDisplay.GetComponent<SphereCollider>().radius;
+        slashCollider = SlashRegion.GetComponent<BoxCollider>();
+
+        EnemyMask = LayerMask.GetMask("Enemy");
     }
 
     void Start()
@@ -81,7 +88,7 @@ public class PlayerSlash : SingletonMonoBehaviour<PlayerSlash> {
         {
             Vector3 direction = Enemy.transform.position - transform.position;
             EnemySlash battle = Enemy.GetComponent<EnemySlash>();
-            if (direction.magnitude < slashRadius && battle.CanSlash)
+            if (direction.magnitude < SlashRadius && battle.CanSlash)
             {
                 return true;
             }
@@ -129,25 +136,27 @@ public class PlayerSlash : SingletonMonoBehaviour<PlayerSlash> {
         PlayerMove.Instance.CanRotate = true;
 
         int count = 0;
-        List<GameObject> list = PlayerBattle.Instance.Enemies.GetEnemy(transform.position, slashRadius, transform.rotation * Vector3.forward, SlashAngle);
-        list.ForEach(o =>
+        Collider[] enemies = Physics.OverlapBox(transform.position + slashCollider.center, slashCollider.size, transform.rotation, EnemyMask);
+
+        enemies.ToList().ForEach(e =>
         {
-            EnemyBattle Enemy = o.GetComponent<EnemyBattle>();
-            if (Enemy.Attacked(new Attack() { Type = AttackType.ATTACK_TYPE_SLASH }))
+            EnemyBattle Enemy = e.gameObject.GetComponent<EnemyBattle>();
+            if (Enemy && Enemy.Attacked(new Attack() { Type = AttackType.ATTACK_TYPE_SLASH }))
             {
                 ++count;
             }
         });
 
         GameSystem.Instance.KillInOneTime(count);
-        if (list.Count > 0 && comboSlash)
+        if (count > 0 && comboSlash)
         {
             GameSystem.Instance.ComboSlash();
             comboSlash = false;
         }
 
-		if (continueSlash || AutoSlash) {
-			continueSlash = false;
+        if (continueSlash || AutoSlash)
+        {
+            continueSlash = false;
             SlashNextTartget();
         }
     }

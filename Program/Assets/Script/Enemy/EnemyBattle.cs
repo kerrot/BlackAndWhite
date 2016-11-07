@@ -109,6 +109,9 @@ public class EnemyBattle : MonoBehaviour {
         {
             if (slash.CanSlash)
             {
+                anim.SetTrigger("Hitted");
+                GetComponent<Collider>().enabled = false;
+
                 StartCoroutine(LateDie());
             }
             else
