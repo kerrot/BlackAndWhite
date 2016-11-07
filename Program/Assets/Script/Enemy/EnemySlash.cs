@@ -24,7 +24,7 @@ public class EnemySlash : MonoBehaviour {
     Animator UIanim;
     Image UIImage;
 
-    public bool CanSlash { get { return canSlash; } }
+    public bool CanSlash { get { return canSlash && GetComponent<Collider>().enabled; } }
 
     void Start()
     {
@@ -44,8 +44,8 @@ public class EnemySlash : MonoBehaviour {
     }
 
     void UniRxUpdate() {
-        effect.SetActive(!canSlash);
-        lockUI.SetActive(canSlash);
+        effect.SetActive(!CanSlash);
+        lockUI.SetActive(CanSlash);
 
         if (canSlash)
         {
@@ -55,9 +55,9 @@ public class EnemySlash : MonoBehaviour {
                 if (Time.time - slashStartTime > slashTime)
                 {
                     canSlash = false;
-                    player.RegisterSlashObject(gameObject, false);
                 }
-                else
+                
+                if (lockUI.activeSelf)
                 {
                     lockUI.transform.position = Camera.main.WorldToScreenPoint(lockUICenter.transform.position);
                     if (Vector3.Distance(player.transform.position, lockUICenter.position) > player.SlashRadius)
@@ -75,6 +75,11 @@ public class EnemySlash : MonoBehaviour {
                         UIImage.color = tmp;
                     }
                 }
+            }
+
+            if (!CanSlash)
+            {
+                player.RegisterSlashObject(gameObject, false);
             }
         }
     }

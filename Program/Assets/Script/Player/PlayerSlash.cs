@@ -136,7 +136,7 @@ public class PlayerSlash : SingletonMonoBehaviour<PlayerSlash> {
         PlayerMove.Instance.CanRotate = true;
 
         int count = 0;
-        Collider[] enemies = Physics.OverlapBox(transform.position + slashCollider.center, slashCollider.size, transform.rotation, EnemyMask);
+        Collider[] enemies = Physics.OverlapBox(transform.TransformPoint(slashCollider.center), slashCollider.size, transform.rotation, EnemyMask);
 
         enemies.ToList().ForEach(e =>
         {

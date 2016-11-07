@@ -15,6 +15,7 @@ public class EnemyGenerator : MonoBehaviour
 
     public UnitAction OnEnemyClicked;
     public UnitAction OnEnemyCanSlash;
+    public UnitAction OnExplosionAttacked;
     public GameAction OnEnemyEmpty;
 
     public List<GameObject> Enemies { get { return monsters; } }
@@ -100,9 +101,18 @@ public class EnemyGenerator : MonoBehaviour
 
             EnemyBattle battle = obj.GetComponent<EnemyBattle>();
             battle.OnDie += EnemyDie;
+            battle.OnExplosionAttacked += EnemyExplosionAttacked;
 
             EnemySlash slash = obj.GetComponent<EnemySlash>();
             slash.OnCanSlash += EnemySlashTriggered;
+        }
+    }
+
+    void EnemyExplosionAttacked(GameObject unit)
+    {
+        if (OnExplosionAttacked != null)
+        {
+            OnExplosionAttacked(unit);
         }
     }
 

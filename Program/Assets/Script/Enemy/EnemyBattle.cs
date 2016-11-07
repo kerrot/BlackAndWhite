@@ -16,7 +16,8 @@ public class EnemyBattle : MonoBehaviour {
     private Transform HPUICenter;
 
     public UnitAction OnDie;
-    
+    public UnitAction OnExplosionAttacked;
+
     public GameObject DeadAction;
     public Vector3 DeadEffectOffset;
 
@@ -118,6 +119,10 @@ public class EnemyBattle : MonoBehaviour {
             {
                 currentBarrier = 0;
                 slash.TriggerSlash();
+                if (OnExplosionAttacked != null)
+                {
+                    OnExplosionAttacked(gameObject);
+                }
             }
         }
         else
