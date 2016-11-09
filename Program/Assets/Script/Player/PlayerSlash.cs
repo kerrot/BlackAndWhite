@@ -141,7 +141,7 @@ public class PlayerSlash : SingletonMonoBehaviour<PlayerSlash> {
         enemies.ToList().ForEach(e =>
         {
             EnemyBattle Enemy = e.gameObject.GetComponent<EnemyBattle>();
-            if (Enemy && Enemy.Attacked(new Attack() { Type = AttackType.ATTACK_TYPE_SLASH }))
+            if (Enemy && Enemy.Attacked(GetComponent<PlayerBattle>(), new Attack() { Type = AttackType.ATTACK_TYPE_SLASH }))
             {
                 ++count;
             }
@@ -182,7 +182,7 @@ public class PlayerSlash : SingletonMonoBehaviour<PlayerSlash> {
 
     bool SlashNextTartget()
     {
-        List<GameObject> list = PlayerBattle.Instance.Enemies.Enemies;
+        List<GameObject> list = GetComponent<PlayerBattle>().Enemies.Enemies;
         foreach (GameObject o in list)
         {
             SlashEnemy(o);

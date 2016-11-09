@@ -3,7 +3,8 @@ using UniRx.Triggers;
 using UnityEngine;
 using System.Collections;
 
-public class EnemyBattle : MonoBehaviour {
+public class EnemyBattle : UnitBattle
+{
     [SerializeField]
     private float HPMax;
     [SerializeField]
@@ -40,6 +41,8 @@ public class EnemyBattle : MonoBehaviour {
         currentBarrier = barrierStrength;
         currentHP = HPMax;
         currentRecover = 0;
+
+        DeadAction.GetComponent<DeadAction>().Attacker = this;
     }
 
     void Start()
@@ -96,10 +99,16 @@ public class EnemyBattle : MonoBehaviour {
         hpUI.SetRecoverCurrent(currentRecover);
     }
 
-    public bool Attacked(Attack attack)
+    public override bool Attacked(UnitBattle unit, Attack attack)
     {
         hpUI.gameObject.SetActive(true);
         showHPStart = Time.time;
+
+        Immunity im = GetComponent<Immunity>();
+        if (im && im.CheckImmunity(unit, attack))
+        {
+            return false;
+        }
 
         if (attack.Type == AttackType.ATTACK_TYPE_SLASH && slash.CanSlash)
         {

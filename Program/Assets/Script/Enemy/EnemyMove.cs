@@ -40,11 +40,16 @@ public class EnemyMove : MonoBehaviour {
             AnimatorStateInfo info = anim.GetCurrentAnimatorStateInfo(0);
             if (info.fullPathHash == moveHash)
             {
-                Vector3 offset = (agent.steeringTarget == transform.position) ? transform.forward : (agent.steeringTarget - transform.position).normalized;
-                float angle = Vector3.Angle(offset, Vector3.forward) * ((offset.x > 0) ? 1 : -1);
-                transform.rotation = Quaternion.AngleAxis(angle, Vector3.up);
+                FaceTarget(agent.steeringTarget);
                 agent.nextPosition = transform.position;
             }
         }
+    }
+
+    public void FaceTarget(Vector3 target)
+    {
+        Vector3 offset = (target == transform.position) ? transform.forward : (target - transform.position).normalized;
+        float angle = Vector3.Angle(offset, Vector3.forward) * ((offset.x > 0) ? 1 : -1);
+        transform.rotation = Quaternion.AngleAxis(angle, Vector3.up);
     }
 }

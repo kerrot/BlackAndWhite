@@ -2,19 +2,22 @@
 using UniRx.Triggers;
 using UnityEngine;
 using System.Collections;
+using System.Linq;
 
 public class EnemyAttack : MonoBehaviour
 {
     [SerializeField]
-    private GameObject attakRange;
+    private GameObject startAttack;
     [SerializeField]
-    private float attakAngle;
+    private GameObject attackRange;
+    [SerializeField]
+    private float attackPower;
 
     int idleHash;
     Animator anim;
     EnemyMove movement;
 
-    float radius;
+    SphereCollider range;
 
     // Use this for initialization
     void Awake()
@@ -23,7 +26,7 @@ public class EnemyAttack : MonoBehaviour
         anim = GetComponent<Animator>();
 
         movement = GetComponent<EnemyMove>();
-        radius = attakRange.transform.localScale.x / 2;
+        range = attackRange.GetComponent<SphereCollider>();
     }
 
     // Update is called once per frame
@@ -34,12 +37,13 @@ public class EnemyAttack : MonoBehaviour
 
     void UniRxUpdate()
     {
-        PlayerMove player = GameObject.FindObjectOfType<PlayerMove>();
-        if (player)
+        PlayerBattle player = GameObject.FindObjectOfType<PlayerBattle>();
+        if (player && player.enabled)
         {
             AnimatorStateInfo info = anim.GetCurrentAnimatorStateInfo(0);
             if (info.fullPathHash == idleHash && Vector3.Distance(player.transform.position, transform.position) <= movement.StopRadius)
             {
+                movement.FaceTarget(player.transform.position);
                 anim.SetTrigger("Attack");
             }
         }
@@ -47,15 +51,15 @@ public class EnemyAttack : MonoBehaviour
 
     void Attack()
     {
-        PlayerBattle player = GameObject.FindObjectOfType<PlayerBattle>();
-        if (player)
+        Collider[] cs = Physics.OverlapSphere(range.gameObject.transform.position, range.radius);
+        cs.ToList().ForEach(c =>
         {
-            Vector3 direction = player.transform.position - transform.position;
-            float angle = Vector3.Angle(transform.forward, direction);
-            if (direction.magnitude <= radius && angle <= attakAngle)
+            PlayerBattle player = c.gameObject.GetComponent<PlayerBattle>();
+            if (player && player.enabled)
             {
-                player.Attacked(new Attack() { Element = ElementType.ELEMENT_TYPE_NONE, Type = AttackType.ATTACK_TYPE_NORMAL });
+                player.Attacked(GetComponent<EnemyBattle>(), new Attack() { Strength = attackPower, Element = ElementType.ELEMENT_TYPE_NONE, Type = AttackType.ATTACK_TYPE_NORMAL });
+                return;
             }
-        }
+        });
     }
 }

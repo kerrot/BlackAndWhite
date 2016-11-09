@@ -28,6 +28,7 @@ public class GameSystem : SingletonMonoBehaviour<GameSystem>
         GAME_STATE_PLAYING,
         GAME_STATE_PAUSE,
         GAME_STATE_RTM,
+        GAME_STATE_GAMEOVER,
     }
     public GameState State { get { return state; } }
 
@@ -83,6 +84,19 @@ public class GameSystem : SingletonMonoBehaviour<GameSystem>
 
         Time.timeScale = tmpTimeScale;
         state = GameState.GAME_STATE_PLAYING;
+    }
+
+    public void GameOver()
+    {
+        state = GameState.GAME_STATE_GAMEOVER;
+        StartCoroutine(RestartGame());
+    }
+
+    IEnumerator RestartGame()
+    {
+        yield return new WaitForSeconds(3f);
+
+        GameScene.ReStartGame();
     }
 
     public void RTM()
