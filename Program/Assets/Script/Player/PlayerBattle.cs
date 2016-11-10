@@ -19,25 +19,31 @@ public class PlayerBattle : UnitBattle {
     private float nowHP;
     [SerializeField]
     private float recoverTime;
+    [SerializeField]
+    private AudioClip guardSE;
+    [SerializeField]
+    private AudioClip attackSE;
 
     float AttackRadius = 1.3f;
     Animator anim;
-
-    AudioSource swing;
 
     float recoverStart;
     float cuurentIntensity;
 
     int attackHash;
+    int guardHash;
+
+    bool guardAttack = false;
+    Vector3 guardPos;
 
     void Start()
     {
         attackHash = Animator.StringToHash("PlayerBase.Attack");
+        guardHash = Animator.StringToHash("PlayerBase.GuardAttack");
 
         Enemies.OnEnemyClicked += Battle;
         anim = GetComponent<Animator>();
         AttackRadius = AttackRegion.GetComponent<SphereCollider>().radius;
-        swing = GetComponent<AudioSource>();
 
         nowHP = HP;
 
@@ -69,6 +75,25 @@ public class PlayerBattle : UnitBattle {
         {
             effect.intensity += (cuurentIntensity > effect.intensity) ? 0.001f : -0.001f;
         }
+
+
+        if (guardAttack && transform.position != guardPos)
+        {
+            if (GetComponent<Rigidbody>().velocity == Vector3.zero)
+            {
+                guardPos = transform.position;
+                anim.enabled = true;
+            }
+        }
+    }
+
+    void LateUpdate()
+    {
+        if (anim.enabled && guardAttack)
+        {
+            guardAttack = false;
+            transform.position = guardPos;
+        }
     }
 
     void Battle (GameObject Enemy)
@@ -85,9 +110,20 @@ public class PlayerBattle : UnitBattle {
 		if (direction.magnitude < AttackRadius) {
 			PlayerMove.Instance.CanRotate = false;
 			anim.SetTrigger("Attack");
-            swing.Play();
+
+            PlaySE(attackSE);
         }
 	}
+
+    void PlaySE(AudioClip clip)
+    {
+        AudioSource se = GetComponent<AudioSource>();
+        if (se && clip)
+        {
+            se.clip = clip;
+            se.Play();
+        }
+    }
 
     void AttackHit()
     {
@@ -106,8 +142,20 @@ public class PlayerBattle : UnitBattle {
 
     public override bool Attacked(UnitBattle unit, Attack attack)
     {
-        recoverStart = Time.time;
-        nowHP -= attack.Strength;
+        if (anim.GetBool("Guard") || guardAttack)
+        {
+            PlaySE(guardSE);
+            anim.enabled = false;
+            guardAttack = true;
+            guardPos = transform.position;
+
+            Vector3 force = (transform.position - unit.transform.position).normalized;
+            Rigidbody rd = GetComponent<Rigidbody>();
+            rd.velocity = force * 3;
+
+            unit.Attacked(this, new Attack() { Type = AttackType.ATTACK_TYPE_REFLECT, Strength = 3f });
+            return false;
+        }
 
         AnimatorStateInfo info = anim.GetCurrentAnimatorStateInfo(0);
         if (attack.Type == AttackType.ATTACK_TYPE_REFLECT && info.fullPathHash == attackHash)
@@ -115,6 +163,9 @@ public class PlayerBattle : UnitBattle {
             anim.SetTrigger("AttackFail");
             return false;
         }
+
+        recoverStart = Time.time;
+        nowHP -= attack.Strength;
 
         if (nowHP > 0)
         {

@@ -25,10 +25,10 @@ public class FollowTargetPosition : MonoBehaviour
 	void Start ()
 	{
 		offset = transform.position - follow.transform.position;
-        this.UpdateAsObservable().Subscribe(_ => UniRxUpdate());
+        //this.UpdateAsObservable().Subscribe(_ => UniRxUpdate());
     }
 
-	void UniRxUpdate()
+	void LateUpdate()
 	{
 		Vector3 currentPosition = follow.transform.position + offset;
 
