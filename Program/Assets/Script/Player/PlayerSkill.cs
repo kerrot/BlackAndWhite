@@ -23,6 +23,12 @@ public class PlayerSkill : SingletonMonoBehaviour<PlayerSkill>
 
     void Start()
     {
+		SkillBtn btn = GameObject.FindObjectOfType<SkillBtn> ();
+		if (btn) 
+		{
+			btn.OnBlueChanged += BluePower;
+		}
+
         this.UpdateAsObservable().Subscribe(_ => UniRxUpdate());
     }
 
@@ -95,4 +101,9 @@ public class PlayerSkill : SingletonMonoBehaviour<PlayerSkill>
             OnPowerChnaged(usingSkill, power, maxPower);
         }
     }
+
+	void BluePower(bool active)
+	{
+		
+	}
 }

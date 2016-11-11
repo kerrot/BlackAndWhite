@@ -47,7 +47,7 @@ public class Immunity : MonoBehaviour {
 
             if (result)
             {
-                if (reflict)
+				if (reflict && attack.Type != AttackType.ATTACK_TYPE_REFLECT)
                 {
                     unit.Attacked(GetComponent<UnitBattle>(), new Attack() { Type = AttackType.ATTACK_TYPE_REFLECT });
                 }

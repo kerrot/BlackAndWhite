@@ -74,7 +74,7 @@ public class SkillBtn : MonoBehaviour {
 			blueBtn.SetActive (true);
 		}
 
-		if (OnBlueChanged = null) 
+		if (OnBlueChanged != null) 
 		{
 			OnBlueChanged (blueBtn.activeSelf);
 		}
