@@ -4,7 +4,7 @@ using System.Collections;
 
 public class GameScene : MonoBehaviour {
 
-	static public void LoadGame(string name)
+	public void LoadGame(string name)
     {
         SceneManager.LoadScene(name);
     }

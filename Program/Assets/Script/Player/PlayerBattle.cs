@@ -31,7 +31,6 @@ public class PlayerBattle : UnitBattle {
     float cuurentIntensity;
 
     int attackHash;
-    int guardHash;
 
     bool guardAttack = false;
     Vector3 guardPos;
@@ -39,7 +38,6 @@ public class PlayerBattle : UnitBattle {
     void Start()
     {
         attackHash = Animator.StringToHash("PlayerBase.Attack");
-        guardHash = Animator.StringToHash("PlayerBase.GuardAttack");
 
         Enemies.OnEnemyClicked += Battle;
         anim = GetComponent<Animator>();
