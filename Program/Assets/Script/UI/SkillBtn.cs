@@ -21,8 +21,10 @@ public class SkillBtn : MonoBehaviour {
 
 	public delegate void ButtonAction(bool pressed);
 	public ButtonAction OnBlueChanged;
+    public ButtonAction OnRedChanged;
+    public ButtonAction OnGreenChanged;
 
-	void Awake() {
+    void Awake() {
 		
 	}
 

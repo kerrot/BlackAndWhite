@@ -4,12 +4,15 @@ using System.Linq;
 
 public class DeadAction : MonoBehaviour
 {
-    public Attack A = new Attack() { Type = AttackType.ATTACK_TYPE_EXPLOSION };
+    public Attack Atk;
     public UnitBattle Attacker;
 
     void Start()
 	{
-		Destroy(gameObject, GetComponent<ParticleSystem>().duration);
+        ParticleSystem par = GetComponent<ParticleSystem>();
+        par.startColor = Attribute.GetColor(Atk.Element);
+
+        Destroy(gameObject, par.duration);
 
 
         Collider[] cs = Physics.OverlapSphere(transform.position, GetComponent<SphereCollider>().radius);
@@ -18,7 +21,7 @@ public class DeadAction : MonoBehaviour
             EnemyBattle battle = c.gameObject.GetComponent<EnemyBattle>();
             if (battle != null)
             {
-                battle.Attacked(Attacker, A);
+                battle.Attacked(Attacker, Atk);
             }
         });
     }

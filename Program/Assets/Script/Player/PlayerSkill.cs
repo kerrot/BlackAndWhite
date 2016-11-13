@@ -9,7 +9,10 @@ public class PlayerSkill : SingletonMonoBehaviour<PlayerSkill>
     private float powerCostTime;
     [SerializeField]
     private int maxPower;
-
+    [SerializeField]
+    private MeshRenderer Lance;
+    [SerializeField]
+    private GameObject LanceEffect;
 
     public delegate void SkillAction(bool usingSkill, float power, float maxPower);
     public static SkillAction OnPowerChnaged;
@@ -21,13 +24,19 @@ public class PlayerSkill : SingletonMonoBehaviour<PlayerSkill>
 
     private float skillStartTime;
 
+    Material lanceEffectmat;
+
     void Start()
     {
 		SkillBtn btn = GameObject.FindObjectOfType<SkillBtn> ();
 		if (btn) 
 		{
-			btn.OnBlueChanged += BluePower;
-		}
+			btn.OnBlueChanged += BlueAttribute;
+            btn.OnRedChanged += RedAttribute;
+            btn.OnGreenChanged += GreenAttribute;
+        }
+
+        lanceEffectmat = LanceEffect.GetComponentInChildren<MeshRenderer>().material;
 
         this.UpdateAsObservable().Subscribe(_ => UniRxUpdate());
     }
@@ -42,6 +51,8 @@ public class PlayerSkill : SingletonMonoBehaviour<PlayerSkill>
 				UsePower (1);
             }
         }
+
+        //if (Input.GetButtonDown("Jump"))
     }
 
     public void WhiteSkill()
@@ -102,8 +113,37 @@ public class PlayerSkill : SingletonMonoBehaviour<PlayerSkill>
         }
     }
 
-	void BluePower(bool active)
+	void BlueAttribute(bool active)
 	{
-		
-	}
+        AttributeChange(active, new Color(0f, 0f, 2f), ElementType.ELEMENT_TYPE_BLUE);
+    }
+    void RedAttribute(bool active)
+    {
+        AttributeChange(active, new Color(2f, 0f, 0f), ElementType.ELEMENT_TYPE_RED);
+    }
+    void GreenAttribute(bool active)
+    {
+        AttributeChange(active, new Color(0f, 2f, 0f), ElementType.ELEMENT_TYPE_GREEN);
+    }
+
+    void AttributeChange(bool active, Color color, ElementType type)
+    {
+        LanceEffect.gameObject.SetActive(active);
+        if (active)
+        {
+            Lance.material.SetColor("_EmissionColor", color);
+            lanceEffectmat.SetColor("_EmissionColor", color);
+        }
+        else
+        {
+            Lance.material.SetColor("_EmissionColor", Color.black);
+            lanceEffectmat.SetColor("_EmissionColor", Color.black);
+        }
+
+        Attribute attr = GetComponent<Attribute>();
+        if (attr)
+        {
+            attr.SetElement((active) ? type : ElementType.ELEMENT_TYPE_NONE);
+        }
+    }
 }

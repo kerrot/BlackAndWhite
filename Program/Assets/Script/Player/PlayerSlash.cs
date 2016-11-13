@@ -138,10 +138,12 @@ public class PlayerSlash : SingletonMonoBehaviour<PlayerSlash> {
         int count = 0;
         Collider[] enemies = Physics.OverlapBox(transform.TransformPoint(slashCollider.center), slashCollider.size, transform.rotation, EnemyMask);
 
+        PlayerBattle battle = GetComponent<PlayerBattle>();
+
         enemies.ToList().ForEach(e =>
         {
             EnemyBattle Enemy = e.gameObject.GetComponent<EnemyBattle>();
-            if (Enemy && Enemy.Attacked(GetComponent<PlayerBattle>(), new Attack() { Type = AttackType.ATTACK_TYPE_SLASH }))
+            if (Enemy && Enemy.Attacked(battle, battle.CreateAttack(AttackType.ATTACK_TYPE_SLASH, 1f)))
             {
                 ++count;
             }

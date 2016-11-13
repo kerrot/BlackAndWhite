@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class LV3Stage : MonoBehaviour {
+public class LV5Stage : MonoBehaviour {
     [SerializeField]
     private GameObject readme;
     [SerializeField]

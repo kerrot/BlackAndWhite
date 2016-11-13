@@ -27,7 +27,7 @@ public class UIRaycastMask : MonoBehaviour, ICanvasRaycastFilter
 
         try
         {
-            return _sprite.texture.GetPixel(x, y).a > 0;
+            return _sprite.texture.GetPixel(x, y).a == 1;
         }
         catch (UnityException e)
         {

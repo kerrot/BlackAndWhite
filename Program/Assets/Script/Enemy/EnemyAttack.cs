@@ -51,13 +51,15 @@ public class EnemyAttack : MonoBehaviour
 
     void Attack()
     {
+        EnemyBattle battle = GetComponent<EnemyBattle>();
+
         Collider[] cs = Physics.OverlapSphere(range.gameObject.transform.position, range.radius);
         cs.ToList().ForEach(c =>
         {
             PlayerBattle player = c.gameObject.GetComponent<PlayerBattle>();
             if (player && player.enabled)
             {
-                player.Attacked(GetComponent<EnemyBattle>(), new Attack() { Strength = attackPower, Element = ElementType.ELEMENT_TYPE_NONE, Type = AttackType.ATTACK_TYPE_NORMAL });
+                player.Attacked(GetComponent<EnemyBattle>(), battle.CreateAttack(AttackType.ATTACK_TYPE_NORMAL, attackPower));
                 return;
             }
         });

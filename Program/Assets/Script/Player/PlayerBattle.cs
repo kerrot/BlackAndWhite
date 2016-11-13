@@ -129,7 +129,7 @@ public class PlayerBattle : UnitBattle {
         list.ForEach(o =>
         {
             EnemyBattle Enemy = o.GetComponent<EnemyBattle>();
-            Enemy.Attacked(this, new Attack() { Strength = 2f });
+            Enemy.Attacked(this, CreateAttack(AttackType.ATTACK_TYPE_NORMAL, 2f));
         });
 
         if (list.Count > 0)
@@ -151,7 +151,9 @@ public class PlayerBattle : UnitBattle {
             Rigidbody rd = GetComponent<Rigidbody>();
             rd.velocity = force * 3;
 
-            unit.Attacked(this, new Attack() { Type = AttackType.ATTACK_TYPE_REFLECT, Strength = 3f });
+            
+
+            unit.Attacked(this, CreateAttack(AttackType.ATTACK_TYPE_REFLECT, 3f));
             return false;
         }
 

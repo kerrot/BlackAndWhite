@@ -41,8 +41,6 @@ public class EnemyBattle : UnitBattle
         currentBarrier = barrierStrength;
         currentHP = HPMax;
         currentRecover = 0;
-
-        DeadAction.GetComponent<DeadAction>().Attacker = this;
     }
 
     void Start()
@@ -110,9 +108,15 @@ public class EnemyBattle : UnitBattle
             return false;
         }
 
+        Attribute attr = GetComponent<Attribute>();
+        if (attr && attr.ProcessAttack(attack))
+        {
+            return false;
+        }
+
         if (attack.Type == AttackType.ATTACK_TYPE_SLASH && slash.CanSlash)
         {
-            OnDie(gameObject);
+            Die(attack);
             return true;
         }
         else if (attack.Type == AttackType.ATTACK_TYPE_EXPLOSION)
@@ -122,7 +126,7 @@ public class EnemyBattle : UnitBattle
                 anim.SetTrigger("Hitted");
                 GetComponent<Collider>().enabled = false;
 
-                StartCoroutine(LateDie());
+                StartCoroutine(LateDie(attack));
             }
             else
             {
@@ -150,10 +154,28 @@ public class EnemyBattle : UnitBattle
         return false;
     }
 
-    IEnumerator LateDie()
+    void Die(Attack attack)
+    {
+        if (DeadAction)
+        {
+            DeadAction act = DeadAction.GetComponent<DeadAction>();
+            if (act)
+            {
+                act.Attacker = this;
+                act.Atk = new Attack() { Type = AttackType.ATTACK_TYPE_EXPLOSION, Element = attack.Element };
+            }
+        }
+
+        if (OnDie != null)
+        {
+            OnDie(gameObject);
+        }
+    }
+
+    IEnumerator LateDie(Attack attack)
     {
         yield return new WaitForSeconds(0.5f);
-        OnDie(gameObject);
+        Die(attack);
     }
 
     void OnDestroy()

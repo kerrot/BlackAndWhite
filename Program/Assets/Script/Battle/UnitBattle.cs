@@ -7,4 +7,16 @@ public class UnitBattle : MonoBehaviour {
     {
         return false;
     }
+
+    public Attack CreateAttack(AttackType type, float strength)
+    {
+        ElementType ele = ElementType.ELEMENT_TYPE_NONE;
+        Attribute attr = GetComponent<Attribute>();
+        if (attr)
+        {
+            ele = attr.Type;
+        }
+
+        return new Attack() { Type = type, Strength = strength, Element = ele };
+    }
 }

@@ -130,10 +130,12 @@ public class EnemyGenerator : MonoBehaviour
 			monsters.Remove (Enemy);
 
             EnemyBattle battle = Enemy.GetComponent<EnemyBattle>();
-            if (battle != null)
+            if (battle != null && battle.DeadAction != null)
             {
                 GameObject obj = Instantiate(battle.DeadAction, Enemy.transform.position + battle.DeadEffectOffset, Quaternion.identity) as GameObject;
                 obj.layer = 0;
+
+                obj.GetComponent<DeadAction>().Atk = battle.DeadAction.GetComponent<DeadAction>().Atk;
             }
 
 			if (!PlayerSkill.Instance.isSkill) 
