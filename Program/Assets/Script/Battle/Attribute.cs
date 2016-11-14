@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using System.Linq;
 using System.Collections;
 
 public class Attribute : MonoBehaviour {
@@ -7,7 +8,7 @@ public class Attribute : MonoBehaviour {
 
     public ElementType Type { get { return type; } }
 	
-    public bool ProcessAttack(Attack atk)
+    public bool ProcessAttack(UnitBattle unit, Attack atk)
     {
         if (atk.Element == type)
         {
@@ -26,7 +27,15 @@ public class Attribute : MonoBehaviour {
             atk.Strength *= 2;
         }
 
-        return false;
+        bool result = false;
+
+        AuraBattle[] aura = GetComponentsInChildren<AuraBattle>();
+        aura.ToList().ForEach(a =>
+        {
+            result |= a.Attacked(unit, atk);
+        });
+
+        return result;
     }
 
     public void SetElement(ElementType ele)

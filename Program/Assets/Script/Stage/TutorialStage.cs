@@ -1,31 +1,49 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class LV2Stage : MonoBehaviour {
+public class TutorialStage : MonoBehaviour {
     [SerializeField]
-    private GameObject readme;
+    private GameObject opening;
+    [SerializeField]
+    private GameObject canSlash;
+    [SerializeField]
+    private GameObject explosion;    
     [SerializeField]
     private MenuControl menu;
 
+    bool showSlash = false;
     bool showCombo = false;
 
     // Use this for initialization
     void Start () {
-        readme.SetActive(false);
+        CloseReadme();
 
         OpeningRTM opening = GameObject.FindObjectOfType<OpeningRTM>();
         if (opening)
         {
-            opening.OnOpeningEnd += Resume;
+            opening.OnOpeningEnd += OnOpeningEnd;
         }
 
         EnemyGenerator enemies = GameObject.FindObjectOfType<EnemyGenerator>();
         if (enemies)
         {
             enemies.OnExplosionAttacked += EnemyExplosionAttacked;
+            enemies.OnEnemyCanSlash += EnemySlashTriggered;
             enemies.OnEnemyEmpty += StageClear;
         }
 	}
+	
+	void OnOpeningEnd()
+    {
+        if (opening)
+        {
+            ShowReadMe(opening);
+        }
+        else
+        {
+            Resume();
+        }
+    }
 
     public void Resume()
     {
@@ -35,16 +53,26 @@ public class LV2Stage : MonoBehaviour {
             system.GameResume();
         }
 
-        readme.SetActive(false);
+        CloseReadme();
     }
 
     void EnemyExplosionAttacked(GameObject unit)
     {
-        if (!showCombo)
+        if (explosion && !showCombo)
         {
             showCombo = true;
 
-            ShowReadMe(readme);
+            ShowReadMe(explosion);
+        }
+    }
+
+    void EnemySlashTriggered(GameObject unit)
+    {
+        if (canSlash && !showSlash)
+        {
+            showSlash = true;
+
+            ShowReadMe(canSlash);
         }
     }
 
@@ -56,7 +84,10 @@ public class LV2Stage : MonoBehaviour {
             system.GamePause();
         }
 
-        obj.SetActive(true);
+        if (obj)
+        {
+            obj.SetActive(true);
+        }
     }
 
     void StageClear()
@@ -70,5 +101,23 @@ public class LV2Stage : MonoBehaviour {
         
         menu.gameObject.SetActive(true);
         menu.StageClear();
+    }
+
+    void CloseReadme()
+    {
+        if (opening)
+        {
+            opening.SetActive(false);
+        }
+
+        if (canSlash)
+        {
+            canSlash.SetActive(false);
+        }
+
+        if (explosion)
+        {
+            explosion.SetActive(false);
+        }
     }
 }

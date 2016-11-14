@@ -8,7 +8,7 @@ public class UnitBattle : MonoBehaviour {
         return false;
     }
 
-    public Attack CreateAttack(AttackType type, float strength)
+    public Attack CreateAttack(AttackType type, float strength, float force)
     {
         ElementType ele = ElementType.ELEMENT_TYPE_NONE;
         Attribute attr = GetComponent<Attribute>();
@@ -17,6 +17,11 @@ public class UnitBattle : MonoBehaviour {
             ele = attr.Type;
         }
 
-        return new Attack() { Type = type, Strength = strength, Element = ele };
+        return new Attack() { Type = type, Strength = strength, Element = ele, Force = force };
+    }
+
+    public Attack CreateAttack(AttackType type, float strength)
+    {
+        return CreateAttack(type, strength, 0f);
     }
 }

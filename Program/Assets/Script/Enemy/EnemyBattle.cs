@@ -109,7 +109,7 @@ public class EnemyBattle : UnitBattle
         }
 
         Attribute attr = GetComponent<Attribute>();
-        if (attr && attr.ProcessAttack(attack))
+        if (attr && attr.ProcessAttack(unit, attack))
         {
             return false;
         }

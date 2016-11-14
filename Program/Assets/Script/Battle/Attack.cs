@@ -28,4 +28,5 @@ public class Attack {
     public ElementType Element { get; set; }
     public float Strength { get; set; }
     public AttackType Type { get; set; }
+    public float Force { get; set; }
 }

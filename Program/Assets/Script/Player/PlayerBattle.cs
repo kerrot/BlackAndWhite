@@ -140,20 +140,27 @@ public class PlayerBattle : UnitBattle {
 
     public override bool Attacked(UnitBattle unit, Attack attack)
     {
+        if (!enabled)
+        {
+            return false;
+        }
+
         if (anim.GetBool("Guard") || guardAttack)
         {
-            PlaySE(guardSE);
-            anim.enabled = false;
-            guardAttack = true;
-            guardPos = transform.position;
+            if (attack.Type == AttackType.ATTACK_TYPE_NORMAL)
+            {
+                PlaySE(guardSE);
+                anim.enabled = false;
+                guardAttack = true;
+                guardPos = transform.position;
 
-            Vector3 force = (transform.position - unit.transform.position).normalized;
-            Rigidbody rd = GetComponent<Rigidbody>();
-            rd.velocity = force * 3;
+                Vector3 force = (transform.position - unit.transform.position).normalized;
+                Rigidbody rd = GetComponent<Rigidbody>();
+                rd.velocity = force * attack.Force;
 
-            
+                unit.Attacked(this, CreateAttack(AttackType.ATTACK_TYPE_REFLECT, 3f));
+            }
 
-            unit.Attacked(this, CreateAttack(AttackType.ATTACK_TYPE_REFLECT, 3f));
             return false;
         }
 
@@ -172,7 +179,10 @@ public class PlayerBattle : UnitBattle {
             anim.SetTrigger("Hurt");
         }
         
-        hurtEffect.SetTrigger("Play");
+        if (attack.Strength > 0)
+        {
+            hurtEffect.SetTrigger("Play");
+        }
 
         //ShakeCamera shake = GameObject.FindObjectOfType<ShakeCamera>();
         //if (shake)

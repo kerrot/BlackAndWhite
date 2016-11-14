@@ -12,6 +12,8 @@ public class EnemyAttack : MonoBehaviour
     private GameObject attackRange;
     [SerializeField]
     private float attackPower;
+    [SerializeField]
+    private float attackForce;
 
     int idleHash;
     Animator anim;
@@ -59,7 +61,7 @@ public class EnemyAttack : MonoBehaviour
             PlayerBattle player = c.gameObject.GetComponent<PlayerBattle>();
             if (player && player.enabled)
             {
-                player.Attacked(GetComponent<EnemyBattle>(), battle.CreateAttack(AttackType.ATTACK_TYPE_NORMAL, attackPower));
+                player.Attacked(GetComponent<EnemyBattle>(), battle.CreateAttack(AttackType.ATTACK_TYPE_NORMAL, attackPower, attackForce));
                 return;
             }
         });

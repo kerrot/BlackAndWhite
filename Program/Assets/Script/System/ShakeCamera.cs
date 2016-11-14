@@ -21,7 +21,7 @@ public class ShakeCamera : MonoBehaviour
         follower = GetComponent<FollowTargetPosition>();
     }
 
-    void Update()
+    void LateUpdate()
     {
         if (offset > 0 && frequency > 0)
         {
