@@ -9,10 +9,12 @@ ModelImporter:
     100002: //RootNode
     100004: JBody
     100006: JRoot
+    100008: CBody
     400000: Dark
     400002: //RootNode
     400004: JBody
     400006: JRoot
+    400008: CBody
     2300000: Dark
     3300000: Dark
     4300000: Dark
@@ -21,6 +23,9 @@ ModelImporter:
     7400004: Hitted
     7400006: Break
     7400008: Idle
+    7400010: Tumble
+    7400012: Die
+    7400014: Revive
     9500000: //RootNode
   materials:
     importMaterials: 1
@@ -206,6 +211,114 @@ ModelImporter:
       loop: 0
       hasAdditiveReferencePose: 0
       loopTime: 1
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: JRoot
+        weight: 1
+      - path: JRoot/JBody
+        weight: 1
+      - path: JRoot/JBody/Dark
+        weight: 1
+      maskType: 0
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 190
+    - serializedVersion: 16
+      name: Tumble
+      takeName: Tumble
+      firstFrame: 210
+      lastFrame: 250
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: JRoot
+        weight: 1
+      - path: JRoot/JBody
+        weight: 1
+      - path: JRoot/JBody/Dark
+        weight: 1
+      maskType: 0
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 190
+    - serializedVersion: 16
+      name: Die
+      takeName: Die
+      firstFrame: 250
+      lastFrame: 300
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: JRoot
+        weight: 1
+      - path: JRoot/JBody
+        weight: 1
+      - path: JRoot/JBody/Dark
+        weight: 1
+      maskType: 0
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 190
+    - serializedVersion: 16
+      name: Revive
+      takeName: Revive
+      firstFrame: 300
+      lastFrame: 310
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
       loopBlend: 0
       loopBlendOrientation: 0
       loopBlendPositionY: 0
