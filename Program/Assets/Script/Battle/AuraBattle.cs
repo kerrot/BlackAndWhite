@@ -32,6 +32,8 @@ public class AuraBattle : UnitBattle
 
     public override bool Attacked(UnitBattle unit, Attack attack)
     {
+		bool result = IsAttackBlocked(unit, attack);
+
         if (IsAuraDisappear(unit, attack))
         {
             disappearStart = Time.time;
@@ -39,7 +41,7 @@ public class AuraBattle : UnitBattle
             StartUpdate();
         }
 
-        return IsAttackBlocked(unit, attack);
+		return result;
     }
 
     protected virtual bool IsAuraDisappear(UnitBattle unit, Attack attack)
