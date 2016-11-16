@@ -30,12 +30,7 @@ public class RoundDamageAura : AuraBattle
     {
         Effect.SetActive(false);
         coll.enabled = false;
-        AudioSource au = GetComponent<AudioSource>();
-        if (au && damage)
-        {
-            au.clip = disappear;
-            au.Play();
-        }
+        AudioHelper.PlaySE(gameObject, disappear);
     }
 
     protected override void AuraRecover()
@@ -59,12 +54,7 @@ public class RoundDamageAura : AuraBattle
         PlayerBattle battle = obj.GetComponent<PlayerBattle>();
         if (battle && Time.time - attackStart > period)
         {
-            AudioSource au = GetComponent<AudioSource>();
-            if (au && damage)
-            {
-                au.clip = damage;
-                au.Play();
-            }
+            AudioHelper.PlaySE(gameObject, damage);
 
             battle.Attacked(this, CreateAttack(AttackType.ATTACK_TYPE_AURA, strength));
             attackStart = Time.time;

@@ -24,14 +24,4 @@ public class UnitBattle : MonoBehaviour {
     {
         return CreateAttack(type, strength, 0f);
     }
-
-    public void PlaySE(AudioClip clip)
-    {
-        AudioSource se = GetComponent<AudioSource>();
-        if (se && clip)
-        {
-            se.clip = clip;
-            se.Play();
-        }
-    }
 }

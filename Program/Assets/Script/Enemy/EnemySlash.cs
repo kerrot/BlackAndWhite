@@ -11,13 +11,14 @@ public class EnemySlash : MonoBehaviour {
     private Transform lockUICenter;
     [SerializeField]
     private GameObject effect;
-    
+    [SerializeField]
+    private AudioClip breakSE;
+
     public UnitAction OnCanSlash;
 
     GameObject lockUI;
     bool canSlash = false;
     float slashStartTime;
-    AudioSource se;
 
     Animator anim;
     Animator UIanim;
@@ -27,7 +28,6 @@ public class EnemySlash : MonoBehaviour {
 
     void Start()
     {
-        se = GetComponent<AudioSource>();
         anim = GetComponent<Animator>();
 
         RunTimeUIGenerator ui = GameObject.FindObjectOfType<RunTimeUIGenerator>();
@@ -94,7 +94,7 @@ public class EnemySlash : MonoBehaviour {
         canSlash = true;
         slashStartTime = Time.time;
         anim.SetTrigger("Break");
-        se.Play();
+        AudioHelper.PlaySE(gameObject, breakSE);
 
         PlayerSlash player = GameObject.FindObjectOfType<PlayerSlash>();
         if (player)

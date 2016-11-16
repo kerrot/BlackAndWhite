@@ -8,16 +8,15 @@ public class BlueSkill : MonoBehaviour {
     [SerializeField]
     private GameObject skillObjeect;
     [SerializeField]
-    private float range;
-    [SerializeField]
     private float period;
 
     float startTime;
-
+    float range;
     List<Vector3> points = new List<Vector3>();
 
     void Start ()
     {
+        range = skillObjeect.GetComponent<SphereCollider>().radius * 2;
         this.UpdateAsObservable().Subscribe(_ => UniRxUpdate());
     }
 	
@@ -33,7 +32,7 @@ public class BlueSkill : MonoBehaviour {
         {
             points.Add(transform.position);
 
-            Instantiate(skillObjeect, transform.position, Quaternion.identity);
+            Instantiate(skillObjeect, transform.position, Quaternion.Euler(-90, 0, 0));
         }
 	}
 

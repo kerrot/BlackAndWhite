@@ -6,7 +6,7 @@ public class BlockAttackAura : AuraBattle
     [SerializeField]
     private float blockValue;
     [SerializeField]
-    private AudioClip block;
+    private AudioClip blockSE;
 
     float nowBlock;
 	ParticleSystem.EmissionModule em;
@@ -26,9 +26,9 @@ public class BlockAttackAura : AuraBattle
 	{
 		bool result = nowBlock > 0;
 
-		AudioSource au;
+        AudioHelper.PlaySE(gameObject, blockSE);
 
-		if (attack.Type == AttackType.ATTACK_TYPE_EXPLOSION) {
+        if (attack.Type == AttackType.ATTACK_TYPE_EXPLOSION) {
 			nowBlock = 0;
 		} 
 		else {

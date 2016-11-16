@@ -109,7 +109,7 @@ public class PlayerBattle : UnitBattle {
 			PlayerMove.Instance.CanRotate = false;
 			anim.SetTrigger("Attack");
 
-            PlaySE(attackSE);
+            AudioHelper.PlaySE(gameObject, attackSE);
         }
 	}
 
@@ -139,7 +139,7 @@ public class PlayerBattle : UnitBattle {
         {
             if (attack.Type == AttackType.ATTACK_TYPE_NORMAL)
             {
-                PlaySE(guardSE);
+                AudioHelper.PlaySE(gameObject, guardSE);
                 anim.enabled = false;
                 guardAttack = true;
                 guardPos = transform.position;

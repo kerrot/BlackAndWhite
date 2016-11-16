@@ -50,6 +50,9 @@ public class EnemyMove : MonoBehaviour {
     {
         Vector3 offset = (target == transform.position) ? transform.forward : (target - transform.position).normalized;
         float angle = Vector3.Angle(offset, Vector3.forward) * ((offset.x > 0) ? 1 : -1);
-        transform.rotation = Quaternion.AngleAxis(angle, Vector3.up);
+        if (angle > 1f)
+        {
+            transform.rotation = Quaternion.AngleAxis(angle, Vector3.up);
+        }
     }
 }

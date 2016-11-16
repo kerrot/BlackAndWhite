@@ -148,7 +148,7 @@ public class EnemyBattle : UnitBattle
                 if (attack.Type == AttackType.ATTACK_TYPE_SKILL)
                 {
                     anim.SetTrigger("Tumble");
-                    PlaySE(tumbleSE);
+                    AudioHelper.PlaySE(gameObject, tumbleSE);
                 }
                 else
                 {
