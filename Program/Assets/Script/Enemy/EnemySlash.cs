@@ -11,7 +11,6 @@ public class EnemySlash : MonoBehaviour {
     private Transform lockUICenter;
     [SerializeField]
     private GameObject effect;
-
     
     public UnitAction OnCanSlash;
 

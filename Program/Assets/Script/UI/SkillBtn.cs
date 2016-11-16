@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿using UniRx;
+using UniRx.Triggers;
+using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
 
@@ -9,8 +11,9 @@ public class SkillBtn : MonoBehaviour {
 	public GameObject redBtn;
 	public GameObject greenBtn;
 	public GameObject blueBtn;
+    public Button powerBtn;
 
-	private int colorRed;
+    private int colorRed;
 	private int colorGreen;
 	private int colorBlue;
 
@@ -19,24 +22,20 @@ public class SkillBtn : MonoBehaviour {
 	private const int COLOR_MIN = 0;
 	private const int ALPHA = 255;
 
-	public delegate void ButtonAction(bool pressed);
-	public ButtonAction OnBlueChanged;
+    public delegate void PowerAction();
+    public delegate void ButtonAction(bool pressed);
+    public PowerAction OnPowerUsed;
+    public ButtonAction OnBlueChanged;
     public ButtonAction OnRedChanged;
     public ButtonAction OnGreenChanged;
 
     void Awake() {
-		
-	}
+    }
 
 	// Use this for initialization
 	void Start () {
-		powerBtnC = GameObject.Find ("PowerBtn").GetComponent<Image> ();
-	}
-	
-	// Update is called once per frame
-	void Update () {		
-		ButtonColorUpDate ();
-	}
+		powerBtnC = GameObject.Find ("PowerBtn").GetComponent<Image> ();     
+    }
 
 	void ButtonColorUpDate() {
 		if (colorRed > COLOR_MIN || colorGreen > COLOR_MIN || colorBlue > COLOR_MIN) {
@@ -44,7 +43,17 @@ public class SkillBtn : MonoBehaviour {
 		} else {
 			powerBtnC.color = new Color (COLOR_WHITH, COLOR_WHITH, COLOR_WHITH, ALPHA);
 		}
-	}
+
+        powerBtn.interactable = blueBtn.activeSelf || redBtn.activeSelf || greenBtn.activeSelf;
+    }
+
+    public void OnPowerBtn()
+    {
+        if (OnPowerUsed != null)
+        {
+            OnPowerUsed();
+        }
+    }
 
 	public void OnRedButton( ) { 
 		if (colorRed == COLOR_MAX) {
@@ -54,8 +63,14 @@ public class SkillBtn : MonoBehaviour {
 			colorRed = COLOR_MAX;
 			redBtn.SetActive (true);
 		}
-		Debug.Log ("!!!!");
-	}
+
+        ButtonColorUpDate();
+
+        if (OnRedChanged != null)
+        {
+            OnRedChanged(redBtn.activeSelf);
+        }
+    }
 
 	public void OnGreenButton( ) {		
 		if (colorGreen == COLOR_MAX) {
@@ -65,7 +80,14 @@ public class SkillBtn : MonoBehaviour {
 			colorGreen = COLOR_MAX;
 			greenBtn.SetActive (true);
 		}
-	}
+
+        ButtonColorUpDate();
+
+        if (OnGreenChanged != null)
+        {
+            OnGreenChanged(greenBtn.activeSelf);
+        }
+    }
 
 	public void OnBlueButton( ) {
 		if (colorBlue == COLOR_MAX) {
@@ -76,7 +98,10 @@ public class SkillBtn : MonoBehaviour {
 			blueBtn.SetActive (true);
 		}
 
-		if (OnBlueChanged != null) 
+        ButtonColorUpDate();
+
+
+        if (OnBlueChanged != null) 
 		{
 			OnBlueChanged (blueBtn.activeSelf);
 		}

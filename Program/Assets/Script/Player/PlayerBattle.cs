@@ -113,16 +113,6 @@ public class PlayerBattle : UnitBattle {
         }
 	}
 
-    void PlaySE(AudioClip clip)
-    {
-        AudioSource se = GetComponent<AudioSource>();
-        if (se && clip)
-        {
-            se.clip = clip;
-            se.Play();
-        }
-    }
-
     void AttackHit()
     {
         List<GameObject> list = Enemies.GetEnemy(transform.position, AttackRadius, transform.rotation * Vector3.forward, AttackAngle);

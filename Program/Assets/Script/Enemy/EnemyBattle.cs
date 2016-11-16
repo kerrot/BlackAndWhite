@@ -15,6 +15,8 @@ public class EnemyBattle : UnitBattle
     private float showHPTime;
     [SerializeField]
     private Transform HPUICenter;
+    [SerializeField]
+    private AudioClip tumbleSE;
 
     public UnitAction OnDie;
     public UnitAction OnExplosionAttacked;
@@ -143,7 +145,15 @@ public class EnemyBattle : UnitBattle
             currentBarrier -= attack.Strength;
             if (currentBarrier > 0)
             {
-                anim.SetTrigger("Hitted");
+                if (attack.Type == AttackType.ATTACK_TYPE_SKILL)
+                {
+                    anim.SetTrigger("Tumble");
+                    PlaySE(tumbleSE);
+                }
+                else
+                {
+                    anim.SetTrigger("Hitted");
+                }
             }
             else
             {

@@ -13,6 +13,8 @@ public class PlayerSkill : SingletonMonoBehaviour<PlayerSkill>
     private MeshRenderer Lance;
     [SerializeField]
     private GameObject LanceEffect;
+    [SerializeField]
+    private GameObject BlueSkill;
 
     public delegate void SkillAction(bool usingSkill, float power, float maxPower);
     public static SkillAction OnPowerChnaged;
@@ -34,6 +36,7 @@ public class PlayerSkill : SingletonMonoBehaviour<PlayerSkill>
 			btn.OnBlueChanged += BlueAttribute;
             btn.OnRedChanged += RedAttribute;
             btn.OnGreenChanged += GreenAttribute;
+            btn.OnPowerUsed += UseSkill;
         }
 
         lanceEffectmat = LanceEffect.GetComponentInChildren<MeshRenderer>().material;
@@ -43,28 +46,39 @@ public class PlayerSkill : SingletonMonoBehaviour<PlayerSkill>
 
     void UniRxUpdate()
     {
-        if (usingSkill) 
-        {
-            if (Time.realtimeSinceStartup - skillStartTime > powerCostTime) 
-            {
-                skillStartTime += powerCostTime;
-				UsePower (1);
-            }
-        }
+    //    if (usingSkill) 
+    //    {
+    //        if (Time.realtimeSinceStartup - skillStartTime > powerCostTime) 
+    //        {
+    //            skillStartTime += powerCostTime;
+				//UsePower (1);
+    //        }
+    //    }
 
         //if (Input.GetButtonDown("Jump"))
     }
 
-    public void WhiteSkill()
+    void UseSkill()
     {
-        if (!usingSkill) 
+        ElementType type = GetComponent<Attribute>().Type;
+        switch (type)
         {
-            PlayerTime.Instance.SlowMotion(0.2f, 0.5f);
-            skillStartTime = Time.realtimeSinceStartup;
-            CameraEffect.Instance.WhiteSkillEffect(true);
-            usingSkill = true;
+            case ElementType.ELEMENT_TYPE_BLUE:
+                BlueSkill.SetActive(true);
+                break;
         }
     }
+
+    //public void WhiteSkill()
+    //{
+    //    if (!usingSkill) 
+    //    {
+    //        PlayerTime.Instance.SlowMotion(0.2f, 0.5f);
+    //        skillStartTime = Time.realtimeSinceStartup;
+    //        CameraEffect.Instance.WhiteSkillEffect(true);
+    //        usingSkill = true;
+    //    }
+    //}
 
 	public void UsePower(int v)
 	{

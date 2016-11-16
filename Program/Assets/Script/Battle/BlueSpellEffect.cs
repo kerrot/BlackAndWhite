@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿using UniRx;
+using UniRx.Triggers;
+using UnityEngine;
 using System.Collections;
 
 public class BlueSpellEffect : AuraBattle {
@@ -10,9 +12,31 @@ public class BlueSpellEffect : AuraBattle {
 
     ParticleSystem.EmissionModule em;
 
+    float startTime;
+
     void Start ()
     {
         em = GetComponent<ParticleSystem>().emission;
+
+        Attribute attr = GetComponent<Attribute>();
+        if (!attr)
+        {
+            attr = gameObject.AddComponent<Attribute>();
+        }
+
+        attr.SetElement(ElementType.ELEMENT_TYPE_BLUE);
+
+        startTime = Time.time;
+
+        this.UpdateAsObservable().Subscribe(_ => UniRxUpdate());
+    }
+
+    void UniRxUpdate()
+    {
+        if (Time.time - startTime > lastTime)
+        {
+            End();
+        }
     }
 
     public void End()
