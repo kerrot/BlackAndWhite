@@ -12,6 +12,7 @@ public class AuraBattle : UnitBattle
 
     bool isUpdate = false;
     float disappearStart;
+    bool isDisappear;
 
     void StartUpdate()
     {
@@ -24,8 +25,9 @@ public class AuraBattle : UnitBattle
 
     void UniRxUpdate()
     {
-        if (Time.time - disappearStart > recoverTime)
+        if (isDisappear && Time.time - disappearStart > recoverTime)
         {
+            isDisappear = false;
             AuraRecover();
         }
     }
@@ -37,6 +39,7 @@ public class AuraBattle : UnitBattle
         if (IsAuraDisappear(unit, attack))
         {
             disappearStart = Time.time;
+            isDisappear = true;
             AuraDisappear();
             StartUpdate();
         }

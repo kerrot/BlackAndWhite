@@ -48,6 +48,11 @@ public class HPBarUI : MonoBehaviour {
         recover.gameObject.SetActive(v);
     }
 
+    public void SetBarrierEnable(bool v)
+    {
+        barrier.gameObject.SetActive(v);
+    }
+
     void SetValue(Slider s, float v)
     {
         s.value = v;

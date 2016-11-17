@@ -18,6 +18,8 @@ public class PlayerSlash : SingletonMonoBehaviour<PlayerSlash> {
     private GameObject SlashRegion;
     [SerializeField]
     private GameObject SlashRegionDisplay;
+    [SerializeField]
+    private AudioClip slashSE;
 
     public float SlashRadius { get { return slashRadius; } }
 
@@ -131,6 +133,7 @@ public class PlayerSlash : SingletonMonoBehaviour<PlayerSlash> {
 
     void CheckSlash()
     {
+        AudioHelper.PlaySE(gameObject, slashSE);
         isSlashing = false;
         anim.SetBool("IsSlashing", false);
         PlayerMove.Instance.CanRotate = true;
@@ -143,7 +146,7 @@ public class PlayerSlash : SingletonMonoBehaviour<PlayerSlash> {
         enemies.ToList().ForEach(e =>
         {
             EnemyBattle Enemy = e.gameObject.GetComponent<EnemyBattle>();
-            if (Enemy && Enemy.Attacked(battle, battle.CreateAttack(AttackType.ATTACK_TYPE_SLASH, 1f)))
+            if (Enemy && Enemy.Attacked(battle, battle.CreateAttack(AttackType.ATTACK_TYPE_SLASH, 5f)))
             {
                 ++count;
             }
@@ -221,7 +224,7 @@ public class PlayerSlash : SingletonMonoBehaviour<PlayerSlash> {
 		{
 			if (SlashNextTartget ()) 
 			{
-				PlayerSkill.Instance.UsePower (1);
+				PlayerSkill.Instance.PowerUsed (1);
 			}
 		}
 	}

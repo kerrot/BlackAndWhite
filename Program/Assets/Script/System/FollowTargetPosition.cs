@@ -30,13 +30,16 @@ public class FollowTargetPosition : MonoBehaviour
 
 	void LateUpdate()
 	{
-		Vector3 currentPosition = follow.transform.position + offset;
-
-        if (useSmoothing)
+        if (follow)
         {
-            currentPosition = Vector3.Lerp(transform.position, currentPosition, smoothing * Time.deltaTime);
+            Vector3 currentPosition = follow.transform.position + offset;
+
+            if (useSmoothing)
+            {
+                currentPosition = Vector3.Lerp(transform.position, currentPosition, smoothing * Time.deltaTime);
+            }
+
+            transform.position = currentPosition;
         }
-		
-        transform.position = currentPosition;
 	}
 }

@@ -6,6 +6,8 @@ public class BlockAttackAura : AuraBattle
     [SerializeField]
     private float blockValue;
     [SerializeField]
+    private float emissionRate;
+    [SerializeField]
     private AudioClip blockSE;
 
     float nowBlock;
@@ -25,24 +27,35 @@ public class BlockAttackAura : AuraBattle
 	protected override bool IsAttackBlocked(UnitBattle unit, Attack attack)
 	{
 		bool result = nowBlock > 0;
+        if (result)
+        {
+            AudioHelper.PlaySE(gameObject, blockSE);
 
-        AudioHelper.PlaySE(gameObject, blockSE);
+            if (attack.Type == AttackType.ATTACK_TYPE_EXPLOSION || 
+                Attribute.IsWeakness(GetComponent<Attribute>(), attack.Element))
+            {
+                nowBlock = 0;
+            }
+            else
+            {
+                nowBlock -= attack.Strength;
+                if (nowBlock < 0)
+                {
+                    nowBlock = 0;
+                }
+            }
 
-        if (attack.Type == AttackType.ATTACK_TYPE_EXPLOSION) {
-			nowBlock = 0;
-		} 
-		else {
-			nowBlock -= attack.Strength;
-		}
-
-		if (nowBlock > 0) {
-			var rate = em.rate;
-			rate.constantMax = nowBlock;
-			em.rate = rate;	
-		} 
-		else {
-			em.enabled = false;
-		}
+            if (nowBlock > 0)
+            {
+                var rate = em.rate;
+                rate.constantMax = nowBlock * emissionRate;
+                em.rate = rate;
+            }
+            else
+            {
+                em.enabled = false;
+            }
+        }
 
 		return result;
 	}
@@ -57,7 +70,7 @@ public class BlockAttackAura : AuraBattle
 		nowBlock = blockValue;
 		em.enabled = true;
 		var rate = em.rate;
-		rate.constantMax = nowBlock;
+		rate.constantMax = nowBlock * emissionRate;
 		em.rate = rate;	
     }
 }

@@ -12,6 +12,8 @@ public class EnemyBattle : UnitBattle
     [SerializeField]
     private float recoverTime;
     [SerializeField]
+    private float deadTime;
+    [SerializeField]
     private float showHPTime;
     [SerializeField]
     private Transform HPUICenter;
@@ -34,10 +36,14 @@ public class EnemyBattle : UnitBattle
     float currentBarrier;
     float currentHP;
     float currentRecover;
+    float deadStart;
+
+    Collider coll;
 
     //Start change to Awake, because Instantiate not call Start but Awake
     void Awake()
     {
+        coll = GetComponent<Collider>();
         slash = GetComponent<EnemySlash>();
         anim = GetComponent<Animator>();
         currentBarrier = barrierStrength;
@@ -90,6 +96,14 @@ public class EnemyBattle : UnitBattle
 
             UpdateUI();
         }
+
+        if (currentHP <= 0 && Time.time - deadStart > deadTime)
+        {
+            currentHP = HPMax;
+            coll.enabled = true;
+            anim.SetTrigger("Revive");
+            hpUI.SetBarrierEnable(true);
+        }
     }
 
     void UpdateUI()
@@ -101,20 +115,26 @@ public class EnemyBattle : UnitBattle
 
     public override bool Attacked(UnitBattle unit, Attack attack)
     {
+        #region ShowHP
         hpUI.gameObject.SetActive(true);
         showHPStart = Time.time;
+        #endregion
 
+        #region CheckImunity
         Immunity im = GetComponent<Immunity>();
         if (im && im.CheckImmunity(unit, attack))
         {
             return false;
         }
+        #endregion
 
+        #region Modify with Attribute
         Attribute attr = GetComponent<Attribute>();
         if (attr && attr.ProcessAttack(unit, attack))
         {
             return false;
         }
+        #endregion
 
         if (attack.Type == AttackType.ATTACK_TYPE_SLASH && slash.CanSlash)
         {
@@ -138,6 +158,17 @@ public class EnemyBattle : UnitBattle
                 {
                     OnExplosionAttacked(gameObject);
                 }
+            }
+        }
+        else if (currentBarrier <= 0)
+        {
+            currentHP -= attack.Strength;
+            if (currentHP <= 0)
+            {
+                coll.enabled = false;
+                anim.SetTrigger("Die");
+                deadStart = Time.time;
+                hpUI.SetBarrierEnable(false);
             }
         }
         else

@@ -28,9 +28,15 @@ public class PlayerSkill : SingletonMonoBehaviour<PlayerSkill>
 
     Material lanceEffectmat;
 
+    ElementType castingType;
+
+    Animator anim;
+
     void Start()
     {
-		SkillBtn btn = GameObject.FindObjectOfType<SkillBtn> ();
+        anim = GetComponent<Animator>();
+
+        SkillBtn btn = GameObject.FindObjectOfType<SkillBtn> ();
 		if (btn) 
 		{
 			btn.OnBlueChanged += BlueAttribute;
@@ -41,7 +47,7 @@ public class PlayerSkill : SingletonMonoBehaviour<PlayerSkill>
 
         lanceEffectmat = LanceEffect.GetComponentInChildren<MeshRenderer>().material;
 
-        this.UpdateAsObservable().Subscribe(_ => UniRxUpdate());
+        //this.UpdateAsObservable().Subscribe(_ => UniRxUpdate());
     }
 
     void UniRxUpdate()
@@ -60,8 +66,13 @@ public class PlayerSkill : SingletonMonoBehaviour<PlayerSkill>
 
     void UseSkill()
     {
-        ElementType type = GetComponent<Attribute>().Type;
-        switch (type)
+        castingType = GetComponent<Attribute>().Type;
+        anim.SetTrigger("Skill");
+    }
+
+    void DoSkill()
+    {
+        switch (castingType)
         {
             case ElementType.ELEMENT_TYPE_BLUE:
                 BlueSkill.SetActive(true);
@@ -80,7 +91,7 @@ public class PlayerSkill : SingletonMonoBehaviour<PlayerSkill>
     //    }
     //}
 
-	public void UsePower(int v)
+    public void PowerUsed(int v)
 	{
 		if (v <= 0) 
 		{

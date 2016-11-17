@@ -10,7 +10,7 @@ public class RoundDamageAura : AuraBattle
     [SerializeField]
     private AudioClip damage;
     [SerializeField]
-    private AudioClip disappear;
+    private AudioClip disappearSE;
 
     float attackStart;
 
@@ -30,7 +30,7 @@ public class RoundDamageAura : AuraBattle
     {
         Effect.SetActive(false);
         coll.enabled = false;
-        AudioHelper.PlaySE(gameObject, disappear);
+        AudioHelper.PlaySE(gameObject, disappearSE);
     }
 
     protected override void AuraRecover()

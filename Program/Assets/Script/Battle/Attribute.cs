@@ -5,6 +5,8 @@ using System.Collections;
 public class Attribute : MonoBehaviour {
     [SerializeField]
     private ElementType type;
+    [SerializeField]
+    private AuraBattle[] aura;
 
     public ElementType Type { get { return type; } }
 	
@@ -20,16 +22,13 @@ public class Attribute : MonoBehaviour {
             }
         }
 
-        if ((atk.Element == ElementType.ELEMENT_TYPE_BLUE && type == ElementType.ELEMENT_TYPE_RED) ||
-            (atk.Element == ElementType.ELEMENT_TYPE_BLUE && type == ElementType.ELEMENT_TYPE_RED) ||
-            (atk.Element == ElementType.ELEMENT_TYPE_BLUE && type == ElementType.ELEMENT_TYPE_RED) )
+        if (IsWeakness(this, atk.Element))
         {
             atk.Strength *= 2;
         }
 
         bool result = false;
 
-        AuraBattle[] aura = GetComponentsInChildren<AuraBattle>();
         aura.ToList().ForEach(a =>
         {
             result |= a.Attacked(unit, atk);
@@ -58,5 +57,18 @@ public class Attribute : MonoBehaviour {
         }
 
         return new Color();
+    }
+
+    public static bool IsWeakness(Attribute attr, ElementType type)
+    {
+        if (attr)
+        {
+            bool result =   (attr.Type == ElementType.ELEMENT_TYPE_BLUE && type == ElementType.ELEMENT_TYPE_GREEN) ||
+                            (attr.Type == ElementType.ELEMENT_TYPE_RED && type == ElementType.ELEMENT_TYPE_BLUE) ||
+                            (attr.Type == ElementType.ELEMENT_TYPE_GREEN && type == ElementType.ELEMENT_TYPE_RED);
+            return result;
+        }
+
+        return false;
     }
 }
