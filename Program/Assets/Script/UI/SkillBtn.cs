@@ -38,13 +38,16 @@ public class SkillBtn : MonoBehaviour {
     }
 
 	void ButtonColorUpDate() {
+		
 		if (colorRed > COLOR_MIN || colorGreen > COLOR_MIN || colorBlue > COLOR_MIN) {
 			powerBtnC.color = new Color (colorRed, colorGreen, colorBlue, ALPHA);
 		} else {
 			powerBtnC.color = new Color (COLOR_WHITH, COLOR_WHITH, COLOR_WHITH, ALPHA);
 		}
-
-        powerBtn.interactable = blueBtn.activeSelf || redBtn.activeSelf || greenBtn.activeSelf;
+		if (powerBtn) 
+		{
+			powerBtn.interactable = blueBtn.activeSelf || redBtn.activeSelf || greenBtn.activeSelf;
+		}
     }
 
     public void OnPowerBtn()

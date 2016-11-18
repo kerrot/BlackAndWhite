@@ -225,5 +225,9 @@ public class EnemyBattle : UnitBattle
         {
             Destroy(hpUI.gameObject);
         }
+
+		if (transform.parent != null) {
+			Destroy (transform.parent.gameObject);
+		}
     }
 }

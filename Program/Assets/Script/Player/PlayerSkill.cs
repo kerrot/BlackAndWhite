@@ -15,6 +15,8 @@ public class PlayerSkill : SingletonMonoBehaviour<PlayerSkill>
     private GameObject LanceEffect;
     [SerializeField]
     private GameObject BlueSkill;
+	[SerializeField]
+	private GameObject RedSkill;
 
     public delegate void SkillAction(bool usingSkill, float power, float maxPower);
     public static SkillAction OnPowerChnaged;
@@ -76,7 +78,10 @@ public class PlayerSkill : SingletonMonoBehaviour<PlayerSkill>
         {
             case ElementType.ELEMENT_TYPE_BLUE:
                 BlueSkill.SetActive(true);
-                break;
+	            break;
+			case ElementType.ELEMENT_TYPE_RED:
+			Instantiate (RedSkill, transform.position, transform.rotation);
+				break;
         }
     }
 
