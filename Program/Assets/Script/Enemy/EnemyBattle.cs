@@ -70,7 +70,8 @@ public class EnemyBattle : UnitBattle
             hpUI.SetRecoverEnable(false);
         }
 
-        this.UpdateAsObservable().Subscribe(_ => UniRxUpdate());       
+        this.UpdateAsObservable().Subscribe(_ => UniRxUpdate());
+        this.OnDestroyAsObservable().Subscribe(_ => UniRxOnDestroy());
     }
 
     void UniRxUpdate()
@@ -151,7 +152,7 @@ public class EnemyBattle : UnitBattle
                 anim.SetTrigger("Hitted");
                 GetComponent<Collider>().enabled = false;
 
-                StartCoroutine(LateDie(attack));
+                Observable.FromCoroutine(_ => LateDie(attack)).Subscribe();
             }
             else
             {
@@ -216,7 +217,7 @@ public class EnemyBattle : UnitBattle
         Die(attack);
     }
 
-    void OnDestroy()
+    void UniRxOnDestroy()
     {
         if (hpUI)
         {

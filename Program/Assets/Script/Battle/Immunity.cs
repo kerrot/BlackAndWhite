@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿using UniRx;
+using UniRx.Triggers;
+using UnityEngine;
 using System;
 using System.Linq;
 using System.Collections;
@@ -19,7 +21,13 @@ public class Immunity : MonoBehaviour {
         public ElementType element;
     }
 
-    void OnEnable()
+    void Start()
+    {
+        this.OnEnableAsObservable().Subscribe(_ => UniRxOnEnable());
+        this.OnDestroyAsObservable().Subscribe(_ => UniRxOnDisable());
+    }
+
+    void UniRxOnEnable()
     {
         if (display)
         {
@@ -27,7 +35,7 @@ public class Immunity : MonoBehaviour {
         }
     }
 
-    void OnDisable()
+    void UniRxOnDisable()
     {
         if (display)
         {

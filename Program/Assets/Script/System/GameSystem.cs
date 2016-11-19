@@ -83,7 +83,7 @@ public class GameSystem : SingletonMonoBehaviour<GameSystem>
     public void GameOver()
     {
         state = GameState.GAME_STATE_GAMEOVER;
-        StartCoroutine(RestartGame());
+        Observable.FromCoroutine(RestartGame).Subscribe();
     }
 
     IEnumerator RestartGame()

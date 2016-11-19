@@ -26,7 +26,7 @@ public class TrailEffect : MonoBehaviour {
         if (current != null)
         {
             current.transform.parent = null;
-            StartCoroutine(EndTrail(current));
+            Observable.FromCoroutine(_ => EndTrail(current)).Subscribe();
             current = null;
         }
     }

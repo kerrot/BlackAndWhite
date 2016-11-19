@@ -19,7 +19,7 @@ public class DeadAction : MonoBehaviour
         cs.ToList().ForEach(c =>
         {
             EnemyBattle battle = c.gameObject.GetComponent<EnemyBattle>();
-            if (battle != null)
+            if (battle != null && battle != Attacker)
             {
                 battle.Attacked(Attacker, Atk);
             }

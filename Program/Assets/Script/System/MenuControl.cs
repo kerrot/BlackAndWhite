@@ -1,10 +1,16 @@
-﻿using UnityEngine;
+﻿using UniRx;
+using UniRx.Triggers;
+using UnityEngine;
 using System.Collections;
 
 public class MenuControl : MonoBehaviour {
     [SerializeField]
     private GameObject next;
 
+    void Start()
+    {
+        this.OnDestroyAsObservable().Subscribe(_ => UniRxOnDestroy());
+    }
 
 	public void StageClear()
     {
@@ -33,7 +39,7 @@ public class MenuControl : MonoBehaviour {
         gameObject.SetActive(false);
     }
 
-    void OnDestroy()
+    void UniRxOnDestroy()
     {
         BacktoGame();
     }

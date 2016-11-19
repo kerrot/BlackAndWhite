@@ -41,6 +41,7 @@ public class EnemySlash : MonoBehaviour {
         }
 
         this.UpdateAsObservable().Subscribe(_ => UniRxUpdate());
+        this.OnDestroyAsObservable().Subscribe(_ => UniRxOnDestroy());
     }
 
     void UniRxUpdate() {
@@ -106,7 +107,7 @@ public class EnemySlash : MonoBehaviour {
         canSlashSubject.OnNext(gameObject);
     }
 
-    void OnDestroy()
+    void UniRxOnDestroy()
     {
         Destroy(lockUI);
         PlayerSlash player = GameObject.FindObjectOfType<PlayerSlash>();

@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿using UniRx;
+using UniRx.Triggers;
+using UnityEngine;
 using System.Collections;
 
 public class ButtonEffect : MonoBehaviour {
@@ -13,10 +15,11 @@ public class ButtonEffect : MonoBehaviour {
     void Start()
     {
         now = To;
+        this.UpdateAsObservable().Subscribe(_ => UniRxUpdate());
     }
 
     // Update is called once per frame
-    void Update () {
+    void UniRxUpdate() {
         now += Speed;
 
         if (now < From)

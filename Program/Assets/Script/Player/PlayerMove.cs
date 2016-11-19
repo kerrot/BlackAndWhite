@@ -20,9 +20,9 @@ public class PlayerMove : SingletonMonoBehaviour<PlayerMove> {
 
         floorMask = LayerMask.GetMask("Floor");
 
-        InputController.OnMouseDown += StartMove;
-        InputController.OnMousePressed += CheckMotion;
-        InputController.OnMouseUp += StopGuard;
+        InputController.OnMouseDown.Subscribe(p => StartMove(p));
+        InputController.OnMousePressed.Subscribe(p => CheckMotion(p));
+        InputController.OnMouseUp.Subscribe(p => StopGuard(p));
 
 		this.FixedUpdateAsObservable ().Subscribe (_ => UniRxFixedUpdate ());
     }
@@ -81,11 +81,4 @@ public class PlayerMove : SingletonMonoBehaviour<PlayerMove> {
 
         transform.LookAt(TargetObject.transform);
     }
-
-	void OnDestroy()
-	{
-		InputController.OnMouseDown -= StartMove;
-		InputController.OnMousePressed -= CheckMotion;
-		InputController.OnMouseUp -= StopGuard;
-	}
 }

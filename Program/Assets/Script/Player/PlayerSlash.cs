@@ -45,7 +45,7 @@ public class PlayerSlash : SingletonMonoBehaviour<PlayerSlash> {
         
         slashEndHash = Animator.StringToHash("PlayerBase.SlashEnd");
 		slashingHash = Animator.StringToHash("PlayerBase.Slashing");
-        InputController.OnMouseSingleClick += MultiSlash;
+        InputController.OnMouseSingleClick.Subscribe(p => MultiSlash(p));
 
         currentSpeed = SlashSpeed;
 
@@ -228,9 +228,4 @@ public class PlayerSlash : SingletonMonoBehaviour<PlayerSlash> {
 //			}
 //		}
 //	}
-
-	void OnDestroy()
-	{
-		InputController.OnMouseSingleClick -= MultiSlash;
-	}
 }

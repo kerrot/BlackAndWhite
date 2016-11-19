@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using UniRx;
+using UniRx.Triggers;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -37,7 +38,7 @@ public class EnemyGenerator : MonoBehaviour
 			InvokeRepeating ("Spawn", spawnTime, spawnTime);
 		}
  
-        InputController.OnMouseSingleClick += EnemyClicked;
+        InputController.OnMouseSingleClick.Subscribe(p => EnemyClicked(p)).AddTo(this);
 
         GameObject.FindObjectsOfType<EnemyBattle>().ToList().ForEach(e => AddMonster(e.gameObject));
 
@@ -172,9 +173,4 @@ public class EnemyGenerator : MonoBehaviour
 
         return tmpList;
     }
-
-	void OnDestroy()
-	{
-		InputController.OnMouseSingleClick -= EnemyClicked;
-	}
 }

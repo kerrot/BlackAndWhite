@@ -10,17 +10,23 @@ public class InputController : MonoBehaviour {
     [SerializeField]
     private float ClickPeriod = 0.3f;
 
-    public delegate void MouseAction(Vector2 mousePosition);
-    public static MouseAction OnMouseDoubleClick;
-    public static MouseAction OnMouseSingleClick;
-    public static MouseAction OnMouseDown;
-    public static MouseAction OnMouseUp;
-    public static MouseAction OnMousePressed;
+    static private Subject<Vector2> mouseDoubleClick = new Subject<Vector2>();
+    static private Subject<Vector2> mouseSingleClick = new Subject<Vector2>();
+    static private Subject<Vector2> mouseDown = new Subject<Vector2>();
+    static private Subject<Vector2> mouseUp = new Subject<Vector2>();
+    static private Subject<Vector2> mousePressed = new Subject<Vector2>();
+
+    static public IObservable<Vector2> OnMouseDoubleClick { get { return mouseDoubleClick; } }
+    static public IObservable<Vector2> OnMouseSingleClick { get { return mouseSingleClick; } }
+    static public IObservable<Vector2> OnMouseDown { get { return mouseDown; } }
+    static public IObservable<Vector2> OnMouseUp { get { return mouseUp; } }
+    static public IObservable<Vector2> OnMousePressed { get { return mousePressed; } }
+
 
     private float pressTime;
     private float firstClickTime;
     private float secondClickTime;
-    private bool mousePressed = false;
+    private bool isMousePressed = false;
     private bool pressOnUI = false;
 
 	void Start()
@@ -56,11 +62,8 @@ public class InputController : MonoBehaviour {
             }
 
             pressTime = now;
-            if (OnMouseDown != null)
-            {
-                OnMouseDown(position);
-            }
-            mousePressed = true;
+            mouseDown.OnNext(position);
+            isMousePressed = true;
         }
 
         if (Input.GetMouseButtonUp(0))
@@ -71,30 +74,21 @@ public class InputController : MonoBehaviour {
                 return;
             }
 
-            mousePressed = false;
+            isMousePressed = false;
             firstClickTime = secondClickTime;
             secondClickTime = now;
 
             if (firstClickTime > 0 && secondClickTime - firstClickTime < ClickPeriod)
             {
-                if (OnMouseDoubleClick != null)
-                {
-                    OnMouseDoubleClick(Input.mousePosition);
-                }
+                mouseDoubleClick.OnNext(position);
             }
 
             if (now - pressTime < ClickPeriod)
             {
-                if (OnMouseSingleClick != null)
-                {
-                    OnMouseSingleClick(position);
-                }
+                mouseSingleClick.OnNext(position);
             }
 
-            if (OnMouseUp != null)
-            {
-                OnMouseUp(position);
-            }
+            mouseUp.OnNext(position);
         }
 
         if (pressOnUI) 
@@ -102,12 +96,9 @@ public class InputController : MonoBehaviour {
             return;
         }
 
-        if (mousePressed)
+        if (isMousePressed)
         {
-            if (OnMousePressed != null)
-            {
-                OnMousePressed(position);
-            }
+            mousePressed.OnNext(position);
         }
 	}
 }

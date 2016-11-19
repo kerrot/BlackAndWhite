@@ -89,7 +89,7 @@ public class TestStage : MonoBehaviour
         }
         inGame.SetActive(false);
 
-        StartCoroutine(GameClear());
+        Observable.FromCoroutine(GameClear).Subscribe();
     }
 
     IEnumerator GameClear()

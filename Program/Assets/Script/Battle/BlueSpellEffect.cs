@@ -29,6 +29,7 @@ public class BlueSpellEffect : AuraBattle {
         startTime = Time.time;
 
         this.UpdateAsObservable().Subscribe(_ => UniRxUpdate());
+        this.OnTriggerEnterAsObservable().Subscribe(o => UniRxOnTriggerEnter(o));
     }
 
     void UniRxUpdate()
@@ -46,7 +47,7 @@ public class BlueSpellEffect : AuraBattle {
         Destroy(gameObject, 1f);
     }
 
-    void OnTriggerEnter(Collider other)
+    void UniRxOnTriggerEnter(Collider other)
     {
         EnemyBattle enemy = other.gameObject.GetComponent<EnemyBattle>();
         if (enemy)
