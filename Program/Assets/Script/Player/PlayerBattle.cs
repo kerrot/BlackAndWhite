@@ -46,6 +46,7 @@ public class PlayerBattle : UnitBattle {
         nowHP = HP;
 
         this.UpdateAsObservable().Subscribe(_ => UniRxUpdate());
+		this.LateUpdateAsObservable().Subscribe (_ => UniRxLateUpdate ());
     }
 
     void UniRxUpdate()
@@ -85,7 +86,7 @@ public class PlayerBattle : UnitBattle {
         }
     }
 
-    void LateUpdate()
+    void UniRxLateUpdate()
     {
         if (anim.enabled && guardAttack)
         {

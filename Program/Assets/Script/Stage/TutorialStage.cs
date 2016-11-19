@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using UniRx;
+using UnityEngine;
 using System.Collections;
 
 public class TutorialStage : MonoBehaviour {
@@ -21,7 +22,7 @@ public class TutorialStage : MonoBehaviour {
         OpeningRTM opening = GameObject.FindObjectOfType<OpeningRTM>();
         if (opening)
         {
-            opening.OnOpeningEnd += OnOpeningEnd;
+			opening.OnOpeningEnd.Subscribe(o => OnOpeningEnd());
         }
 
         EnemyGenerator enemies = GameObject.FindObjectOfType<EnemyGenerator>();
@@ -29,7 +30,7 @@ public class TutorialStage : MonoBehaviour {
         {
             enemies.OnExplosionAttacked += EnemyExplosionAttacked;
             enemies.OnEnemyCanSlash += EnemySlashTriggered;
-            enemies.OnEnemyEmpty += StageClear;
+			enemies.OnEnemyEmpty.Subscribe(o => StageClear());
         }
 	}
 	

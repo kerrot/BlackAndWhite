@@ -18,15 +18,12 @@ public class PlayerSkill : SingletonMonoBehaviour<PlayerSkill>
 	[SerializeField]
 	private GameObject RedSkill;
 
-    public delegate void SkillAction(bool usingSkill, float power, float maxPower);
-    public static SkillAction OnPowerChnaged;
-
-    private int power;
-
-	public bool isSkill { get { return usingSkill; } }
-    private bool usingSkill = false;
-
-    private float skillStartTime;
+//	private ReactiveProperty<int> power;
+//
+//	public bool isSkill { get { return usingSkill; } }
+//    private bool usingSkill = false;
+//
+//    private float skillStartTime;
 
     Material lanceEffectmat;
 
@@ -52,19 +49,19 @@ public class PlayerSkill : SingletonMonoBehaviour<PlayerSkill>
         //this.UpdateAsObservable().Subscribe(_ => UniRxUpdate());
     }
 
-    void UniRxUpdate()
-    {
-    //    if (usingSkill) 
-    //    {
-    //        if (Time.realtimeSinceStartup - skillStartTime > powerCostTime) 
-    //        {
-    //            skillStartTime += powerCostTime;
-				//UsePower (1);
-    //        }
-    //    }
-
-        //if (Input.GetButtonDown("Jump"))
-    }
+//    void UniRxUpdate()
+//    {
+//        if (usingSkill) 
+//        {
+//            if (Time.realtimeSinceStartup - skillStartTime > powerCostTime) 
+//            {
+//                skillStartTime += powerCostTime;
+//				UsePower (1);
+//            }
+//        }
+//
+//        if (Input.GetButtonDown("Jump"))
+//    }
 
     void UseSkill()
     {
@@ -96,52 +93,52 @@ public class PlayerSkill : SingletonMonoBehaviour<PlayerSkill>
     //    }
     //}
 
-    public void PowerUsed(int v)
-	{
-		if (v <= 0) 
-		{
-			return;
-		}
+//    public void PowerUsed(int v)
+//	{
+//		if (v <= 0) 
+//		{
+//			return;
+//		}
+//
+//		power -= v;
+//		if (power < 0) 
+//		{
+//			power = 0;
+//		}
+//
+//		if (usingSkill && power == 0) 
+//		{
+//			PlayerTime.Instance.SlowMotion(1, 1);
+//            CameraEffect.Instance.WhiteSkillEffect(false);
+//            usingSkill = false;
+//		}
+//
+//		UpdatePower();
+//	}
 
-		power -= v;
-		if (power < 0) 
-		{
-			power = 0;
-		}
+//    public void AddPower(int v)
+//    {
+//		if (v <= 0) 
+//		{
+//			return;
+//		}
+//
+//        power += v;
+//        if (power > maxPower)
+//        {
+//            power = maxPower;
+//        }
+//
+//        UpdatePower();
+//    }
 
-		if (usingSkill && power == 0) 
-		{
-			PlayerTime.Instance.SlowMotion(1, 1);
-            CameraEffect.Instance.WhiteSkillEffect(false);
-            usingSkill = false;
-		}
-
-		UpdatePower();
-	}
-
-    public void AddPower(int v)
-    {
-		if (v <= 0) 
-		{
-			return;
-		}
-
-        power += v;
-        if (power > maxPower)
-        {
-            power = maxPower;
-        }
-
-        UpdatePower();
-    }
-
-    void UpdatePower() 
-    {
-        if (OnPowerChnaged != null)
-        {
-            OnPowerChnaged(usingSkill, power, maxPower);
-        }
-    }
+//    void UpdatePower() 
+//    {
+//        if (OnPowerChnaged != null)
+//        {
+//            OnPowerChnaged(usingSkill, power, maxPower);
+//        }
+//    }
 
 	void BlueAttribute(bool active)
 	{

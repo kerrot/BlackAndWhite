@@ -25,10 +25,10 @@ public class FollowTargetPosition : MonoBehaviour
 	void Start ()
 	{
 		offset = transform.position - follow.transform.position;
-        //this.UpdateAsObservable().Subscribe(_ => UniRxUpdate());
+		this.LateUpdateAsObservable().Subscribe (_ => UniRxLateUpdate ());
     }
 
-	void LateUpdate()
+	void UniRxLateUpdate()
 	{
         if (follow)
         {

@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿using UniRx;
+using UniRx.Triggers;
+using UnityEngine;
 using System.Collections;
 
 public class ShakeCamera : MonoBehaviour
@@ -19,9 +21,10 @@ public class ShakeCamera : MonoBehaviour
     {
         startTime = Time.time;
         follower = GetComponent<FollowTargetPosition>();
+		this.LateUpdateAsObservable().Subscribe (_ => UniRxLateUpdate ());
     }
 
-    void LateUpdate()
+	void UniRxLateUpdate()
     {
         if (offset > 0 && frequency > 0)
         {

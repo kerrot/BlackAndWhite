@@ -1,12 +1,13 @@
-﻿using UnityEngine;
+﻿using UniRx;
+using UnityEngine;
 using System.Collections;
 
 public class OpeningRTM : MonoBehaviour {
     [SerializeField]
     private GameObject mainCamera;
 
-    public delegate void RTMAction();
-    public RTMAction OnOpeningEnd;
+	private Subject<Unit> openingEnd = new Subject<Unit>();
+	public IObservable<Unit> OnOpeningEnd { get { return openingEnd; } } 
 
     void Start()
     {
@@ -24,9 +25,6 @@ public class OpeningRTM : MonoBehaviour {
         mainCamera.SetActive(true);
         gameObject.SetActive(false);
 
-        if (OnOpeningEnd != null)
-        {
-            OnOpeningEnd();
-        }
+		openingEnd.OnNext (Unit.Default);
     }
 }

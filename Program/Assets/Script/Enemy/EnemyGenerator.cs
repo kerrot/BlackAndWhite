@@ -1,9 +1,9 @@
 ﻿using UnityEngine;
+using UniRx;
 using System.Collections.Generic;
 using System.Linq;
 
 public delegate void UnitAction(GameObject unit);
-public delegate void GameAction();
 
 public class EnemyGenerator : MonoBehaviour
 {
@@ -16,7 +16,9 @@ public class EnemyGenerator : MonoBehaviour
     public UnitAction OnEnemyClicked;
     public UnitAction OnEnemyCanSlash;
     public UnitAction OnExplosionAttacked;
-    public GameAction OnEnemyEmpty;
+
+	private Subject<Unit> enemyEmpty = new Subject<Unit>();
+	public IObservable<Unit> OnEnemyEmpty { get { return enemyEmpty; }}
 
     public List<GameObject> Enemies { get { return monsters; } }
 
@@ -28,15 +30,19 @@ public class EnemyGenerator : MonoBehaviour
     void Start ()
     {
 		EnemyMask = LayerMask.GetMask ("Enemy");
-        InvokeRepeating ("Spawn", spawnTime, spawnTime);
+
+		if (enemy) 
+		{
+			InvokeRepeating ("Spawn", spawnTime, spawnTime);
+		}
  
         InputController.OnMouseSingleClick += EnemyClicked;
 
         GameObject.FindObjectsOfType<EnemyBattle>().ToList().ForEach(e => AddMonster(e.gameObject));
 
-        if (monsters.Count == 0 && OnEnemyEmpty != null)
+        if (monsters.Count == 0)
         {
-            OnEnemyEmpty();
+			enemyEmpty.OnNext (Unit.Default);
         }
     }
 
@@ -138,16 +144,16 @@ public class EnemyGenerator : MonoBehaviour
                 obj.GetComponent<DeadAction>().Atk = battle.DeadAction.GetComponent<DeadAction>().Atk;
             }
 
-			if (!PlayerSkill.Instance.isSkill) 
-			{
-				PlayerSkill.Instance.AddPower (1);
-			}
+//			if (!PlayerSkill.Instance.isSkill) 
+//			{
+//				PlayerSkill.Instance.AddPower (1);
+//			}
             DestroyObject(Enemy);
 		}
 
-        if (monsters.Count == 0 && OnEnemyEmpty != null)
+        if (monsters.Count == 0)
         {
-            OnEnemyEmpty();
+			enemyEmpty.OnNext (Unit.Default);
         }
 	}
 

@@ -23,12 +23,9 @@ public class PlayerMove : SingletonMonoBehaviour<PlayerMove> {
         InputController.OnMouseDown += StartMove;
         InputController.OnMousePressed += CheckMotion;
         InputController.OnMouseUp += StopGuard;
-    }
 
-	void Start()
-	{
-		anim.SetBool("IsMove", anim.GetBool("IsMove"));
-	}
+		this.FixedUpdateAsObservable ().Subscribe (_ => UniRxFixedUpdate ());
+    }
 
     public void StartMove(Vector2 mousePosition)
     {
@@ -52,7 +49,7 @@ public class PlayerMove : SingletonMonoBehaviour<PlayerMove> {
 		anim.SetBool ("Guard", false);
 	}
 
-	void FixedUpdate()
+	void UniRxFixedUpdate()
     {
         if (Vector3.Distance(transform.position, TargetObject.transform.position) < arriveRadius)
         {

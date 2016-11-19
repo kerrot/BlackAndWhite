@@ -218,16 +218,16 @@ public class PlayerSlash : SingletonMonoBehaviour<PlayerSlash> {
         currentSpeed = SlashSpeed;
     }
 
-	public void SkillSlash()
-	{
-		if (PlayerSkill.Instance.isSkill && isSlashing == false) 
-		{
-			if (SlashNextTartget ()) 
-			{
-				PlayerSkill.Instance.PowerUsed (1);
-			}
-		}
-	}
+//	public void AutoSlashBySkill()
+//	{
+//		if (PlayerSkill.Instance.isSkill && isSlashing == false) 
+//		{
+//			if (SlashNextTartget ()) 
+//			{
+//				PlayerSkill.Instance.PowerUsed (1);
+//			}
+//		}
+//	}
 
 	void OnDestroy()
 	{

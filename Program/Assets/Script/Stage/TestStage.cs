@@ -91,7 +91,7 @@ public class TestStage : MonoBehaviour
     IEnumerator GameClear()
     {
         yield return new WaitForSeconds(0.5f);
-        PlayerSkill.Instance.PowerUsed(100);
+        //PlayerSkill.Instance.PowerUsed(100);
         Time.timeScale = 0;
         endGame.SetActive(true);
     }
