@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿using UniRx;
+using UniRx.Triggers;
+using UnityEngine;
 using System.Collections;
 
 public class RoundDamageAura : AuraBattle
@@ -19,6 +21,8 @@ public class RoundDamageAura : AuraBattle
     void Start()
     {
         coll = GetComponent<Collider>();
+        this.OnTriggerEnterAsObservable().Subscribe(o => UniRxOnTriggerEnter(o));
+        this.OnTriggerStayAsObservable().Subscribe(o => UniRxOnTriggerStay(o));
     }
 
     protected override bool IsAuraDisappear(UnitBattle unit, Attack attack)
@@ -39,12 +43,12 @@ public class RoundDamageAura : AuraBattle
         coll.enabled = true;
     }
 
-    void OnTriggerEnter(Collider other)
+    void UniRxOnTriggerEnter(Collider other)
     {
         Attack(other.gameObject);
     }
 
-    void OnTriggerStay(Collider other)
+    void UniRxOnTriggerStay(Collider other)
     {
         Attack(other.gameObject);
     }

@@ -14,7 +14,8 @@ public class EnemySlash : MonoBehaviour {
     [SerializeField]
     private AudioClip breakSE;
 
-    public UnitAction OnCanSlash;
+    private Subject<GameObject> canSlashSubject = new Subject<GameObject>();
+    public IObservable<GameObject> OnCanSlash { get { return canSlashSubject; } }
 
     GameObject lockUI;
     bool canSlash = false;
@@ -102,10 +103,7 @@ public class EnemySlash : MonoBehaviour {
             player.RegisterSlashObject(gameObject, true);
         }
 
-        if (OnCanSlash != null)
-        {
-            OnCanSlash(gameObject);
-        }
+        canSlashSubject.OnNext(gameObject);
     }
 
     void OnDestroy()

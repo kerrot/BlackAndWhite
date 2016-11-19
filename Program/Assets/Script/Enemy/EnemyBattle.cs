@@ -20,8 +20,11 @@ public class EnemyBattle : UnitBattle
     [SerializeField]
     private AudioClip tumbleSE;
 
-    public UnitAction OnDie;
-    public UnitAction OnExplosionAttacked;
+    private Subject<GameObject> dieSubject = new Subject<GameObject>();
+    private Subject<GameObject> explosionAttacked = new Subject<GameObject>();
+
+    public IObservable<GameObject> OnDie { get { return dieSubject; } }
+    public IObservable<GameObject> OnExplosionAttacked { get { return explosionAttacked; } }
 
     public GameObject DeadAction;
     public Vector3 DeadEffectOffset;
@@ -154,10 +157,7 @@ public class EnemyBattle : UnitBattle
             {
                 currentBarrier = 0;
                 slash.TriggerSlash();
-                if (OnExplosionAttacked != null)
-                {
-                    OnExplosionAttacked(gameObject);
-                }
+                explosionAttacked.OnNext(gameObject);                
             }
         }
         else if (currentBarrier <= 0)
@@ -207,10 +207,7 @@ public class EnemyBattle : UnitBattle
             }
         }
 
-        if (OnDie != null)
-        {
-            OnDie(gameObject);
-        }
+        dieSubject.OnNext(gameObject);
     }
 
     IEnumerator LateDie(Attack attack)

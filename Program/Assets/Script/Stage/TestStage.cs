@@ -39,8 +39,12 @@ public class TestStage : MonoBehaviour
 
         score = 0;
 
-        GameSystem.OnCombo += OnCombo;
-        GameSystem.OnMultiSlash += OnMultiSlash;
+        GameSystem system = GameObject.FindObjectOfType<GameSystem>();
+        if (system)
+        {
+            system.OnCombo.Subscribe(i => OnCombo(i)).AddTo(this);
+            system.OnMultiSlash.Subscribe(i => OnMultiSlash(i)).AddTo(this);
+        }
     }
 
     void UniRxUpdate()
@@ -116,11 +120,5 @@ public class TestStage : MonoBehaviour
     void UpdateScore()
     {
         scoreText.text = score.ToString();
-    }
-
-    void OnDestroy()
-    {
-        GameSystem.OnCombo -= OnCombo;
-        GameSystem.OnMultiSlash -= OnMultiSlash;
     }
 }

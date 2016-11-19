@@ -3,8 +3,6 @@ using UniRx;
 using System.Collections.Generic;
 using System.Linq;
 
-public delegate void UnitAction(GameObject unit);
-
 public class EnemyGenerator : MonoBehaviour
 {
     [SerializeField]
@@ -13,12 +11,15 @@ public class EnemyGenerator : MonoBehaviour
     public GameObject enemy;
     public float spawnTime = 3f;
 
-    public UnitAction OnEnemyClicked;
-    public UnitAction OnEnemyCanSlash;
-    public UnitAction OnExplosionAttacked;
+    private Subject<GameObject> enemyClicked = new Subject<GameObject>();
+    private Subject<GameObject> enemyCanSlash = new Subject<GameObject>();
+    private Subject<GameObject> explosionAttacked = new Subject<GameObject>();
+    private Subject<Unit> enemyEmpty = new Subject<Unit>();
 
-	private Subject<Unit> enemyEmpty = new Subject<Unit>();
-	public IObservable<Unit> OnEnemyEmpty { get { return enemyEmpty; }}
+    public IObservable<GameObject> OnEnemyClicked { get { return enemyClicked; } }
+    public IObservable<GameObject> OnEnemyCanSlash { get { return enemyCanSlash; } }
+    public IObservable<GameObject> OnExplosionAttacked { get { return explosionAttacked; } }
+    public IObservable<Unit> OnEnemyEmpty { get { return enemyEmpty; }}
 
     public List<GameObject> Enemies { get { return monsters; } }
 
@@ -71,10 +72,7 @@ public class EnemyGenerator : MonoBehaviour
                 }
             }
 
-            if (OnEnemyClicked != null)
-            {
-                OnEnemyClicked(minHit.collider.gameObject);
-            }
+            enemyClicked.OnNext(minHit.collider.gameObject);
         }
     }
 
@@ -106,27 +104,11 @@ public class EnemyGenerator : MonoBehaviour
             monsters.Add(obj);
 
             EnemyBattle battle = obj.GetComponent<EnemyBattle>();
-            battle.OnDie += EnemyDie;
-            battle.OnExplosionAttacked += EnemyExplosionAttacked;
+            battle.OnDie.Subscribe(o => EnemyDie(o)).AddTo(this);
+            battle.OnExplosionAttacked.Subscribe(o => explosionAttacked.OnNext(o)).AddTo(this);
 
             EnemySlash slash = obj.GetComponent<EnemySlash>();
-            slash.OnCanSlash += EnemySlashTriggered;
-        }
-    }
-
-    void EnemyExplosionAttacked(GameObject unit)
-    {
-        if (OnExplosionAttacked != null)
-        {
-            OnExplosionAttacked(unit);
-        }
-    }
-
-    void EnemySlashTriggered(GameObject unit)
-    {
-        if (OnEnemyCanSlash != null)
-        {
-            OnEnemyCanSlash(unit);
+            slash.OnCanSlash.Subscribe(o => enemyCanSlash.OnNext(o)).AddTo(this);
         }
     }
 

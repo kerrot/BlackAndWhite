@@ -22,15 +22,15 @@ public class TutorialStage : MonoBehaviour {
         OpeningRTM opening = GameObject.FindObjectOfType<OpeningRTM>();
         if (opening)
         {
-			opening.OnOpeningEnd.Subscribe(o => OnOpeningEnd());
+            opening.OnOpeningEnd.Subscribe(o => OnOpeningEnd()).AddTo(this);
         }
 
         EnemyGenerator enemies = GameObject.FindObjectOfType<EnemyGenerator>();
         if (enemies)
         {
-            enemies.OnExplosionAttacked += EnemyExplosionAttacked;
-            enemies.OnEnemyCanSlash += EnemySlashTriggered;
-			enemies.OnEnemyEmpty.Subscribe(o => StageClear());
+            enemies.OnExplosionAttacked.Subscribe(o => EnemyExplosionAttacked(o)).AddTo(this);
+            enemies.OnEnemyCanSlash.Subscribe(o => EnemySlashTriggered(o)).AddTo(this);
+            enemies.OnEnemyEmpty.Subscribe(o => Observable.FromCoroutine(ShowNextStage).Subscribe()).AddTo(this);
         }
 	}
 	
@@ -89,11 +89,6 @@ public class TutorialStage : MonoBehaviour {
         {
             obj.SetActive(true);
         }
-    }
-
-    void StageClear()
-    {
-        StartCoroutine(ShowNextStage());
     }
 
     IEnumerator ShowNextStage()

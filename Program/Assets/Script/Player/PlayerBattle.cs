@@ -39,12 +39,12 @@ public class PlayerBattle : UnitBattle {
     {
         attackHash = Animator.StringToHash("PlayerBase.Attack");
 
-        Enemies.OnEnemyClicked += Battle;
         anim = GetComponent<Animator>();
         AttackRadius = AttackRegion.GetComponent<SphereCollider>().radius;
 
         nowHP = HP;
 
+        Enemies.OnEnemyClicked.Subscribe(o => Battle(o)).AddTo(this);
         this.UpdateAsObservable().Subscribe(_ => UniRxUpdate());
 		this.LateUpdateAsObservable().Subscribe (_ => UniRxLateUpdate ());
     }

@@ -12,10 +12,10 @@ public class GameSystem : SingletonMonoBehaviour<GameSystem>
     [SerializeField]
     NumberDisplayUI multiSlash;
 
-    public delegate void ComboAction(int slashCount);
-    static public ComboAction OnCombo;
-    public delegate void MultiSlashAction(int num);
-    static public MultiSlashAction OnMultiSlash;
+    private Subject<int> comboSubject = new Subject<int>();
+    private Subject<int> multiSlashSubject = new Subject<int>();
+    public IObservable<int> OnCombo { get { return comboSubject; } }
+    public IObservable<int> OnMultiSlash { get { return multiSlashSubject; } }
 
     int slashCount = 0;
 
@@ -45,10 +45,7 @@ public class GameSystem : SingletonMonoBehaviour<GameSystem>
             combo.Display(slashCount);
         }
 
-        if (OnCombo != null)
-        {
-            OnCombo(slashCount);
-        }
+        comboSubject.OnNext(slashCount);
     }
 
     public void KillInOneTime(int num)
@@ -58,10 +55,7 @@ public class GameSystem : SingletonMonoBehaviour<GameSystem>
             multiSlash.Display(num);
         }
 
-        if (OnMultiSlash != null)
-        {
-            OnMultiSlash(num);
-        }
+        multiSlashSubject.OnNext(num);
     }
 
     public void GamePause()
