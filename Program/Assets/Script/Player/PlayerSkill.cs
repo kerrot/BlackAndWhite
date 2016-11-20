@@ -17,13 +17,15 @@ public class PlayerSkill : SingletonMonoBehaviour<PlayerSkill>
     private GameObject BlueSkill;
 	[SerializeField]
 	private GameObject RedSkill;
+    [SerializeField]
+    private GameObject RedSkillPos;
 
-//	private ReactiveProperty<int> power;
-//
-//	public bool isSkill { get { return usingSkill; } }
-//    private bool usingSkill = false;
-//
-//    private float skillStartTime;
+    //	private ReactiveProperty<int> power;
+    //
+    //	public bool isSkill { get { return usingSkill; } }
+    //    private bool usingSkill = false;
+    //
+    //    private float skillStartTime;
 
     Material lanceEffectmat;
 
@@ -77,8 +79,8 @@ public class PlayerSkill : SingletonMonoBehaviour<PlayerSkill>
                 BlueSkill.SetActive(true);
 	            break;
 			case ElementType.ELEMENT_TYPE_RED:
-			Instantiate (RedSkill, transform.position, transform.rotation);
-				break;
+                Instantiate(RedSkill, RedSkillPos.transform.position, transform.rotation);
+                break;
         }
     }
 

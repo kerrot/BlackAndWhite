@@ -26,6 +26,7 @@ ModelImporter:
     7400010: Tumble
     7400012: Die
     7400014: Revive
+    7400016: Fire
     9500000: //RootNode
   materials:
     importMaterials: 1
@@ -312,6 +313,42 @@ ModelImporter:
       takeName: Revive
       firstFrame: 300
       lastFrame: 310
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: JRoot
+        weight: 1
+      - path: JRoot/JBody
+        weight: 1
+      - path: JRoot/JBody/Dark
+        weight: 1
+      maskType: 0
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 190
+    - serializedVersion: 16
+      name: Fire
+      takeName: Fire
+      firstFrame: 310
+      lastFrame: 350
       wrapMode: 0
       orientationOffsetY: 0
       level: 0

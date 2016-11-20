@@ -19,6 +19,8 @@ public class EnemyBattle : UnitBattle
     private Transform HPUICenter;
     [SerializeField]
     private AudioClip tumbleSE;
+    [SerializeField]
+    private AudioClip fireSE;
 
     private Subject<GameObject> dieSubject = new Subject<GameObject>();
     private Subject<GameObject> explosionAttacked = new Subject<GameObject>();
@@ -179,8 +181,16 @@ public class EnemyBattle : UnitBattle
             {
                 if (attack.Type == AttackType.ATTACK_TYPE_SKILL)
                 {
-                    anim.SetTrigger("Tumble");
-                    AudioHelper.PlaySE(gameObject, tumbleSE);
+                    if (attack.Element == ElementType.ELEMENT_TYPE_BLUE)
+                    {
+                        anim.SetTrigger("Tumble");
+                        AudioHelper.PlaySE(gameObject, tumbleSE);
+                    }
+                    else if (attack.Element == ElementType.ELEMENT_TYPE_RED)
+                    {
+                        anim.SetTrigger("Fire");
+                        AudioHelper.PlaySE(gameObject, fireSE);
+                    }
                 }
                 else
                 {
