@@ -55,10 +55,10 @@ public class BlueSpellEffect : AuraBattle {
             enemy.Attacked(this, CreateAttack(AttackType.ATTACK_TYPE_SKILL, strength));
         }
 
-        PlayerBattle player = other.gameObject.GetComponent<PlayerBattle>();
-        if (player)
-        {
+        //PlayerBattle player = other.gameObject.GetComponent<PlayerBattle>();
+        //if (player)
+        //{
 
-        }
+        //}
     }
 }

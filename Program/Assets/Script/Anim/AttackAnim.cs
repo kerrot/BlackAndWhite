@@ -18,7 +18,7 @@ public class AttackAnim : StateMachineBehaviour {
     // OnStateExit is called when a transition ends and the state machine finishes evaluating this state
     override public void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
-        //animator.SetBool("IsAttacking", false);
+        animator.SetBool("IsMove", false);
         PlayerMove.Instance.CanRotate = true;
     }
 

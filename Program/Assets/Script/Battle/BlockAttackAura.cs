@@ -16,7 +16,7 @@ public class BlockAttackAura : AuraBattle
     void Start()
     {
 		nowBlock = blockValue;
-		em = GetComponent<ParticleSystem> ().emission;
+		em = Effect.GetComponent<ParticleSystem> ().emission;
     }
 
     protected override bool IsAuraDisappear(UnitBattle unit, Attack attack)

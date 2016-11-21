@@ -22,6 +22,14 @@ public class FireBall : UnitBattle
         float time = GetComponent<ParticleSystem>().duration;
         Destroy(gameObject, time);
 
+        Attribute attr = GetComponent<Attribute>();
+        if (!attr)
+        {
+            attr = gameObject.AddComponent<Attribute>();
+        }
+
+        attr.SetElement(ElementType.ELEMENT_TYPE_RED);
+
         this.OnParticleCollisionAsObservable().Subscribe(o => UniRxParticleCollision(o));
 	}
 

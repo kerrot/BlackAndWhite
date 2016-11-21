@@ -13,6 +13,7 @@ public class AuraBattle : UnitBattle
     bool isUpdate = false;
     float disappearStart;
     bool isDisappear;
+    
 
     void StartUpdate()
     {

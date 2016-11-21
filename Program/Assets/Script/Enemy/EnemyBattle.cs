@@ -126,14 +126,6 @@ public class EnemyBattle : UnitBattle
         showHPStart = Time.time;
         #endregion
 
-        #region CheckImunity
-        Immunity im = GetComponent<Immunity>();
-        if (im && im.CheckImmunity(unit, attack))
-        {
-            return false;
-        }
-        #endregion
-
         #region Modify with Attribute
         Attribute attr = GetComponent<Attribute>();
         if (attr && attr.ProcessAttack(unit, attack))

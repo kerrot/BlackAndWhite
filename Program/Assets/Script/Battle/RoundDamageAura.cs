@@ -27,7 +27,7 @@ public class RoundDamageAura : AuraBattle
 
     protected override bool IsAuraDisappear(UnitBattle unit, Attack attack)
     {
-        return attack.Element == ElementType.ELEMENT_TYPE_BLUE;
+        return Attribute.IsWeakness(GetComponent<Attribute>(), attack.Element);
     }
 
     protected override void AuraDisappear()
