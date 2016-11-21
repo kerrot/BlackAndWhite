@@ -11,8 +11,9 @@ public class PlayerMove : SingletonMonoBehaviour<PlayerMove> {
     public GameObject TargetObject;
 
     Animator anim;
+    NavMeshAgent agent;
 
-	static int floorMask;
+    static int floorMask;
     static float camRayLength = 100f;
 
 	void Awake() {
@@ -24,7 +25,11 @@ public class PlayerMove : SingletonMonoBehaviour<PlayerMove> {
         InputController.OnMousePressed.Subscribe(p => CheckMotion(p));
         InputController.OnMouseUp.Subscribe(p => StopGuard(p));
 
-		this.FixedUpdateAsObservable ().Subscribe (_ => UniRxFixedUpdate ());
+        agent = GetComponent<NavMeshAgent>();
+        agent.updatePosition = false;
+        agent.updateRotation = false;
+
+        this.FixedUpdateAsObservable ().Subscribe (_ => UniRxFixedUpdate ());
     }
 
     public void StartMove(Vector2 mousePosition)
@@ -57,7 +62,7 @@ public class PlayerMove : SingletonMonoBehaviour<PlayerMove> {
         }
     }
 
-    public static Vector3 ComputeDestination(Vector2 position)
+    public Vector3 ComputeDestination(Vector2 position)
     {
         Ray camRay = Camera.main.ScreenPointToRay(position);
         RaycastHit floorHit;
@@ -65,6 +70,16 @@ public class PlayerMove : SingletonMonoBehaviour<PlayerMove> {
         if (Physics.Raycast(camRay, out floorHit, camRayLength, floorMask))
         {
             return floorHit.point;
+        }
+        else
+        {
+            Plane groundPlane = new Plane(Vector3.up, transform.position);
+            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            float rayDistance;
+            if (groundPlane.Raycast(ray, out rayDistance))
+            {
+                return ray.GetPoint(rayDistance);
+            }
         }
 
         return new Vector3();
@@ -80,5 +95,14 @@ public class PlayerMove : SingletonMonoBehaviour<PlayerMove> {
         TargetObject.transform.position = ComputeDestination(position);
 
         transform.LookAt(TargetObject.transform);
+    }
+
+    void OnAnimatorMove()
+    {
+        NavMeshHit navHit;
+        if (NavMesh.SamplePosition(anim.rootPosition, out navHit, 1.0f, NavMesh.AllAreas))
+        {
+            transform.position = navHit.position;
+        }
     }
 }

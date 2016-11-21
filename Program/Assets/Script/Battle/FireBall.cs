@@ -18,6 +18,10 @@ public class FireBall : UnitBattle
 	void Start ()
     {
         radius = GetComponent<SphereCollider>().radius;
+
+        float time = GetComponent<ParticleSystem>().duration;
+        Destroy(gameObject, time);
+
         this.OnParticleCollisionAsObservable().Subscribe(o => UniRxParticleCollision(o));
 	}
 
