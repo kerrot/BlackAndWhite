@@ -18,7 +18,6 @@ public class BlueSkill : MonoBehaviour {
     {
         range = skillObjeect.GetComponent<SphereCollider>().radius * 2;
         this.UpdateAsObservable().Subscribe(_ => UniRxUpdate());
-        this.OnEnableAsObservable().Subscribe(_ => UniRxOnEnable());
     }
 	
 	void UniRxUpdate()
@@ -37,7 +36,7 @@ public class BlueSkill : MonoBehaviour {
         }
 	}
 
-    void UniRxOnEnable()
+    void OnEnable()
     {
         startTime = Time.time;
         points.Clear();

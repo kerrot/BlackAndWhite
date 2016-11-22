@@ -19,6 +19,8 @@ public class PlayerSkill : SingletonMonoBehaviour<PlayerSkill>
 	private GameObject RedSkill;
     [SerializeField]
     private GameObject RedSkillPos;
+    [SerializeField]
+    private GameObject GreenSkill;
 
     //	private ReactiveProperty<int> power;
     //
@@ -80,6 +82,9 @@ public class PlayerSkill : SingletonMonoBehaviour<PlayerSkill>
 	            break;
 			case ElementType.ELEMENT_TYPE_RED:
                 Instantiate(RedSkill, RedSkillPos.transform.position, transform.rotation);
+                break;
+            case ElementType.ELEMENT_TYPE_GREEN:
+                Instantiate(GreenSkill, transform.position, Quaternion.identity);
                 break;
         }
     }

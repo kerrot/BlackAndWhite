@@ -21,6 +21,8 @@ public class EnemyBattle : UnitBattle
     private AudioClip tumbleSE;
     [SerializeField]
     private AudioClip fireSE;
+    [SerializeField]
+    private AudioClip woodSE;
 
     private Subject<GameObject> dieSubject = new Subject<GameObject>();
     private Subject<GameObject> explosionAttacked = new Subject<GameObject>();
@@ -182,6 +184,11 @@ public class EnemyBattle : UnitBattle
                     {
                         anim.SetTrigger("Fire");
                         AudioHelper.PlaySE(gameObject, fireSE);
+                    }
+                    else if (attack.Element == ElementType.ELEMENT_TYPE_GREEN)
+                    {
+                        anim.SetTrigger("Hitted");
+                        AudioHelper.PlaySE(gameObject, woodSE);
                     }
                 }
                 else

@@ -48,12 +48,6 @@ public class EnemySlash : MonoBehaviour {
         effect.SetActive(!CanSlash);
         lockUI.SetActive(CanSlash);
 
-        Immunity im = GetComponent<Immunity>();
-        if (im)
-        {
-            im.enabled = !CanSlash;
-        }
-
         if (canSlash)
         {
             PlayerSlash player = GameObject.FindObjectOfType<PlayerSlash>();

@@ -22,7 +22,11 @@ public class ShakeCamera : MonoBehaviour
         startTime = Time.time;
         follower = GetComponent<FollowTargetPosition>();
 		this.LateUpdateAsObservable().Subscribe (_ => UniRxLateUpdate ());
-        this.OnEnableAsObservable().Subscribe(_ => startTime = Time.time);
+    }
+
+    void OnEnable()
+    {
+        startTime = Time.time;
     }
 
 	void UniRxLateUpdate()

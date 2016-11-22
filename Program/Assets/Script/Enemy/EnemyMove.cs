@@ -1,5 +1,6 @@
 ﻿using UniRx;
 using UniRx.Triggers;
+using System;
 using UnityEngine;
 using System.Collections;
 
@@ -17,7 +18,7 @@ public class EnemyMove : MonoBehaviour {
 
     // Use this for initialization
     void Start () {
-        this.UpdateAsObservable().Subscribe(_ => UniRxUpdate());
+        this.UpdateAsObservable().Subscribe(__ => UniRxUpdate());
 
         anim = GetComponent<Animator>();
 
@@ -28,8 +29,18 @@ public class EnemyMove : MonoBehaviour {
         moveHash = Animator.StringToHash("EnemyBase.Move");
     }
 	
+    void OnDisable()
+    {
+        anim.SetBool("Move", false);
+    }
+
 	// Update is called once per frame
 	void UniRxUpdate() {
+        if (!enabled)
+        {
+            return;
+        }
+
         PlayerMove player = GameObject.FindObjectOfType<PlayerMove>();
         if (player)
         {
