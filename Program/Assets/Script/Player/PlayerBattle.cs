@@ -107,8 +107,12 @@ public class PlayerBattle : UnitBattle {
 	{
 		Vector3 direction = Enemy.transform.position - transform.position;
 		if (direction.magnitude < AttackRadius) {
-			PlayerMove.Instance.CanRotate = false;
-			anim.SetTrigger("Attack");
+            PlayerMove move = GameObject.FindObjectOfType<PlayerMove>();
+            if (move)
+            {
+                move.CanRotate = false;
+            }
+            anim.SetTrigger("Attack");
 
             AudioHelper.PlaySE(gameObject, attackSE);
         }

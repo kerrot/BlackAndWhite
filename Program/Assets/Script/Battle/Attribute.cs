@@ -13,7 +13,7 @@ public class Attribute : MonoBehaviour {
 	
     public bool ProcessAttack(UnitBattle unit, Attack atk)
     {
-        if (atk.Element == type)
+        if (IsSame(this, atk.Element))
         {
             atk.Strength /= 2;
 
@@ -58,6 +58,19 @@ public class Attribute : MonoBehaviour {
         }
 
         return new Color();
+    }
+
+    public static bool IsSame(Attribute attr, ElementType type)
+    {
+        if (attr)
+        {
+            bool result = (attr.Type == ElementType.ELEMENT_TYPE_BLUE && type == ElementType.ELEMENT_TYPE_BLUE) ||
+                            (attr.Type == ElementType.ELEMENT_TYPE_RED && type == ElementType.ELEMENT_TYPE_RED) ||
+                            (attr.Type == ElementType.ELEMENT_TYPE_GREEN && type == ElementType.ELEMENT_TYPE_GREEN);
+            return result;
+        }
+
+        return false;
     }
 
     public static bool IsWeakness(Attribute attr, ElementType type)

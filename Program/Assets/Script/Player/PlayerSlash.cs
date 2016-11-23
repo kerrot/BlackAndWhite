@@ -45,7 +45,7 @@ public class PlayerSlash : SingletonMonoBehaviour<PlayerSlash> {
         
         slashEndHash = Animator.StringToHash("PlayerBase.SlashEnd");
 		slashingHash = Animator.StringToHash("PlayerBase.Slashing");
-        InputController.OnMouseSingleClick.Subscribe(p => MultiSlash(p));
+        InputController.OnMouseSingleClick.Subscribe(p => MultiSlash(p)).AddTo(this);
 
         currentSpeed = SlashSpeed;
 
@@ -120,7 +120,11 @@ public class PlayerSlash : SingletonMonoBehaviour<PlayerSlash> {
             isSlashing = true;
 			TargetObject = Enemy;
 
-            PlayerMove.Instance.CanRotate = false;
+            PlayerMove move = GameObject.FindObjectOfType<PlayerMove>();
+            if (move)
+            {
+                move.CanRotate = false;
+            }
 
             anim.SetBool("IsSlashing", true);
             anim.SetTrigger("Slash");
@@ -136,7 +140,12 @@ public class PlayerSlash : SingletonMonoBehaviour<PlayerSlash> {
         AudioHelper.PlaySE(gameObject, slashSE);
         isSlashing = false;
         anim.SetBool("IsSlashing", false);
-        PlayerMove.Instance.CanRotate = true;
+        anim.SetBool("IsMove", false);
+        PlayerMove move = GameObject.FindObjectOfType<PlayerMove>();
+        if (move)
+        {
+            move.CanRotate = true;
+        }
 
         int count = 0;
         Collider[] enemies = Physics.OverlapBox(transform.TransformPoint(slashCollider.center), slashCollider.size, transform.rotation, EnemyMask);

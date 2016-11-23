@@ -148,7 +148,7 @@ public class EnemyBattle : UnitBattle
                 anim.SetTrigger("Hitted");
                 GetComponent<Collider>().enabled = false;
 
-                Observable.FromCoroutine(_ => LateDie(attack)).Subscribe();
+                Observable.FromCoroutine(_ => LateDie(attack)).Subscribe().AddTo(this);
             }
             else
             {

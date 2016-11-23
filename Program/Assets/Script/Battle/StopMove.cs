@@ -19,11 +19,18 @@ public class StopMove : MonoBehaviour {
 
     void UniRxUpdate()
     {
-        victom.enabled = false;
-
-        if (Time.time - startTime > lastTime)
+        if (victom)
         {
-            victom.enabled = true;
+            victom.enabled = false;
+
+            if (Time.time - startTime > lastTime)
+            {
+                victom.enabled = true;
+                Destroy(gameObject);
+            }
+        }
+        else
+        {
             Destroy(gameObject);
         }
     }

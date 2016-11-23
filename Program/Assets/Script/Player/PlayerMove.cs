@@ -3,7 +3,7 @@ using UniRx.Triggers;
 using UnityEngine;
 using System.Collections;
 
-public class PlayerMove : SingletonMonoBehaviour<PlayerMove> {
+public class PlayerMove : MonoBehaviour {
     public bool CanRotate = true;
 
     public float arriveRadius = 0.1f;
@@ -13,17 +13,19 @@ public class PlayerMove : SingletonMonoBehaviour<PlayerMove> {
     Animator anim;
     NavMeshAgent agent;
 
-    static int floorMask;
-    static float camRayLength = 100f;
+    int floorMask;
+    int slashingHash;
 
-	void Awake() {
+    void Awake() {
 		anim = GetComponent<Animator>();
 
         floorMask = LayerMask.GetMask("Floor");
 
-        InputController.OnMouseDown.Subscribe(p => StartMove(p));
-        InputController.OnMousePressed.Subscribe(p => CheckMotion(p));
-        InputController.OnMouseUp.Subscribe(p => StopGuard(p));
+        slashingHash = Animator.StringToHash("PlayerBase.Slashing");
+
+        InputController.OnMouseDown.Subscribe(p => StartMove(p)).AddTo(this);
+        InputController.OnMousePressed.Subscribe(p => CheckMotion(p)).AddTo(this);
+        InputController.OnMouseUp.Subscribe(p => StopGuard(p)).AddTo(this);
 
         agent = GetComponent<NavMeshAgent>();
         agent.updatePosition = false;
@@ -32,14 +34,14 @@ public class PlayerMove : SingletonMonoBehaviour<PlayerMove> {
         this.FixedUpdateAsObservable ().Subscribe (_ => UniRxFixedUpdate ());
     }
 
-    public void StartMove(Vector2 mousePosition)
+    void StartMove(Vector2 mousePosition)
     {
         anim.SetBool("IsMove", true);
 
         SetDestination(mousePosition);
     }
 
-    public void CheckMotion(Vector2 mousePosition)
+    void CheckMotion(Vector2 mousePosition)
     {
         SetDestination(mousePosition);
 
@@ -49,7 +51,7 @@ public class PlayerMove : SingletonMonoBehaviour<PlayerMove> {
         anim.SetBool("IsMove", !isGuard);
     }
 
-    public void StopGuard(Vector2 mousePosition)
+    void StopGuard(Vector2 mousePosition)
 	{
 		anim.SetBool ("Guard", false);
 	}
@@ -62,12 +64,12 @@ public class PlayerMove : SingletonMonoBehaviour<PlayerMove> {
         }
     }
 
-    public Vector3 ComputeDestination(Vector2 position)
+    Vector3 ComputeDestination(Vector2 position)
     {
         Ray camRay = Camera.main.ScreenPointToRay(position);
         RaycastHit floorHit;
 
-        if (Physics.Raycast(camRay, out floorHit, camRayLength, floorMask))
+        if (Physics.Raycast(camRay, out floorHit, Mathf.Infinity, floorMask))
         {
             return floorHit.point;
         }
@@ -99,10 +101,18 @@ public class PlayerMove : SingletonMonoBehaviour<PlayerMove> {
 
     void OnAnimatorMove()
     {
-        NavMeshHit navHit;
-        if (NavMesh.SamplePosition(anim.rootPosition, out navHit, 1.0f, NavMesh.AllAreas))
+        AnimatorStateInfo info = anim.GetCurrentAnimatorStateInfo(0);
+        if (info.fullPathHash == slashingHash)
         {
-            transform.position = navHit.position;
+            transform.position = anim.rootPosition;
+        }
+        else
+        {
+            NavMeshHit navHit;
+            if (NavMesh.SamplePosition(anim.rootPosition, out navHit, 1.0f, NavMesh.AllAreas))
+            {
+                transform.position = navHit.position;
+            }
         }
     }
 }
