@@ -56,7 +56,7 @@ public class ImmunityAura : AuraBattle {
 
     protected override bool IsAuraDisappear(UnitBattle unit, Attack attack)
     {
-        return Attribute.IsWeakness(GetComponent<Attribute>(), attack.Element);
+        return Attribute.IsWeakness(element, attack.Element);
     }
 
     protected override void AuraDisappear()

@@ -17,7 +17,7 @@ public class RunTimeUIGenerator : MonoBehaviour {
         return CreateUI(HPUI);
     }
 
-    GameObject CreateUI(GameObject ui)
+    public GameObject CreateUI(GameObject ui)
     {
         if (ui)
         {

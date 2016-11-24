@@ -5,7 +5,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
-public class PlayerSlash : SingletonMonoBehaviour<PlayerSlash> {
+public class PlayerSlash : MonoBehaviour {
     [SerializeField]
     private bool AutoSlash = false;
     [SerializeField]
@@ -22,6 +22,8 @@ public class PlayerSlash : SingletonMonoBehaviour<PlayerSlash> {
     private AudioClip slashSE;
 
     public float SlashRadius { get { return slashRadius; } }
+    public bool IsSlashing { get { return isSlashing; } }
+
 
     float slashRadius;
 

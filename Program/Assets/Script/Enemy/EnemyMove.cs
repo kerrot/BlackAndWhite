@@ -8,6 +8,8 @@ public class EnemyMove : MonoBehaviour {
 
     [SerializeField]
     private float stopRadius;
+    [SerializeField]
+    private GameObject wanderEffect;
 
     public float StopRadius { get { return stopRadius; } }
 
@@ -28,31 +30,33 @@ public class EnemyMove : MonoBehaviour {
 
         moveHash = Animator.StringToHash("EnemyBase.Move");
     }
-	
-    void OnDisable()
-    {
-        anim.SetBool("Move", false);
-    }
 
 	// Update is called once per frame
 	void UniRxUpdate() {
         if (!enabled)
         {
+            anim.SetBool("Move", false);
             return;
         }
 
-        PlayerMove player = GameObject.FindObjectOfType<PlayerMove>();
+        PlayerBattle player = GameObject.FindObjectOfType<PlayerBattle>();
         if (player)
         {
-            agent.destination = player.transform.position;
+            anim.SetBool("Wander", player.Missing);
+            wanderEffect.SetActive(player.Missing);
 
-            anim.SetBool("Move", Vector3.Distance(player.transform.position, transform.position) > stopRadius);
-
-            AnimatorStateInfo info = anim.GetCurrentAnimatorStateInfo(0);
-            if (info.fullPathHash == moveHash)
+            if (!player.Missing)
             {
-                FaceTarget(agent.steeringTarget);
-                agent.nextPosition = transform.position;
+                agent.destination = player.transform.position;
+
+                anim.SetBool("Move", Vector3.Distance(player.transform.position, transform.position) > stopRadius);
+
+                AnimatorStateInfo info = anim.GetCurrentAnimatorStateInfo(0);
+                if (info.fullPathHash == moveHash)
+                {
+                    FaceTarget(agent.steeringTarget);
+                    agent.nextPosition = transform.position;
+                }
             }
         }
     }

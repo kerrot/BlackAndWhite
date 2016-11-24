@@ -21,6 +21,8 @@ public class PlayerSkill : SingletonMonoBehaviour<PlayerSkill>
     private GameObject RedSkillPos;
     [SerializeField]
     private GameObject GreenSkill;
+    [SerializeField]
+    private GameObject MagentaSkill;
 
     //	private ReactiveProperty<int> power;
     //
@@ -86,6 +88,9 @@ public class PlayerSkill : SingletonMonoBehaviour<PlayerSkill>
             case ElementType.ELEMENT_TYPE_GREEN:
                 Instantiate(GreenSkill, transform.position, Quaternion.identity);
                 break;
+            case ElementType.ELEMENT_TYPE_MAGENTA:
+                MagentaSkill.SetActive(true);
+                break;
         }
     }
 
@@ -149,35 +154,29 @@ public class PlayerSkill : SingletonMonoBehaviour<PlayerSkill>
 
 	void BlueAttribute(bool active)
 	{
-        AttributeChange(active, new Color(0f, 0f, 2f), ElementType.ELEMENT_TYPE_BLUE);
+        AttributeChange(active, ElementType.ELEMENT_TYPE_BLUE);
     }
     void RedAttribute(bool active)
     {
-        AttributeChange(active, new Color(2f, 0f, 0f), ElementType.ELEMENT_TYPE_RED);
+        AttributeChange(active, ElementType.ELEMENT_TYPE_RED);
     }
     void GreenAttribute(bool active)
     {
-        AttributeChange(active, new Color(0f, 2f, 0f), ElementType.ELEMENT_TYPE_GREEN);
+        AttributeChange(active, ElementType.ELEMENT_TYPE_GREEN);
     }
 
-    void AttributeChange(bool active, Color color, ElementType type)
+    void AttributeChange(bool active, ElementType type)
     {
         LanceEffect.gameObject.SetActive(active);
-        if (active)
-        {
-            Lance.material.SetColor("_EmissionColor", color);
-            lanceEffectmat.SetColor("_EmissionColor", color);
-        }
-        else
-        {
-            Lance.material.SetColor("_EmissionColor", Color.black);
-            lanceEffectmat.SetColor("_EmissionColor", Color.black);
-        }
 
         Attribute attr = GetComponent<Attribute>();
         if (attr)
         {
-            attr.SetElement((active) ? type : ElementType.ELEMENT_TYPE_NONE);
+            attr.SetElement(active, type);
+
+            Color color = Attribute.GetColor(attr.Type) * 2;
+            Lance.material.SetColor("_EmissionColor", color);
+            lanceEffectmat.SetColor("_EmissionColor", color);
         }
     }
 }

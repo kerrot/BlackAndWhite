@@ -10,25 +10,37 @@ public class Attribute : MonoBehaviour {
     private AuraBattle[] aura;
 
     public ElementType Type { get { return type; } }
-	
+
     public bool ProcessAttack(UnitBattle unit, Attack atk)
     {
-        if (IsSame(this, atk.Element))
+        if (IsPure(atk.Element))
         {
-            atk.Strength /= 2;
-
-            if (atk.Type == AttackType.ATTACK_TYPE_AURA)
-            {
-                return true;
-            }
+            atk.Strength = PureProcess(atk.Element, atk.Strength);
         }
-
-        if (IsWeakness(this, atk.Element))
+        else
         {
-            atk.Strength *= 2;
+            float strength = atk.Strength / 2;
+            float tmp = 0;
+            if ((atk.Element & ElementType.ELEMENT_TYPE_RED) != 0)
+            {
+                tmp += PureProcess(ElementType.ELEMENT_TYPE_RED, strength);
+            }
+            if ((atk.Element & ElementType.ELEMENT_TYPE_GREEN) != 0)
+            {
+                tmp += PureProcess(ElementType.ELEMENT_TYPE_GREEN, strength);
+            }
+            if ((atk.Element & ElementType.ELEMENT_TYPE_BLUE) != 0)
+            {
+                tmp += PureProcess(ElementType.ELEMENT_TYPE_BLUE, strength);
+            }
+            atk.Strength = tmp;
         }
 
         bool result = false;
+        if (atk.Type == AttackType.ATTACK_TYPE_AURA && IsResist(type, atk.Element))
+        {
+            result = true;
+        }
 
         aura.ToList().ForEach(a =>
         {
@@ -38,51 +50,98 @@ public class Attribute : MonoBehaviour {
         return result;
     }
 
-    public void SetElement(ElementType ele)
+    float PureProcess(ElementType ele, float strength)
     {
-        type = ele;
+        if (IsResist(type, ele))
+        {
+            return strength / 2;
+        }
+        else if (IsWeakness(type, ele))
+        {
+            return strength * 2;
+        }
+        else if (IsWeakness(ele, type))
+        {
+            return 0f;
+        }
+
+        return strength;
+    }
+
+    public void SetElement(bool active, ElementType ele)
+    {
+        if (isBase(ele))
+        {
+            if (active)
+            {
+                type |= ele;
+            }
+            else
+            {
+                type &= ~ele;
+            }
+        }
     }
 
     public static Color GetColor(ElementType ele)
     {
-        switch (ele)
+        if (ele == ElementType.ELEMENT_TYPE_NONE)
         {
-            case ElementType.ELEMENT_TYPE_NONE:
-                return new Color(1f, 1f, 1f);
-            case ElementType.ELEMENT_TYPE_RED:
-                return new Color(1f, 0f, 0f);
-            case ElementType.ELEMENT_TYPE_GREEN:
-                return new Color(0f, 1f, 0f);
-            case ElementType.ELEMENT_TYPE_BLUE:
-                return new Color(0f, 0f, 1f);
+            return new Color(0.3f, 0.3f, 0.3f);
         }
 
-        return new Color();
+        Color c = new Color();
+        if ((ele & ElementType.ELEMENT_TYPE_RED) != 0)
+        {
+            c.r = 1f;
+        }
+        if ((ele & ElementType.ELEMENT_TYPE_GREEN) != 0)
+        {
+            c.g = 1f;
+        }
+        if ((ele & ElementType.ELEMENT_TYPE_BLUE) != 0)
+        {
+            c.b = 1f;
+        }
+
+
+        return c;
     }
 
-    public static bool IsSame(Attribute attr, ElementType type)
+    public static bool isBase(ElementType ele)
     {
-        if (attr)
-        {
-            bool result = (attr.Type == ElementType.ELEMENT_TYPE_BLUE && type == ElementType.ELEMENT_TYPE_BLUE) ||
-                            (attr.Type == ElementType.ELEMENT_TYPE_RED && type == ElementType.ELEMENT_TYPE_RED) ||
-                            (attr.Type == ElementType.ELEMENT_TYPE_GREEN && type == ElementType.ELEMENT_TYPE_GREEN);
-            return result;
-        }
-
-        return false;
+        bool result = ele == ElementType.ELEMENT_TYPE_RED ||
+                      ele == ElementType.ELEMENT_TYPE_GREEN ||
+                      ele == ElementType.ELEMENT_TYPE_BLUE;
+        return result;
     }
 
-    public static bool IsWeakness(Attribute attr, ElementType type)
+    public static bool IsResist(ElementType victom, ElementType attacker)
     {
-        if (attr)
-        {
-            bool result =   (attr.Type == ElementType.ELEMENT_TYPE_BLUE && type == ElementType.ELEMENT_TYPE_GREEN) ||
-                            (attr.Type == ElementType.ELEMENT_TYPE_RED && type == ElementType.ELEMENT_TYPE_BLUE) ||
-                            (attr.Type == ElementType.ELEMENT_TYPE_GREEN && type == ElementType.ELEMENT_TYPE_RED);
-            return result;
-        }
+        bool result = (victom == ElementType.ELEMENT_TYPE_BLUE && attacker == ElementType.ELEMENT_TYPE_BLUE) ||
+                      (victom == ElementType.ELEMENT_TYPE_RED && attacker == ElementType.ELEMENT_TYPE_RED) ||
+                      (victom == ElementType.ELEMENT_TYPE_GREEN && attacker == ElementType.ELEMENT_TYPE_GREEN) ||
+                      victom == ElementType.ELEMENT_TYPE_BLACK && attacker != ElementType.ELEMENT_TYPE_WHITE;
+        return result;
+    }
 
-        return false;
+    public static bool IsPure(ElementType ele)
+    {
+        return ele == ElementType.ELEMENT_TYPE_NONE ||
+                ele == ElementType.ELEMENT_TYPE_RED ||
+                ele == ElementType.ELEMENT_TYPE_GREEN ||
+                ele == ElementType.ELEMENT_TYPE_BLUE ||
+                ele == ElementType.ELEMENT_TYPE_BLACK;
+    }
+
+    public static bool IsWeakness(ElementType victom, ElementType attacker)
+    {
+        bool result = false;
+        result |= victom == ElementType.ELEMENT_TYPE_RED && ((attacker & ElementType.ELEMENT_TYPE_BLUE) != 0);
+        result |= victom == ElementType.ELEMENT_TYPE_GREEN && ((attacker & ElementType.ELEMENT_TYPE_RED) != 0);
+        result |= victom == ElementType.ELEMENT_TYPE_BLUE && ((attacker & ElementType.ELEMENT_TYPE_GREEN) != 0);
+        result |= victom == ElementType.ELEMENT_TYPE_BLACK && attacker == ElementType.ELEMENT_TYPE_WHITE;
+
+        return result;
     }
 }

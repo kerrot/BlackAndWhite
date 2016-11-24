@@ -40,7 +40,7 @@ public class EnemyAttack : MonoBehaviour
     void UniRxUpdate()
     {
         PlayerBattle player = GameObject.FindObjectOfType<PlayerBattle>();
-        if (player && player.enabled)
+        if (player && !player.Missing)
         {
             AnimatorStateInfo info = anim.GetCurrentAnimatorStateInfo(0);
             if (info.fullPathHash == idleHash && Vector3.Distance(player.transform.position, transform.position) <= movement.StopRadius)

@@ -24,6 +24,8 @@ public class PlayerBattle : UnitBattle {
     [SerializeField]
     private AudioClip attackSE;
 
+    public bool Missing { get; set; }
+
     float AttackRadius = 1.3f;
     Animator anim;
 
@@ -97,7 +99,9 @@ public class PlayerBattle : UnitBattle {
 
     void Battle (GameObject Enemy)
     {
-        if (!PlayerSlash.Instance.SlashEnemy(Enemy))
+        PlayerSlash slash = GetComponent<PlayerSlash>();
+
+        if (!slash || !slash.SlashEnemy(Enemy))
         {
             AttackEnemy(Enemy);
         }
@@ -107,7 +111,7 @@ public class PlayerBattle : UnitBattle {
 	{
 		Vector3 direction = Enemy.transform.position - transform.position;
 		if (direction.magnitude < AttackRadius) {
-            PlayerMove move = GameObject.FindObjectOfType<PlayerMove>();
+            PlayerMove move = GetComponent<PlayerMove>();
             if (move)
             {
                 move.CanRotate = false;

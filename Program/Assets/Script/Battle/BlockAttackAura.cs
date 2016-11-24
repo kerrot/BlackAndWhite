@@ -13,7 +13,7 @@ public class BlockAttackAura : AuraBattle
     float nowBlock;
 	ParticleSystem.EmissionModule em;
 
-    void Start()
+    protected override void AuraStart()
     {
 		nowBlock = blockValue;
 		em = Effect.GetComponent<ParticleSystem> ().emission;
@@ -32,7 +32,7 @@ public class BlockAttackAura : AuraBattle
             AudioHelper.PlaySE(gameObject, blockSE);
 
             if (attack.Type == AttackType.ATTACK_TYPE_EXPLOSION || 
-                Attribute.IsWeakness(GetComponent<Attribute>(), attack.Element))
+                Attribute.IsWeakness(element, attack.Element))
             {
                 nowBlock = 0;
             }

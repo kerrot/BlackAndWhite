@@ -18,7 +18,7 @@ public class RoundDamageAura : AuraBattle
 
     Collider coll;
 
-    void Start()
+    protected override void AuraStart()
     {
         coll = GetComponent<Collider>();
         this.OnTriggerEnterAsObservable().Subscribe(o => UniRxOnTriggerEnter(o));
@@ -27,7 +27,7 @@ public class RoundDamageAura : AuraBattle
 
     protected override bool IsAuraDisappear(UnitBattle unit, Attack attack)
     {
-        return Attribute.IsWeakness(GetComponent<Attribute>(), attack.Element);
+        return Attribute.IsWeakness(element, attack.Element);
     }
 
     protected override void AuraDisappear()

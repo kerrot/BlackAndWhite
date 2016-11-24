@@ -4,7 +4,7 @@ using UnityEngine;
 using System.Collections;
 
 
-public class FireBall : UnitBattle
+public class FireBall : AuraBattle
 {
     [SerializeField]
     private AudioClip expolsion;
@@ -15,20 +15,13 @@ public class FireBall : UnitBattle
 
     float radius;
 
-	void Start ()
+    protected override void AuraStart()
     {
         radius = GetComponent<SphereCollider>().radius;
+        element = ElementType.ELEMENT_TYPE_RED;
 
         float time = GetComponent<ParticleSystem>().duration;
         Destroy(gameObject, time);
-
-        Attribute attr = GetComponent<Attribute>();
-        if (!attr)
-        {
-            attr = gameObject.AddComponent<Attribute>();
-        }
-
-        attr.SetElement(ElementType.ELEMENT_TYPE_RED);
 
         this.OnParticleCollisionAsObservable().Subscribe(o => UniRxParticleCollision(o));
 	}

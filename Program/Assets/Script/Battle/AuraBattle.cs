@@ -6,31 +6,55 @@ using System.Collections;
 public class AuraBattle : UnitBattle
 {
     [SerializeField]
+    protected float lastTime = Mathf.Infinity;
+    [SerializeField]
     protected GameObject Effect;
     [SerializeField]
     protected float recoverTime;
+    [SerializeField]
+    protected ElementType element;
 
-    bool isUpdate = false;
     float disappearStart;
+    float auraStartTime;
     bool isDisappear;
-    
 
-    void StartUpdate()
+    void Start()
     {
-        if (!isUpdate)
-        {
-            this.UpdateAsObservable().Subscribe(_ => UniRxUpdate());
-            isUpdate = true;
-        }
+        this.UpdateAsObservable().Subscribe(_ => UniRxUpdate());
+        auraStartTime = Time.time;
+        AuraStart();
+    }
+
+    protected virtual void AuraStart()
+    {
+
+    }
+
+    protected virtual void AuraUpdate()
+    {
+
     }
 
     void UniRxUpdate()
     {
+        if (!enabled)
+        {
+            return;
+        }
+
         if (isDisappear && Time.time - disappearStart > recoverTime)
         {
             isDisappear = false;
+            auraStartTime = Time.time;
             AuraRecover();
         }
+
+        if (Time.time - auraStartTime > lastTime)
+        {
+            DoDisappear();
+        }
+
+        AuraUpdate();
     }
 
     public override bool Attacked(UnitBattle unit, Attack attack)
@@ -39,13 +63,17 @@ public class AuraBattle : UnitBattle
 
         if (IsAuraDisappear(unit, attack))
         {
-            disappearStart = Time.time;
-            isDisappear = true;
-            AuraDisappear();
-            StartUpdate();
+            DoDisappear();
         }
 
 		return result;
+    }
+
+    void DoDisappear()
+    {
+        disappearStart = Time.time;
+        isDisappear = true;
+        AuraDisappear();
     }
 
     protected virtual bool IsAuraDisappear(UnitBattle unit, Attack attack)

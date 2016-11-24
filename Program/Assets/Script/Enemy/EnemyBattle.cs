@@ -23,6 +23,8 @@ public class EnemyBattle : UnitBattle
     private AudioClip fireSE;
     [SerializeField]
     private AudioClip woodSE;
+    [SerializeField]
+    private AudioClip frightenSE;
 
     private Subject<GameObject> dieSubject = new Subject<GameObject>();
     private Subject<GameObject> explosionAttacked = new Subject<GameObject>();
@@ -47,6 +49,8 @@ public class EnemyBattle : UnitBattle
 
     Collider coll;
 
+    int wanderHash;
+
     //Start change to Awake, because Instantiate not call Start but Awake
     void Awake()
     {
@@ -60,6 +64,8 @@ public class EnemyBattle : UnitBattle
 
     void Start()
     {
+        wanderHash = Animator.StringToHash("EnemyBase.wander");
+
         RunTimeUIGenerator ui = GameObject.FindObjectOfType<RunTimeUIGenerator>();
         if (ui)
         { 
@@ -193,7 +199,16 @@ public class EnemyBattle : UnitBattle
                 }
                 else
                 {
-                    anim.SetTrigger("Hitted");
+                    AnimatorStateInfo info = anim.GetCurrentAnimatorStateInfo(0);
+                    if (info.fullPathHash == wanderHash)
+                    {
+                        anim.SetTrigger("Frighten");
+                        AudioHelper.PlaySE(gameObject, frightenSE);
+                    }
+                    else
+                    {
+                        anim.SetTrigger("Hitted");
+                    }
                 }
             }
             else

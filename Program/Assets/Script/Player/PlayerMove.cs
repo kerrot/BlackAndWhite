@@ -14,14 +14,11 @@ public class PlayerMove : MonoBehaviour {
     NavMeshAgent agent;
 
     int floorMask;
-    int slashingHash;
 
     void Awake() {
 		anim = GetComponent<Animator>();
 
         floorMask = LayerMask.GetMask("Floor");
-
-        slashingHash = Animator.StringToHash("PlayerBase.Slashing");
 
         InputController.OnMouseDown.Subscribe(p => StartMove(p)).AddTo(this);
         InputController.OnMousePressed.Subscribe(p => CheckMotion(p)).AddTo(this);
@@ -101,8 +98,7 @@ public class PlayerMove : MonoBehaviour {
 
     void OnAnimatorMove()
     {
-        AnimatorStateInfo info = anim.GetCurrentAnimatorStateInfo(0);
-        if (info.fullPathHash == slashingHash)
+        if (GetComponent<PlayerSlash>().IsSlashing)
         {
             transform.position = anim.rootPosition;
         }
