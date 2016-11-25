@@ -42,13 +42,9 @@ public class CyanSkill : AuraBattle {
 			}
 
 			enemy.Attacked(this, CreateAttack(AttackType.ATTACK_TYPE_SKILL, strength));
-			Vector3 direction = transform.position - enemy.transform.position;
-			Vector3 shift = direction.normalized * force;
-			if (shift.magnitude > direction.magnitude) {
-				shift = direction;
-			}
 
-			enemy.transform.position += shift;
+            Vector3 direction = transform.position - enemy.transform.position;
+            enemy.AddForce(direction.normalized * force);
 		}
 	}
 }

@@ -25,6 +25,11 @@ public class AuraBattle : UnitBattle
         AuraStart();
     }
 
+    protected override ElementType GetElement()
+    {
+        return element;
+    }
+
     protected virtual void AuraStart()
     {
 

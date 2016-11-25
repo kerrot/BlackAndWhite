@@ -196,6 +196,10 @@ public class EnemyBattle : UnitBattle
                         anim.SetTrigger("Hitted");
                         AudioHelper.PlaySE(gameObject, woodSE);
                     }
+                    else
+                    {
+                        anim.SetTrigger("Hitted");
+                    }
                 }
                 else
                 {
