@@ -21,6 +21,7 @@ public class EnemyMove : MonoBehaviour {
     // Use this for initialization
     void Start () {
         this.UpdateAsObservable().Subscribe(__ => UniRxUpdate());
+		this.OnAnimatorMoveAsObservable ().Subscribe (_ => UniRxAnimatorMove ());
 
         anim = GetComponent<Animator>();
 
@@ -71,4 +72,9 @@ public class EnemyMove : MonoBehaviour {
             transform.rotation = Quaternion.AngleAxis(angle, Vector3.up);
         }
     }
+
+	void UniRxAnimatorMove()
+	{
+		transform.position = anim.rootPosition;
+	}
 }

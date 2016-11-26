@@ -16,8 +16,8 @@ public class CyanSkill : AuraBattle {
 
 	protected override void AuraStart()
 	{
-		this.OnTriggerEnterAsObservable().Subscribe(o => UniRxOnTrigger(o));
-		this.OnTriggerStayAsObservable().Subscribe(o => UniRxOnTrigger(o));
+		this.OnTriggerEnterAsObservable().Subscribe(o => UniRxOnTriggerEnter(o));
+		this.OnTriggerStayAsObservable().Subscribe(o => UniRxOnTriggerStay(o));
 	}
 
 	protected override void AuraDisappear()
@@ -25,7 +25,16 @@ public class CyanSkill : AuraBattle {
 		Destroy(gameObject);
 	}
 
-	void UniRxOnTrigger(Collider other)
+	void UniRxOnTriggerEnter(Collider other)
+	{
+		EnemyBattle enemy = other.gameObject.GetComponent<EnemyBattle>();
+		if (enemy)
+		{
+			enemy.Attacked(this, CreateAttack(AttackType.ATTACK_TYPE_SKILL, strength));
+		}
+	}
+
+	void UniRxOnTriggerStay(Collider other)
 	{
 		EnemyBattle enemy = other.gameObject.GetComponent<EnemyBattle>();
 		if (enemy)
@@ -40,8 +49,6 @@ public class CyanSkill : AuraBattle {
 			{
 				enemyMapping.Add (enemy, Time.time);
 			}
-
-			enemy.Attacked(this, CreateAttack(AttackType.ATTACK_TYPE_SKILL, strength));
 
             Vector3 direction = transform.position - enemy.transform.position;
             enemy.AddForce(direction.normalized * force);

@@ -36,9 +36,6 @@ public class UnitBattle : MonoBehaviour {
             Rigidbody rd = transform.GetComponent<Rigidbody>();
             if (rd)
             {
-                //transform.parent.position = transform.position;
-                //transform.localPosition = Vector3.zero;
-                GetComponent<Animator>().enabled = false;
                 rd.AddForce(force);
             }
         }

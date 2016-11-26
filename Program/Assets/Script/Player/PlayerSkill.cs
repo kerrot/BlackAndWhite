@@ -23,6 +23,8 @@ public class PlayerSkill : SingletonMonoBehaviour<PlayerSkill>
     private GameObject GreenSkill;
     [SerializeField]
     private GameObject MagentaSkill;
+	[SerializeField]
+	private GameObject CyanSkill;
 
     //	private ReactiveProperty<int> power;
     //
@@ -91,6 +93,10 @@ public class PlayerSkill : SingletonMonoBehaviour<PlayerSkill>
             case ElementType.ELEMENT_TYPE_MAGENTA:
                 MagentaSkill.SetActive(true);
                 break;
+			case ElementType.ELEMENT_TYPE_CYAN:
+				Instantiate(CyanSkill, transform.position, Quaternion.identity);
+				break;
+
         }
     }
 
