@@ -18,13 +18,15 @@ public class PlayerSkill : SingletonMonoBehaviour<PlayerSkill>
 	[SerializeField]
 	private GameObject RedSkill;
     [SerializeField]
-    private GameObject RedSkillPos;
+    private GameObject SkillPos;
     [SerializeField]
     private GameObject GreenSkill;
     [SerializeField]
     private GameObject MagentaSkill;
 	[SerializeField]
 	private GameObject CyanSkill;
+    [SerializeField]
+    private GameObject YellowSkill;
 
     //	private ReactiveProperty<int> power;
     //
@@ -74,6 +76,17 @@ public class PlayerSkill : SingletonMonoBehaviour<PlayerSkill>
     void UseSkill()
     {
         castingType = GetComponent<Attribute>().Type;
+        if (castingType == ElementType.ELEMENT_TYPE_YELLOW)
+        {
+            YellowDebuff debuff = GameObject.FindObjectOfType<YellowDebuff>();
+            if (debuff)
+            {
+                debuff.End();
+                transform.position = debuff.transform.position;
+                return;
+            }
+        }
+
         anim.SetTrigger("Skill");
     }
 
@@ -85,7 +98,7 @@ public class PlayerSkill : SingletonMonoBehaviour<PlayerSkill>
                 BlueSkill.SetActive(true);
 	            break;
 			case ElementType.ELEMENT_TYPE_RED:
-                Instantiate(RedSkill, RedSkillPos.transform.position, transform.rotation);
+                Instantiate(RedSkill, SkillPos.transform.position, transform.rotation);
                 break;
             case ElementType.ELEMENT_TYPE_GREEN:
                 Instantiate(GreenSkill, transform.position, Quaternion.identity);
@@ -96,6 +109,9 @@ public class PlayerSkill : SingletonMonoBehaviour<PlayerSkill>
 			case ElementType.ELEMENT_TYPE_CYAN:
 				Instantiate(CyanSkill, transform.position, Quaternion.identity);
 				break;
+            case ElementType.ELEMENT_TYPE_YELLOW:
+                Instantiate(YellowSkill, SkillPos.transform.position, transform.rotation);
+                break;
 
         }
     }

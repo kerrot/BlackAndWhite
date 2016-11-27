@@ -27,8 +27,10 @@ ModelImporter:
     7400012: Die
     7400014: Revive
     7400016: Fire
-    7400018: frighten
-    7400020: wander
+    7400018: Frighten
+    7400020: Wander
+    7400022: DamageStart
+    7400024: DamageEnd
     9500000: //RootNode
   materials:
     importMaterials: 1
@@ -383,7 +385,7 @@ ModelImporter:
       maskSource: {instanceID: 0}
       additiveReferencePoseFrame: 190
     - serializedVersion: 16
-      name: frighten
+      name: Frighten
       takeName: frighten
       firstFrame: 355
       lastFrame: 370
@@ -419,7 +421,7 @@ ModelImporter:
       maskSource: {instanceID: 0}
       additiveReferencePoseFrame: 190
     - serializedVersion: 16
-      name: wander
+      name: Wander
       takeName: wander
       firstFrame: 375
       lastFrame: 405
@@ -454,6 +456,78 @@ ModelImporter:
       maskType: 0
       maskSource: {instanceID: 0}
       additiveReferencePoseFrame: 375
+    - serializedVersion: 16
+      name: DamageStart
+      takeName: Hitted
+      firstFrame: 130
+      lastFrame: 140
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: JRoot
+        weight: 1
+      - path: JRoot/JBody
+        weight: 1
+      - path: JRoot/JBody/Dark
+        weight: 1
+      maskType: 0
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 151
+    - serializedVersion: 16
+      name: DamageEnd
+      takeName: Hitted
+      firstFrame: 140
+      lastFrame: 150
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: JRoot
+        weight: 1
+      - path: JRoot/JBody
+        weight: 1
+      - path: JRoot/JBody/Dark
+        weight: 1
+      maskType: 0
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 151
     isReadable: 1
   meshes:
     lODScreenPercentages: []

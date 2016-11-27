@@ -50,6 +50,7 @@ public class EnemyBattle : UnitBattle
     Collider coll;
 
     int wanderHash;
+    int damageHash;
 
     //Start change to Awake, because Instantiate not call Start but Awake
     void Awake()
@@ -65,6 +66,7 @@ public class EnemyBattle : UnitBattle
     void Start()
     {
         wanderHash = Animator.StringToHash("EnemyBase.wander");
+        damageHash = Animator.StringToHash("EnemyBase.DamageStart");
 
         RunTimeUIGenerator ui = GameObject.FindObjectOfType<RunTimeUIGenerator>();
         if (ui)
@@ -196,6 +198,10 @@ public class EnemyBattle : UnitBattle
                         anim.SetTrigger("Hitted");
                         AudioHelper.PlaySE(gameObject, woodSE);
                     }
+                    else if (attack.Element == ElementType.ELEMENT_TYPE_YELLOW)
+                    {
+                        anim.SetTrigger("DamageStart");
+                    }
                     else
                     {
                         anim.SetTrigger("Hitted");
@@ -222,6 +228,15 @@ public class EnemyBattle : UnitBattle
         }
 
         return false;
+    }
+
+    public void RecoverFromDamage()
+    {
+        AnimatorStateInfo info = anim.GetCurrentAnimatorStateInfo(0);
+        if (info.fullPathHash == damageHash)
+        {
+            anim.SetTrigger("DamageEnd");
+        }
     }
 
     void Die(Attack attack)
