@@ -34,9 +34,20 @@ public class GameSystem : SingletonMonoBehaviour<GameSystem>
     }
     public GameState State { get { return state; } }
 
-    public void Attack()
+    void Start()
     {
-        slashCount = 0;
+        PlayerBattle battle = GameObject.FindObjectOfType<PlayerBattle>();
+        if (battle)
+        {
+            battle.OnAttack.Subscribe(u => slashCount = 0).AddTo(this);
+        }
+
+        PlayerSlash slash = GameObject.FindObjectOfType<PlayerSlash>();
+        if (slash)
+        {
+            slash.OnSlashCount.Subscribe(i => KillInOneTime(i)).AddTo(this);
+            slash.OnComboSlash.Subscribe(u => ComboSlash()).AddTo(this);
+        }
     }
 
     public void ComboSlash()
@@ -50,7 +61,7 @@ public class GameSystem : SingletonMonoBehaviour<GameSystem>
         comboSubject.OnNext(slashCount);
     }
 
-    public void KillInOneTime(int num)
+    void KillInOneTime(int num)
     {
         if (multiSlash && num > 1)
         {

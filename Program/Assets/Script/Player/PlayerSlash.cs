@@ -9,9 +9,9 @@ public class PlayerSlash : MonoBehaviour {
     [SerializeField]
     private bool AutoSlash = false;
     [SerializeField]
-    private float maxSlashSpeed = 10f;
+    private float maxSlashSpeed = 1f;
     [SerializeField]
-    private float SlashStopRadius = 0.5f;
+    private float SlashStopRadius;
     [SerializeField]
     private GameObject SlashRegion;
     [SerializeField]
@@ -24,6 +24,11 @@ public class PlayerSlash : MonoBehaviour {
     public float SlashRadius { get { return slashRadius; } }
     public bool IsSlashing { get { return isSlashing; } }
 
+    private Subject<int> slashCount = new Subject<int>();
+    public IObservable<int> OnSlashCount { get { return slashCount; } }
+
+    private Subject<Unit> comboSlash = new Subject<Unit>();
+    public IObservable<Unit> OnComboSlash { get { return comboSlash; } }
 
     float slashRadius;
 
@@ -31,8 +36,8 @@ public class PlayerSlash : MonoBehaviour {
 	int slashingHash;
     Animator anim;
     bool isSlashing = false;
+    bool slashReach = false;
     bool continueSlash = false;
-    bool comboSlash = false;
 
     List<GameObject> slashList = new List<GameObject>();
 
@@ -41,6 +46,8 @@ public class PlayerSlash : MonoBehaviour {
 
     GameObject TargetObject;
     Vector3 TargetPosition;
+
+    WhiteAura aura;
 
     void Awake()
     {
@@ -54,6 +61,7 @@ public class PlayerSlash : MonoBehaviour {
         slashCollider = SlashRegion.GetComponent<BoxCollider>();
 
         EnemyMask = LayerMask.GetMask("Enemy");
+        aura = GameObject.FindObjectOfType<WhiteAura>();
     }
 
     void Start()
@@ -73,11 +81,23 @@ public class PlayerSlash : MonoBehaviour {
 
             transform.LookAt(TargetPosition);
 
-            if (Vector3.Distance(TargetPosition, transform.position) < SlashStopRadius)
+            if (isSlashing && !slashReach && Vector3.Distance(TargetPosition, transform.position) < SlashStopRadius)
             {
                 anim.SetTrigger("SlashEnd");
+                slashReach = true;
                 TargetObject = null;
             }
+        }
+        else if (info.fullPathHash == slashEndHash)
+        {
+            if (isSlashing == false && (continueSlash || AutoSlash || (aura && aura.IsAura)))
+            {
+                SlashNextTartget();
+            }
+        }
+        else
+        {
+            continueSlash = false;
         }
 
         SlashRegionDisplay.SetActive(slashList.Count > 0);
@@ -117,7 +137,8 @@ public class PlayerSlash : MonoBehaviour {
 	{
 		if (CanSlashEnemy(Enemy)) {
             isSlashing = true;
-			TargetObject = Enemy;
+            slashReach = false;
+            TargetObject = Enemy;
 
             PlayerMove move = GameObject.FindObjectOfType<PlayerMove>();
             if (move)
@@ -147,49 +168,37 @@ public class PlayerSlash : MonoBehaviour {
         }
 
         int count = 0;
-        Collider[] enemies = Physics.OverlapBox(transform.TransformPoint(slashCollider.center), slashCollider.size, transform.rotation, EnemyMask);
+        Collider[] enemies = Physics.OverlapBox(SlashRegion.transform.position, slashCollider.size, SlashRegion.transform.rotation, EnemyMask);
 
         PlayerBattle battle = GetComponent<PlayerBattle>();
-
-        enemies.ToList().ForEach(e =>
+        if (battle)
         {
-            EnemyBattle Enemy = e.gameObject.GetComponent<EnemyBattle>();
-            if (Enemy && Enemy.Attacked(battle, battle.CreateAttack(AttackType.ATTACK_TYPE_SLASH, strength)))
+            enemies.ToList().ForEach(e =>
             {
-                ++count;
-            }
-        });
-
-        GameSystem.Instance.KillInOneTime(count);
-        if (count > 0 && comboSlash)
-        {
-            GameSystem.Instance.ComboSlash();
-            comboSlash = false;
+                EnemyBattle Enemy = e.gameObject.GetComponent<EnemyBattle>();
+                if (Enemy && Enemy.Attacked(battle, battle.CreateAttack(AttackType.ATTACK_TYPE_SLASH, strength)))
+                {
+                    ++count;
+                }
+            });
         }
 
-        if (continueSlash || AutoSlash)
+        if (count > 0)
         {
-            continueSlash = false;
-            SlashNextTartget();
+            slashCount.OnNext(count);
+            if (continueSlash)
+            {
+                comboSlash.OnNext(Unit.Default);
+            }
         }
     }
 
     void MultiSlash(Vector2 mousePosition)
     {
-        if (continueSlash == false)
+        AnimatorStateInfo info = anim.GetCurrentAnimatorStateInfo(0);
+        if (info.fullPathHash == slashEndHash)
         {
-            AnimatorStateInfo info = anim.GetCurrentAnimatorStateInfo(0);
-            if (info.fullPathHash == slashEndHash)
-            {
-                if (isSlashing)
-                {
-                    continueSlash = true;
-                }
-                else
-                {
-                    SlashNextTartget();
-                }
-            }
+            continueSlash = true;
         }
     }
 
@@ -201,8 +210,6 @@ public class PlayerSlash : MonoBehaviour {
             SlashEnemy(o);
             if (TargetObject == o)
             {
-                comboSlash = true;
-
                 return true;
             }
         }

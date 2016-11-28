@@ -26,6 +26,9 @@ public class PlayerBattle : UnitBattle {
 
     public bool Missing { get; set; }
 
+    private Subject<Unit> attackSubject = new Subject<Unit>();
+    public IObservable<Unit> OnAttack { get { return attackSubject; } }
+
     float AttackRadius = 1.3f;
     Animator anim;
 
@@ -133,7 +136,7 @@ public class PlayerBattle : UnitBattle {
 
         if (list.Count > 0)
         {
-            GameSystem.Instance.Attack();
+            attackSubject.OnNext(Unit.Default);
         }
     }
 
