@@ -14,9 +14,12 @@ public class AuraBattle : UnitBattle
     [SerializeField]
     protected ElementType element;
 
+    public bool IsAura { get { return isRecover; } }
+
     float disappearStart;
     float auraStartTime;
     bool isDisappear;
+    bool isRecover;
 
     void Start()
     {
@@ -49,12 +52,10 @@ public class AuraBattle : UnitBattle
 
         if (isDisappear && Time.time - disappearStart > recoverTime)
         {
-            isDisappear = false;
-            auraStartTime = Time.time;
-            AuraRecover();
+            DoRecover();
         }
 
-        if (Time.time - auraStartTime > lastTime)
+        if (isRecover && Time.time - auraStartTime > lastTime)
         {
             DoDisappear();
         }
@@ -74,10 +75,20 @@ public class AuraBattle : UnitBattle
 		return result;
     }
 
-    void DoDisappear()
+    protected void DoRecover()
+    {
+        disappearStart = Time.time;
+        isDisappear = false;
+        isRecover = true;
+        auraStartTime = Time.time;
+        AuraRecover();
+    }
+
+    protected void DoDisappear()
     {
         disappearStart = Time.time;
         isDisappear = true;
+        isRecover = false;
         AuraDisappear();
     }
 

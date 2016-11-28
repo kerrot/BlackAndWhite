@@ -3,7 +3,7 @@ using UniRx.Triggers;
 using UnityEngine;
 using System.Collections;
 
-public class SlashEffect : SingletonMonoBehaviour<SlashEffect>
+public class SlashEffect : MonoBehaviour
 {
     [SerializeField]
     private GameObject shadow;

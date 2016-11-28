@@ -19,7 +19,7 @@ public class UnNormalAnim : StateMachineBehaviour {
     {
         animator.SetBool("UnNormal", false);
         animator.SetBool("Tumble", false);
-        animator.SetBool("Break", false);
+        animator.SetBool("Fire", false);
         animator.SetBool("Hitted", false);
     }
 

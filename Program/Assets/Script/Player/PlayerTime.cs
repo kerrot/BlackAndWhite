@@ -5,7 +5,6 @@ public class PlayerTime : SingletonMonoBehaviour<PlayerTime> {
 
     Animator anim;
 
-    float tmpTimeScale = 1;
     float timeFactor = 1;
 
     void Awake() 
@@ -28,21 +27,5 @@ public class PlayerTime : SingletonMonoBehaviour<PlayerTime> {
         timeFactor = playerSpeed / speed;
 
         anim.speed = timeFactor;
-    }
-
-    public void PauseGame()
-    {
-        tmpTimeScale = Time.timeScale;
-        Time.timeScale = 0;
-    }
-
-    public void ResumeGame() 
-    {
-        Time.timeScale = tmpTimeScale;
-    }
-
-    public float GetPlayerTimeFactor()
-    {
-        return timeFactor;
     }
 }

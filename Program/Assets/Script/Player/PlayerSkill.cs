@@ -27,6 +27,8 @@ public class PlayerSkill : SingletonMonoBehaviour<PlayerSkill>
 	private GameObject CyanSkill;
     [SerializeField]
     private GameObject YellowSkill;
+    [SerializeField]
+    private WhiteAura WhiteSkill;
 
     //	private ReactiveProperty<int> power;
     //
@@ -112,7 +114,9 @@ public class PlayerSkill : SingletonMonoBehaviour<PlayerSkill>
             case ElementType.ELEMENT_TYPE_YELLOW:
                 Instantiate(YellowSkill, SkillPos.transform.position, transform.rotation);
                 break;
-
+            case ElementType.ELEMENT_TYPE_WHITE:
+                WhiteSkill.Launch();
+                break;
         }
     }
 

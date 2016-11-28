@@ -9,8 +9,6 @@ public class PlayerSlash : MonoBehaviour {
     [SerializeField]
     private bool AutoSlash = false;
     [SerializeField]
-    private float SlashSpeed = 5f;
-    [SerializeField]
     private float maxSlashSpeed = 10f;
     [SerializeField]
     private float SlashStopRadius = 0.5f;
@@ -20,6 +18,8 @@ public class PlayerSlash : MonoBehaviour {
     private GameObject SlashRegionDisplay;
     [SerializeField]
     private AudioClip slashSE;
+    [SerializeField]
+    private float strength = 5f;
 
     public float SlashRadius { get { return slashRadius; } }
     public bool IsSlashing { get { return isSlashing; } }
@@ -33,13 +33,14 @@ public class PlayerSlash : MonoBehaviour {
     bool isSlashing = false;
     bool continueSlash = false;
     bool comboSlash = false;
-    GameObject TargetObject;
-    float currentSpeed;
 
     List<GameObject> slashList = new List<GameObject>();
 
     BoxCollider slashCollider;
     int EnemyMask;
+
+    GameObject TargetObject;
+    Vector3 TargetPosition;
 
     void Awake()
     {
@@ -48,8 +49,6 @@ public class PlayerSlash : MonoBehaviour {
         slashEndHash = Animator.StringToHash("PlayerBase.SlashEnd");
 		slashingHash = Animator.StringToHash("PlayerBase.Slashing");
         InputController.OnMouseSingleClick.Subscribe(p => MultiSlash(p)).AddTo(this);
-
-        currentSpeed = SlashSpeed;
 
         slashRadius = SlashRegionDisplay.GetComponent<SphereCollider>().radius;
         slashCollider = SlashRegion.GetComponent<BoxCollider>();
@@ -67,19 +66,17 @@ public class PlayerSlash : MonoBehaviour {
 		AnimatorStateInfo info = anim.GetCurrentAnimatorStateInfo(0);
 		if (info.fullPathHash == slashingHash)
         {
-            if (TargetObject != null)
+            if (TargetObject)
             {
-                transform.LookAt(TargetObject.transform);
+                TargetPosition = TargetObject.transform.position;
+            }
 
-                Vector3 direction = transform.forward;
-                direction.y = 0;
-                transform.position += direction * currentSpeed * Time.deltaTime * PlayerTime.Instance.GetPlayerTimeFactor();
+            transform.LookAt(TargetPosition);
 
-                if ((TargetObject.transform.position - transform.position).magnitude < SlashStopRadius)
-                {
-                    anim.SetTrigger("SlashEnd");
-                    TargetObject = null;
-                }
+            if (Vector3.Distance(TargetPosition, transform.position) < SlashStopRadius)
+            {
+                anim.SetTrigger("SlashEnd");
+                TargetObject = null;
             }
         }
 
@@ -157,7 +154,7 @@ public class PlayerSlash : MonoBehaviour {
         enemies.ToList().ForEach(e =>
         {
             EnemyBattle Enemy = e.gameObject.GetComponent<EnemyBattle>();
-            if (Enemy && Enemy.Attacked(battle, battle.CreateAttack(AttackType.ATTACK_TYPE_SLASH, 5f)))
+            if (Enemy && Enemy.Attacked(battle, battle.CreateAttack(AttackType.ATTACK_TYPE_SLASH, strength)))
             {
                 ++count;
             }
@@ -206,37 +203,10 @@ public class PlayerSlash : MonoBehaviour {
             {
                 comboSlash = true;
 
-                if (anim.speed < 2.0f)
-                {
-                    anim.speed += 0.1f;
-                }
-                
-                if (currentSpeed < maxSlashSpeed)
-                {
-                    currentSpeed += 0.5f;
-                }
-
                 return true;
             }
         }
 
 		return false;
     }
-
-    public void ResetSlashSpeed()
-    {
-        anim.speed = 1f;
-        currentSpeed = SlashSpeed;
-    }
-
-//	public void AutoSlashBySkill()
-//	{
-//		if (PlayerSkill.Instance.isSkill && isSlashing == false) 
-//		{
-//			if (SlashNextTartget ()) 
-//			{
-//				PlayerSkill.Instance.PowerUsed (1);
-//			}
-//		}
-//	}
 }

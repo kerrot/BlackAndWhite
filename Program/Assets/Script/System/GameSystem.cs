@@ -11,6 +11,8 @@ public class GameSystem : SingletonMonoBehaviour<GameSystem>
     NumberDisplayUI combo;
     [SerializeField]
     NumberDisplayUI multiSlash;
+    [SerializeField]
+    GameObject skillUI;
 
     private Subject<int> comboSubject = new Subject<int>();
     private Subject<int> multiSlashSubject = new Subject<int>();
@@ -70,6 +72,11 @@ public class GameSystem : SingletonMonoBehaviour<GameSystem>
         
         state = GameState.GAME_STATE_PAUSE;
         pause = true;
+
+        if (skillUI)
+        {
+            skillUI.SetActive(false);
+        }
     }
 
     public void GameResume()
@@ -78,6 +85,11 @@ public class GameSystem : SingletonMonoBehaviour<GameSystem>
 
         Time.timeScale = tmpTimeScale;
         state = GameState.GAME_STATE_PLAYING;
+
+        if (skillUI)
+        {
+            skillUI.SetActive(true);
+        }
     }
 
     public void GameOver()
