@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using UniRx;
+using UnityEngine;
 using System.Collections;
 
 public class MagentaAura : AuraBattle {
@@ -6,6 +7,11 @@ public class MagentaAura : AuraBattle {
     protected override void AuraStart()
     {
         AuraEffect(true);
+        PlayerBattle battle = GameObject.FindObjectOfType<PlayerBattle>();
+        if (battle)
+        {
+            battle.OnAttack.Subscribe(u => DoDisappear()).AddTo(this);
+        }
     }
 
     protected override void AuraDisappear()

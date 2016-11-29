@@ -65,7 +65,7 @@ public class EnemyBattle : UnitBattle
 
     void Start()
     {
-        wanderHash = Animator.StringToHash("EnemyBase.wander");
+        wanderHash = Animator.StringToHash("EnemyBase.Wander");
         damageHash = Animator.StringToHash("EnemyBase.DamageStart");
 
         RunTimeUIGenerator ui = GameObject.FindObjectOfType<RunTimeUIGenerator>();

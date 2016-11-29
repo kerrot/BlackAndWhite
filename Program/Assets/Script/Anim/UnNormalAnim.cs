@@ -21,6 +21,7 @@ public class UnNormalAnim : StateMachineBehaviour {
         animator.SetBool("Tumble", false);
         animator.SetBool("Fire", false);
         animator.SetBool("Hitted", false);
+        animator.SetBool("Frighten", false);
     }
 
     // OnStateMove is called right after Animator.OnAnimatorMove(). Code that processes and affects root motion should be implemented here

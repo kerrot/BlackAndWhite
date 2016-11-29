@@ -4,30 +4,20 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
-public class BlueSkill : MonoBehaviour {
+public class BlueSkill : AuraBattle {
     [SerializeField]
     private GameObject skillObjeect;
-    [SerializeField]
-    private float period;
 
-    float startTime;
     float range;
     List<Vector3> points = new List<Vector3>();
 
-    void Start ()
+    protected override void AuraStart()
     {
         range = skillObjeect.GetComponent<SphereCollider>().radius * 2;
-        this.UpdateAsObservable().Subscribe(_ => UniRxUpdate());
     }
-	
-	void UniRxUpdate()
-    {
-	    if (Time.time - startTime > period)
-        {
-            gameObject.SetActive(false);
-            return;
-        }
 
+    protected override void AuraUpdate()
+    {
         if (points.TrueForAll(p => Vector3.Distance(transform.position, p) > range))
         {
             points.Add(transform.position);
@@ -36,9 +26,14 @@ public class BlueSkill : MonoBehaviour {
         }
 	}
 
+    protected override void AuraDisappear()
+    {
+        gameObject.SetActive(false);
+    }
+
     void OnEnable()
     {
-        startTime = Time.time;
         points.Clear();
+        DoRecover();
     }
 }

@@ -16,6 +16,7 @@ public class CyanSkill : AuraBattle {
 
 	protected override void AuraStart()
 	{
+        DoRecover();
 		this.OnTriggerEnterAsObservable().Subscribe(o => UniRxOnTriggerEnter(o));
 		this.OnTriggerStayAsObservable().Subscribe(o => UniRxOnTriggerStay(o));
 	}

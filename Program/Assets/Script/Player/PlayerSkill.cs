@@ -14,6 +14,8 @@ public class PlayerSkill : SingletonMonoBehaviour<PlayerSkill>
     [SerializeField]
     private GameObject LanceEffect;
     [SerializeField]
+    private SkillBtn btn;
+    [SerializeField]
     private GameObject BlueSkill;
 	[SerializeField]
 	private GameObject RedSkill;
@@ -47,7 +49,6 @@ public class PlayerSkill : SingletonMonoBehaviour<PlayerSkill>
     {
         anim = GetComponent<Animator>();
 
-        SkillBtn btn = GameObject.FindObjectOfType<SkillBtn> ();
 		if (btn) 
 		{
 			btn.OnBlueChanged += BlueAttribute;

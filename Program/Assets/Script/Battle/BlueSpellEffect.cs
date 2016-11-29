@@ -14,6 +14,7 @@ public class BlueSpellEffect : AuraBattle {
     {
         em = GetComponent<ParticleSystem>().emission;
         element = ElementType.ELEMENT_TYPE_BLUE;
+        DoRecover();
 
         this.OnTriggerEnterAsObservable().Subscribe(o => UniRxOnTriggerEnter(o));
     }
