@@ -44,7 +44,7 @@ public class WhiteAura : AuraBattle {
         PlayerTime PT = GameObject.FindObjectOfType<PlayerTime>();
         if (PT)
         {
-            PT.SlowMotion(0.5f, 1f);
+            PT.SlowMotion(0.2f, 0.8f);
         }
     }
 

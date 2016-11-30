@@ -41,6 +41,10 @@ public class MenuControl : MonoBehaviour {
 
     void UniRxOnDestroy()
     {
-        BacktoGame();
+        GameSystem system = GameObject.FindObjectOfType<GameSystem>();
+        if (system)
+        {
+            system.Reset();
+        }
     }
 }

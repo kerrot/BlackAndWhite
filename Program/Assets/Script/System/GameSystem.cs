@@ -90,6 +90,11 @@ public class GameSystem : SingletonMonoBehaviour<GameSystem>
         }
     }
 
+    public void Reset()
+    {
+        Time.timeScale = 1;
+    }
+
     public void GameResume()
     {
         pause = false;

@@ -101,7 +101,7 @@ public class PlayerSkill : SingletonMonoBehaviour<PlayerSkill>
                 BlueSkill.SetActive(true);
 	            break;
 			case ElementType.ELEMENT_TYPE_RED:
-                Instantiate(RedSkill, SkillPos.transform.position, transform.rotation);
+                Instantiate(RedSkill, SkillPos.transform.position, FindNearestDirection());
                 break;
             case ElementType.ELEMENT_TYPE_GREEN:
                 Instantiate(GreenSkill, transform.position, Quaternion.identity);
@@ -113,12 +113,43 @@ public class PlayerSkill : SingletonMonoBehaviour<PlayerSkill>
 				Instantiate(CyanSkill, transform.position, Quaternion.identity);
 				break;
             case ElementType.ELEMENT_TYPE_YELLOW:
-                Instantiate(YellowSkill, SkillPos.transform.position, transform.rotation);
+                Instantiate(YellowSkill, SkillPos.transform.position, FindNearestDirection());
                 break;
             case ElementType.ELEMENT_TYPE_WHITE:
                 WhiteSkill.Launch();
                 break;
         }
+    }
+
+    Quaternion FindNearestDirection()
+    {
+        EnemyGenerator enemies = GameObject.FindObjectOfType<EnemyGenerator>();
+        if (enemies)
+        {
+            float angle = Mathf.Infinity;
+            float distance = Mathf.Infinity;
+            GameObject min = gameObject;
+            enemies.Enemies.ForEach(e => 
+            {
+                Collider c = e.GetComponent<Collider>();
+                if (c && c.enabled && !c.isTrigger)
+                {
+                    float tmpDistance = Vector3.Distance(e.transform.position, transform.position);
+                    float tmpAngle = Mathf.Abs(Vector3.Angle(transform.forward, e.transform.position - transform.position));
+                    if (tmpAngle < 10 && tmpDistance < distance)
+                    {
+                        distance = tmpDistance;
+                        min = e;
+                    }
+                }
+            });
+
+            if (distance != Mathf.Infinity)
+            {
+                return Quaternion.LookRotation(min.transform.position - transform.position);
+            }
+        }
+        return transform.rotation;
     }
 
     //public void WhiteSkill()

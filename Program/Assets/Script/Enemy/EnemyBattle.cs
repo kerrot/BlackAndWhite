@@ -153,10 +153,11 @@ public class EnemyBattle : UnitBattle
         {
             if (slash.CanSlash)
             {
-                anim.SetTrigger("Hitted");
-                GetComponent<Collider>().enabled = false;
+                //anim.SetTrigger("Hitted");
+                //GetComponent<Collider>().enabled = false;
 
-                Observable.FromCoroutine(_ => LateDie(attack)).Subscribe().AddTo(this);
+                //Observable.FromCoroutine(_ => LateDie(attack)).Subscribe().AddTo(this);
+                slash.TriggerSlash();
             }
             else
             {
