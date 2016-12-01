@@ -9,7 +9,7 @@ public class PlayerSlash : MonoBehaviour {
     [SerializeField]
     private bool AutoSlash = false;
     [SerializeField]
-    private float maxSlashSpeed = 1f;
+    private float speedup;
     [SerializeField]
     private float SlashStopRadius;
     [SerializeField]
@@ -19,7 +19,7 @@ public class PlayerSlash : MonoBehaviour {
     [SerializeField]
     private AudioClip slashSE;
     [SerializeField]
-    private float strength = 5f;
+    private float strength;
 
     public float SlashRadius { get { return slashRadius; } }
     public bool IsSlashing { get { return isSlashing; } }
@@ -205,7 +205,7 @@ public class PlayerSlash : MonoBehaviour {
             move.CanRotate = true;
         }
 
-        SlashSpeedUp(slashSpeed += 0.1f);
+        SlashSpeedUp(slashSpeed += speedup);
 
         int count = 0;
         Collider[] enemies = Physics.OverlapBox(SlashRegion.transform.position, slashCollider.size, SlashRegion.transform.rotation, EnemyMask);

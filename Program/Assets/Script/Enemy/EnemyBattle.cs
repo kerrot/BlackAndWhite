@@ -52,6 +52,8 @@ public class EnemyBattle : UnitBattle
     int wanderHash;
     int damageHash;
 
+    bool dead;
+
     //Start change to Awake, because Instantiate not call Start but Awake
     void Awake()
     {
@@ -131,6 +133,11 @@ public class EnemyBattle : UnitBattle
 
     public override bool Attacked(UnitBattle unit, Attack attack)
     {
+        if (dead)
+        {
+            return false;
+        }
+
         #region ShowHP
         hpUI.gameObject.SetActive(true);
         showHPStart = Time.time;
@@ -251,6 +258,8 @@ public class EnemyBattle : UnitBattle
                 act.Atk = new Attack() { Type = AttackType.ATTACK_TYPE_EXPLOSION, Element = attack.Element };
             }
         }
+
+        dead = true;
 
         dieSubject.OnNext(gameObject);
     }
