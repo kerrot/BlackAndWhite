@@ -1,17 +1,23 @@
-﻿using UnityEngine;
+﻿using UniRx;
+using UniRx.Triggers;
+using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 
-public class PlayerTime : SingletonMonoBehaviour<PlayerTime> {
+public class PlayerTime : MonoBehaviour {
 
     Animator anim;
 
-    float timeFactor = 1;
+    Dictionary<MonoBehaviour, float> speeds = new Dictionary<MonoBehaviour, float>();
+
+    float baseSpeed = 1;
 
     void Awake() 
     {
         anim = GetComponent<Animator>();
 
-		SlowMotion (1, 1); 
+		SlowMotion (1, 1);
     }
 
 	public void SlowMotion(float speed, float playerSpeed) 
@@ -24,8 +30,41 @@ public class PlayerTime : SingletonMonoBehaviour<PlayerTime> {
         Time.timeScale = speed;
         Time.fixedDeltaTime = 0.02f * Time.timeScale;
 
-        timeFactor = playerSpeed / speed;
+        baseSpeed = playerSpeed / speed;
 
-        anim.speed = timeFactor;
+        UpdateSpeed();
+    }
+
+    public void CancelSpeed(MonoBehaviour behaviour)
+    {
+        if (speeds.ContainsKey(behaviour))
+        {
+            speeds.Remove(behaviour);
+
+            UpdateSpeed();
+        }
+    }
+
+    public void SpeedChange(float speed, MonoBehaviour behaviour)
+    {
+        if (behaviour)
+        {
+            if (speeds.ContainsKey(behaviour))
+            {
+                speeds[behaviour] = speed;
+            }
+            else
+            {
+                speeds.Add(behaviour, speed);
+                behaviour.OnDestroyAsObservable().Subscribe(_ => CancelSpeed(behaviour)).AddTo(this);
+            }
+
+            UpdateSpeed();
+        }
+    }
+
+    void UpdateSpeed()
+    {
+        anim.speed = baseSpeed + speeds.Sum(s => s.Value);
     }
 }

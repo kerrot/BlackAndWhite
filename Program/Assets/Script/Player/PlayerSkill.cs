@@ -59,6 +59,8 @@ public class PlayerSkill : SingletonMonoBehaviour<PlayerSkill>
 
         lanceEffectmat = LanceEffect.GetComponentInChildren<MeshRenderer>().material;
 
+        InputController.OnSkillClick.Subscribe(u => UseSkill()).AddTo(this);
+
         //this.UpdateAsObservable().Subscribe(_ => UniRxUpdate());
     }
 
@@ -76,21 +78,29 @@ public class PlayerSkill : SingletonMonoBehaviour<PlayerSkill>
 //        if (Input.GetButtonDown("Jump"))
 //    }
 
+    bool CanSkill()
+    {
+        return GetComponent<Attribute>().Type != ElementType.ELEMENT_TYPE_NONE;
+    }
+
     void UseSkill()
     {
         castingType = GetComponent<Attribute>().Type;
-        if (castingType == ElementType.ELEMENT_TYPE_YELLOW)
+        if (CanSkill())
         {
-            YellowDebuff debuff = GameObject.FindObjectOfType<YellowDebuff>();
-            if (debuff)
+            if (castingType == ElementType.ELEMENT_TYPE_YELLOW)
             {
-                debuff.End();
-                transform.position = debuff.transform.position;
-                return;
+                YellowDebuff debuff = GameObject.FindObjectOfType<YellowDebuff>();
+                if (debuff)
+                {
+                    debuff.End();
+                    transform.position = debuff.transform.position;
+                    return;
+                }
             }
-        }
 
-        anim.SetTrigger("Skill");
+            anim.SetTrigger("Skill");
+        }
     }
 
     void DoSkill()
@@ -123,32 +133,28 @@ public class PlayerSkill : SingletonMonoBehaviour<PlayerSkill>
 
     Quaternion FindNearestDirection()
     {
-        EnemyGenerator enemies = GameObject.FindObjectOfType<EnemyGenerator>();
-        if (enemies)
+        float distance = Mathf.Infinity;
+        GameObject min = gameObject;
+        EnemyGenerator.Enemies.ForEach(e =>
         {
-            float angle = Mathf.Infinity;
-            float distance = Mathf.Infinity;
-            GameObject min = gameObject;
-            enemies.Enemies.ForEach(e => 
+            Collider c = e.GetComponent<Collider>();
+            if (c && c.enabled && !c.isTrigger)
             {
-                Collider c = e.GetComponent<Collider>();
-                if (c && c.enabled && !c.isTrigger)
+                float tmpDistance = Vector3.Distance(e.transform.position, transform.position);
+                float tmpAngle = Mathf.Abs(Vector3.Angle(transform.forward, e.transform.position - transform.position));
+                if (tmpAngle < 10 && tmpDistance < distance)
                 {
-                    float tmpDistance = Vector3.Distance(e.transform.position, transform.position);
-                    float tmpAngle = Mathf.Abs(Vector3.Angle(transform.forward, e.transform.position - transform.position));
-                    if (tmpAngle < 10 && tmpDistance < distance)
-                    {
-                        distance = tmpDistance;
-                        min = e;
-                    }
+                    distance = tmpDistance;
+                    min = e;
                 }
-            });
-
-            if (distance != Mathf.Infinity)
-            {
-                return Quaternion.LookRotation(min.transform.position - transform.position);
             }
+        });
+
+        if (distance != Mathf.Infinity)
+        {
+            return Quaternion.LookRotation(min.transform.position - transform.position);
         }
+
         return transform.rotation;
     }
 

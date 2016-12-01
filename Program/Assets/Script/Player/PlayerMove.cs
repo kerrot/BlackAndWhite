@@ -73,7 +73,7 @@ public class PlayerMove : MonoBehaviour {
         else
         {
             Plane groundPlane = new Plane(Vector3.up, transform.position);
-            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            Ray ray = Camera.main.ScreenPointToRay(position);
             float rayDistance;
             if (groundPlane.Raycast(ray, out rayDistance))
             {

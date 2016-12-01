@@ -22,6 +22,19 @@ public class InputController : MonoBehaviour {
     static public IObservable<Vector2> OnMouseUp { get { return mouseUp; } }
     static public IObservable<Vector2> OnMousePressed { get { return mousePressed; } }
 
+    static private Subject<Unit> attackClick = new Subject<Unit>();
+    static private Subject<Unit> slashClick = new Subject<Unit>();
+    static private Subject<Unit> skillClick = new Subject<Unit>();
+    static public IObservable<Unit> OnAttackClick { get { return attackClick; } }
+    static public IObservable<Unit> OnSlashClick { get { return slashClick; } }
+    static public IObservable<Unit> OnSkillClick { get { return skillClick; } }
+
+    static private Subject<Unit> redClick = new Subject<Unit>();
+    static private Subject<Unit> greenClick = new Subject<Unit>();
+    static private Subject<Unit> blueClick = new Subject<Unit>();
+    static public IObservable<Unit> OnRedClick { get { return redClick; } }
+    static public IObservable<Unit> OnGreenClick { get { return greenClick; } }
+    static public IObservable<Unit> OnBlueClick { get { return blueClick; } }
 
     private float pressTime;
     private float firstClickTime;
@@ -49,6 +62,37 @@ public class InputController : MonoBehaviour {
         {
             return;
         }
+
+        if (Input.GetKeyDown(KeyCode.A))
+        {
+            attackClick.OnNext(Unit.Default);
+        }
+
+        if (Input.GetKeyDown(KeyCode.S))
+        {
+            slashClick.OnNext(Unit.Default);
+        }
+
+        if (Input.GetKeyDown(KeyCode.D))
+        {
+            skillClick.OnNext(Unit.Default);
+        }
+
+        if (Input.GetKeyDown(KeyCode.Q))
+        {
+            redClick.OnNext(Unit.Default);
+        }
+
+        if (Input.GetKeyDown(KeyCode.W))
+        {
+            greenClick.OnNext(Unit.Default);
+        }
+
+        if (Input.GetKeyDown(KeyCode.E))
+        {
+            blueClick.OnNext(Unit.Default);
+        }
+
 
         float now = Time.time;
         Vector2 position = Input.mousePosition;

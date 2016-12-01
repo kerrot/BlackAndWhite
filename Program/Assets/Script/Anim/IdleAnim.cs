@@ -5,10 +5,17 @@ public class IdleAnim : StateMachineBehaviour {
     // OnStateEnter is called when a transition starts and the state machine starts to evaluate this state
     override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
-		//PlayerSlash slash = GameObject.FindObjectOfType<PlayerSlash> ();
-		//if (slash) {
-		//	slash.ResetSlashSpeed();
-		//}
+        GameSystem system = GameObject.FindObjectOfType<GameSystem>();
+        if (system)
+        {
+            system.ResetSlashCount();
+        }
+
+        PlayerSlash slash = GameObject.FindObjectOfType<PlayerSlash>();
+        if (slash)
+        {
+            slash.SlashSpeedUp(0f);
+        }
     }
 
     // OnStateUpdate is called on each Update frame between OnStateEnter and OnStateExit callbacks

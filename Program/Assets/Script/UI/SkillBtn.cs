@@ -1,4 +1,5 @@
-﻿
+﻿using UniRx;
+using UniRx.Triggers;
 using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
@@ -39,7 +40,11 @@ public class SkillBtn : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		powerBtnC = GameObject.Find ("PowerBtn").GetComponent<Image> ();     
+		powerBtnC = GameObject.Find ("PowerBtn").GetComponent<Image> ();
+        InputController.OnSkillClick.Subscribe(u => OnPowerBtn()).AddTo(this);
+        InputController.OnRedClick.Subscribe(u => OnRedButton()).AddTo(this);
+        InputController.OnGreenClick.Subscribe(u => OnGreenButton()).AddTo(this);
+        InputController.OnBlueClick.Subscribe(u => OnBlueButton()).AddTo(this);
     }
 
     // 按钮状态更新

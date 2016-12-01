@@ -36,18 +36,17 @@ public class GameSystem : SingletonMonoBehaviour<GameSystem>
 
     void Start()
     {
-        PlayerBattle battle = GameObject.FindObjectOfType<PlayerBattle>();
-        if (battle)
-        {
-            battle.OnAttack.Subscribe(u => slashCount = 0).AddTo(this);
-        }
-
         PlayerSlash slash = GameObject.FindObjectOfType<PlayerSlash>();
         if (slash)
         {
             slash.OnSlashCount.Subscribe(i => KillInOneTime(i)).AddTo(this);
             slash.OnComboSlash.Subscribe(u => ComboSlash()).AddTo(this);
         }
+    }
+
+    public void ResetSlashCount()
+    {
+        slashCount = 0;
     }
 
     public void ComboSlash()

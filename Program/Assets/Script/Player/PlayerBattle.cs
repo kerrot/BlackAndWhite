@@ -6,11 +6,8 @@ using System.Collections.Generic;
 using UnityStandardAssets.ImageEffects;
 
 public class PlayerBattle : UnitBattle {
-    public EnemyGenerator Enemies;
     [SerializeField]
     private GameObject AttackRegion;
-    [SerializeField]
-    private float AttackAngle = 60;
     [SerializeField]
     private Animator hurtEffect;
     [SerializeField]
@@ -23,13 +20,14 @@ public class PlayerBattle : UnitBattle {
     private AudioClip guardSE;
     [SerializeField]
     private AudioClip attackSE;
+    [SerializeField]
+    private float strength;
 
     public bool Missing { get; set; }
 
     private Subject<Unit> attackSubject = new Subject<Unit>();
     public IObservable<Unit> OnAttack { get { return attackSubject; } }
 
-    float AttackRadius = 1.3f;
     Animator anim;
 
     float recoverStart;
@@ -45,11 +43,11 @@ public class PlayerBattle : UnitBattle {
         attackHash = Animator.StringToHash("PlayerBase.Attack");
 
         anim = GetComponent<Animator>();
-        AttackRadius = AttackRegion.GetComponent<SphereCollider>().radius;
 
         nowHP = HP;
 
-        Enemies.OnEnemyClicked.Subscribe(o => Battle(o)).AddTo(this);
+        InputController.OnAttackClick.Subscribe(u => Attack()).AddTo(this);
+        EnemyGenerator.OnEnemyClicked.Subscribe(o => Battle(o)).AddTo(this);
         this.UpdateAsObservable().Subscribe(_ => UniRxUpdate());
 		this.LateUpdateAsObservable().Subscribe (_ => UniRxLateUpdate ());
     }
@@ -100,44 +98,64 @@ public class PlayerBattle : UnitBattle {
         }
     }
 
+    void Attack()
+    {
+        GameObject obj = EnemyGenerator.GetEnemyByMousePosition(Input.mousePosition);
+        if (CanAttack(obj))
+        {
+            AttackEnemy(obj);
+        }
+    }
+
     void Battle (GameObject Enemy)
     {
-        PlayerSlash slash = GetComponent<PlayerSlash>();
-
-        if (!slash || !slash.SlashEnemy(Enemy))
+        if (CanAttack(Enemy))
         {
             AttackEnemy(Enemy);
         }
     }
 
-	void AttackEnemy(GameObject Enemy)
-	{
-		Vector3 direction = Enemy.transform.position - transform.position;
-		if (direction.magnitude < AttackRadius) {
-            PlayerMove move = GetComponent<PlayerMove>();
-            if (move)
-            {
-                move.CanRotate = false;
-            }
-            anim.SetTrigger("Attack");
-
-            AudioHelper.PlaySE(gameObject, attackSE);
+    bool CanAttack(GameObject Enemy)
+    {
+        PlayerSlash slash = GetComponent<PlayerSlash>();
+        if (slash && slash.SlashEnemy(Enemy))
+        {
+            return false;
         }
-	}
+
+        return true;
+    }   
+
+	void AttackEnemy(GameObject enemy)
+	{
+        if (enemy != null)
+        {
+            transform.LookAt(enemy.transform);
+        }
+
+        PlayerMove move = GetComponent<PlayerMove>();
+        if (move)
+        {
+            move.CanRotate = false;
+        }
+        anim.SetTrigger("Attack");
+
+        AudioHelper.PlaySE(gameObject, attackSE);
+
+        attackSubject.OnNext(Unit.Default);
+    }
 
     void AttackHit()
     {
-        List<GameObject> list = Enemies.GetEnemy(transform.position, AttackRadius, transform.rotation * Vector3.forward, AttackAngle);
-        list.ForEach(o =>
+        Collider[] cs = Physics.OverlapBox(AttackRegion.transform.position, AttackRegion.GetComponent<BoxCollider>().size, AttackRegion.transform.rotation);
+        cs.ToObservable().Subscribe(c =>
         {
-            EnemyBattle Enemy = o.GetComponent<EnemyBattle>();
-            Enemy.Attacked(this, CreateAttack(AttackType.ATTACK_TYPE_NORMAL, 2f));
+            EnemyBattle enemy = c.GetComponent<EnemyBattle>();
+            if (enemy)
+            {
+                enemy.Attacked(this, CreateAttack(AttackType.ATTACK_TYPE_NORMAL, strength));
+            }
         });
-
-        if (list.Count > 0)
-        {
-            attackSubject.OnNext(Unit.Default);
-        }
     }
 
     public override bool Attacked(UnitBattle unit, Attack attack)

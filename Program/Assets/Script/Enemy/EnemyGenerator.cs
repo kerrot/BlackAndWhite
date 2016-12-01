@@ -6,34 +6,35 @@ using System.Linq;
 
 public class EnemyGenerator : MonoBehaviour
 {
+    static private float RayRadius = 0.2f;
+
     [SerializeField]
-    private float RayRadius;
+    private GameObject spawnEnemy;
+    [SerializeField]
+    private float spawnTime = 3f;
 
-    public GameObject enemy;
-    public float spawnTime = 3f;
+    static private Subject<GameObject> enemyClicked = new Subject<GameObject>();
+    static private Subject<GameObject> enemyCanSlash = new Subject<GameObject>();
+    static private Subject<GameObject> explosionAttacked = new Subject<GameObject>();
+    static private Subject<Unit> enemyEmpty = new Subject<Unit>();
 
-    private Subject<GameObject> enemyClicked = new Subject<GameObject>();
-    private Subject<GameObject> enemyCanSlash = new Subject<GameObject>();
-    private Subject<GameObject> explosionAttacked = new Subject<GameObject>();
-    private Subject<Unit> enemyEmpty = new Subject<Unit>();
+    static public IObservable<GameObject> OnEnemyClicked { get { return enemyClicked; } }
+    static public IObservable<GameObject> OnEnemyCanSlash { get { return enemyCanSlash; } }
+    static public IObservable<GameObject> OnExplosionAttacked { get { return explosionAttacked; } }
+    static public IObservable<Unit> OnEnemyEmpty { get { return enemyEmpty; }}
 
-    public IObservable<GameObject> OnEnemyClicked { get { return enemyClicked; } }
-    public IObservable<GameObject> OnEnemyCanSlash { get { return enemyCanSlash; } }
-    public IObservable<GameObject> OnExplosionAttacked { get { return explosionAttacked; } }
-    public IObservable<Unit> OnEnemyEmpty { get { return enemyEmpty; }}
+    static public List<GameObject> Enemies { get { return monsters; } }
 
-    public List<GameObject> Enemies { get { return monsters; } }
+    static int EnemyMask;
+    static float camRayLength = 100f;
 
-    int EnemyMask;
-	float camRayLength = 100f;
-
-	List<GameObject> monsters = new List<GameObject>();
+    static List<GameObject> monsters = new List<GameObject>();
 
     void Start ()
     {
 		EnemyMask = LayerMask.GetMask ("Enemy");
 
-		if (enemy) 
+		if (spawnEnemy) 
 		{
 			InvokeRepeating ("Spawn", spawnTime, spawnTime);
 		}
@@ -48,32 +49,47 @@ public class EnemyGenerator : MonoBehaviour
         }
     }
 
-    void EnemyClicked(Vector2 mousePosition)
+    static public GameObject GetEnemyByMousePosition(Vector2 mousePosition)
     {
         Ray camRay = Camera.main.ScreenPointToRay(mousePosition);
         RaycastHit[] EnemyHit = Physics.SphereCastAll(camRay, RayRadius, camRayLength, EnemyMask);
 
         if (EnemyHit.Length > 0)
         {
-            float min = 0;
-            RaycastHit minHit = EnemyHit[0];
-
-            foreach (var hit in EnemyHit)
+            Plane groundPlane = new Plane(Vector3.up, EnemyHit.First().transform.position);
+            Ray ray = Camera.main.ScreenPointToRay(mousePosition);
+            float rayDistance;
+            if (groundPlane.Raycast(ray, out rayDistance))
             {
-                float tmp = Vector3.Distance(hit.collider.transform.position, camRay.origin);
+                Vector3 center = ray.GetPoint(rayDistance);
 
-                if (min == 0)
+                float min = Mathf.Infinity;
+                GameObject enemy = null;
+
+                EnemyHit.ToObservable().Where(h => h.collider.GetComponent<EnemyBattle>() != null).Subscribe(e =>
                 {
-                    min = tmp;
-                    minHit = hit;
-                }
-                else if (min > tmp)
-                {
-                    minHit = hit;
-                }
+                    float tmp = Vector3.Distance(e.collider.transform.position, center);
+                    if (tmp < min)
+                    {
+                        enemy = e.collider.gameObject;
+                        min = tmp;
+                    }
+                });
+
+                return enemy;
             }
+        }
 
-            enemyClicked.OnNext(minHit.collider.gameObject);
+        return null;
+    }
+
+
+    void EnemyClicked(Vector2 mousePosition)
+    {
+        GameObject obj = GetEnemyByMousePosition(mousePosition);
+        if (obj != null)
+        {
+            enemyClicked.OnNext(obj);
         }
     }
 
@@ -85,15 +101,15 @@ public class EnemyGenerator : MonoBehaviour
             return;
         }
 
-        if (monsters.Count > 10 || enemy == null)
+        if (monsters.Count > 10 || spawnEnemy == null)
         {
             return;
         }
 
-		Vector3 diection = Random.rotation * Vector3.forward;
-		diection.y = 0;
+        Vector2 offset = Random.insideUnitCircle;
+        Vector3 pos = transform.position + new Vector3(offset.x, 0, offset.y);
 
-        GameObject obj = Instantiate (enemy, transform.position + diection.normalized, Quaternion.Euler (0, 180, 0)) as GameObject;
+        GameObject obj = Instantiate (spawnEnemy, pos, Quaternion.identity) as GameObject;
         AddMonster(obj);
     }
 

@@ -25,14 +25,10 @@ public class TutorialStage : MonoBehaviour {
             opening.OnOpeningEnd.Subscribe(o => OnOpeningEnd()).AddTo(this);
         }
 
-        EnemyGenerator enemies = GameObject.FindObjectOfType<EnemyGenerator>();
-        if (enemies)
-        {
-            enemies.OnExplosionAttacked.Subscribe(o => EnemyExplosionAttacked(o)).AddTo(this);
-            enemies.OnEnemyCanSlash.Subscribe(o => EnemySlashTriggered(o)).AddTo(this);
-            enemies.OnEnemyEmpty.Subscribe(o => Observable.FromCoroutine(ShowNextStage).Subscribe()).AddTo(this);
-        }
-	}
+        EnemyGenerator.OnExplosionAttacked.Subscribe(o => EnemyExplosionAttacked(o)).AddTo(this);
+        EnemyGenerator.OnEnemyCanSlash.Subscribe(o => EnemySlashTriggered(o)).AddTo(this);
+        EnemyGenerator.OnEnemyEmpty.Subscribe(o => Observable.FromCoroutine(ShowNextStage).Subscribe()).AddTo(this);
+    }
 	
 	void OnOpeningEnd()
     {
