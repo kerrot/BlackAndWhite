@@ -11,6 +11,8 @@ public class PlayerSlash : MonoBehaviour {
     [SerializeField]
     private float speedup;
     [SerializeField]
+    private float maxSpeedup;
+    [SerializeField]
     private float SlashStopRadius;
     [SerializeField]
     private GameObject SlashRegion;
@@ -93,7 +95,12 @@ public class PlayerSlash : MonoBehaviour {
         }
         else if (info.fullPathHash == slashEndHash)
         {
-            if (isSlashing == false && (continueSlash || AutoSlash || (aura && aura.IsAura)))
+            if (AutoSlash || (aura && aura.IsAura))
+            {
+                continueSlash = true;
+            }
+
+            if (isSlashing == false && continueSlash)
             {
                 Slash();
             }
@@ -205,7 +212,10 @@ public class PlayerSlash : MonoBehaviour {
             move.CanRotate = true;
         }
 
-        SlashSpeedUp(slashSpeed += speedup);
+        if (slashSpeed < maxSpeedup)
+        {
+            SlashSpeedUp(slashSpeed += speedup);
+        }
 
         int count = 0;
         Collider[] enemies = Physics.OverlapBox(SlashRegion.transform.position, slashCollider.size, SlashRegion.transform.rotation, EnemyMask);

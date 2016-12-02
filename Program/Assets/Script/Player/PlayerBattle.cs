@@ -101,10 +101,7 @@ public class PlayerBattle : UnitBattle {
     void Attack()
     {
         GameObject obj = EnemyGenerator.GetEnemyByMousePosition(Input.mousePosition);
-        if (CanAttack(obj))
-        {
-            AttackEnemy(obj);
-        }
+        AttackEnemy(obj);
     }
 
     void Battle (GameObject Enemy)
