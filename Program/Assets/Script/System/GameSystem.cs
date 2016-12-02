@@ -11,8 +11,6 @@ public class GameSystem : SingletonMonoBehaviour<GameSystem>
     NumberDisplayUI combo;
     [SerializeField]
     NumberDisplayUI multiSlash;
-    [SerializeField]
-    GameObject skillUI;
 
     private Subject<int> comboSubject = new Subject<int>();
     private Subject<int> multiSlashSubject = new Subject<int>();
@@ -33,6 +31,28 @@ public class GameSystem : SingletonMonoBehaviour<GameSystem>
         GAME_STATE_GAMEOVER,
     }
     public GameState State { get { return state; } }
+
+	GameObject skillUI;
+
+	void Awake()
+	{
+		SkillBtn btn = GameObject.FindObjectOfType<SkillBtn> ();
+		if (btn) 
+		{
+			skillUI = btn.gameObject;
+		}
+
+		GameObject tmp = GameObject.Find ("UICombo");
+		if (tmp) {
+			combo = tmp.GetComponent<NumberDisplayUI> ();
+			tmp.SetActive (false);
+		}
+		tmp = GameObject.Find ("UIMultiSlash");
+		if (tmp) {
+			multiSlash = tmp.GetComponent<NumberDisplayUI> ();
+			tmp.SetActive (false);
+		}
+	}
 
     void Start()
     {

@@ -9,13 +9,17 @@ public class UIEffect : MonoBehaviour {
 
     GameObject obj;
 
+	void Awake()
+	{
+		RunTimeUIGenerator ui = GameObject.FindObjectOfType<RunTimeUIGenerator>();
+		if (ui)
+		{
+			obj = ui.CreateUI(effect);
+		}
+	}
+
 	// Use this for initialization
 	void Start () {
-        RunTimeUIGenerator ui = GameObject.FindObjectOfType<RunTimeUIGenerator>();
-        if (ui)
-        {
-            obj = ui.CreateUI(effect);
-        }
 
         this.UpdateAsObservable().Subscribe(_ => UniRxUpdate());
     }

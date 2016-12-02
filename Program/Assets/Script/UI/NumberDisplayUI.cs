@@ -17,7 +17,6 @@ public class NumberDisplayUI : MonoBehaviour {
     void Awake()
     {
         numbers.Add(num);
-        gameObject.SetActive(false);
     }
 
     void Start()

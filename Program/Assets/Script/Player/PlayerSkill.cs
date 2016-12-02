@@ -14,8 +14,6 @@ public class PlayerSkill : SingletonMonoBehaviour<PlayerSkill>
     [SerializeField]
     private GameObject LanceEffect;
     [SerializeField]
-    private SkillBtn btn;
-    [SerializeField]
     private GameObject BlueSkill;
 	[SerializeField]
 	private GameObject RedSkill;
@@ -44,18 +42,23 @@ public class PlayerSkill : SingletonMonoBehaviour<PlayerSkill>
     ElementType castingType;
 
     Animator anim;
+	SkillBtn btn;
+
+	void Awake()
+	{
+		btn = GameObject.FindObjectOfType<SkillBtn> ();
+		if (btn) 
+		{
+			btn.OnBlueChanged += BlueAttribute;
+			btn.OnRedChanged += RedAttribute;
+			btn.OnGreenChanged += GreenAttribute;
+			btn.OnPowerUsed += UseSkill;
+		}
+	}
 
     void Start()
     {
         anim = GetComponent<Animator>();
-
-		if (btn) 
-		{
-			btn.OnBlueChanged += BlueAttribute;
-            btn.OnRedChanged += RedAttribute;
-            btn.OnGreenChanged += GreenAttribute;
-            btn.OnPowerUsed += UseSkill;
-        }
 
         lanceEffectmat = LanceEffect.GetComponentInChildren<MeshRenderer>().material;
 
