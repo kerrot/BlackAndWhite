@@ -5,131 +5,87 @@ using UnityEngine.UI;
 using System.Collections;
 
 public class SkillBtn : MonoBehaviour {
+	[SerializeField]
+	private Button powerBtn;
+	[SerializeField]
+	private Button redBtn;
+	[SerializeField]
+	private Button greenBtn;
+	[SerializeField]
+	private Button blueBtn;
+	[SerializeField]
+	private Image center;
+	[SerializeField]
+	private BoolReactiveProperty powerActive;
 
-    // 中央按钮图片
-	private Image powerBtnC;
+	private Subject<Unit> powerClick = new Subject<Unit>();
+	private Subject<bool> redClick = new Subject<bool>();
+	private Subject<bool> greenClick = new Subject<bool>();
+	private Subject<bool> blueClick = new Subject<bool>();
 
-    // 按钮
-	public GameObject redBtn;
-	public GameObject greenBtn;
-	public GameObject blueBtn;
-    public Button powerBtn;
-    public Button redBtnActive;
-    public Button greenBtnActive;
-    public Button blueBtnActive;
+	public IObservable<Unit> OnPowerClick { get { return powerClick; } }
+	public IObservable<bool> OnRedClick { get { return redClick; } }
+	public IObservable<bool> OnGreenClick { get { return greenClick; } }
+	public IObservable<bool> OnBlueClick { get { return blueClick; } }
 
-    // 按钮颜色
-    private int colorRed;
-	private int colorGreen;
-	private int colorBlue;
-	private const int COLOR_WHITH = 0;
-	private const int COLOR_MAX = 255;
-	private const int COLOR_MIN = 0;
-	private const int ALPHA = 255;
+	private BoolReactiveProperty redClicked = new BoolReactiveProperty ();
+	private BoolReactiveProperty greenClicked = new BoolReactiveProperty ();
+	private BoolReactiveProperty blueClicked = new BoolReactiveProperty ();
 
-    // 反馈信息
-    public delegate void PowerAction();
-    public delegate void ButtonAction(bool pressed);
-    public PowerAction OnPowerUsed;
-    public ButtonAction OnBlueChanged;
-    public ButtonAction OnRedChanged;
-    public ButtonAction OnGreenChanged;
+	static float ON_ALPHA = 1f;
+	static float OFF_ALPHA = 0.3f;
 
-    void Awake() {
-    }
+	PlayerSkill skill;
 
 	// Use this for initialization
 	void Start () {
-		powerBtnC = GameObject.Find ("PowerBtn").GetComponent<Image> ();
-        InputController.OnSkillClick.Subscribe(u => OnPowerBtn()).AddTo(this);
-        InputController.OnRedClick.Subscribe(u => OnRedButton()).AddTo(this);
-        InputController.OnGreenClick.Subscribe(u => OnGreenButton()).AddTo(this);
-        InputController.OnBlueClick.Subscribe(u => OnBlueButton()).AddTo(this);
-    }
 
-    // 按钮状态更新
-	void ButtonColorUpDate() {
-		
-		if ( colorRed > COLOR_MIN || colorGreen > COLOR_MIN || colorBlue > COLOR_MIN ) {
-			powerBtnC.color = new Color (colorRed, colorGreen, colorBlue, ALPHA);
-		} else {
-			powerBtnC.color = new Color (COLOR_WHITH, COLOR_WHITH, COLOR_WHITH, ALPHA);
-		}
+		skill = GameObject.FindObjectOfType<PlayerSkill> ();
 
-        if ( powerBtn ) {
-			powerBtn.interactable = blueBtn.activeSelf || redBtn.activeSelf || greenBtn.activeSelf;
-		}
-
-    }
-
-    // 中央按钮
-    public void OnPowerBtn()
-    {
-
-        if (OnPowerUsed != null)
-        {
-            OnPowerUsed();
-        }
-    }
-
-    // 红色按钮
-	public void OnRedButton( ) { 
-
-		if (colorRed == COLOR_MAX) {
-			colorRed = COLOR_MIN;
-			redBtn.SetActive (false);
-		} else {
-			colorRed = COLOR_MAX;
-			redBtn.SetActive (true);
-		}
-
-        ButtonColorUpDate();
-
-        if (OnRedChanged != null)
-        {
-            OnRedChanged(redBtn.activeSelf);
-        }
-    }
-
-
-    // 绿色按钮
-	public void OnGreenButton( ) {		
-
-
-		if (colorGreen == COLOR_MAX) {
-			colorGreen = COLOR_MIN;
-			greenBtn.SetActive (false);
-		} else {
-			colorGreen = COLOR_MAX;
-			greenBtn.SetActive (true);
-		}
-
-        ButtonColorUpDate();
-
-        if (OnGreenChanged != null)
-        {
-            OnGreenChanged(greenBtn.activeSelf);
-        }
-    }
-
-
-    // 蓝色按钮
-	public void OnBlueButton( ) {
-
-		if (colorBlue == COLOR_MAX) {
-			colorBlue = COLOR_MIN;
-			blueBtn.SetActive (false);
-		} else {
-			colorBlue = COLOR_MAX;
-			blueBtn.SetActive (true);
-		}
-
-        ButtonColorUpDate();
-
-
-        if (OnBlueChanged != null) 
+		powerActive.Subscribe (v => UpdatePowerBtn ());
+		if (powerActive.Value) 
 		{
-			OnBlueChanged (blueBtn.activeSelf);
+			powerBtn.OnClickAsObservable().Subscribe(u => powerClick.OnNext(Unit.Default));
+			InputController.OnSkillClick.Subscribe(u => { if (powerBtn.gameObject.activeSelf) powerClick.OnNext(Unit.Default); }).AddTo(this);
+		}
+
+		if (redBtn && redBtn.interactable) 
+		{
+			redBtn.OnClickAsObservable ().Subscribe (u => redClicked.Value = !redClicked.Value);
+			redClicked.Subscribe(v => ButtonClicked(v, redBtn, redClick));
+			InputController.OnRedClick.Subscribe(u => ButtonClicked(redClicked.Value, redBtn, redClick)).AddTo(this);
+		}
+		if (greenBtn && greenBtn.interactable) 
+		{
+			greenBtn.OnClickAsObservable ().Subscribe (u => greenClicked.Value = !greenClicked.Value);
+			greenClicked.Subscribe(v => ButtonClicked(v, greenBtn, greenClick));
+			InputController.OnGreenClick.Subscribe(u => ButtonClicked(greenClicked.Value, greenBtn, greenClick)).AddTo(this);
+		}
+		if (blueBtn && blueBtn.interactable) 
+		{
+			blueBtn.OnClickAsObservable ().Subscribe (u => blueClicked.Value = !blueClicked.Value);
+			blueClicked.Subscribe(v => ButtonClicked(v, blueBtn, blueClick));
+			InputController.OnBlueClick.Subscribe(u => ButtonClicked(blueClicked.Value, blueBtn, blueClick)).AddTo(this);
+		}
+    }
+
+	void UpdatePowerBtn()
+	{
+		powerBtn.gameObject.SetActive (powerActive.Value && (redClicked.Value || greenClicked.Value || blueClicked.Value));
+	}
+
+	void ButtonClicked(bool active, Button btn, Subject<bool> subject)
+	{
+		Color tmp = btn.image.color;
+		tmp.a = (active) ? ON_ALPHA : OFF_ALPHA;
+		btn.image.color = tmp; 
+		subject.OnNext (active);
+		UpdatePowerBtn ();
+
+		if (skill && center) 
+		{
+			center.color = Attribute.GetColor (skill.CurrentElement, 1f);
+			powerBtn.GetComponent<Image> ().color = center.color;
 		}
 	}
 }

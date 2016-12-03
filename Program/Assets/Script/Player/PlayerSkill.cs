@@ -3,7 +3,7 @@ using UniRx.Triggers;
 using UnityEngine;
 using System.Collections;
 
-public class PlayerSkill : SingletonMonoBehaviour<PlayerSkill>
+public class PlayerSkill : MonoBehaviour
 {
     [SerializeField]
     private float powerCostTime;
@@ -30,6 +30,20 @@ public class PlayerSkill : SingletonMonoBehaviour<PlayerSkill>
     [SerializeField]
     private WhiteAura WhiteSkill;
 
+	public ElementType CurrentElement
+	{
+		get 
+		{
+			Attribute attr = GetComponent<Attribute>();
+			if (attr)
+			{
+				return attr.Type;
+			}
+
+			return ElementType.ELEMENT_TYPE_NONE;
+		}
+	}
+
     //	private ReactiveProperty<int> power;
     //
     //	public bool isSkill { get { return usingSkill; } }
@@ -49,10 +63,10 @@ public class PlayerSkill : SingletonMonoBehaviour<PlayerSkill>
 		btn = GameObject.FindObjectOfType<SkillBtn> ();
 		if (btn) 
 		{
-			btn.OnBlueChanged += BlueAttribute;
-			btn.OnRedChanged += RedAttribute;
-			btn.OnGreenChanged += GreenAttribute;
-			btn.OnPowerUsed += UseSkill;
+			btn.OnRedClick.Subscribe (v => AttributeChange(v, ElementType.ELEMENT_TYPE_RED)).AddTo(this);
+			btn.OnGreenClick.Subscribe (v => AttributeChange(v, ElementType.ELEMENT_TYPE_GREEN)).AddTo(this);
+			btn.OnBlueClick.Subscribe (v => AttributeChange(v, ElementType.ELEMENT_TYPE_BLUE)).AddTo(this);
+			btn.OnPowerClick.Subscribe (u => UseSkill()).AddTo(this);
 		}
 	}
 
@@ -61,9 +75,7 @@ public class PlayerSkill : SingletonMonoBehaviour<PlayerSkill>
         anim = GetComponent<Animator>();
 
         lanceEffectmat = LanceEffect.GetComponentInChildren<MeshRenderer>().material;
-
-        InputController.OnSkillClick.Subscribe(u => UseSkill()).AddTo(this);
-
+		
         //this.UpdateAsObservable().Subscribe(_ => UniRxUpdate());
     }
 
@@ -219,19 +231,6 @@ public class PlayerSkill : SingletonMonoBehaviour<PlayerSkill>
 //        }
 //    }
 
-	void BlueAttribute(bool active)
-	{
-        AttributeChange(active, ElementType.ELEMENT_TYPE_BLUE);
-    }
-    void RedAttribute(bool active)
-    {
-        AttributeChange(active, ElementType.ELEMENT_TYPE_RED);
-    }
-    void GreenAttribute(bool active)
-    {
-        AttributeChange(active, ElementType.ELEMENT_TYPE_GREEN);
-    }
-
     void AttributeChange(bool active, ElementType type)
     {
         LanceEffect.gameObject.SetActive(active);
@@ -241,7 +240,7 @@ public class PlayerSkill : SingletonMonoBehaviour<PlayerSkill>
         {
             attr.SetElement(active, type);
 
-            Color color = Attribute.GetColor(attr.Type) * 2;
+            Color color = Attribute.GetColor(attr.Type, 0.5f) * 2;
             Lance.material.SetColor("_EmissionColor", color);
             lanceEffectmat.SetColor("_EmissionColor", color);
         }

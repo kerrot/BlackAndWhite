@@ -83,14 +83,14 @@ public class Attribute : MonoBehaviour {
         }
     }
 
-    public static Color GetColor(ElementType ele)
+	public static Color GetColor(ElementType ele, float alpha)
     {
         if (ele == ElementType.ELEMENT_TYPE_NONE)
         {
-            return new Color(0.3f, 0.3f, 0.3f, 0.3f);
+			return new Color(0.3f, 0.3f, 0.3f, alpha);
         }
 
-		Color c = new Color(0f, 0f, 0f, 0.3f);
+		Color c = new Color(0f, 0f, 0f, alpha);
         if ((ele & ElementType.ELEMENT_TYPE_RED) != 0)
         {
             c.r = 1f;

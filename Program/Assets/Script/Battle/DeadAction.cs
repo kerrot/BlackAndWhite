@@ -10,7 +10,7 @@ public class DeadAction : MonoBehaviour
     void Start()
 	{
         ParticleSystem par = GetComponent<ParticleSystem>();
-        par.startColor = Attribute.GetColor(Atk.Element);
+        par.startColor = Attribute.GetColor(Atk.Element, 0.3f);
 
         Destroy(gameObject, par.duration);
 
