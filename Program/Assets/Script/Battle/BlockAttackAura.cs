@@ -30,11 +30,12 @@ public class BlockAttackAura : AuraBattle
         if (result)
         {
             AudioHelper.PlaySE(gameObject, blockSE);
+            bool isWeak = Attribute.IsWeakness(element, attack.Element);
 
-            if (attack.Type == AttackType.ATTACK_TYPE_EXPLOSION || 
-                Attribute.IsWeakness(element, attack.Element))
+            if (attack.Type == AttackType.ATTACK_TYPE_EXPLOSION || isWeak)
             {
                 nowBlock = 0;
+                result = !isWeak;
             }
             else
             {
@@ -57,7 +58,7 @@ public class BlockAttackAura : AuraBattle
             }
         }
 
-		return result;
+        return result;
 	}
 
     protected override void AuraDisappear()

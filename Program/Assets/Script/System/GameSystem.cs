@@ -80,7 +80,7 @@ public class GameSystem : SingletonMonoBehaviour<GameSystem>
         comboSubject.OnNext(slashCount);
     }
 
-    void KillInOneTime(int num)
+    public void KillInOneTime(int num)
     {
         if (multiSlash && num > 1)
         {
@@ -125,6 +125,8 @@ public class GameSystem : SingletonMonoBehaviour<GameSystem>
         {
             skillUI.SetActive(true);
         }
+
+        GUI.FocusControl(name);
     }
 
     public void GameOver()

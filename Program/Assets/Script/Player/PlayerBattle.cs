@@ -7,7 +7,7 @@ using UnityStandardAssets.ImageEffects;
 
 public class PlayerBattle : UnitBattle {
     [SerializeField]
-    private GameObject AttackRegion;
+    private GameObject AttackRegionObj;
     [SerializeField]
     private Animator hurtEffect;
     [SerializeField]
@@ -34,14 +34,37 @@ public class PlayerBattle : UnitBattle {
     float cuurentIntensity;
 
     int attackHash;
+    int EnemyMask;
 
     bool guardAttack = false;
     Vector3 guardPos;
+    Vector3 AttackRange;
+    PlayerSlash slash;
+    PlayerMove move;
+
+    void Awake()
+    {
+        slash = GetComponent<PlayerSlash>();
+        move = GetComponent<PlayerMove>();
+        if (hurtEffect)
+        {
+            GameObject tmp = GameObject.Find("HurtScreenEffect");
+            if (tmp)
+            {
+                hurtEffect = tmp.GetComponent<Animator>();
+            }
+        }
+        
+        if (AttackRegionObj)
+        {
+            AttackRange = AttackRegionObj.GetComponent<BoxCollider>().size / 2.0f;
+        }
+    }
 
     void Start()
     {
         attackHash = Animator.StringToHash("PlayerBase.Attack");
-
+        EnemyMask = LayerMask.GetMask("Enemy");
         anim = GetComponent<Animator>();
 
         nowHP = HP;
@@ -91,7 +114,7 @@ public class PlayerBattle : UnitBattle {
 
     void UniRxLateUpdate()
     {
-        if (anim.enabled && guardAttack)
+        if (enabled && anim.enabled && guardAttack)
         {
             guardAttack = false;
             transform.position = guardPos;
@@ -100,12 +123,27 @@ public class PlayerBattle : UnitBattle {
 
     void Attack()
     {
+        if (!enabled)
+        {
+            return;
+        }
+
         GameObject obj = EnemyGenerator.GetEnemyByMousePosition(Input.mousePosition);
         AttackEnemy(obj);
     }
 
     void Battle (GameObject Enemy)
     {
+        YellowDebuff[] yellow = GameObject.FindObjectsOfType<YellowDebuff>();
+        yellow.ToObservable().Subscribe(y => 
+        {
+            if (y.vistom.gameObject == Enemy)
+            {
+                y.End();
+                return;
+            }
+        });
+
         if (CanAttack(Enemy))
         {
             AttackEnemy(Enemy);
@@ -114,7 +152,11 @@ public class PlayerBattle : UnitBattle {
 
     bool CanAttack(GameObject Enemy)
     {
-        PlayerSlash slash = GetComponent<PlayerSlash>();
+        if (!enabled)
+        {
+            return false;
+        }
+        
         if (slash && slash.SlashEnemy(Enemy))
         {
             return false;
@@ -130,7 +172,7 @@ public class PlayerBattle : UnitBattle {
             transform.LookAt(enemy.transform);
         }
 
-        PlayerMove move = GetComponent<PlayerMove>();
+        
         if (move)
         {
             move.CanRotate = false;
@@ -144,7 +186,7 @@ public class PlayerBattle : UnitBattle {
 
     void AttackHit()
     {
-        Collider[] cs = Physics.OverlapBox(AttackRegion.transform.position, AttackRegion.GetComponent<BoxCollider>().size, AttackRegion.transform.rotation);
+        Collider[] cs = Physics.OverlapBox(AttackRegionObj.transform.position, AttackRange, AttackRegionObj.transform.rotation, EnemyMask);
         cs.ToObservable().Subscribe(c =>
         {
             EnemyBattle enemy = c.GetComponent<EnemyBattle>();
@@ -161,8 +203,13 @@ public class PlayerBattle : UnitBattle {
         {
             return false;
         }
+        
+        if (slash && slash.IsSlashing)
+        {
+            return false;
+        }
 
-        if (anim.GetBool("Guard") || guardAttack)
+            if (anim.GetBool("Guard") || guardAttack)
         {
             if (attack.Type == AttackType.ATTACK_TYPE_NORMAL)
             {

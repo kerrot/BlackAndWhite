@@ -12,6 +12,8 @@ public class WhiteAura : AuraBattle {
     private ParticleSystem flash;
     [SerializeField]
     private GameObject trail;
+    [SerializeField]
+    private AudioClip flashSE;
 
     Material original;
     ParticleSystem ps;
@@ -80,6 +82,7 @@ public class WhiteAura : AuraBattle {
             system.GamePause();
             system.RTM();
             flash.Play();
+            AudioHelper.PlaySE(gameObject, flashSE);
             flashStart = Time.unscaledTime;
             flashEffect = true;
         }

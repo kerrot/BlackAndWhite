@@ -78,17 +78,17 @@ public class InputController : MonoBehaviour {
             skillClick.OnNext(Unit.Default);
         }
 
-        if (Input.GetKeyDown(KeyCode.Q))
+        if (Input.GetKeyDown(KeyCode.W))
         {
             redClick.OnNext(Unit.Default);
         }
 
-        if (Input.GetKeyDown(KeyCode.W))
+        if (Input.GetKeyDown(KeyCode.E))
         {
             greenClick.OnNext(Unit.Default);
         }
 
-        if (Input.GetKeyDown(KeyCode.E))
+        if (Input.GetKeyDown(KeyCode.Q))
         {
             blueClick.OnNext(Unit.Default);
         }

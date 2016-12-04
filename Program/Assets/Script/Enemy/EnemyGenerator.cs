@@ -109,23 +109,30 @@ public class EnemyGenerator : MonoBehaviour
         Vector2 offset = Random.insideUnitCircle;
         Vector3 pos = transform.position + new Vector3(offset.x, 0, offset.y);
 
-        GameObject obj = Instantiate (spawnEnemy, pos, Quaternion.identity) as GameObject;
-        AddMonster(obj);
+        CreateEnemy(spawnEnemy, pos, Quaternion.identity);
+    }
+
+    public GameObject CreateEnemy(GameObject obj, Vector3 position, Quaternion rotation)
+    {
+        GameObject tmp = Instantiate(obj, position, rotation) as GameObject;
+        AddMonster(tmp);
+
+        return tmp;
     }
 
     void AddMonster(GameObject obj)
     {
         if (obj != null)
         {
-            obj.layer = LayerMask.NameToLayer("Enemy");
-            monsters.Add(obj);
-
-            EnemyBattle battle = obj.GetComponent<EnemyBattle>();
+            EnemyBattle battle = obj.GetComponentInChildren<EnemyBattle>();
             battle.OnDie.Subscribe(o => EnemyDie(o)).AddTo(this);
             battle.OnExplosionAttacked.Subscribe(o => explosionAttacked.OnNext(o)).AddTo(this);
 
-            EnemySlash slash = obj.GetComponent<EnemySlash>();
+            EnemySlash slash = obj.GetComponentInChildren<EnemySlash>();
             slash.OnCanSlash.Subscribe(o => enemyCanSlash.OnNext(o)).AddTo(this);
+
+            battle.gameObject.layer = LayerMask.NameToLayer("Enemy");
+            monsters.Add(battle.gameObject);
         }
     }
 

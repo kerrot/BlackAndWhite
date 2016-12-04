@@ -11,13 +11,13 @@ public class PlayerTime : MonoBehaviour {
 
     Dictionary<MonoBehaviour, float> speeds = new Dictionary<MonoBehaviour, float>();
 
-    float baseSpeed = 1;
+    float baseSpeed = 1f;
 
     void Awake() 
     {
         anim = GetComponent<Animator>();
 
-		SlowMotion (1, 1);
+		SlowMotion (1f, 1f);
     }
 
 	public void SlowMotion(float speed, float playerSpeed) 

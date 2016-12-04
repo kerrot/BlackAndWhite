@@ -60,7 +60,9 @@ public class PlayerSkill : MonoBehaviour
 
 	void Awake()
 	{
-		btn = GameObject.FindObjectOfType<SkillBtn> ();
+        lanceEffectmat = LanceEffect.GetComponentInChildren<MeshRenderer>().material;
+
+        btn = GameObject.FindObjectOfType<SkillBtn> ();
 		if (btn) 
 		{
 			btn.OnRedClick.Subscribe (v => AttributeChange(v, ElementType.ELEMENT_TYPE_RED)).AddTo(this);
@@ -74,7 +76,7 @@ public class PlayerSkill : MonoBehaviour
     {
         anim = GetComponent<Animator>();
 
-        lanceEffectmat = LanceEffect.GetComponentInChildren<MeshRenderer>().material;
+        
 		
         //this.UpdateAsObservable().Subscribe(_ => UniRxUpdate());
     }
@@ -109,7 +111,6 @@ public class PlayerSkill : MonoBehaviour
                 if (debuff)
                 {
                     debuff.End();
-                    transform.position = debuff.transform.position;
                     return;
                 }
             }

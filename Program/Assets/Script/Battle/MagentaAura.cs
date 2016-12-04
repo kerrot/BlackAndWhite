@@ -3,15 +3,21 @@ using UnityEngine;
 using System.Collections;
 
 public class MagentaAura : AuraBattle {
+    [SerializeField]
+    private AudioClip startSE;
+    [SerializeField]
+    private ParticleSystem startEffect;
+
 
     protected override void AuraStart()
     {
-        AuraEffect(true);
         PlayerBattle battle = GameObject.FindObjectOfType<PlayerBattle>();
         if (battle)
         {
             battle.OnAttack.Subscribe(u => DoDisappear()).AddTo(this);
         }
+
+        DoRecover();
     }
 
     protected override void AuraDisappear()
@@ -23,6 +29,8 @@ public class MagentaAura : AuraBattle {
     protected override void AuraRecover()
     {
         AuraEffect(true);
+        startEffect.Play();
+        AudioHelper.PlaySE(gameObject, startSE);
     }
 
     void AuraEffect(bool effect)

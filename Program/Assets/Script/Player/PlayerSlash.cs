@@ -44,7 +44,7 @@ public class PlayerSlash : MonoBehaviour {
 
     List<GameObject> slashList = new List<GameObject>();
 
-    BoxCollider slashCollider;
+    Vector3 slashRange;
     int EnemyMask;
 
     GameObject TargetObject;
@@ -62,7 +62,7 @@ public class PlayerSlash : MonoBehaviour {
         InputController.OnSlashClick.Subscribe(u => Slash()).AddTo(this);
 
         slashRadius = SlashRegionDisplay.GetComponent<SphereCollider>().radius;
-        slashCollider = SlashRegion.GetComponent<BoxCollider>();
+        slashRange = SlashRegion.GetComponent<BoxCollider>().size / 2.0f;
 
         EnemyMask = LayerMask.GetMask("Enemy");
         aura = GameObject.FindObjectOfType<WhiteAura>();
@@ -218,7 +218,7 @@ public class PlayerSlash : MonoBehaviour {
         }
 
         int count = 0;
-        Collider[] enemies = Physics.OverlapBox(SlashRegion.transform.position, slashCollider.size, SlashRegion.transform.rotation, EnemyMask);
+        Collider[] enemies = Physics.OverlapBox(SlashRegion.transform.position, slashRange, SlashRegion.transform.rotation, EnemyMask);
 
         PlayerBattle battle = GetComponent<PlayerBattle>();
         if (battle)

@@ -57,7 +57,9 @@ public class YellowSkill : AuraBattle {
         now = transform.position;
         step = (target - transform.position).normalized * 0.1f;
 
-        Observable.FromCoroutine(_ => Disappear(1f)).Subscribe().AddTo(this);
+        Observable.FromCoroutine(_ => Disappear(1f)).Subscribe();
+
+        DoRecover();
 	}
 
     IEnumerator Disappear(float time)

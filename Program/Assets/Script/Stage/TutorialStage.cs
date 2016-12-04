@@ -44,13 +44,13 @@ public class TutorialStage : MonoBehaviour {
 
     public void Resume()
     {
+        CloseReadme();
+
         GameSystem system = GameObject.FindObjectOfType<GameSystem>();
         if (system)
         {
             system.GameResume();
         }
-
-        CloseReadme();
     }
 
     void EnemyExplosionAttacked(GameObject unit)

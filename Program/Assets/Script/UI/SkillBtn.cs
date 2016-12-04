@@ -38,7 +38,7 @@ public class SkillBtn : MonoBehaviour {
 	PlayerSkill skill;
 
 	// Use this for initialization
-	void Start () {
+	void Awake () {
 
 		skill = GameObject.FindObjectOfType<PlayerSkill> ();
 
@@ -53,19 +53,19 @@ public class SkillBtn : MonoBehaviour {
 		{
 			redBtn.OnClickAsObservable ().Subscribe (u => redClicked.Value = !redClicked.Value);
 			redClicked.Subscribe(v => ButtonClicked(v, redBtn, redClick));
-			InputController.OnRedClick.Subscribe(u => ButtonClicked(redClicked.Value, redBtn, redClick)).AddTo(this);
+			InputController.OnRedClick.Subscribe(u => redClicked.Value = !redClicked.Value).AddTo(this);
 		}
 		if (greenBtn && greenBtn.interactable) 
 		{
 			greenBtn.OnClickAsObservable ().Subscribe (u => greenClicked.Value = !greenClicked.Value);
 			greenClicked.Subscribe(v => ButtonClicked(v, greenBtn, greenClick));
-			InputController.OnGreenClick.Subscribe(u => ButtonClicked(greenClicked.Value, greenBtn, greenClick)).AddTo(this);
+			InputController.OnGreenClick.Subscribe(u => greenClicked.Value = !greenClicked.Value).AddTo(this);
 		}
 		if (blueBtn && blueBtn.interactable) 
 		{
 			blueBtn.OnClickAsObservable ().Subscribe (u => blueClicked.Value = !blueClicked.Value);
 			blueClicked.Subscribe(v => ButtonClicked(v, blueBtn, blueClick));
-			InputController.OnBlueClick.Subscribe(u => ButtonClicked(blueClicked.Value, blueBtn, blueClick)).AddTo(this);
+			InputController.OnBlueClick.Subscribe(u => blueClicked.Value = !blueClicked.Value).AddTo(this);
 		}
     }
 
