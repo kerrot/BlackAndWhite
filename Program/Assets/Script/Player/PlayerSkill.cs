@@ -30,7 +30,16 @@ public class PlayerSkill : MonoBehaviour
     [SerializeField]
     private WhiteAura WhiteSkill;
 
-	public ElementType CurrentElement
+    private BoolReactiveProperty canSkill = new BoolReactiveProperty();
+    private BoolReactiveProperty redOn = new BoolReactiveProperty();
+    private BoolReactiveProperty greenOn = new BoolReactiveProperty();
+    private BoolReactiveProperty blueOn = new BoolReactiveProperty();
+    public IObservable<bool> CanSkill { get { return canSkill; } }
+    public IObservable<bool> RedOn { get { return redOn; } }
+    public IObservable<bool> GreenOn { get { return greenOn; } }
+    public IObservable<bool> BlueOn { get { return blueOn; } }
+
+    public ElementType CurrentElement
 	{
 		get 
 		{
@@ -95,15 +104,10 @@ public class PlayerSkill : MonoBehaviour
 //        if (Input.GetButtonDown("Jump"))
 //    }
 
-    bool CanSkill()
-    {
-        return GetComponent<Attribute>().Type != ElementType.ELEMENT_TYPE_NONE;
-    }
-
     void UseSkill()
     {
         castingType = GetComponent<Attribute>().Type;
-        if (CanSkill())
+        if (canSkill.Value)
         {
             if (castingType == ElementType.ELEMENT_TYPE_YELLOW)
             {
