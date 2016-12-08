@@ -8,7 +8,7 @@ public class SlashEffect : MonoBehaviour
     [SerializeField]
     private GameObject shadow;
 
-    void ShadowEffect()
+    public void ShadowEffect()
     {
         GameObject s = Instantiate(shadow) as GameObject;
         s.transform.position = transform.position;
