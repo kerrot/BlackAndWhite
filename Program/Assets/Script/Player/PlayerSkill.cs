@@ -39,6 +39,15 @@ public class PlayerSkill : MonoBehaviour
     public IObservable<bool> GreenOn { get { return greenOn; } }
     public IObservable<bool> BlueOn { get { return blueOn; } }
 
+	private FloatReactiveProperty redEnergy = new FloatReactiveProperty ();
+	private FloatReactiveProperty greenEnergy = new FloatReactiveProperty ();
+	private FloatReactiveProperty blueEnergy = new FloatReactiveProperty ();
+	public IObservable<float> RedEnergy { get { return redEnergy; } }
+	public IObservable<float> GreenEnergy { get { return greenEnergy; } }
+	public IObservable<float> BlueEnergy { get { return blueEnergy; } }
+	public float maxEnergy;
+
+
     public ElementType CurrentElement
 	{
 		get 
@@ -104,7 +113,7 @@ public class PlayerSkill : MonoBehaviour
 //        if (Input.GetButtonDown("Jump"))
 //    }
 
-    void UseSkill()
+    public void UseSkill()
     {
         castingType = GetComponent<Attribute>().Type;
         if (canSkill.Value)

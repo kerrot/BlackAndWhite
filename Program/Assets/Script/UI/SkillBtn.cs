@@ -7,26 +7,18 @@ using System.Collections;
 public class SkillBtn : MonoBehaviour {
 	[SerializeField]
 	private Button powerBtn;
-    [SerializeField]
-    private GameObject powerOn;
-    [SerializeField]
+	[SerializeField]
 	private Button redBtn;
-    [SerializeField]
-    private GameObject redOn;
-    [SerializeField]
+	[SerializeField]
 	private Button greenBtn;
-    [SerializeField]
-    private GameObject greenOn;
-    [SerializeField]
+	[SerializeField]
 	private Button blueBtn;
-    [SerializeField]
-    private GameObject blueOn;
-    [SerializeField]
+	[SerializeField]
 	private Image center;
-    [SerializeField]
-    private Image power;
+	[SerializeField]
+	private BoolReactiveProperty powerActive;
 
-    private Subject<Unit> powerClick = new Subject<Unit>();
+	private Subject<Unit> powerClick = new Subject<Unit>();
 	private Subject<bool> redClick = new Subject<bool>();
 	private Subject<bool> greenClick = new Subject<bool>();
 	private Subject<bool> blueClick = new Subject<bool>();
@@ -36,22 +28,22 @@ public class SkillBtn : MonoBehaviour {
 	public IObservable<bool> OnGreenClick { get { return greenClick; } }
 	public IObservable<bool> OnBlueClick { get { return blueClick; } }
 
+	private BoolReactiveProperty redClicked = new BoolReactiveProperty ();
+	private BoolReactiveProperty greenClicked = new BoolReactiveProperty ();
+	private BoolReactiveProperty blueClicked = new BoolReactiveProperty ();
+
+	static float ON_ALPHA = 1f;
+	static float OFF_ALPHA = 0.3f;
+
 	PlayerSkill skill;
 
 	// Use this for initialization
 	void Awake () {
 
 		skill = GameObject.FindObjectOfType<PlayerSkill> ();
-        if (skill)
-        {
-            if (powerBtn)
-            {
-                skill.CanSkill.Subscribe();
 
-            }
-        }
-
-		if (powerBtn && powerBtn.gameObject.activeSelf) 
+		powerActive.Subscribe (v => UpdatePowerBtn ());
+		if (powerActive.Value) 
 		{
 			powerBtn.OnClickAsObservable().Subscribe(u => powerClick.OnNext(Unit.Default));
 			InputController.OnSkillClick.Subscribe(u => { if (powerBtn.gameObject.activeSelf) powerClick.OnNext(Unit.Default); }).AddTo(this);
@@ -77,9 +69,18 @@ public class SkillBtn : MonoBehaviour {
 		}
     }
 
+	void UpdatePowerBtn()
+	{
+		powerBtn.gameObject.SetActive (powerActive.Value && (redClicked.Value || greenClicked.Value || blueClicked.Value));
+	}
+
 	void ButtonClicked(bool active, Button btn, Subject<bool> subject)
 	{
+		Color tmp = btn.image.color;
+		tmp.a = (active) ? ON_ALPHA : OFF_ALPHA;
+		btn.image.color = tmp; 
 		subject.OnNext (active);
+		UpdatePowerBtn ();
 
 		if (skill && center) 
 		{
