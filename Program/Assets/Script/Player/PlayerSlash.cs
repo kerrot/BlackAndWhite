@@ -35,7 +35,6 @@ public class PlayerSlash : MonoBehaviour {
     float slashRadius;
     float slashSpeed = 0f;
 
-    int shiftHash;
     int slashEndHash;
 	int slashingHash;
     Animator anim;
@@ -51,13 +50,12 @@ public class PlayerSlash : MonoBehaviour {
     GameObject TargetObject;
     Vector3 TargetPosition;
 
-    WhiteSkill aura;
+    WhiteAura aura;
 
     void Awake()
     {
         anim = GetComponent<Animator>();
-
-        shiftHash = Animator.StringToHash("PlayerBase.shift");
+        
         slashEndHash = Animator.StringToHash("PlayerBase.SlashEnd");
 		slashingHash = Animator.StringToHash("PlayerBase.Slashing");
         InputController.OnMouseDown.Subscribe(p => MultiSlash(p)).AddTo(this);
@@ -67,43 +65,37 @@ public class PlayerSlash : MonoBehaviour {
         slashRange = SlashRegion.GetComponent<BoxCollider>().size / 2.0f;
 
         EnemyMask = LayerMask.GetMask("Enemy");
-        aura = GameObject.FindObjectOfType<WhiteSkill>();
+        aura = GameObject.FindObjectOfType<WhiteAura>();
     }
 
     void Start()
     {
-        EnemyManager.OnEnemyClicked.Subscribe(o => SlashEnemy(o)).AddTo(this);
+        EnemyGenerator.OnEnemyClicked.Subscribe(o => SlashEnemy(o)).AddTo(this);
         this.UpdateAsObservable().Subscribe(_ => UniRxUpdate());
     }
 
     void UniRxUpdate()
     {
 		AnimatorStateInfo info = anim.GetCurrentAnimatorStateInfo(0);
-		//if (info.fullPathHash == slashingHash)
-  //      {
-  //          if (TargetObject)
-  //          {
-  //              TargetPosition = TargetObject.transform.position;
-  //          }
-
-  //          transform.LookAt(TargetPosition);
-
-  //          if (isSlashing && !slashReach && Vector3.Distance(TargetPosition, transform.position) < SlashStopRadius)
-  //          {
-  //              anim.SetTrigger("SlashEnd");
-  //              slashReach = true;
-  //              TargetObject = null;
-  //          }
-  //      }
-  //      else 
-        if (info.fullPathHash == shiftHash)
+		if (info.fullPathHash == slashingHash)
         {
             if (TargetObject)
             {
                 TargetPosition = TargetObject.transform.position;
             }
 
-            if (AutoSlash || (aura && aura.IsUsing()))
+            transform.LookAt(TargetPosition);
+
+            if (isSlashing && !slashReach && Vector3.Distance(TargetPosition, transform.position) < SlashStopRadius)
+            {
+                anim.SetTrigger("SlashEnd");
+                slashReach = true;
+                TargetObject = null;
+            }
+        }
+        else if (info.fullPathHash == slashEndHash)
+        {
+            if (AutoSlash || (aura && aura.IsAura))
             {
                 continueSlash = true;
             }
@@ -155,12 +147,12 @@ public class PlayerSlash : MonoBehaviour {
     {
         if (slashList.Count > 0)
         {
-            EnemyManager enemies = GameObject.FindObjectOfType<EnemyManager>();
+            EnemyGenerator enemies = GameObject.FindObjectOfType<EnemyGenerator>();
             if (enemies)
             {
                 GameObject obj = null;
                 float min = Mathf.Infinity;
-                EnemyManager.Enemies.ForEach(e =>
+                EnemyGenerator.Enemies.ForEach(e =>
                 {
                     if (CanSlashEnemy(e))
                     {
@@ -193,18 +185,14 @@ public class PlayerSlash : MonoBehaviour {
             slashReach = false;
             TargetObject = Enemy;
 
-            TargetPosition = Enemy.transform.position;
-            transform.LookAt(TargetObject.transform);
-
             PlayerMove move = GameObject.FindObjectOfType<PlayerMove>();
             if (move)
             {
                 move.CanRotate = false;
             }
 
-            //anim.SetBool("IsSlashing", true);
-            //anim.SetTrigger("Slash");
-            anim.SetTrigger("Shift");
+            anim.SetBool("IsSlashing", true);
+            anim.SetTrigger("Slash");
 
             return true;
         }
@@ -223,14 +211,6 @@ public class PlayerSlash : MonoBehaviour {
         {
             move.CanRotate = true;
         }
-
-        SlashEffect shadow = GetComponent<SlashEffect>();
-        if (shadow)
-        {
-            shadow.ShadowEffect();
-        }
-
-        transform.position = (transform.position - TargetPosition).normalized * SlashStopRadius + TargetPosition;
 
         if (slashSpeed < maxSpeedup)
         {
