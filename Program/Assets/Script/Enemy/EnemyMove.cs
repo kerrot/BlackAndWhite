@@ -1,6 +1,6 @@
 ﻿using UniRx;
 using UniRx.Triggers;
-using System;
+
 using UnityEngine;
 using System.Collections;
 
@@ -10,6 +10,12 @@ public class EnemyMove : MonoBehaviour {
     private float stopRadius;
     [SerializeField]
     private GameObject wanderEffect;
+    [SerializeField]
+    private float teleportPeriodMin;
+    [SerializeField]
+    private float teleportPeriodMax;
+
+    public bool CanMove = true;
 
     public float StopRadius { get { return stopRadius; } }
 
@@ -18,46 +24,48 @@ public class EnemyMove : MonoBehaviour {
 
     int moveHash;
 
+    float teleportTime;
+    PlayerBattle player;
+
     // Use this for initialization
     void Start () {
         this.UpdateAsObservable().Subscribe(__ => UniRxUpdate());
-		this.OnAnimatorMoveAsObservable ().Subscribe (_ => UniRxAnimatorMove ());
-
+		
         anim = GetComponent<Animator>();
+        player = GameObject.FindObjectOfType<PlayerBattle>();
 
         agent = GetComponent<NavMeshAgent>();
         agent.updatePosition = false;
         agent.updateRotation = false;
 
         moveHash = Animator.StringToHash("EnemyBase.Move");
+
+        teleportTime = Time.time + Random.Range(teleportPeriodMin, teleportPeriodMax);
     }
 
 	// Update is called once per frame
-	void UniRxUpdate() {
-        if (!enabled)
-        {
-            anim.SetBool("Move", false);
-            return;
-        }
+	void UniRxUpdate()
+    {
+        anim.SetBool("Move", false);
 
         PlayerBattle player = GameObject.FindObjectOfType<PlayerBattle>();
-        if (player)
+        if (player && !player.Missing && CanMove)
         {
-            anim.SetBool("Wander", player.Missing);
-            wanderEffect.SetActive(player.Missing);
+            agent.destination = player.transform.position;
 
-            if (!player.Missing)
+            anim.SetBool("Move", Vector3.Distance(player.transform.position, transform.position) > stopRadius);
+
+            AnimatorStateInfo info = anim.GetCurrentAnimatorStateInfo(0);
+            if (info.fullPathHash == moveHash)
             {
-                agent.destination = player.transform.position;
+                FaceTarget(agent.steeringTarget);
+                agent.nextPosition = transform.position;
+            }
 
-                anim.SetBool("Move", Vector3.Distance(player.transform.position, transform.position) > stopRadius);
-
-                AnimatorStateInfo info = anim.GetCurrentAnimatorStateInfo(0);
-                if (info.fullPathHash == moveHash)
-                {
-                    FaceTarget(agent.steeringTarget);
-                    agent.nextPosition = transform.position;
-                }
+            if (Time.time > teleportTime)
+            {
+                teleportTime = Time.time + Random.Range(teleportPeriodMin, teleportPeriodMax);
+                anim.SetTrigger("TelePort");
             }
         }
     }
@@ -72,9 +80,17 @@ public class EnemyMove : MonoBehaviour {
             transform.rotation = Quaternion.AngleAxis(angle, Vector3.up);
         }
     }
-
-	void UniRxAnimatorMove()
-	{
-		transform.position = anim.rootPosition;
-	}
+    
+    void Teleport()
+    {
+        if (player && !player.Missing && CanMove)
+        {
+            Vector2 offset = Random.insideUnitCircle * stopRadius;
+            NavMeshHit navHit;
+            if (NavMesh.SamplePosition(player.transform.position + new Vector3(offset.x, 0, offset.y), out navHit, 1.0f, NavMesh.AllAreas))
+            {
+                transform.position = navHit.position;
+            }
+        }
+    }
 }

@@ -31,6 +31,8 @@ ModelImporter:
     7400020: Wander
     7400022: DamageStart
     7400024: DamageEnd
+    7400026: TelePort
+    7400028: Showup
     9500000: //RootNode
   materials:
     importMaterials: 1
@@ -424,7 +426,7 @@ ModelImporter:
       name: Wander
       takeName: wander
       firstFrame: 375
-      lastFrame: 405
+      lastFrame: 415
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
@@ -497,6 +499,85 @@ ModelImporter:
       takeName: Hitted
       firstFrame: 140
       lastFrame: 150
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: JRoot
+        weight: 1
+      - path: JRoot/JBody
+        weight: 1
+      - path: JRoot/JBody/Dark
+        weight: 1
+      maskType: 0
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 151
+    - serializedVersion: 16
+      name: TelePort
+      takeName: TelePort
+      firstFrame: 415
+      lastFrame: 425
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events:
+      - time: 1
+        functionName: Teleport
+        data: 
+        objectReferenceParameter: {instanceID: 0}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
+      transformMask:
+      - path: 
+        weight: 1
+      - path: JRoot
+        weight: 1
+      - path: JRoot/JBody
+        weight: 1
+      - path: JRoot/JBody/Dark
+        weight: 1
+      maskType: 0
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 415
+    - serializedVersion: 16
+      name: Showup
+      takeName: Showup
+      firstFrame: 425
+      lastFrame: 435
       wrapMode: 0
       orientationOffsetY: 0
       level: 0

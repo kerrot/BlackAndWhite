@@ -8,8 +8,6 @@ public class SkillUI : MonoBehaviour {
 	[SerializeField]
 	private Button powerBtn;
 	[SerializeField]
-	private GameObject powerOn;
-	[SerializeField]
 	private GameObject redOn;
 	[SerializeField]
 	private GameObject blueOn;
@@ -33,6 +31,7 @@ public class SkillUI : MonoBehaviour {
 	private GameObject blueEnergyOn;
 
 	PlayerSkill skill;
+    PlayerAttribute attri;
 
 	const float ENERGY_VALUE_RANGE = 0.55f;
 
@@ -41,12 +40,12 @@ public class SkillUI : MonoBehaviour {
 		skill = GameObject.FindObjectOfType<PlayerSkill> ();
 		if (skill) 
 		{
-			if (powerOn && powerBtn) 
+			if (powerImage && powerBtn) 
 			{
 				skill.CanSkill.Subscribe (v => 
 				{
-						powerOn.SetActive(v);
-						powerBtn.interactable = v;
+                        powerImage.gameObject.SetActive(v);
+						//powerBtn.interactable = v;
 				});
 			}
 
@@ -56,45 +55,54 @@ public class SkillUI : MonoBehaviour {
 				InputController.OnSkillClick.Subscribe (_ => skill.UseSkill ());
 			}
 
-			RegisterAttribute (redOn, skill.RedOn);
-			RegisterAttribute (greenOn, skill.GreenOn);
-			RegisterAttribute (blueOn, skill.BlueOn);
+			RegisterEnergy (redEnergy, skill.RedEnergy);
+			RegisterEnergy (greenEnergy, skill.GreenEnergy);
+			RegisterEnergy (blueEnergy, skill.BlueEnergy);
+		}
 
-			RegisterEnergy (redEnergy, redEnergyOn, skill.RedEnergy);
-			RegisterEnergy (greenEnergy, greenEnergyOn, skill.GreenEnergy);
-			RegisterEnergy (blueEnergy, blueEnergyOn, skill.BlueEnergy);
+        attri = GameObject.FindObjectOfType<PlayerAttribute>();
+        if (attri)
+        {
+            RegisterAttribute(redOn, redEnergyOn, attri.RedOn);
+            RegisterAttribute(greenOn, greenEnergyOn, attri.GreenOn);
+            RegisterAttribute(blueOn, blueEnergyOn, attri.BlueOn);
+        }
+    }
+
+	void RegisterAttribute(GameObject btn, GameObject energyOn, IObservable<bool> subject)
+	{
+		if (btn && energyOn) 
+		{
+			subject.Subscribe (v => 
+            {
+                btn.SetActive(v);
+                energyOn.SetActive(v);
+
+                Color c = Attribute.GetColor(attri.Type, 1.0f);
+                if (centerImage)
+                {
+                    centerImage.gameObject.SetActive(attri.Type != ElementType.ELEMENT_TYPE_NONE);
+                    centerImage.color = c;
+                }
+
+                if (powerImage)
+                {
+                    powerImage.color = c;
+                }
+
+                
+            });
 		}
 	}
 
-	void RegisterAttribute(GameObject btn, IObservable<bool> subject)
+	void RegisterEnergy(GameObject energy, IObservable<float> subject)
 	{
-		if (btn) 
-		{
-			subject.Subscribe (v => btn.SetActive (v));
-		}
-
-		Color c = Attribute.GetColor (skill.CurrentElement, 1.0f);
-
-		if (centerImage) 
-		{
-			centerImage.color = c;
-		}
-
-		if (powerImage) 
-		{
-			powerImage.color = c;
-		}
-	}
-
-	void RegisterEnergy(GameObject energy, GameObject energyOn, IObservable<float> subject)
-	{
-		if (energy && energyOn) 
+		if (energy) 
 		{
 			subject.Subscribe (v => 
 			{
-					float tmp = v / skill.maxEnergy * ENERGY_VALUE_RANGE + (1f - ENERGY_VALUE_RANGE);
+					float tmp = v / skill.MaxEnergy * ENERGY_VALUE_RANGE + (1f - ENERGY_VALUE_RANGE);
 					energy.transform.localScale = new Vector3(tmp, tmp, tmp);
-					energyOn.SetActive(tmp == 1.0f);
 			});
 		}
 	}

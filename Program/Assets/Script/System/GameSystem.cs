@@ -36,10 +36,10 @@ public class GameSystem : SingletonMonoBehaviour<GameSystem>
 
 	void Awake()
 	{
-		SkillBtn btn = GameObject.FindObjectOfType<SkillBtn> ();
-		if (btn) 
+		SkillUI skill = GameObject.FindObjectOfType<SkillUI> ();
+		if (skill) 
 		{
-			skillUI = btn.gameObject;
+			skillUI = skill.gameObject;
 		}
 
 		GameObject tmp = GameObject.Find ("UICombo");
@@ -99,7 +99,7 @@ public class GameSystem : SingletonMonoBehaviour<GameSystem>
 
         tmpTimeScale = Time.timeScale;
         Time.timeScale = 0;
-        
+        Debug.Log("Pause");
         state = GameState.GAME_STATE_PAUSE;
         pause = true;
 
@@ -120,6 +120,7 @@ public class GameSystem : SingletonMonoBehaviour<GameSystem>
 
         Time.timeScale = tmpTimeScale;
         state = GameState.GAME_STATE_PLAYING;
+        Debug.Log("Resume");
 
         if (skillUI)
         {

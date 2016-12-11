@@ -12,18 +12,21 @@ public class PlayerTime : MonoBehaviour {
     Dictionary<MonoBehaviour, float> speeds = new Dictionary<MonoBehaviour, float>();
 
     float baseSpeed = 1f;
+    GameSystem system;
 
     void Awake() 
     {
         anim = GetComponent<Animator>();
+        system = GameObject.FindObjectOfType<GameSystem>();
 
-		SlowMotion (1f, 1f);
+        SlowMotion (1f, 1f);
     }
 
 	public void SlowMotion(float speed, float playerSpeed) 
     {
-        if (speed == 0) 
+        if (speed == 0 || system.State == GameSystem.GameState.GAME_STATE_PAUSE) 
         {
+            Debug.Log("Slow Motion Error");
             return;
         }
 

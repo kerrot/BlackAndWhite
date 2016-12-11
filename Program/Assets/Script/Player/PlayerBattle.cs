@@ -70,7 +70,7 @@ public class PlayerBattle : UnitBattle {
         nowHP = HP;
 
         InputController.OnAttackClick.Subscribe(u => Attack()).AddTo(this);
-        EnemyGenerator.OnEnemyClicked.Subscribe(o => Battle(o)).AddTo(this);
+        EnemyManager.OnEnemyClicked.Subscribe(o => Battle(o)).AddTo(this);
         this.UpdateAsObservable().Subscribe(_ => UniRxUpdate());
 		this.LateUpdateAsObservable().Subscribe (_ => UniRxLateUpdate ());
     }
@@ -128,7 +128,7 @@ public class PlayerBattle : UnitBattle {
             return;
         }
 
-        GameObject obj = EnemyGenerator.GetEnemyByMousePosition(Input.mousePosition);
+        GameObject obj = EnemyManager.GetEnemyByMousePosition(Input.mousePosition);
         AttackEnemy(obj);
     }
 

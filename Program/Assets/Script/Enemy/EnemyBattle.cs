@@ -25,6 +25,10 @@ public class EnemyBattle : UnitBattle
     private AudioClip woodSE;
     [SerializeField]
     private AudioClip frightenSE;
+    [SerializeField]
+    private GameObject wanderEffect;
+    [SerializeField]
+    private GameObject energyPeace;
 
     private Subject<GameObject> dieSubject = new Subject<GameObject>();
     private Subject<GameObject> explosionAttacked = new Subject<GameObject>();
@@ -53,10 +57,12 @@ public class EnemyBattle : UnitBattle
     int damageHash;
 
     bool dead;
+    PlayerBattle player;
 
     //Start change to Awake, because Instantiate not call Start but Awake
     void Awake()
     {
+        player = GameObject.FindObjectOfType<PlayerBattle>();
         coll = GetComponent<Collider>();
         slash = GetComponent<EnemySlash>();
         anim = GetComponent<Animator>();
@@ -86,6 +92,12 @@ public class EnemyBattle : UnitBattle
 
         this.UpdateAsObservable().Subscribe(_ => UniRxUpdate());
         this.OnDestroyAsObservable().Subscribe(_ => UniRxOnDestroy());
+        this.OnAnimatorMoveAsObservable().Subscribe(_ => UniRxAnimatorMove());
+    }
+
+    void UniRxAnimatorMove()
+    {
+        transform.position = anim.rootPosition;
     }
 
     void UniRxUpdate()
@@ -121,6 +133,13 @@ public class EnemyBattle : UnitBattle
             coll.enabled = true;
             anim.SetTrigger("Revive");
             hpUI.SetBarrierEnable(true);
+        }
+
+        
+        if (player)
+        {
+            anim.SetBool("Wander", player.Missing);
+            wanderEffect.SetActive(player.Missing);
         }
     }
 
@@ -259,9 +278,46 @@ public class EnemyBattle : UnitBattle
             }
         }
 
+        Attribute attr = GetComponent<Attribute>();
+        if (attr && Attribute.isBase(attr.Type))
+        {
+            ProduceEnergyPeace(attr.Type, 2);
+        }
+        else
+        {
+            if ((attack.Element & ElementType.ELEMENT_TYPE_RED) != 0)
+            {
+                ProduceEnergyPeace(ElementType.ELEMENT_TYPE_RED, 1);
+            }
+            if ((attack.Element & ElementType.ELEMENT_TYPE_GREEN) != 0)
+            {
+                ProduceEnergyPeace(ElementType.ELEMENT_TYPE_GREEN, 1);
+            }
+            if ((attack.Element & ElementType.ELEMENT_TYPE_BLUE) != 0)
+            {
+                ProduceEnergyPeace(ElementType.ELEMENT_TYPE_BLUE, 1);
+            }
+        }
+
         dead = true;
 
         dieSubject.OnNext(gameObject);
+    }
+
+    void ProduceEnergyPeace(ElementType ele, int num)
+    {
+        if (energyPeace)
+        {
+            for (int i = 0; i < num; ++i)
+            {
+                GameObject obj = Instantiate(energyPeace, HPUICenter.transform.position, Quaternion.identity) as GameObject;
+                EnergyPeace peace = obj.GetComponent<EnergyPeace>();
+                if (peace)
+                {
+                    peace.Type = ele;
+                }
+            }
+        }
     }
 
     IEnumerator LateDie(Attack attack)

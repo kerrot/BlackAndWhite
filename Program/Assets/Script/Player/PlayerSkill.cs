@@ -2,261 +2,165 @@
 using UniRx.Triggers;
 using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 
 public class PlayerSkill : MonoBehaviour
 {
     [SerializeField]
-    private float powerCostTime;
+    private float maxEnergy;
     [SerializeField]
-    private int maxPower;
+    private float baseCost;
     [SerializeField]
-    private MeshRenderer Lance;
+    private float costCheckTime;
     [SerializeField]
-    private GameObject LanceEffect;
-    [SerializeField]
-    private GameObject BlueSkill;
-	[SerializeField]
-	private GameObject RedSkill;
-    [SerializeField]
-    private GameObject SkillPos;
-    [SerializeField]
-    private GameObject GreenSkill;
-    [SerializeField]
-    private GameObject MagentaSkill;
-	[SerializeField]
-	private GameObject CyanSkill;
-    [SerializeField]
-    private GameObject YellowSkill;
-    [SerializeField]
-    private WhiteAura WhiteSkill;
+    private Skill[] skills;
+
 
     private BoolReactiveProperty canSkill = new BoolReactiveProperty();
-    private BoolReactiveProperty redOn = new BoolReactiveProperty();
-    private BoolReactiveProperty greenOn = new BoolReactiveProperty();
-    private BoolReactiveProperty blueOn = new BoolReactiveProperty();
+    private FloatReactiveProperty redEnergy = new FloatReactiveProperty();
+    private FloatReactiveProperty greenEnergy = new FloatReactiveProperty();
+    private FloatReactiveProperty blueEnergy = new FloatReactiveProperty();
+    private Dictionary<ElementType, FloatReactiveProperty> mapping = new Dictionary<ElementType, FloatReactiveProperty>();
+    public FloatReactiveProperty RedEnergy { get { return redEnergy; } }
+    public FloatReactiveProperty GreenEnergy { get { return greenEnergy; } }
+    public FloatReactiveProperty BlueEnergy { get { return blueEnergy; } }
+    public float MaxEnergy { get { return maxEnergy; } }
     public IObservable<bool> CanSkill { get { return canSkill; } }
-    public IObservable<bool> RedOn { get { return redOn; } }
-    public IObservable<bool> GreenOn { get { return greenOn; } }
-    public IObservable<bool> BlueOn { get { return blueOn; } }
 
-	private FloatReactiveProperty redEnergy = new FloatReactiveProperty ();
-	private FloatReactiveProperty greenEnergy = new FloatReactiveProperty ();
-	private FloatReactiveProperty blueEnergy = new FloatReactiveProperty ();
-	public IObservable<float> RedEnergy { get { return redEnergy; } }
-	public IObservable<float> GreenEnergy { get { return greenEnergy; } }
-	public IObservable<float> BlueEnergy { get { return blueEnergy; } }
-	public float maxEnergy;
-
-
-    public ElementType CurrentElement
-	{
-		get 
-		{
-			Attribute attr = GetComponent<Attribute>();
-			if (attr)
-			{
-				return attr.Type;
-			}
-
-			return ElementType.ELEMENT_TYPE_NONE;
-		}
-	}
-
-    //	private ReactiveProperty<int> power;
-    //
-    //	public bool isSkill { get { return usingSkill; } }
-    //    private bool usingSkill = false;
-    //
-    //    private float skillStartTime;
-
-    Material lanceEffectmat;
-
+    
     ElementType castingType;
 
     Animator anim;
-	SkillBtn btn;
 
-	void Awake()
-	{
-        lanceEffectmat = LanceEffect.GetComponentInChildren<MeshRenderer>().material;
+    PlayerAttribute attri;
+    float lastCheck;
 
-        btn = GameObject.FindObjectOfType<SkillBtn> ();
-		if (btn) 
-		{
-			btn.OnRedClick.Subscribe (v => AttributeChange(v, ElementType.ELEMENT_TYPE_RED)).AddTo(this);
-			btn.OnGreenClick.Subscribe (v => AttributeChange(v, ElementType.ELEMENT_TYPE_GREEN)).AddTo(this);
-			btn.OnBlueClick.Subscribe (v => AttributeChange(v, ElementType.ELEMENT_TYPE_BLUE)).AddTo(this);
-			btn.OnPowerClick.Subscribe (u => UseSkill()).AddTo(this);
-		}
-	}
+    void Awake()
+    {
+        mapping.Add(ElementType.ELEMENT_TYPE_RED,  redEnergy);
+        mapping.Add(ElementType.ELEMENT_TYPE_GREEN, greenEnergy);
+        mapping.Add(ElementType.ELEMENT_TYPE_BLUE, blueEnergy);
+    }
 
     void Start()
     {
         anim = GetComponent<Animator>();
-
-        
-		
-        //this.UpdateAsObservable().Subscribe(_ => UniRxUpdate());
+        attri = GetComponent<PlayerAttribute>();
+        this.UpdateAsObservable().Subscribe(_ => UniRxUpdate());
     }
 
-//    void UniRxUpdate()
-//    {
-//        if (usingSkill) 
-//        {
-//            if (Time.realtimeSinceStartup - skillStartTime > powerCostTime) 
-//            {
-//                skillStartTime += powerCostTime;
-//				UsePower (1);
-//            }
-//        }
-//
-//        if (Input.GetButtonDown("Jump"))
-//    }
+    void UniRxUpdate()
+    {
+        if (Time.time - lastCheck <= costCheckTime)
+        {
+            return;
+        }
+
+        lastCheck += costCheckTime;
+
+        Skill now = skills.SingleOrDefault(s => s.Type == castingType);
+        if (now && now.IsUsing() && !now.CanSkill())
+        {
+            now.SkillEnd();
+        }
+
+        CheckEnergy();
+    }
+
+    void CheckEnergy()
+    {
+        canSkill.Value = false;
+        if (attri.Type != ElementType.ELEMENT_TYPE_NONE)
+        {
+            mapping.ToObservable().Subscribe(p =>
+            {
+                if (p.Value.Value > baseCost)
+                {
+                    p.Value.Value -= baseCost;
+                }
+                else
+                {
+                    p.Value.Value = 0;
+                }
+            });
+        }
+
+        Skill now = skills.SingleOrDefault(s => s.Type == castingType);
+        if (now && now.IsUsing())
+        {
+            Cost(now);
+        }
+
+        CheckState();
+    }
 
     public void UseSkill()
     {
-        castingType = GetComponent<Attribute>().Type;
-        if (canSkill.Value)
+        Skill old = skills.SingleOrDefault(s => s.Type == castingType);
+        if (old && old.Activated() && castingType == attri.Type)
         {
-            if (castingType == ElementType.ELEMENT_TYPE_YELLOW)
+            old.SkillEnd();
+        }
+        else
+        {
+            Skill now = skills.SingleOrDefault(s => s.Type == attri.Type);
+            if (now && now.CanSkill())
             {
-                YellowDebuff debuff = GameObject.FindObjectOfType<YellowDebuff>();
-                if (debuff)
-                {
-                    debuff.End();
-                    return;
-                }
+                castingType = now.Type;
+                anim.SetTrigger("Skill");
             }
-
-            anim.SetTrigger("Skill");
         }
     }
 
     void DoSkill()
     {
-        switch (castingType)
+        Skill now = skills.SingleOrDefault(s => s.Type == castingType);
+        if (now && now.UseSkill())
         {
-            case ElementType.ELEMENT_TYPE_BLUE:
-                BlueSkill.SetActive(true);
-	            break;
-			case ElementType.ELEMENT_TYPE_RED:
-                Instantiate(RedSkill, SkillPos.transform.position, FindNearestDirection());
-                break;
-            case ElementType.ELEMENT_TYPE_GREEN:
-                Instantiate(GreenSkill, transform.position, Quaternion.identity);
-                break;
-            case ElementType.ELEMENT_TYPE_MAGENTA:
-                MagentaSkill.SetActive(true);
-                break;
-			case ElementType.ELEMENT_TYPE_CYAN:
-				Instantiate(CyanSkill, transform.position, Quaternion.identity);
-				break;
-            case ElementType.ELEMENT_TYPE_YELLOW:
-                Instantiate(YellowSkill, SkillPos.transform.position, FindNearestDirection());
-                break;
-            case ElementType.ELEMENT_TYPE_WHITE:
-                WhiteSkill.Launch();
-                break;
+            Cost(now);
+            CheckState();
         }
     }
 
-    Quaternion FindNearestDirection()
+    public void Charge(ElementType ele, float power)
     {
-        float distance = Mathf.Infinity;
-        GameObject min = gameObject;
-        EnemyGenerator.Enemies.ForEach(e =>
+        if (mapping.ContainsKey(ele))
         {
-            Collider c = e.GetComponent<Collider>();
-            if (c && c.enabled && !c.isTrigger)
-            {
-                float tmpDistance = Vector3.Distance(e.transform.position, transform.position);
-                float tmpAngle = Mathf.Abs(Vector3.Angle(transform.forward, e.transform.position - transform.position));
-                if (tmpAngle < 10 && tmpDistance < distance)
-                {
-                    distance = tmpDistance;
-                    min = e;
-                }
-            }
-        });
+            mapping[ele].Value = maxEnergy - mapping[ele].Value > power ? mapping[ele].Value + power : maxEnergy;
 
-        if (distance != Mathf.Infinity)
-        {
-            return Quaternion.LookRotation(min.transform.position - transform.position);
+            CheckState();
         }
-
-        return transform.rotation;
     }
 
-    //public void WhiteSkill()
-    //{
-    //    if (!usingSkill) 
-    //    {
-    //        PlayerTime.Instance.SlowMotion(0.2f, 0.5f);
-    //        skillStartTime = Time.realtimeSinceStartup;
-    //        CameraEffect.Instance.WhiteSkillEffect(true);
-    //        usingSkill = true;
-    //    }
-    //}
-
-//    public void PowerUsed(int v)
-//	{
-//		if (v <= 0) 
-//		{
-//			return;
-//		}
-//
-//		power -= v;
-//		if (power < 0) 
-//		{
-//			power = 0;
-//		}
-//
-//		if (usingSkill && power == 0) 
-//		{
-//			PlayerTime.Instance.SlowMotion(1, 1);
-//            CameraEffect.Instance.WhiteSkillEffect(false);
-//            usingSkill = false;
-//		}
-//
-//		UpdatePower();
-//	}
-
-//    public void AddPower(int v)
-//    {
-//		if (v <= 0) 
-//		{
-//			return;
-//		}
-//
-//        power += v;
-//        if (power > maxPower)
-//        {
-//            power = maxPower;
-//        }
-//
-//        UpdatePower();
-//    }
-
-//    void UpdatePower() 
-//    {
-//        if (OnPowerChnaged != null)
-//        {
-//            OnPowerChnaged(usingSkill, power, maxPower);
-//        }
-//    }
-
-    void AttributeChange(bool active, ElementType type)
+    void Cost(Skill s)
     {
-        LanceEffect.gameObject.SetActive(active);
-
-        Attribute attr = GetComponent<Attribute>();
-        if (attr)
+        if (s.RedCost > 0)
         {
-            attr.SetElement(active, type);
+            redEnergy.Value -= s.RedCost;
+        }
 
-            Color color = Attribute.GetColor(attr.Type, 0.5f) * 2;
-            Lance.material.SetColor("_EmissionColor", color);
-            lanceEffectmat.SetColor("_EmissionColor", color);
+        if (s.GreenCost > 0)
+        {
+            greenEnergy.Value -= s.GreenCost;
+        }
+
+        if (s.BlueCost > 0)
+        {
+            blueEnergy.Value -= s.BlueCost;
+        }
+    }
+
+    void CheckState()
+    {
+        attri.AttributeChange(redEnergy.Value > 0, ElementType.ELEMENT_TYPE_RED);
+        attri.AttributeChange(greenEnergy.Value > 0, ElementType.ELEMENT_TYPE_GREEN);
+        attri.AttributeChange(blueEnergy.Value > 0, ElementType.ELEMENT_TYPE_BLUE);
+
+        Skill now = skills.SingleOrDefault(s => s.Type == attri.Type);
+        if (now)
+        {
+            canSkill.Value = now.Activated() || now.CanSkill();
         }
     }
 }

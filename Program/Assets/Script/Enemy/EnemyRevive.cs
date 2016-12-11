@@ -10,7 +10,7 @@ public class EnemyRevive : MonoBehaviour {
     [SerializeField]
     private GameObject reviver;
 
-    EnemyGenerator generator;
+    EnemyManager manager;
 
     class ReviveData
     {
@@ -23,8 +23,8 @@ public class EnemyRevive : MonoBehaviour {
 
     void Awake()
     {
-        generator = GameObject.FindObjectOfType<EnemyGenerator>();
-        EnemyGenerator.OnEnemyEmpty.Subscribe(u => revives.Clear()).AddTo(this);
+        manager = GameObject.FindObjectOfType<EnemyManager>();
+        EnemyManager.OnEnemyEmpty.Subscribe(u => revives.Clear()).AddTo(this);
 
         this.UpdateAsObservable().Subscribe(_ => UniRxUpdate());
     }
@@ -39,10 +39,10 @@ public class EnemyRevive : MonoBehaviour {
 
     void UniRxUpdate()
     {
-        if (generator)
+        if (manager)
         {
             List<ReviveData> re = revives.FindAll(r => Time.time - r.time > reviveTime);
-            re.ForEach(r => Register(generator.CreateEnemy(reviver, r.position, r.rotation)));
+            re.ForEach(r => Register(manager.CreateEnemy(reviver, r.position, r.rotation)));
             re.ForEach(r => revives.Remove(r));
         }
     }

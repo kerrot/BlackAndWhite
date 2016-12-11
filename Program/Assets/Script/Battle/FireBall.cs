@@ -2,35 +2,42 @@
 using UniRx.Triggers;
 using UnityEngine;
 using System.Collections;
-
+using System.Collections.Generic;
 
 public class FireBall : AuraBattle
 {
     [SerializeField]
-    private AudioClip expolsion;
+    private GameObject ball;
+    [SerializeField]
+    private GameObject expolsion;
     [SerializeField]
     private float strength;
     [SerializeField]
-    private ParticleSystem explosion;
+    private float speed;
 
     float radius;
+    Rigidbody rd;
 
     protected override void AuraStart()
     {
-        radius = GetComponent<SphereCollider>().radius;
-        element = ElementType.ELEMENT_TYPE_RED;
+        rd = GetComponent<Rigidbody>();
+        Vector3 tmp = transform.forward * speed;
+        tmp.y = 0;
+        rd.velocity = tmp;
+        radius = expolsion.GetComponent<SphereCollider>().radius;
+        Destroy(gameObject, ball.GetComponent<ParticleSystem>().duration);
 
-        float time = GetComponent<ParticleSystem>().duration;
-        Destroy(gameObject, time);
-
-        this.OnParticleCollisionAsObservable().Subscribe(o => UniRxParticleCollision(o));
+        this.OnTriggerEnterAsObservable().Subscribe(o => UniRxTriggerEnter(o));
 	}
 
-    void UniRxParticleCollision(GameObject other)
+    void UniRxTriggerEnter(Collider other)
     {
-        AudioHelper.PlaySE(gameObject, expolsion);
+        GetComponent<Collider>().enabled = false;
+        rd.velocity = Vector3.zero;
+        ball.SetActive(false);
+        expolsion.SetActive(true);
 
-        Collider[] cs = Physics.OverlapSphere(other.transform.position, radius);
+        Collider[] cs = Physics.OverlapSphere(transform.position, radius);
         cs.ToObservable().Subscribe(c =>
         {
             EnemyBattle enemy = c.gameObject.GetComponent<EnemyBattle>();
@@ -40,6 +47,6 @@ public class FireBall : AuraBattle
             }
         });
 
-        Destroy(gameObject, explosion.duration);
+        Destroy(gameObject, expolsion.GetComponent<ParticleSystem>().duration);
     }
 }

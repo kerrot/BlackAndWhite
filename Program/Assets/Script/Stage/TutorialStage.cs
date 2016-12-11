@@ -25,9 +25,9 @@ public class TutorialStage : MonoBehaviour {
             opening.OnOpeningEnd.Subscribe(o => OnOpeningEnd()).AddTo(this);
         }
 
-        EnemyGenerator.OnExplosionAttacked.Subscribe(o => EnemyExplosionAttacked(o)).AddTo(this);
-        EnemyGenerator.OnEnemyCanSlash.Subscribe(o => EnemySlashTriggered(o)).AddTo(this);
-        EnemyGenerator.OnEnemyEmpty.Subscribe(o => Observable.FromCoroutine(ShowNextStage).Subscribe()).AddTo(this);
+        EnemyManager.OnExplosionAttacked.Subscribe(o => EnemyExplosionAttacked(o)).AddTo(this);
+        EnemyManager.OnEnemyCanSlash.Subscribe(o => EnemySlashTriggered(o)).AddTo(this);
+        EnemyManager.OnEnemyEmpty.Subscribe(o => Observable.FromCoroutine(ShowNextStage).Subscribe()).AddTo(this);
     }
 	
 	void OnOpeningEnd()

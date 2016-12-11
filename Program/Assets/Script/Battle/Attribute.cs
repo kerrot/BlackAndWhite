@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 public class Attribute : MonoBehaviour {
     [SerializeField]
-    private ElementType type;
+    protected ElementType type;
     [SerializeField]
     private AuraBattle[] aura;
 

@@ -51,7 +51,7 @@ public class PlayerSlash : MonoBehaviour {
     GameObject TargetObject;
     Vector3 TargetPosition;
 
-    WhiteAura aura;
+    WhiteSkill aura;
 
     void Awake()
     {
@@ -67,12 +67,12 @@ public class PlayerSlash : MonoBehaviour {
         slashRange = SlashRegion.GetComponent<BoxCollider>().size / 2.0f;
 
         EnemyMask = LayerMask.GetMask("Enemy");
-        aura = GameObject.FindObjectOfType<WhiteAura>();
+        aura = GameObject.FindObjectOfType<WhiteSkill>();
     }
 
     void Start()
     {
-        EnemyGenerator.OnEnemyClicked.Subscribe(o => SlashEnemy(o)).AddTo(this);
+        EnemyManager.OnEnemyClicked.Subscribe(o => SlashEnemy(o)).AddTo(this);
         this.UpdateAsObservable().Subscribe(_ => UniRxUpdate());
     }
 
@@ -103,7 +103,7 @@ public class PlayerSlash : MonoBehaviour {
                 TargetPosition = TargetObject.transform.position;
             }
 
-            if (AutoSlash || (aura && aura.IsAura))
+            if (AutoSlash || (aura && aura.IsUsing()))
             {
                 continueSlash = true;
             }
@@ -155,12 +155,12 @@ public class PlayerSlash : MonoBehaviour {
     {
         if (slashList.Count > 0)
         {
-            EnemyGenerator enemies = GameObject.FindObjectOfType<EnemyGenerator>();
+            EnemyManager enemies = GameObject.FindObjectOfType<EnemyManager>();
             if (enemies)
             {
                 GameObject obj = null;
                 float min = Mathf.Infinity;
-                EnemyGenerator.Enemies.ForEach(e =>
+                EnemyManager.Enemies.ForEach(e =>
                 {
                     if (CanSlashEnemy(e))
                     {

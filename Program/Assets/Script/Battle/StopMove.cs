@@ -21,11 +21,11 @@ public class StopMove : MonoBehaviour {
     {
         if (victom)
         {
-            victom.enabled = false;
+            victom.CanMove = false;
 
             if (Time.time - startTime > lastTime)
             {
-                victom.enabled = true;
+                victom.CanMove = true;
                 Destroy(gameObject);
             }
         }

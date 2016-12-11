@@ -1,199 +1,44 @@
-﻿using UnityEngine;
-using UniRx;
+﻿using UniRx;
 using UniRx.Triggers;
 using System.Collections.Generic;
-using System.Linq;
+using UnityEngine;
+using System.Collections;
 
-public class EnemyGenerator : MonoBehaviour
-{
-    static private float RayRadius = 0.2f;
+public class EnemyGenerator : MonoBehaviour {
 
     [SerializeField]
     private GameObject spawnEnemy;
     [SerializeField]
-    private float spawnTime = 3f;
+    private float spawnTime;
+    [SerializeField]
+    private int maxCount;
 
-    static private Subject<GameObject> enemyClicked = new Subject<GameObject>();
-    static private Subject<GameObject> enemyCanSlash = new Subject<GameObject>();
-    static private Subject<GameObject> explosionAttacked = new Subject<GameObject>();
-    static private Subject<Unit> enemyEmpty = new Subject<Unit>();
+    GameSystem system;
+    EnemyManager manager;
 
-    static public IObservable<GameObject> OnEnemyClicked { get { return enemyClicked; } }
-    static public IObservable<GameObject> OnEnemyCanSlash { get { return enemyCanSlash; } }
-    static public IObservable<GameObject> OnExplosionAttacked { get { return explosionAttacked; } }
-    static public IObservable<Unit> OnEnemyEmpty { get { return enemyEmpty; }}
+    List<GameObject> spawns = new List<GameObject>();
 
-    static public List<GameObject> Enemies { get { return monsters; } }
-
-    static int EnemyMask;
-    static float camRayLength = 100f;
-
-    static List<GameObject> monsters = new List<GameObject>();
-
-    void Start ()
+    void Start()
     {
-		EnemyMask = LayerMask.GetMask ("Enemy");
+        system = GameObject.FindObjectOfType<GameSystem>();
+        manager = GameObject.FindObjectOfType<EnemyManager>();
 
-		if (spawnEnemy) 
-		{
-			InvokeRepeating ("Spawn", spawnTime, spawnTime);
-		}
- 
-        InputController.OnMouseSingleClick.Subscribe(p => EnemyClicked(p)).AddTo(this);
-
-        GameObject.FindObjectsOfType<EnemyBattle>().ToList().ForEach(e => AddMonster(e.gameObject));
-
-        if (monsters.Count == 0)
+        if (system && manager && spawnEnemy)
         {
-			enemyEmpty.OnNext (Unit.Default);
+            InvokeRepeating("Spawn", spawnTime, spawnTime);
         }
     }
 
-    static public GameObject GetEnemyByMousePosition(Vector2 mousePosition)
+    void Spawn()
     {
-        Ray camRay = Camera.main.ScreenPointToRay(mousePosition);
-        RaycastHit[] EnemyHit = Physics.SphereCastAll(camRay, RayRadius, camRayLength, EnemyMask);
-
-        if (EnemyHit.Length > 0)
+        if (system.State == GameSystem.GameState.GAME_STATE_PLAYING && spawns.Count < maxCount)
         {
-            Plane groundPlane = new Plane(Vector3.up, EnemyHit.First().transform.position);
-            Ray ray = Camera.main.ScreenPointToRay(mousePosition);
-            float rayDistance;
-            if (groundPlane.Raycast(ray, out rayDistance))
+            GameObject obj = manager.CreateEnemy(spawnEnemy, transform.position, transform.rotation);
+            if (obj)
             {
-                Vector3 center = ray.GetPoint(rayDistance);
-
-                float min = Mathf.Infinity;
-                GameObject enemy = null;
-
-                EnemyHit.ToObservable().Where(h => h.collider.GetComponent<EnemyBattle>() != null).Subscribe(e =>
-                {
-                    float tmp = Vector3.Distance(e.collider.transform.position, center);
-                    if (tmp < min)
-                    {
-                        enemy = e.collider.gameObject;
-                        min = tmp;
-                    }
-                });
-
-                return enemy;
+                obj.OnDestroyAsObservable().Subscribe(_ => spawns.Remove(obj));
+                spawns.Add(obj);
             }
         }
-
-        return null;
-    }
-
-
-    void EnemyClicked(Vector2 mousePosition)
-    {
-        GameObject obj = GetEnemyByMousePosition(mousePosition);
-        if (obj != null)
-        {
-            enemyClicked.OnNext(obj);
-        }
-    }
-
-    void Spawn ()
-    {
-        GameSystem system = GameObject.FindObjectOfType<GameSystem>();
-        if (!system || system.State != GameSystem.GameState.GAME_STATE_PLAYING)
-        {
-            return;
-        }
-
-        if (monsters.Count > 10 || spawnEnemy == null)
-        {
-            return;
-        }
-
-        Vector2 offset = Random.insideUnitCircle;
-        Vector3 pos = transform.position + new Vector3(offset.x, 0, offset.y);
-
-        CreateEnemy(spawnEnemy, pos, Quaternion.identity);
-    }
-
-    public GameObject CreateEnemy(GameObject obj, Vector3 position, Quaternion rotation)
-    {
-        GameObject tmp = Instantiate(obj, position, rotation) as GameObject;
-        AddMonster(tmp);
-
-        return tmp;
-    }
-
-    void AddMonster(GameObject obj)
-    {
-        if (obj != null)
-        {
-            EnemyBattle battle = obj.GetComponentInChildren<EnemyBattle>();
-            battle.OnDie.Subscribe(o => EnemyDie(o)).AddTo(this);
-            battle.OnExplosionAttacked.Subscribe(o => explosionAttacked.OnNext(o)).AddTo(this);
-
-            EnemySlash slash = obj.GetComponentInChildren<EnemySlash>();
-            slash.OnCanSlash.Subscribe(o => enemyCanSlash.OnNext(o)).AddTo(this);
-
-            battle.gameObject.layer = LayerMask.NameToLayer("Enemy");
-            monsters.Add(battle.gameObject);
-        }
-    }
-
-    void EnemyDie(GameObject Enemy)
-	{
-		if (Enemy != null && monsters.Contains (Enemy)) {
-			monsters.Remove (Enemy);
-
-            EnemyBattle battle = Enemy.GetComponent<EnemyBattle>();
-            if (battle != null && battle.DeadAction != null)
-            {
-                GameObject obj = Instantiate(battle.DeadAction, Enemy.transform.position + battle.DeadEffectOffset, Quaternion.identity) as GameObject;
-                obj.layer = 0;
-
-                obj.GetComponent<DeadAction>().Atk = battle.DeadAction.GetComponent<DeadAction>().Atk;
-            }
-
-//			if (!PlayerSkill.Instance.isSkill) 
-//			{
-//				PlayerSkill.Instance.AddPower (1);
-//			}
-            DestroyObject(Enemy);
-		}
-
-        if (monsters.Count == 0)
-        {
-			enemyEmpty.OnNext (Unit.Default);
-        }
-	}
-
-    public List<GameObject> GetEnemy(Vector3 position, float radius)
-    {
-        List<GameObject> tmpList = new List<GameObject>();
-
-        foreach (GameObject obj in monsters)
-        {
-            Vector3 tmpDirection = obj.transform.position - position;
-            float dis = tmpDirection.magnitude;
-            if (dis <= radius)
-            {
-                tmpList.Add(obj);
-            }
-        }
-
-        return tmpList;
-    }
-
-    public List<GameObject> GetEnemy(Vector3 position, float radius, Vector3 direction, float angle)
-    {
-        List<GameObject> radiusList = GetEnemy(position, radius);
-        List<GameObject> tmpList = new List<GameObject>();
-
-        foreach (GameObject obj in radiusList)
-        {
-            Vector3 tmpDirection = obj.transform.position - position;
-            if (Vector3.Angle(direction, tmpDirection) <= angle)
-            {
-                tmpList.Add(obj);
-            }
-        }
-
-        return tmpList;
     }
 }

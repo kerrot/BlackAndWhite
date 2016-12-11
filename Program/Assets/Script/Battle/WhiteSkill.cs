@@ -3,7 +3,8 @@ using UniRx.Triggers;
 using UnityEngine;
 using System.Collections;
 
-public class WhiteAura : AuraBattle {
+public class WhiteSkill : Skill
+{
     [SerializeField]
     private MeshRenderer aho;
     [SerializeField]
@@ -20,37 +21,75 @@ public class WhiteAura : AuraBattle {
 
     bool flashEffect;
     float flashStart;
+    GameSystem system;
+    PlayerTime PT;
+    Animator anim;
 
-    protected override void AuraStart()
+    void Awake()
     {
         original = aho.material;
+        system = GameObject.FindObjectOfType<GameSystem>();
+        PT = GameObject.FindObjectOfType<PlayerTime>();
+        anim = PT.gameObject.GetComponent<Animator>();
     }
 
-    protected override void AuraDisappear()
+    void Start()
+    {
+        this.UpdateAsObservable().Subscribe(_ => UniRxUpdate());
+    }
+
+    public override bool IsUsing()
+    {
+        return trail.activeSelf;
+    }
+
+    public override bool UseSkill()
+    {
+        if (!flashEffect && system)
+        {
+            system.GamePause();
+            system.RTM();
+            flash.Play();
+            AudioHelper.PlaySE(gameObject, flashSE);
+            flashStart = Time.unscaledTime;
+            flashEffect = true;
+
+            anim.enabled = false;
+
+            return true;
+        }
+
+        return false;
+    }
+
+    public override bool CanSkill()
+    {
+        return !flashEffect && CheckEnergy();
+    }
+
+    public override void SkillEnd()
     {
         aho.material = original;
         trail.SetActive(false);
 
-        PlayerTime PT = GameObject.FindObjectOfType<PlayerTime>();
         if (PT)
         {
             PT.SlowMotion(1f, 1f);
         }
     }
 
-    protected override void AuraRecover()
+    void StartEffect()
     {
         aho.material = lightMat;
         trail.SetActive(true);
 
-        PlayerTime PT = GameObject.FindObjectOfType<PlayerTime>();
         if (PT)
         {
             PT.SlowMotion(0.2f, 0.8f);
         }
     }
 
-    protected override void AuraUpdate()
+    void UniRxUpdate()
     {
         if (flashEffect)
         {
@@ -59,32 +98,14 @@ public class WhiteAura : AuraBattle {
             {
                 flashEffect = false;
                 flash.Stop();
-                GameSystem system = GameObject.FindObjectOfType<GameSystem>();
                 if (system)
                 {
                     system.GameResume();
                 }
-                DoRecover();
+                anim.enabled = true;
+
+                StartEffect();
             }
-        }
-    }
-
-    public void Launch()
-    {
-        if (IsAura)
-        {
-            return;
-        }
-
-        GameSystem system = GameObject.FindObjectOfType<GameSystem>();
-        if (system)
-        {
-            system.GamePause();
-            system.RTM();
-            flash.Play();
-            AudioHelper.PlaySE(gameObject, flashSE);
-            flashStart = Time.unscaledTime;
-            flashEffect = true;
         }
     }
 }
