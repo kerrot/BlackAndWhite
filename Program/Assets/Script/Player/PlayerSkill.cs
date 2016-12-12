@@ -16,6 +16,8 @@ public class PlayerSkill : MonoBehaviour
     [SerializeField]
     private Skill[] skills;
 
+    private Subject<ElementType> chargeSubject = new Subject<ElementType>();
+    private Subject<Unit> skillSubject = new Subject<Unit>();
 
     private BoolReactiveProperty canSkill = new BoolReactiveProperty();
     private FloatReactiveProperty redEnergy = new FloatReactiveProperty();
@@ -27,8 +29,9 @@ public class PlayerSkill : MonoBehaviour
     public FloatReactiveProperty BlueEnergy { get { return blueEnergy; } }
     public float MaxEnergy { get { return maxEnergy; } }
     public IObservable<bool> CanSkill { get { return canSkill; } }
+    public IObservable<ElementType> OnCharge { get { return chargeSubject; } }
+    public IObservable<Unit> OnSkill { get { return skillSubject; } }
 
-    
     ElementType castingType;
 
     Animator anim;
@@ -121,6 +124,8 @@ public class PlayerSkill : MonoBehaviour
             Cost(now);
             CheckState();
         }
+
+        skillSubject.OnNext(Unit.Default);
     }
 
     public void Charge(ElementType ele, float power)
@@ -130,6 +135,8 @@ public class PlayerSkill : MonoBehaviour
             mapping[ele].Value = maxEnergy - mapping[ele].Value > power ? mapping[ele].Value + power : maxEnergy;
 
             CheckState();
+
+            chargeSubject.OnNext(ele);
         }
     }
 

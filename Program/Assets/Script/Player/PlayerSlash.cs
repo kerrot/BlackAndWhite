@@ -50,7 +50,7 @@ public class PlayerSlash : MonoBehaviour {
     GameObject TargetObject;
     Vector3 TargetPosition;
 
-    WhiteAura aura;
+    WhiteSkill skill;
 
     void Awake()
     {
@@ -65,12 +65,12 @@ public class PlayerSlash : MonoBehaviour {
         slashRange = SlashRegion.GetComponent<BoxCollider>().size / 2.0f;
 
         EnemyMask = LayerMask.GetMask("Enemy");
-        aura = GameObject.FindObjectOfType<WhiteAura>();
+        skill = GameObject.FindObjectOfType<WhiteSkill>();
     }
 
     void Start()
     {
-        EnemyGenerator.OnEnemyClicked.Subscribe(o => SlashEnemy(o)).AddTo(this);
+        EnemyManager.OnEnemyClicked.Subscribe(o => SlashEnemy(o)).AddTo(this);
         this.UpdateAsObservable().Subscribe(_ => UniRxUpdate());
     }
 
@@ -95,7 +95,7 @@ public class PlayerSlash : MonoBehaviour {
         }
         else if (info.fullPathHash == slashEndHash)
         {
-            if (AutoSlash || (aura && aura.IsAura))
+            if (AutoSlash || (skill && skill.Activated()))
             {
                 continueSlash = true;
             }
@@ -147,26 +147,22 @@ public class PlayerSlash : MonoBehaviour {
     {
         if (slashList.Count > 0)
         {
-            EnemyGenerator enemies = GameObject.FindObjectOfType<EnemyGenerator>();
-            if (enemies)
+            GameObject obj = null;
+            float min = Mathf.Infinity;
+            EnemyManager.Enemies.ForEach(e =>
             {
-                GameObject obj = null;
-                float min = Mathf.Infinity;
-                EnemyGenerator.Enemies.ForEach(e =>
+                if (CanSlashEnemy(e))
                 {
-                    if (CanSlashEnemy(e))
+                    float tmp = Vector3.Distance(transform.position, e.transform.position);
+                    if (tmp < min)
                     {
-                        float tmp = Vector3.Distance(transform.position, e.transform.position);
-                        if (tmp < min)
-                        {
-                            obj = e;
-                            min = tmp;
-                        }
+                        obj = e;
+                        min = tmp;
                     }
-                });
+                }
+            });
 
-                return SlashEnemy(obj);
-            }
+            return SlashEnemy(obj);
         }
 
         return false;

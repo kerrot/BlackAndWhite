@@ -16,6 +16,8 @@ public class IdleAnim : StateMachineBehaviour {
         {
             slash.SlashSpeedUp(0f);
         }
+
+        animator.SetBool("UnNormal", false);
     }
 
     // OnStateUpdate is called on each Update frame between OnStateEnter and OnStateExit callbacks

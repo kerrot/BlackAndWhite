@@ -31,7 +31,7 @@ public class EnemyGenerator : MonoBehaviour {
 
     void Spawn()
     {
-        if (system.State == GameSystem.GameState.GAME_STATE_PLAYING && spawns.Count < maxCount)
+        if (system.State == GameSystem.GameState.GAME_STATE_PLAYING && (spawns.Count < maxCount || maxCount < 0))
         {
             GameObject obj = manager.CreateEnemy(spawnEnemy, transform.position, transform.rotation);
             if (obj)

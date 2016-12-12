@@ -99,7 +99,7 @@ public class GameSystem : SingletonMonoBehaviour<GameSystem>
 
         tmpTimeScale = Time.timeScale;
         Time.timeScale = 0;
-        Debug.Log("Pause");
+
         state = GameState.GAME_STATE_PAUSE;
         pause = true;
 
@@ -120,7 +120,6 @@ public class GameSystem : SingletonMonoBehaviour<GameSystem>
 
         Time.timeScale = tmpTimeScale;
         state = GameState.GAME_STATE_PLAYING;
-        Debug.Log("Resume");
 
         if (skillUI)
         {

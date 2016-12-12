@@ -89,11 +89,10 @@ public class EnemyManager : MonoBehaviour
     {
         GameObject tmp = Instantiate(obj, position, rotation) as GameObject;
         AddMonster(tmp);
-
         return tmp;
     }
 
-    void AddMonster(GameObject obj)
+    public void AddMonster(GameObject obj)
     {
         if (obj != null)
         {
@@ -123,10 +122,6 @@ public class EnemyManager : MonoBehaviour
                 obj.GetComponent<DeadAction>().Atk = battle.DeadAction.GetComponent<DeadAction>().Atk;
             }
 
-//			if (!PlayerSkill.Instance.isSkill) 
-//			{
-//				PlayerSkill.Instance.AddPower (1);
-//			}
             DestroyObject(Enemy);
 		}
 

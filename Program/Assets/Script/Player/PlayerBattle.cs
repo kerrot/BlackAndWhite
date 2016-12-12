@@ -232,6 +232,8 @@ public class PlayerBattle : UnitBattle {
         if (attack.Type == AttackType.ATTACK_TYPE_REFLECT && info.fullPathHash == attackHash)
         {
             anim.SetTrigger("AttackFail");
+
+            anim.SetBool("UnNormal", true);
             return false;
         }
 
@@ -256,14 +258,10 @@ public class PlayerBattle : UnitBattle {
 
         if (nowHP <= 0)
         {
-            GameSystem system = GameObject.FindObjectOfType<GameSystem>();
-            if (system)
-            {
-                system.GameOver();
-                anim.SetTrigger("Die");
+            anim.SetTrigger("Die");
+            enabled = false;
 
-                enabled = false;
-            }
+            Observable.FromCoroutine(RestartGame).Subscribe();
         }
 
         UpdateCameraEffect();
@@ -277,5 +275,24 @@ public class PlayerBattle : UnitBattle {
         {
             cuurentIntensity = 0.7f - (nowHP - 1f) / HP * 2f * 0.7f;
         }
+    }
+
+    IEnumerator RestartGame()
+    {
+        yield return new WaitForSeconds(3f);
+
+        enabled = true;
+        nowHP = HP;
+
+        cuurentIntensity = 0f;
+        VignetteAndChromaticAberration effect = Camera.main.gameObject.GetComponent<VignetteAndChromaticAberration>();
+        if (effect)
+        {
+            effect.intensity = 0f;
+        }
+
+        anim.Play("PlayerBase.Idle");
+        transform.position = Vector3.zero;
+        transform.rotation = Quaternion.identity;
     }
 }
