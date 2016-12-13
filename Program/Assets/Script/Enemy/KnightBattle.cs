@@ -3,14 +3,10 @@ using UniRx.Triggers;
 using UnityEngine;
 using System.Collections;
 
-public class EnemyBattle : UnitBattle
-{
+public class KnightBattle : UnitBattle {
+
     [SerializeField]
     private float HPMax;
-    [SerializeField]
-    private float barrierStrength;
-    [SerializeField]
-    private float recoverTime;
     [SerializeField]
     private float deadTime;
     [SerializeField]
@@ -18,39 +14,20 @@ public class EnemyBattle : UnitBattle
     [SerializeField]
     private Transform HPUICenter;
     [SerializeField]
-    private AudioClip tumbleSE;
-    [SerializeField]
-    private AudioClip fireSE;
-    [SerializeField]
-    private AudioClip woodSE;
-    [SerializeField]
-    private AudioClip frightenSE;
-    [SerializeField]
     private GameObject wanderEffect;
-    [SerializeField]
-    private GameObject energyPeace;
 
-    private Subject<Unit> attackedSubject = new Subject<Unit>();
     private Subject<GameObject> dieSubject = new Subject<GameObject>();
-    private Subject<GameObject> explosionAttacked = new Subject<GameObject>();
 
     public IObservable<GameObject> OnDie { get { return dieSubject; } }
-    public IObservable<GameObject> OnExplosionAttacked { get { return explosionAttacked; } }
-    public IObservable<Unit> OnAttacked { get { return attackedSubject; } }
 
-    public GameObject DeadAction;
-    public Vector3 DeadEffectOffset;
 
-    EnemySlash slash;
+    private FloatReactiveProperty currentHP = new FloatReactiveProperty(HPMax);
 
     HPBarUI hpUI;
     float showHPStart;
 
     Animator anim;
-    
-    float currentBarrier;
-    float currentHP;
-    float currentRecover;
+
     float deadStart;
 
     Collider coll;
@@ -62,35 +39,29 @@ public class EnemyBattle : UnitBattle
     PlayerBattle player;
     Attribute attr;
 
-    //Start change to Awake, because Instantiate not call Start but Awake
     void Awake()
     {
         attr = GetComponent<Attribute>();
 
         player = GameObject.FindObjectOfType<PlayerBattle>();
         coll = GetComponent<Collider>();
-        slash = GetComponent<EnemySlash>();
         anim = GetComponent<Animator>();
-        currentBarrier = barrierStrength;
-        currentHP = HPMax;
-        currentRecover = 0;
     }
 
     void Start()
     {
         wanderHash = Animator.StringToHash("EnemyBase.Wander");
-        damageHash = Animator.StringToHash("EnemyBase.DamageStart");
 
         RunTimeUIGenerator ui = GameObject.FindObjectOfType<RunTimeUIGenerator>();
         if (ui)
-        { 
+        {
             GameObject tmp = ui.CreateHPUI();
             hpUI = tmp.GetComponent<HPBarUI>();
-            hpUI.SetHPMax(HPMax);
-            hpUI.SetHPCurrent(currentHP);
-            hpUI.SetBarrierMax(barrierStrength);
-            hpUI.SetBarrierCurrent(currentBarrier);
-            hpUI.SetRecoverMax(recoverTime);
+            hpUI.SetBarrierMax(HPMax);
+            hpUI.SetBarrierCurrent(currentHP.Value);
+            hpUI.SetBarrierMax(0);
+            hpUI.SetBarrierCurrent(0);
+            hpUI.SetRecoverMax(deadTime);
             hpUI.SetRecoverCurrent(currentRecover);
             hpUI.SetRecoverEnable(false);
         }
@@ -106,18 +77,6 @@ public class EnemyBattle : UnitBattle
     }
 
     void UniRxUpdate()
-    {
-        UpdateHPUI();
-
-        
-        if (player)
-        {
-            anim.SetBool("Wander", player.Missing);
-            wanderEffect.SetActive(player.Missing);
-        }
-    }
-
-    protected void UpdateHPUI()
     {
         if (hpUI.gameObject.activeSelf)
         {
@@ -141,9 +100,7 @@ public class EnemyBattle : UnitBattle
                 hpUI.gameObject.SetActive(false);
             }
 
-            hpUI.SetHPCurrent(currentHP);
-            hpUI.SetBarrierCurrent(currentBarrier);
-            hpUI.SetRecoverCurrent(currentRecover);
+            UpdateUI();
         }
 
         if (currentHP <= 0 && Time.time - deadStart > deadTime)
@@ -153,6 +110,20 @@ public class EnemyBattle : UnitBattle
             anim.SetTrigger("Revive");
             hpUI.SetBarrierEnable(true);
         }
+
+
+        if (player)
+        {
+            anim.SetBool("Wander", player.Missing);
+            wanderEffect.SetActive(player.Missing);
+        }
+    }
+
+    void UpdateUI()
+    {
+        hpUI.SetHPCurrent(currentHP);
+        hpUI.SetBarrierCurrent(currentBarrier);
+        hpUI.SetRecoverCurrent(currentRecover);
     }
 
     public override bool Attacked(UnitBattle unit, Attack attack)
@@ -162,7 +133,10 @@ public class EnemyBattle : UnitBattle
             return false;
         }
 
-        attackedSubject.onNext(Unit.Default);
+        #region ShowHP
+        hpUI.gameObject.SetActive(true);
+        showHPStart = Time.time;
+        #endregion
 
         #region Modify with Attribute
         Attribute attr = GetComponent<Attribute>();
@@ -191,7 +165,7 @@ public class EnemyBattle : UnitBattle
             {
                 currentBarrier = 0;
                 slash.TriggerSlash();
-                explosionAttacked.OnNext(gameObject);                
+                explosionAttacked.OnNext(gameObject);
             }
         }
         else if (currentBarrier <= 0)
@@ -336,8 +310,9 @@ public class EnemyBattle : UnitBattle
             Destroy(hpUI.gameObject);
         }
 
-		if (transform.parent != null) {
-			Destroy (transform.parent.gameObject);
-		}
+        if (transform.parent != null)
+        {
+            Destroy(transform.parent.gameObject);
+        }
     }
 }

@@ -10,6 +10,10 @@ public class HPBarUI : MonoBehaviour {
     [SerializeField]
     private Slider recover;
 
+    public Slider HPUI { get { return HP; } }
+    public Slider BarrierUI { get { return barrier; } }
+    public Slider RecoverUI { get { return recover; } }
+
     public void SetHPMax(float v)
     {
         HP.minValue = 0;
