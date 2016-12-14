@@ -12,14 +12,12 @@ public class EnemyHP : MonoBehaviour
     [SerializeField]
     private float recoverTime;
     [SerializeField]
-    private float deadTime;
-    [SerializeField]
     private float showHPTime;
     [SerializeField]
     private Transform HPUICenter;
 
-    public FloatReactiveProperty HP = new FloatReactiveProperty(HPMax);
-    public FloatReactiveProperty Barrier = new FloatReactiveProperty(barrierStrength);
+    public FloatReactiveProperty HP = new FloatReactiveProperty();
+    public FloatReactiveProperty Barrier = new FloatReactiveProperty();
 
     private FloatReactiveProperty recover = new FloatReactiveProperty();
 
@@ -28,20 +26,27 @@ public class EnemyHP : MonoBehaviour
 
     void Start()
     {
+        HP.Value = HPMax;
+        Barrier.Value = barrierStrength;
+
         RunTimeUIGenerator ui = GameObject.FindObjectOfType<RunTimeUIGenerator>();
         if (ui)
         {
             GameObject tmp = ui.CreateHPUI();
             hpUI = tmp.GetComponent<HPBarUI>();
-            HP.subscipt(v => hpUI.HPUI.value = v / HPMax);
-            Barrier.subscipt(v => hpUI.BarrierUI.value = v / barrierStrength);
-            recover.subscipt(v => hpUI.RecoverUI.value = v / recoverTime);
+            HP.Subscribe(v => hpUI.HPUI.value = v / HPMax);
+            Barrier.Subscribe(v => hpUI.BarrierUI.value = v / barrierStrength);
+            recover.Subscribe(v => hpUI.RecoverUI.value = v / recoverTime);
         }
 
         EnemyBattle battle = GetComponent<EnemyBattle>();
         if (battle)
         {
-            battle.OnAttacked.subscript(_ => ());
+            battle.OnAttacked.Subscribe(_ => 
+            {
+                showHPStart = Time.time;
+                hpUI.gameObject.SetActive(true);
+            });
         }
 
         this.UpdateAsObservable().Subscribe(_ => UniRxUpdate());
@@ -54,27 +59,26 @@ public class EnemyHP : MonoBehaviour
         {
             hpUI.transform.position = Camera.main.WorldToScreenPoint(HPUICenter.transform.position);
 
-            if (currentBarrier <= 0)
+            if (Barrier.Value <= 0)
             {
                 hpUI.SetRecoverEnable(true);
-                currentRecover += Time.deltaTime;
-                if (currentRecover > recoverTime)
+                recover.Value += Time.deltaTime;
+                if (recover.Value > recoverTime)
                 {
-                    currentRecover = 0;
+                    recover.Value = 0;
+
+                    //avoid immediately disappear when recover complete.
                     showHPStart = Time.time;
+
                     hpUI.SetRecoverEnable(false);
-                    currentBarrier = barrierStrength;
+                    Barrier.Value = barrierStrength;
                 }
             }
 
-            if (currentRecover == 0 && Time.time - showHPStart > showHPTime)
+            if (recover.Value == 0 && Time.time - showHPStart > showHPTime)
             {
                 hpUI.gameObject.SetActive(false);
             }
-
-            hpUI.SetHPCurrent(currentHP);
-            hpUI.SetBarrierCurrent(currentBarrier);
-            hpUI.SetRecoverCurrent(currentRecover);
         }
     }
 
@@ -84,5 +88,10 @@ public class EnemyHP : MonoBehaviour
         {
             Destroy(hpUI.gameObject);
         }
+    }
+
+    public void ReVive()
+    {
+        HP.Value = HPMax;
     }
 }

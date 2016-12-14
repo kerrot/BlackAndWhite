@@ -6,17 +6,7 @@ using System.Collections;
 public class EnemyBattle : UnitBattle
 {
     [SerializeField]
-    private float HPMax;
-    [SerializeField]
-    private float barrierStrength;
-    [SerializeField]
-    private float recoverTime;
-    [SerializeField]
     private float deadTime;
-    [SerializeField]
-    private float showHPTime;
-    [SerializeField]
-    private Transform HPUICenter;
     [SerializeField]
     private AudioClip tumbleSE;
     [SerializeField]
@@ -42,15 +32,10 @@ public class EnemyBattle : UnitBattle
     public Vector3 DeadEffectOffset;
 
     EnemySlash slash;
-
-    HPBarUI hpUI;
-    float showHPStart;
+    EnemyHP HPState;
 
     Animator anim;
-    
-    float currentBarrier;
-    float currentHP;
-    float currentRecover;
+ 
     float deadStart;
 
     Collider coll;
@@ -70,30 +55,14 @@ public class EnemyBattle : UnitBattle
         player = GameObject.FindObjectOfType<PlayerBattle>();
         coll = GetComponent<Collider>();
         slash = GetComponent<EnemySlash>();
+        HPState = GetComponent<EnemyHP>();
         anim = GetComponent<Animator>();
-        currentBarrier = barrierStrength;
-        currentHP = HPMax;
-        currentRecover = 0;
     }
 
     void Start()
     {
         wanderHash = Animator.StringToHash("EnemyBase.Wander");
         damageHash = Animator.StringToHash("EnemyBase.DamageStart");
-
-        RunTimeUIGenerator ui = GameObject.FindObjectOfType<RunTimeUIGenerator>();
-        if (ui)
-        { 
-            GameObject tmp = ui.CreateHPUI();
-            hpUI = tmp.GetComponent<HPBarUI>();
-            hpUI.SetHPMax(HPMax);
-            hpUI.SetHPCurrent(currentHP);
-            hpUI.SetBarrierMax(barrierStrength);
-            hpUI.SetBarrierCurrent(currentBarrier);
-            hpUI.SetRecoverMax(recoverTime);
-            hpUI.SetRecoverCurrent(currentRecover);
-            hpUI.SetRecoverEnable(false);
-        }
 
         this.UpdateAsObservable().Subscribe(_ => UniRxUpdate());
         this.OnDestroyAsObservable().Subscribe(_ => UniRxOnDestroy());
@@ -107,51 +76,18 @@ public class EnemyBattle : UnitBattle
 
     void UniRxUpdate()
     {
-        UpdateHPUI();
+        if (HPState && HPState.HP.Value <= 0 && Time.time - deadStart > deadTime)
+        {
+            HPState.ReVive();
+            coll.enabled = true;
+            anim.SetTrigger("Revive");
+        }
 
-        
+
         if (player)
         {
             anim.SetBool("Wander", player.Missing);
             wanderEffect.SetActive(player.Missing);
-        }
-    }
-
-    protected void UpdateHPUI()
-    {
-        if (hpUI.gameObject.activeSelf)
-        {
-            hpUI.transform.position = Camera.main.WorldToScreenPoint(HPUICenter.transform.position);
-
-            if (currentBarrier <= 0)
-            {
-                hpUI.SetRecoverEnable(true);
-                currentRecover += Time.deltaTime;
-                if (currentRecover > recoverTime)
-                {
-                    currentRecover = 0;
-                    showHPStart = Time.time;
-                    hpUI.SetRecoverEnable(false);
-                    currentBarrier = barrierStrength;
-                }
-            }
-
-            if (currentRecover == 0 && Time.time - showHPStart > showHPTime)
-            {
-                hpUI.gameObject.SetActive(false);
-            }
-
-            hpUI.SetHPCurrent(currentHP);
-            hpUI.SetBarrierCurrent(currentBarrier);
-            hpUI.SetRecoverCurrent(currentRecover);
-        }
-
-        if (currentHP <= 0 && Time.time - deadStart > deadTime)
-        {
-            currentHP = HPMax;
-            coll.enabled = true;
-            anim.SetTrigger("Revive");
-            hpUI.SetBarrierEnable(true);
         }
     }
 
@@ -162,7 +98,7 @@ public class EnemyBattle : UnitBattle
             return false;
         }
 
-        attackedSubject.onNext(Unit.Default);
+        attackedSubject.OnNext(Unit.Default);
 
         #region Modify with Attribute
         Attribute attr = GetComponent<Attribute>();
@@ -189,26 +125,25 @@ public class EnemyBattle : UnitBattle
             }
             else
             {
-                currentBarrier = 0;
+                HPState.Barrier.Value = 0;
                 slash.TriggerSlash();
                 explosionAttacked.OnNext(gameObject);                
             }
         }
-        else if (currentBarrier <= 0)
+        else if (HPState.Barrier.Value <= 0)
         {
-            currentHP -= attack.Strength;
-            if (currentHP <= 0)
+            HPState.HP.Value -= attack.Strength;
+            if (HPState.HP.Value <= 0)
             {
                 coll.enabled = false;
                 anim.SetTrigger("Die");
                 deadStart = Time.time;
-                hpUI.SetBarrierEnable(false);
             }
         }
         else
         {
-            currentBarrier -= attack.Strength;
-            if (currentBarrier > 0)
+            HPState.Barrier.Value -= attack.Strength;
+            if (HPState.Barrier.Value > 0)
             {
                 if (attack.Type == AttackType.ATTACK_TYPE_SKILL)
                 {
@@ -276,8 +211,8 @@ public class EnemyBattle : UnitBattle
             if (act)
             {
                 act.Attacker = this;
-                act.Atk = new Attack() { Type = AttackType.ATTACK_TYPE_EXPLOSION, 
-                                        Element = (attr && Attribute.isBase(attr.Type) ? attr.Type : attack.Element };
+                act.Atk = new Attack() { Type = AttackType.ATTACK_TYPE_EXPLOSION,
+                                        Element = attr && Attribute.isBase(attr.Type) ? attr.Type : attack.Element };
             }
         }
 
@@ -313,7 +248,7 @@ public class EnemyBattle : UnitBattle
         {
             for (int i = 0; i < num; ++i)
             {
-                GameObject obj = Instantiate(energyPeace, HPUICenter.transform.position, Quaternion.identity) as GameObject;
+                GameObject obj = Instantiate(energyPeace, transform.position, Quaternion.identity) as GameObject;
                 EnergyPeace peace = obj.GetComponent<EnergyPeace>();
                 if (peace)
                 {
@@ -331,11 +266,6 @@ public class EnemyBattle : UnitBattle
 
     void UniRxOnDestroy()
     {
-        if (hpUI)
-        {
-            Destroy(hpUI.gameObject);
-        }
-
 		if (transform.parent != null) {
 			Destroy (transform.parent.gameObject);
 		}
