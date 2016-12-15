@@ -1,0 +1,870 @@
+fileFormatVersion: 2
+guid: fae1bf0c59b95de438feacae76592ec9
+timeCreated: 1481698993
+licenseType: Free
+ModelImporter:
+  serializedVersion: 19
+  fileIDToRecycleName:
+    100000: Blade
+    100002: Body
+    100004: Head
+    100006: JBody
+    100008: JHead
+    100010: JHip
+    100012: JLeftHand
+    100014: JLeftLeg
+    100016: JRightHand
+    100018: JRightLeg
+    100020: JRightWeapon
+    100022: JRoot
+    100024: //RootNode
+    100026: LeftHand
+    100028: LeftLeg
+    100030: RightHand
+    100032: RightLeg
+    100034: RightWeapon
+    400000: Blade
+    400002: Body
+    400004: Head
+    400006: JBody
+    400008: JHead
+    400010: JHip
+    400012: JLeftHand
+    400014: JLeftLeg
+    400016: JRightHand
+    400018: JRightLeg
+    400020: JRightWeapon
+    400022: JRoot
+    400024: //RootNode
+    400026: LeftHand
+    400028: LeftLeg
+    400030: RightHand
+    400032: RightLeg
+    400034: RightWeapon
+    2300000: Blade
+    2300002: Body
+    2300004: Head
+    2300006: LeftHand
+    2300008: LeftLeg
+    2300010: RightHand
+    2300012: RightLeg
+    2300014: RightWeapon
+    3300000: Blade
+    3300002: Body
+    3300004: Head
+    3300006: LeftHand
+    3300008: LeftLeg
+    3300010: RightHand
+    3300012: RightLeg
+    3300014: RightWeapon
+    4300000: Body
+    4300002: Head
+    4300004: RightHand
+    4300006: RightWeapon
+    4300008: Blade
+    4300010: LeftHand
+    4300012: RightLeg
+    4300014: LeftLeg
+    7400000: Teleport
+    7400002: Showup
+    7400004: Move
+    7400006: Attack
+    7400008: Idle
+    7400010: Summon
+    7400012: Magic
+    7400014: Wander
+    7400016: Hitted
+    7400018: Die
+    7400020: Revive
+    7400022: Showup0
+    7400024: TelePort
+    9500000: //RootNode
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleCurves: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    clipAnimations:
+    - serializedVersion: 16
+      name: TelePort
+      takeName: TelePort
+      firstFrame: 1
+      lastFrame: 20
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 0
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events:
+      - time: 0.99641573
+        functionName: Teleport
+        data: 
+        objectReferenceParameter: {instanceID: 0}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
+      transformMask:
+      - path: 
+        weight: 1
+      - path: JRoot
+        weight: 1
+      - path: JRoot/JHip
+        weight: 1
+      - path: JRoot/JHip/JBody
+        weight: 1
+      - path: JRoot/JHip/JBody/Body
+        weight: 1
+      - path: JRoot/JHip/JBody/JHead
+        weight: 1
+      - path: JRoot/JHip/JBody/JHead/Head
+        weight: 1
+      - path: JRoot/JHip/JBody/JLeftHand
+        weight: 1
+      - path: JRoot/JHip/JBody/JLeftHand/LeftHand
+        weight: 1
+      - path: JRoot/JHip/JBody/JRightHand
+        weight: 1
+      - path: JRoot/JHip/JBody/JRightHand/JRightWeapon
+        weight: 1
+      - path: JRoot/JHip/JBody/JRightHand/JRightWeapon/RightWeapon
+        weight: 1
+      - path: JRoot/JHip/JBody/JRightHand/JRightWeapon/RightWeapon/Blade
+        weight: 1
+      - path: JRoot/JHip/JBody/JRightHand/RightHand
+        weight: 1
+      - path: JRoot/JHip/JLeftLeg
+        weight: 1
+      - path: JRoot/JHip/JLeftLeg/LeftLeg
+        weight: 1
+      - path: JRoot/JHip/JRightLeg
+        weight: 1
+      - path: JRoot/JHip/JRightLeg/RightLeg
+        weight: 1
+      maskType: 0
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 1
+    - serializedVersion: 16
+      name: Showup
+      takeName: Showup
+      firstFrame: 20
+      lastFrame: 40
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 0
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: JRoot
+        weight: 1
+      - path: JRoot/JHip
+        weight: 1
+      - path: JRoot/JHip/JBody
+        weight: 1
+      - path: JRoot/JHip/JBody/Body
+        weight: 1
+      - path: JRoot/JHip/JBody/JHead
+        weight: 1
+      - path: JRoot/JHip/JBody/JHead/Head
+        weight: 1
+      - path: JRoot/JHip/JBody/JLeftHand
+        weight: 1
+      - path: JRoot/JHip/JBody/JLeftHand/LeftHand
+        weight: 1
+      - path: JRoot/JHip/JBody/JRightHand
+        weight: 1
+      - path: JRoot/JHip/JBody/JRightHand/JRightWeapon
+        weight: 1
+      - path: JRoot/JHip/JBody/JRightHand/JRightWeapon/RightWeapon
+        weight: 1
+      - path: JRoot/JHip/JBody/JRightHand/JRightWeapon/RightWeapon/Blade
+        weight: 1
+      - path: JRoot/JHip/JBody/JRightHand/RightHand
+        weight: 1
+      - path: JRoot/JHip/JLeftLeg
+        weight: 1
+      - path: JRoot/JHip/JLeftLeg/LeftLeg
+        weight: 1
+      - path: JRoot/JHip/JRightLeg
+        weight: 1
+      - path: JRoot/JHip/JRightLeg/RightLeg
+        weight: 1
+      maskType: 0
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 20
+    - serializedVersion: 16
+      name: Move
+      takeName: Move
+      firstFrame: 40
+      lastFrame: 80
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 1
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: JRoot
+        weight: 1
+      - path: JRoot/JHip
+        weight: 1
+      - path: JRoot/JHip/JBody
+        weight: 1
+      - path: JRoot/JHip/JBody/Body
+        weight: 1
+      - path: JRoot/JHip/JBody/JHead
+        weight: 1
+      - path: JRoot/JHip/JBody/JHead/Head
+        weight: 1
+      - path: JRoot/JHip/JBody/JLeftHand
+        weight: 1
+      - path: JRoot/JHip/JBody/JLeftHand/LeftHand
+        weight: 1
+      - path: JRoot/JHip/JBody/JRightHand
+        weight: 1
+      - path: JRoot/JHip/JBody/JRightHand/JRightWeapon
+        weight: 1
+      - path: JRoot/JHip/JBody/JRightHand/JRightWeapon/RightWeapon
+        weight: 1
+      - path: JRoot/JHip/JBody/JRightHand/JRightWeapon/RightWeapon/Blade
+        weight: 1
+      - path: JRoot/JHip/JBody/JRightHand/RightHand
+        weight: 1
+      - path: JRoot/JHip/JLeftLeg
+        weight: 1
+      - path: JRoot/JHip/JLeftLeg/LeftLeg
+        weight: 1
+      - path: JRoot/JHip/JRightLeg
+        weight: 1
+      - path: JRoot/JHip/JRightLeg/RightLeg
+        weight: 1
+      maskType: 0
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 40
+    - serializedVersion: 16
+      name: Attack
+      takeName: Attack
+      firstFrame: 90
+      lastFrame: 130
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events:
+      - time: 0.5448029
+        functionName: AttackStart
+        data: 
+        objectReferenceParameter: {instanceID: 0}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
+      - time: 0.7526883
+        functionName: AttackEnd
+        data: 
+        objectReferenceParameter: {instanceID: 0}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
+      transformMask:
+      - path: 
+        weight: 1
+      - path: JRoot
+        weight: 1
+      - path: JRoot/JHip
+        weight: 1
+      - path: JRoot/JHip/JBody
+        weight: 1
+      - path: JRoot/JHip/JBody/Body
+        weight: 1
+      - path: JRoot/JHip/JBody/JHead
+        weight: 1
+      - path: JRoot/JHip/JBody/JHead/Head
+        weight: 1
+      - path: JRoot/JHip/JBody/JLeftHand
+        weight: 1
+      - path: JRoot/JHip/JBody/JLeftHand/LeftHand
+        weight: 1
+      - path: JRoot/JHip/JBody/JRightHand
+        weight: 1
+      - path: JRoot/JHip/JBody/JRightHand/JRightWeapon
+        weight: 1
+      - path: JRoot/JHip/JBody/JRightHand/JRightWeapon/RightWeapon
+        weight: 1
+      - path: JRoot/JHip/JBody/JRightHand/JRightWeapon/RightWeapon/Blade
+        weight: 1
+      - path: JRoot/JHip/JBody/JRightHand/RightHand
+        weight: 1
+      - path: JRoot/JHip/JLeftLeg
+        weight: 1
+      - path: JRoot/JHip/JLeftLeg/LeftLeg
+        weight: 1
+      - path: JRoot/JHip/JRightLeg
+        weight: 1
+      - path: JRoot/JHip/JRightLeg/RightLeg
+        weight: 1
+      maskType: 0
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 90
+    - serializedVersion: 16
+      name: Idle
+      takeName: Idle
+      firstFrame: 130
+      lastFrame: 160
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 1
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: JRoot
+        weight: 1
+      - path: JRoot/JHip
+        weight: 1
+      - path: JRoot/JHip/JBody
+        weight: 1
+      - path: JRoot/JHip/JBody/Body
+        weight: 1
+      - path: JRoot/JHip/JBody/JHead
+        weight: 1
+      - path: JRoot/JHip/JBody/JHead/Head
+        weight: 1
+      - path: JRoot/JHip/JBody/JLeftHand
+        weight: 1
+      - path: JRoot/JHip/JBody/JLeftHand/LeftHand
+        weight: 1
+      - path: JRoot/JHip/JBody/JRightHand
+        weight: 1
+      - path: JRoot/JHip/JBody/JRightHand/JRightWeapon
+        weight: 1
+      - path: JRoot/JHip/JBody/JRightHand/JRightWeapon/RightWeapon
+        weight: 1
+      - path: JRoot/JHip/JBody/JRightHand/JRightWeapon/RightWeapon/Blade
+        weight: 1
+      - path: JRoot/JHip/JBody/JRightHand/RightHand
+        weight: 1
+      - path: JRoot/JHip/JLeftLeg
+        weight: 1
+      - path: JRoot/JHip/JLeftLeg/LeftLeg
+        weight: 1
+      - path: JRoot/JHip/JRightLeg
+        weight: 1
+      - path: JRoot/JHip/JRightLeg/RightLeg
+        weight: 1
+      maskType: 0
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 130
+    - serializedVersion: 16
+      name: Summon
+      takeName: Summon
+      firstFrame: 160
+      lastFrame: 190
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: JRoot
+        weight: 1
+      - path: JRoot/JHip
+        weight: 1
+      - path: JRoot/JHip/JBody
+        weight: 1
+      - path: JRoot/JHip/JBody/Body
+        weight: 1
+      - path: JRoot/JHip/JBody/JHead
+        weight: 1
+      - path: JRoot/JHip/JBody/JHead/Head
+        weight: 1
+      - path: JRoot/JHip/JBody/JLeftHand
+        weight: 1
+      - path: JRoot/JHip/JBody/JLeftHand/LeftHand
+        weight: 1
+      - path: JRoot/JHip/JBody/JRightHand
+        weight: 1
+      - path: JRoot/JHip/JBody/JRightHand/JRightWeapon
+        weight: 1
+      - path: JRoot/JHip/JBody/JRightHand/JRightWeapon/RightWeapon
+        weight: 1
+      - path: JRoot/JHip/JBody/JRightHand/JRightWeapon/RightWeapon/Blade
+        weight: 1
+      - path: JRoot/JHip/JBody/JRightHand/RightHand
+        weight: 1
+      - path: JRoot/JHip/JLeftLeg
+        weight: 1
+      - path: JRoot/JHip/JLeftLeg/LeftLeg
+        weight: 1
+      - path: JRoot/JHip/JRightLeg
+        weight: 1
+      - path: JRoot/JHip/JRightLeg/RightLeg
+        weight: 1
+      maskType: 0
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: Magic
+      takeName: Magic
+      firstFrame: 190
+      lastFrame: 220
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: JRoot
+        weight: 1
+      - path: JRoot/JHip
+        weight: 1
+      - path: JRoot/JHip/JBody
+        weight: 1
+      - path: JRoot/JHip/JBody/Body
+        weight: 1
+      - path: JRoot/JHip/JBody/JHead
+        weight: 1
+      - path: JRoot/JHip/JBody/JHead/Head
+        weight: 1
+      - path: JRoot/JHip/JBody/JLeftHand
+        weight: 1
+      - path: JRoot/JHip/JBody/JLeftHand/LeftHand
+        weight: 1
+      - path: JRoot/JHip/JBody/JRightHand
+        weight: 1
+      - path: JRoot/JHip/JBody/JRightHand/JRightWeapon
+        weight: 1
+      - path: JRoot/JHip/JBody/JRightHand/JRightWeapon/RightWeapon
+        weight: 1
+      - path: JRoot/JHip/JBody/JRightHand/JRightWeapon/RightWeapon/Blade
+        weight: 1
+      - path: JRoot/JHip/JBody/JRightHand/RightHand
+        weight: 1
+      - path: JRoot/JHip/JLeftLeg
+        weight: 1
+      - path: JRoot/JHip/JLeftLeg/LeftLeg
+        weight: 1
+      - path: JRoot/JHip/JRightLeg
+        weight: 1
+      - path: JRoot/JHip/JRightLeg/RightLeg
+        weight: 1
+      maskType: 0
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: Wander
+      takeName: Wander
+      firstFrame: 220
+      lastFrame: 260
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 1
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: JRoot
+        weight: 1
+      - path: JRoot/JHip
+        weight: 1
+      - path: JRoot/JHip/JBody
+        weight: 1
+      - path: JRoot/JHip/JBody/Body
+        weight: 1
+      - path: JRoot/JHip/JBody/JHead
+        weight: 1
+      - path: JRoot/JHip/JBody/JHead/Head
+        weight: 1
+      - path: JRoot/JHip/JBody/JLeftHand
+        weight: 1
+      - path: JRoot/JHip/JBody/JLeftHand/LeftHand
+        weight: 1
+      - path: JRoot/JHip/JBody/JRightHand
+        weight: 1
+      - path: JRoot/JHip/JBody/JRightHand/JRightWeapon
+        weight: 1
+      - path: JRoot/JHip/JBody/JRightHand/JRightWeapon/RightWeapon
+        weight: 1
+      - path: JRoot/JHip/JBody/JRightHand/JRightWeapon/RightWeapon/Blade
+        weight: 1
+      - path: JRoot/JHip/JBody/JRightHand/RightHand
+        weight: 1
+      - path: JRoot/JHip/JLeftLeg
+        weight: 1
+      - path: JRoot/JHip/JLeftLeg/LeftLeg
+        weight: 1
+      - path: JRoot/JHip/JRightLeg
+        weight: 1
+      - path: JRoot/JHip/JRightLeg/RightLeg
+        weight: 1
+      maskType: 0
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 220
+    - serializedVersion: 16
+      name: Hitted
+      takeName: Hitted
+      firstFrame: 260
+      lastFrame: 280
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: JRoot
+        weight: 1
+      - path: JRoot/JHip
+        weight: 1
+      - path: JRoot/JHip/JBody
+        weight: 1
+      - path: JRoot/JHip/JBody/Body
+        weight: 1
+      - path: JRoot/JHip/JBody/JHead
+        weight: 1
+      - path: JRoot/JHip/JBody/JHead/Head
+        weight: 1
+      - path: JRoot/JHip/JBody/JLeftHand
+        weight: 1
+      - path: JRoot/JHip/JBody/JLeftHand/LeftHand
+        weight: 1
+      - path: JRoot/JHip/JBody/JRightHand
+        weight: 1
+      - path: JRoot/JHip/JBody/JRightHand/JRightWeapon
+        weight: 1
+      - path: JRoot/JHip/JBody/JRightHand/JRightWeapon/RightWeapon
+        weight: 1
+      - path: JRoot/JHip/JBody/JRightHand/JRightWeapon/RightWeapon/Blade
+        weight: 1
+      - path: JRoot/JHip/JBody/JRightHand/RightHand
+        weight: 1
+      - path: JRoot/JHip/JLeftLeg
+        weight: 1
+      - path: JRoot/JHip/JLeftLeg/LeftLeg
+        weight: 1
+      - path: JRoot/JHip/JRightLeg
+        weight: 1
+      - path: JRoot/JHip/JRightLeg/RightLeg
+        weight: 1
+      maskType: 0
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: Die
+      takeName: Die
+      firstFrame: 280
+      lastFrame: 300
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: JRoot
+        weight: 1
+      - path: JRoot/JHip
+        weight: 1
+      - path: JRoot/JHip/JBody
+        weight: 1
+      - path: JRoot/JHip/JBody/Body
+        weight: 1
+      - path: JRoot/JHip/JBody/JHead
+        weight: 1
+      - path: JRoot/JHip/JBody/JHead/Head
+        weight: 1
+      - path: JRoot/JHip/JBody/JLeftHand
+        weight: 1
+      - path: JRoot/JHip/JBody/JLeftHand/LeftHand
+        weight: 1
+      - path: JRoot/JHip/JBody/JRightHand
+        weight: 1
+      - path: JRoot/JHip/JBody/JRightHand/JRightWeapon
+        weight: 1
+      - path: JRoot/JHip/JBody/JRightHand/JRightWeapon/RightWeapon
+        weight: 1
+      - path: JRoot/JHip/JBody/JRightHand/JRightWeapon/RightWeapon/Blade
+        weight: 1
+      - path: JRoot/JHip/JBody/JRightHand/RightHand
+        weight: 1
+      - path: JRoot/JHip/JLeftLeg
+        weight: 1
+      - path: JRoot/JHip/JLeftLeg/LeftLeg
+        weight: 1
+      - path: JRoot/JHip/JRightLeg
+        weight: 1
+      - path: JRoot/JHip/JRightLeg/RightLeg
+        weight: 1
+      maskType: 0
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: Revive
+      takeName: Revive
+      firstFrame: 300
+      lastFrame: 330
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: JRoot
+        weight: 1
+      - path: JRoot/JHip
+        weight: 1
+      - path: JRoot/JHip/JBody
+        weight: 1
+      - path: JRoot/JHip/JBody/Body
+        weight: 1
+      - path: JRoot/JHip/JBody/JHead
+        weight: 1
+      - path: JRoot/JHip/JBody/JHead/Head
+        weight: 1
+      - path: JRoot/JHip/JBody/JLeftHand
+        weight: 1
+      - path: JRoot/JHip/JBody/JLeftHand/LeftHand
+        weight: 1
+      - path: JRoot/JHip/JBody/JRightHand
+        weight: 1
+      - path: JRoot/JHip/JBody/JRightHand/JRightWeapon
+        weight: 1
+      - path: JRoot/JHip/JBody/JRightHand/JRightWeapon/RightWeapon
+        weight: 1
+      - path: JRoot/JHip/JBody/JRightHand/JRightWeapon/RightWeapon/Blade
+        weight: 1
+      - path: JRoot/JHip/JBody/JRightHand/RightHand
+        weight: 1
+      - path: JRoot/JHip/JLeftLeg
+        weight: 1
+      - path: JRoot/JHip/JLeftLeg/LeftLeg
+        weight: 1
+      - path: JRoot/JHip/JRightLeg
+        weight: 1
+      - path: JRoot/JHip/JRightLeg/RightLeg
+        weight: 1
+      maskType: 0
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    importBlendShapes: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: JRoot
+    hasTranslationDoF: 0
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 2
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

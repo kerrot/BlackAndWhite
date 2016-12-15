@@ -9,11 +9,11 @@ public class EnemyMove : MonoBehaviour {
     [SerializeField]
     private float stopRadius;
     [SerializeField]
-    private GameObject wanderEffect;
-    [SerializeField]
     private float teleportPeriodMin;
     [SerializeField]
     private float teleportPeriodMax;
+    [SerializeField]
+    private float teleportMaxDistance;
 
     public bool CanMove = true;
 
@@ -24,6 +24,7 @@ public class EnemyMove : MonoBehaviour {
 
     int moveHash;
 
+    bool needRandom = true;
     float teleportTime;
     PlayerBattle player;
 
@@ -39,8 +40,6 @@ public class EnemyMove : MonoBehaviour {
         agent.updateRotation = false;
 
         moveHash = Animator.StringToHash("EnemyBase.Move");
-
-        teleportTime = Time.time + Random.Range(teleportPeriodMin, teleportPeriodMax);
     }
 
 	// Update is called once per frame
@@ -53,7 +52,8 @@ public class EnemyMove : MonoBehaviour {
         {
             agent.destination = player.transform.position;
 
-            anim.SetBool("Move", Vector3.Distance(player.transform.position, transform.position) > stopRadius);
+            float distance = Vector3.Distance(player.transform.position, transform.position);
+            anim.SetBool("Move", distance > stopRadius);
 
             AnimatorStateInfo info = anim.GetCurrentAnimatorStateInfo(0);
             if (info.fullPathHash == moveHash)
@@ -62,10 +62,22 @@ public class EnemyMove : MonoBehaviour {
                 agent.nextPosition = transform.position;
             }
 
-            if (Time.time > teleportTime)
+            if (distance < teleportMaxDistance)
             {
-                teleportTime = Time.time + Random.Range(teleportPeriodMin, teleportPeriodMax);
-                anim.SetTrigger("TelePort");
+                if (needRandom)
+                {
+                    teleportTime = Time.time + Random.Range(teleportPeriodMin, teleportPeriodMax);
+                    needRandom = false;
+                }
+                else if (Time.time > teleportTime)
+                {
+                    
+                    anim.SetTrigger("TelePort");
+                }
+            }
+            else
+            {
+                needRandom = true;
             }
         }
     }

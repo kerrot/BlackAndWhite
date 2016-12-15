@@ -3,39 +3,7 @@ using UniRx.Triggers;
 using UnityEngine;
 using System.Collections;
 
-public class KnightBattle : UnitBattle {
-
-    [SerializeField]
-    private float HPMax;
-    [SerializeField]
-    private float deadTime;
-    [SerializeField]
-    private float showHPTime;
-    [SerializeField]
-    private Transform HPUICenter;
-    [SerializeField]
-    private GameObject wanderEffect;
-
-    private Subject<GameObject> dieSubject = new Subject<GameObject>();
-
-    public IObservable<GameObject> OnDie { get { return dieSubject; } }
-
-    HPBarUI hpUI;
-    float showHPStart;
-
-    Animator anim;
-
-    float deadStart;
-
-    Collider coll;
-
-    int wanderHash;
-    int damageHash;
-
-    bool dead;
-    PlayerBattle player;
-    Attribute attr;
-
+public class KnightBattle : EnemyBattle {
     void Awake()
     {
         attr = GetComponent<Attribute>();
@@ -43,12 +11,16 @@ public class KnightBattle : UnitBattle {
         player = GameObject.FindObjectOfType<PlayerBattle>();
         coll = GetComponent<Collider>();
         anim = GetComponent<Animator>();
+        HPState = GetComponent<EnemyHP>();
+        if (HPState)
+        {
+            HPState.OnRecover.Subscribe(_ => Revive()).AddTo(this);
+        }
     }
 
     void Start()
     {
         wanderHash = Animator.StringToHash("EnemyBase.Wander");
-
 
         this.UpdateAsObservable().Subscribe(_ => UniRxUpdate());
         this.OnDestroyAsObservable().Subscribe(_ => UniRxOnDestroy());
@@ -62,8 +34,6 @@ public class KnightBattle : UnitBattle {
 
     void UniRxUpdate()
     {
-        
-
         if (player)
         {
             anim.SetBool("Wander", player.Missing);
@@ -73,28 +43,41 @@ public class KnightBattle : UnitBattle {
 
     public override bool Attacked(UnitBattle unit, Attack attack)
     {
-        
+        if (Attribute.IsWeakness(attr.Type, attack.Element) && attack.Type == AttackType.ATTACK_TYPE_EXPLOSION)
+        {
+            if (HPState)
+            {
+                HPState.Barrier.Value -= attack.Strength;
+                if (HPState.Barrier.Value <= 0)
+                {
+                    Die();
+                }
+            }
+        }
+        else
+        {
+            unit.Attacked(this, CreateAttack(AttackType.ATTACK_TYPE_REFLECT, 0f));
+        }
 
         return false;
     }
 
-    public void RecoverFromDamage()
+    void Die()
     {
-        AnimatorStateInfo info = anim.GetCurrentAnimatorStateInfo(0);
-        if (info.fullPathHash == damageHash)
-        {
-            anim.SetTrigger("DamageEnd");
-        }
-    }
-
-    void Die(Attack attack)
-    {
-        
-        
-
-        dead = true;
+        coll.enabled = false;
+        anim.SetTrigger("Die");
 
         dieSubject.OnNext(gameObject);
+    }
+
+    void Revive()
+    {
+        coll.enabled = true;
+        anim.SetTrigger("Revive");
+        if (HPState)
+        {
+            HPState.Revive();
+        }
     }
 
     void UniRxOnDestroy()

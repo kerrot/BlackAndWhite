@@ -118,8 +118,8 @@ public class PlayerSlash : MonoBehaviour {
         if (isSlashing == false && Enemy != null)
         {
             Vector3 direction = Enemy.transform.position - transform.position;
-            EnemySlash battle = Enemy.GetComponent<EnemySlash>();
-            if (direction.magnitude < SlashRadius && battle.CanSlash)
+            EnemySlash slash = Enemy.GetComponent<EnemySlash>();
+            if (direction.magnitude < SlashRadius && slash && slash.CanSlash)
             {
                 return true;
             }

@@ -101,7 +101,10 @@ public class EnemyManager : MonoBehaviour
             battle.OnExplosionAttacked.Subscribe(o => explosionAttacked.OnNext(o)).AddTo(this);
 
             EnemySlash slash = obj.GetComponentInChildren<EnemySlash>();
-            slash.OnCanSlash.Subscribe(o => enemyCanSlash.OnNext(o)).AddTo(this);
+            if (slash)
+            {
+                slash.OnCanSlash.Subscribe(o => enemyCanSlash.OnNext(o)).AddTo(this);
+            }
 
             battle.gameObject.layer = LayerMask.NameToLayer("Enemy");
             monsters.Add(battle.gameObject);

@@ -20,6 +20,9 @@ public class EnemyHP : MonoBehaviour
     public FloatReactiveProperty Barrier = new FloatReactiveProperty();
 
     private FloatReactiveProperty recover = new FloatReactiveProperty();
+    private Subject<Unit> recoverSubject = new Subject<Unit>();
+
+    public IObservable<Unit> OnRecover { get { return recoverSubject; } }
 
     HPBarUI hpUI;
     float showHPStart;
@@ -90,7 +93,7 @@ public class EnemyHP : MonoBehaviour
         }
     }
 
-    public void ReVive()
+    public void Revive()
     {
         HP.Value = HPMax;
     }

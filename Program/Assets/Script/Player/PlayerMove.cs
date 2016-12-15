@@ -22,7 +22,7 @@ public class PlayerMove : MonoBehaviour {
 
         InputController.OnMouseDown.Subscribe(p => StartMove(p)).AddTo(this);
         InputController.OnMousePressed.Subscribe(p => CheckMotion(p)).AddTo(this);
-        InputController.OnMouseUp.Subscribe(p => StopGuard(p)).AddTo(this);
+        //InputController.OnMouseUp.Subscribe(p => StopGuard(p)).AddTo(this);
 
         agent = GetComponent<NavMeshAgent>();
         agent.updatePosition = false;
@@ -43,9 +43,9 @@ public class PlayerMove : MonoBehaviour {
         SetDestination(mousePosition);
 
         //when cannot move, recompute for check guard.
-        bool isGuard = (transform.position - ComputeDestination(mousePosition)).magnitude < GuardRadius;
-        anim.SetBool("Guard", isGuard);
-        anim.SetBool("IsMove", !isGuard);
+        //bool isGuard = (transform.position - ComputeDestination(mousePosition)).magnitude < GuardRadius;
+        //anim.SetBool("Guard", isGuard);
+        //anim.SetBool("IsMove", !isGuard);
     }
 
     void StopGuard(Vector2 mousePosition)

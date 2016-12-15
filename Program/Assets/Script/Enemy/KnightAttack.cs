@@ -2,37 +2,37 @@
 using UniRx.Triggers;
 using UnityEngine;
 using System.Collections;
-using System.Linq;
 
-public class EnemyAttack : MonoBehaviour
-{
+public class KnightAttack : MonoBehaviour {
     [SerializeField]
-    private GameObject attackRange;
+    private GameObject weapon;
     [SerializeField]
     private float attackPower;
     [SerializeField]
     private float attackForce;
 
-    int idleHash;
+    Collider weaponCollider;
     Animator anim;
-    EnemyMove movement;
+    UnitBattle battle;
     PlayerBattle player;
-    SphereCollider range;
+    EnemyMove movement;
+    int idleHash;
+    int attackHash;
+    System.IDisposable attackDis;
 
-    // Use this for initialization
-    void Awake()
-    {
-        idleHash = Animator.StringToHash("EnemyBase.Idle");
-        anim = GetComponent<Animator>();
-
-        movement = GetComponent<EnemyMove>();
-        range = attackRange.GetComponent<SphereCollider>();
-        player = GameObject.FindObjectOfType<PlayerBattle>();
-    }
-
-    // Update is called once per frame
     void Start()
     {
+        if (weapon)
+        {
+            weaponCollider = weapon.GetComponent<Collider>();
+        }
+
+        idleHash = Animator.StringToHash("EnemyBase.Idle");
+        anim = GetComponent<Animator>();
+        battle = GetComponent<UnitBattle>();
+        movement = GetComponent<EnemyMove>();
+        player = GameObject.FindObjectOfType<PlayerBattle>();
+
         this.UpdateAsObservable().Subscribe(_ => UniRxUpdate());
     }
 
@@ -45,23 +45,29 @@ public class EnemyAttack : MonoBehaviour
             {
                 movement.FaceTarget(player.transform.position);
                 anim.SetTrigger("Attack");
+                
             }
         }
     }
 
-    void Attack()
+    void AttackStart()
     {
-        EnemyBattle battle = GetComponent<EnemyBattle>();
+        weaponCollider.enabled = true;
+        attackDis = this.OnTriggerEnterAsObservable().Subscribe(o => UniRxTriggerEnter(o));
+    }
 
-        Collider[] cs = Physics.OverlapSphere(range.gameObject.transform.position, range.radius);
-        cs.ToList().ForEach(c =>
+    void AttackEnd()
+    {
+        weaponCollider.enabled = false;
+        attackDis.Dispose();
+    }
+
+    void UniRxTriggerEnter(Collider other)
+    {
+        PlayerBattle player = other.gameObject.GetComponent<PlayerBattle>();
+        if (player && player.enabled)
         {
-            PlayerBattle player = c.gameObject.GetComponent<PlayerBattle>();
-            if (player && player.enabled)
-            {
-                player.Attacked(battle, battle.CreateAttack(AttackType.ATTACK_TYPE_NORMAL, attackPower, attackForce));
-                return;
-            }
-        });
+            player.Attacked(battle, battle.CreateAttack(AttackType.ATTACK_TYPE_NORMAL, attackPower, attackForce));
+        }
     }
 }

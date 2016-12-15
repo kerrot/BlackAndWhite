@@ -16,13 +16,13 @@ public class EnemyBattle : UnitBattle
     [SerializeField]
     private AudioClip frightenSE;
     [SerializeField]
-    private GameObject wanderEffect;
+    protected GameObject wanderEffect;
     [SerializeField]
     private GameObject energyPeace;
 
-    private Subject<Unit> attackedSubject = new Subject<Unit>();
-    private Subject<GameObject> dieSubject = new Subject<GameObject>();
-    private Subject<GameObject> explosionAttacked = new Subject<GameObject>();
+    protected Subject<Unit> attackedSubject = new Subject<Unit>();
+    protected Subject<GameObject> dieSubject = new Subject<GameObject>();
+    protected Subject<GameObject> explosionAttacked = new Subject<GameObject>();
 
     public IObservable<GameObject> OnDie { get { return dieSubject; } }
     public IObservable<GameObject> OnExplosionAttacked { get { return explosionAttacked; } }
@@ -31,21 +31,21 @@ public class EnemyBattle : UnitBattle
     public GameObject DeadAction;
     public Vector3 DeadEffectOffset;
 
-    EnemySlash slash;
-    EnemyHP HPState;
+    protected EnemySlash slash;
+    protected EnemyHP HPState;
 
-    Animator anim;
- 
-    float deadStart;
+    protected Animator anim;
 
-    Collider coll;
+    protected float deadStart;
 
-    int wanderHash;
-    int damageHash;
+    protected Collider coll;
+
+    protected int wanderHash;
+    protected int damageHash;
 
     bool dead;
-    PlayerBattle player;
-    Attribute attr;
+    protected PlayerBattle player;
+    protected Attribute attr;
 
     //Start change to Awake, because Instantiate not call Start but Awake
     void Awake()
@@ -78,7 +78,7 @@ public class EnemyBattle : UnitBattle
     {
         if (HPState && HPState.HP.Value <= 0 && Time.time - deadStart > deadTime)
         {
-            HPState.ReVive();
+            HPState.Revive();
             coll.enabled = true;
             anim.SetTrigger("Revive");
         }
