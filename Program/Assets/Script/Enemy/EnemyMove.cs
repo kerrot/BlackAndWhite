@@ -71,8 +71,8 @@ public class EnemyMove : MonoBehaviour {
                 }
                 else if (Time.time > teleportTime)
                 {
-                    
                     anim.SetTrigger("TelePort");
+                    needRandom = true;
                 }
             }
             else

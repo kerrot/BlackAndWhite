@@ -10,6 +10,18 @@ public class KnightAttack : MonoBehaviour {
     private float attackPower;
     [SerializeField]
     private float attackForce;
+    [SerializeField]
+    private float spawnTime;
+    [SerializeField]
+    private GameObject spawnObject;
+    [SerializeField]
+    private float spawnNum;
+    [SerializeField]
+    private GameObject magicObject;
+    [SerializeField]
+    private float magicPeriodMin;
+    [SerializeField]
+    private float magicPeriodMax;
 
     Collider weaponCollider;
     Animator anim;
@@ -19,6 +31,14 @@ public class KnightAttack : MonoBehaviour {
     int idleHash;
     int attackHash;
     System.IDisposable attackDis;
+
+    float spawnStart;
+    int spawnCount;
+
+    float magicTime;
+    bool magicRandom = true;
+
+    EnemyManager manager;
 
     void Start()
     {
@@ -33,19 +53,49 @@ public class KnightAttack : MonoBehaviour {
         movement = GetComponent<EnemyMove>();
         player = GameObject.FindObjectOfType<PlayerBattle>();
 
+        manager = GameObject.FindObjectOfType<EnemyManager>();
+
         this.UpdateAsObservable().Subscribe(_ => UniRxUpdate());
     }
 
     void UniRxUpdate()
     {
+        if (spawnObject && Time.time - spawnStart > spawnTime)
+        {
+            spawnStart = Time.time;
+            if (spawnCount < spawnNum)
+            {
+                anim.SetTrigger("Summon");
+                anim.SetBool("Attack", false);
+                return;
+            }
+        }
+
         if (player && !player.Missing)
         {
-            AnimatorStateInfo info = anim.GetCurrentAnimatorStateInfo(0);
-            if (info.fullPathHash == idleHash && Vector3.Distance(player.transform.position, transform.position) <= movement.StopRadius)
+            if (magicObject && Time.time > magicTime)
             {
-                movement.FaceTarget(player.transform.position);
-                anim.SetTrigger("Attack");
-                
+                if (magicRandom)
+                {
+                    magicTime = Time.time + Random.Range(magicPeriodMin, magicPeriodMax);
+                    magicRandom = false;
+                }
+                else
+                {
+                    movement.FaceTarget(player.transform.position);
+                    anim.SetTrigger("Magic");
+                    anim.SetBool("Attack", false);
+                    magicRandom = true;
+                }
+            }
+            else
+            {
+                AnimatorStateInfo info = anim.GetCurrentAnimatorStateInfo(0);
+                if (info.fullPathHash == idleHash && Vector3.Distance(player.transform.position, transform.position) <= movement.StopRadius)
+                {
+                    movement.FaceTarget(player.transform.position);
+                    anim.SetTrigger("Attack");
+                }
             }
         }
     }
@@ -69,5 +119,39 @@ public class KnightAttack : MonoBehaviour {
         {
             player.Attacked(battle, battle.CreateAttack(AttackType.ATTACK_TYPE_NORMAL, attackPower, attackForce));
         }
+    }
+
+    void Summon()
+    {
+        if (!manager)
+        {
+            return;
+        }
+
+        anim.SetBool("Summon", false);
+
+        while (spawnCount < spawnNum)
+        {
+            Vector2 offset = Random.insideUnitCircle;
+            Vector3 shift = new Vector3(offset.x, 0, offset.y) * movement.StopRadius + transform.position;
+            NavMeshHit navHit;
+            if (NavMesh.SamplePosition(shift, out navHit, 1.0f, NavMesh.AllAreas))
+            {
+                shift = navHit.position;
+            }
+            else
+            {
+                shift = transform.position;
+            }
+
+            GameObject obj = manager.CreateEnemy(spawnObject, shift, Quaternion.identity);
+            obj.OnDestroyAsObservable().Subscribe(_ => --spawnCount).AddTo(this);
+            ++spawnCount;
+        }
+    }
+
+    void Magic()
+    {
+        Instantiate(magicObject, transform.position, transform.rotation);
     }
 }

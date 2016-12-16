@@ -13,7 +13,11 @@ public class FireBall : AuraBattle
     [SerializeField]
     private float strength;
     [SerializeField]
+    private float force;
+    [SerializeField]
     private float speed;
+    [SerializeField]
+    private bool attackPlayer;
 
     float radius;
     Rigidbody rd;
@@ -32,21 +36,38 @@ public class FireBall : AuraBattle
 
     void UniRxTriggerEnter(Collider other)
     {
-        GetComponent<Collider>().enabled = false;
-        rd.velocity = Vector3.zero;
-        ball.SetActive(false);
-        expolsion.SetActive(true);
+        bool hit = !attackPlayer;
 
         Collider[] cs = Physics.OverlapSphere(transform.position, radius);
         cs.ToObservable().Subscribe(c =>
         {
-            EnemyBattle enemy = c.gameObject.GetComponent<EnemyBattle>();
-            if (enemy)
+            if (attackPlayer)
             {
-                enemy.Attacked(this, CreateAttack(AttackType.ATTACK_TYPE_SKILL, strength));
+                PlayerBattle player = c.gameObject.GetComponent<PlayerBattle>();
+                if (player)
+                {
+                    player.Attacked(this, CreateAttack(AttackType.ATTACK_TYPE_SKILL, strength, force));
+                    hit = true;
+                }
+            }
+            else
+            {
+                EnemyBattle enemy = c.gameObject.GetComponent<EnemyBattle>();
+                if (enemy)
+                {
+                    enemy.Attacked(this, CreateAttack(AttackType.ATTACK_TYPE_SKILL, strength));
+                    hit = true;
+                }
             }
         });
 
-        Destroy(gameObject, expolsion.GetComponent<ParticleSystem>().duration);
+        if (hit)
+        {
+            GetComponent<Collider>().enabled = false;
+            rd.velocity = Vector3.zero;
+            ball.SetActive(false);
+            expolsion.SetActive(true);
+            Destroy(gameObject, expolsion.GetComponent<ParticleSystem>().duration);
+        }
     }
 }
