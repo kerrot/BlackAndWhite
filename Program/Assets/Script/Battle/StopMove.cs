@@ -7,31 +7,16 @@ public class StopMove : MonoBehaviour {
     [SerializeField]
     private float lastTime;
 	
-    public EnemyMove victom { get; set; }
-
-    float startTime;
+	public UnitMove victom { get; set; }
 
     void Start()
     {
-        startTime = Time.time;
-        this.UpdateAsObservable().Subscribe(_ => UniRxUpdate());
-    }
-
-    void UniRxUpdate()
-    {
-        if (victom)
-        {
-            victom.CanMove = false;
-
-            if (Time.time - startTime > lastTime)
-            {
-                victom.CanMove = true;
-                Destroy(gameObject);
-            }
-        }
-        else
-        {
-            Destroy(gameObject);
-        }
+		Destroy(gameObject, lastTime);
+		if (victom) 
+		{
+			// every frame set to prevent clear by other
+			this.UpdateAsObservable().Subscribe(_ => victom.CanMove = false);
+			this.OnDestroyAsObservable ().Subscribe (_ => victom.CanMove = true);	
+		}
     }
 }

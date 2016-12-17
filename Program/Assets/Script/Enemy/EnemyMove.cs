@@ -4,7 +4,7 @@ using UniRx.Triggers;
 using UnityEngine;
 using System.Collections;
 
-public class EnemyMove : MonoBehaviour {
+public class EnemyMove : UnitMove {
 
     [SerializeField]
     private float stopRadius;
@@ -14,8 +14,6 @@ public class EnemyMove : MonoBehaviour {
     private float teleportPeriodMax;
     [SerializeField]
     private float teleportMaxDistance;
-
-    public bool CanMove = true;
 
     public float StopRadius { get { return stopRadius; } }
 

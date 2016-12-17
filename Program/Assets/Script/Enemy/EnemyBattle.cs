@@ -212,7 +212,8 @@ public class EnemyBattle : UnitBattle
             {
                 act.Attacker = this;
                 act.Atk = new Attack() { Type = AttackType.ATTACK_TYPE_EXPLOSION,
-                                        Element = attr && Attribute.isBase(attr.Type) ? attr.Type : attack.Element };
+                                        Element = attr && Attribute.isBase(attr.Type) ? attr.Type : attack.Element,
+										Strength = 5f};
             }
         }
 

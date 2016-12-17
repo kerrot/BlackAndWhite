@@ -26,7 +26,7 @@ public class ImmunityAura : AuraBattle {
 
     protected override bool IsAttackBlocked(UnitBattle unit, Attack attack)
     {
-        if (!Effect.activeSelf)
+		if (Effect && !Effect.activeSelf)
         {
             return false;
         }
@@ -61,11 +61,17 @@ public class ImmunityAura : AuraBattle {
 
     protected override void AuraDisappear()
     {
-        Effect.SetActive(false);
+		if (Effect) 
+		{
+			Effect.SetActive(false);
+		}
     }
 
     protected override void AuraRecover()
     {
-        Effect.SetActive(true);
+		if (Effect) 
+		{
+			Effect.SetActive(true);
+		}
     }
 }

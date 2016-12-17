@@ -3,7 +3,7 @@ using UniRx.Triggers;
 using UnityEngine;
 using System.Collections;
 
-public class PlayerMove : MonoBehaviour {
+public class PlayerMove : UnitMove {
     public bool CanRotate = true;
 
     public float arriveRadius = 0.1f;
@@ -98,17 +98,20 @@ public class PlayerMove : MonoBehaviour {
 
     void OnAnimatorMove()
     {
-        if (GetComponent<PlayerSlash>().IsSlashing)
-        {
-            transform.position = anim.rootPosition;
-        }
-        else
-        {
-            NavMeshHit navHit;
-            if (NavMesh.SamplePosition(anim.rootPosition, out navHit, 1.0f, NavMesh.AllAreas))
-            {
-                transform.position = navHit.position;
-            }
-        }
+		if (CanMove) 
+		{
+			if (GetComponent<PlayerSlash>().IsSlashing)
+			{
+				transform.position = anim.rootPosition;
+			}
+			else
+			{
+				NavMeshHit navHit;
+				if (NavMesh.SamplePosition(anim.rootPosition, out navHit, 1.0f, NavMesh.AllAreas))
+				{
+					transform.position = navHit.position;
+				}
+			}
+		}
     }
 }

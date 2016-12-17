@@ -4,6 +4,8 @@ using UnityEngine;
 using System.Collections;
 
 public class KnightBattle : EnemyBattle {
+
+
     void Awake()
     {
         attr = GetComponent<Attribute>();
@@ -43,21 +45,23 @@ public class KnightBattle : EnemyBattle {
 
     public override bool Attacked(UnitBattle unit, Attack attack)
     {
-        if (Attribute.IsWeakness(attr.Type, attack.Element) && attack.Type == AttackType.ATTACK_TYPE_EXPLOSION)
-        {
-            if (HPState)
-            {
-                HPState.Barrier.Value -= attack.Strength;
-                if (HPState.Barrier.Value <= 0)
-                {
-                    Die();
-                }
-            }
-        }
-        else
-        {
-            unit.Attacked(this, CreateAttack(AttackType.ATTACK_TYPE_REFLECT, 0f));
-        }
+		Attribute attr = GetComponent<Attribute>();
+		if (attr && attr.ProcessAttack(unit, attack))
+		{
+			return false;
+		}
+
+		if (HPState)
+		{
+			HPState.Barrier.Value -= attack.Strength;
+			if (HPState.Barrier.Value <= 0) {
+				Die ();
+			} 
+			else 
+			{
+				anim.SetTrigger("Hitted");
+			}
+		}
 
         return false;
     }
@@ -67,7 +71,7 @@ public class KnightBattle : EnemyBattle {
         coll.enabled = false;
         anim.SetTrigger("Die");
 
-        dieSubject.OnNext(gameObject);
+        //dieSubject.OnNext(gameObject);
     }
 
     void Revive()
