@@ -63,7 +63,14 @@ public class BlockAttackAura : AuraBattle
 
     protected override void AuraDisappear()
     {
-		em.enabled = false;
+        if (GetComponent<ParticleSystem>())
+        {
+            em.enabled = false;
+        }
+        else
+        {
+            Debug.Log(gameObject + "ParticleSystem Missing");
+        }
     }
 
     protected override void AuraRecover()

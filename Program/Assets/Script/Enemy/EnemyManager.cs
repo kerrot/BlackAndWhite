@@ -96,6 +96,11 @@ public class EnemyManager : MonoBehaviour
     {
         if (obj != null)
         {
+            if (monsters.Contains(obj))
+            {
+                return;
+            }
+
             EnemyBattle battle = obj.GetComponentInChildren<EnemyBattle>();
             battle.OnDie.Subscribe(o => EnemyDie(o)).AddTo(this);
             battle.OnExplosionAttacked.Subscribe(o => explosionAttacked.OnNext(o)).AddTo(this);

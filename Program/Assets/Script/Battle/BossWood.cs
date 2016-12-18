@@ -32,11 +32,10 @@ public class BossWood : DelaySkill
 	void UniRxTriggerEnter(Collider other)
 	{
 		PlayerBattle player = other.gameObject.GetComponent<PlayerBattle> ();
-		if (player) 
+		if (player && player.Attacked(this, CreateAttack(AttackType.ATTACK_TYPE_SKILL, strength))) 
 		{
-			player.Attacked (this, CreateAttack(AttackType.ATTACK_TYPE_SKILL, strength));
-			GameObject debuff = Instantiate(GreenTrap, player.gameObject.transform.position, Quaternion.identity) as GameObject;
-			debuff.GetComponent<StopMove>().victom = player.GetComponent<UnitMove>();
-		}
+            GameObject debuff = Instantiate(GreenTrap, player.gameObject.transform.position, Quaternion.identity) as GameObject;
+            debuff.GetComponent<StopMove>().victom = player.GetComponent<UnitMove>();
+        }
 	}
 }

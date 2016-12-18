@@ -50,6 +50,12 @@ public class AuraBattle : UnitBattle
             return;
         }
 
+        if (!Effect)
+        {
+            return;
+        }
+
+
         if (isDisappear && Time.time - disappearStart > recoverTime)
         {
             DoRecover();

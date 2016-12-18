@@ -39,6 +39,7 @@ public class KnightAttack : MonoBehaviour {
     bool magicRandom = true;
 
     EnemyManager manager;
+    Collider coll;
 
     void Start()
     {
@@ -55,11 +56,18 @@ public class KnightAttack : MonoBehaviour {
 
         manager = GameObject.FindObjectOfType<EnemyManager>();
 
+        coll = GetComponent<Collider>();
+
         this.UpdateAsObservable().Subscribe(_ => UniRxUpdate());
     }
 
     void UniRxUpdate()
     {
+        if (!coll.enabled)
+        {
+            return;
+        }
+
         if (spawnObject && Time.time - spawnStart > spawnTime)
         {
             spawnStart = Time.time;

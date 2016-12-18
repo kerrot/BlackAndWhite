@@ -17,6 +17,7 @@ public class EnemyGenerator : MonoBehaviour {
     EnemyManager manager;
 
     List<GameObject> spawns = new List<GameObject>();
+    System.IDisposable cancel;
 
     void Start()
     {
@@ -25,7 +26,15 @@ public class EnemyGenerator : MonoBehaviour {
 
         if (system && manager && spawnEnemy)
         {
-            InvokeRepeating("Spawn", spawnTime, spawnTime);
+            cancel = Observable.Interval(System.TimeSpan.FromSeconds(spawnTime)).Subscribe(_ => Spawn()).AddTo(this);
+        }
+    }
+
+    void OnDisable()
+    {
+        if (cancel != null)
+        {
+            cancel.Dispose();
         }
     }
 

@@ -32,15 +32,47 @@ public class RoundDamageAura : AuraBattle
 
     protected override void AuraDisappear()
     {
-        Effect.SetActive(false);
-        coll.enabled = false;
+        if (Effect)
+        {
+            Effect.SetActive(false);
+        }
+        else
+        {
+            Debug.Log(gameObject + "Effect Missing");
+        }
+
+        if (coll)
+        {
+            coll.enabled = false;
+        }
+        else
+        {
+            Debug.Log(gameObject + "Collider Missing");
+        }
+
+        
         AudioHelper.PlaySE(gameObject, disappearSE);
     }
 
     protected override void AuraRecover()
     {
-        Effect.SetActive(true);
-        coll.enabled = true;
+        if (Effect)
+        {
+            Effect.SetActive(true);
+        }
+        else
+        {
+            Debug.Log(gameObject + "Effect Missing");
+        }
+
+        if (coll)
+        {
+            coll.enabled = true;
+        }
+        else
+        {
+            Debug.Log(gameObject + "Collider Missing");
+        }
     }
 
     void UniRxOnTriggerEnter(Collider other)

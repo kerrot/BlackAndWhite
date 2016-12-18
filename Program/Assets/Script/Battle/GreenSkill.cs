@@ -18,11 +18,10 @@ public class GreenSkill : UnitBattle {
     void UniRxTriggerEnter(Collider other)
     {
         EnemyBattle enemy = other.GetComponent<EnemyBattle>();
-        if (enemy)
+        if (enemy && enemy.Attacked(this, CreateAttack(AttackType.ATTACK_TYPE_SKILL, strength)))
         {
             GameObject debuff = Instantiate(GreenTrap, enemy.gameObject.transform.position, Quaternion.identity) as GameObject;
             debuff.GetComponent<StopMove>().victom = enemy.GetComponent<EnemyMove>();
-            enemy.Attacked(this, CreateAttack(AttackType.ATTACK_TYPE_SKILL, strength));
         }
     }
 

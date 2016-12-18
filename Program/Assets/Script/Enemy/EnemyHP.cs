@@ -64,7 +64,7 @@ public class EnemyHP : MonoBehaviour
 
             if (Barrier.Value <= 0)
             {
-                hpUI.SetRecoverEnable(true);
+                hpUI.RecoverUI.gameObject.SetActive(true);
                 recover.Value += Time.deltaTime;
                 if (recover.Value > recoverTime)
                 {
@@ -73,7 +73,7 @@ public class EnemyHP : MonoBehaviour
                     //avoid immediately disappear when recover complete.
                     showHPStart = Time.time;
 
-                    hpUI.SetRecoverEnable(false);
+                    hpUI.RecoverUI.gameObject.SetActive(false);
                     Barrier.Value = barrierStrength;
                 }
             }

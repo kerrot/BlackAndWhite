@@ -4,7 +4,11 @@ using UnityEngine;
 using System.Collections;
 
 public class KnightBattle : EnemyBattle {
+    [SerializeField]
+    private CorePeace peace;
 
+    private Subject<Unit> reviveSubject = new Subject<Unit>();
+    public IObservable<Unit> OnRevive { get { return reviveSubject; } }
 
     void Awake()
     {
@@ -36,15 +40,20 @@ public class KnightBattle : EnemyBattle {
 
     void UniRxUpdate()
     {
-        if (player)
+        if (player && wanderEffect)
         {
-            anim.SetBool("Wander", player.Missing);
-            wanderEffect.SetActive(player.Missing);
+            anim.SetBool("Wander", player.Missing && coll.enabled);
+            wanderEffect.SetActive(player.Missing && coll.enabled);
         }
     }
 
     public override bool Attacked(UnitBattle unit, Attack attack)
     {
+        if (!coll.enabled)
+        {
+            return false;
+        }
+
 		Attribute attr = GetComponent<Attribute>();
 		if (attr && attr.ProcessAttack(unit, attack))
 		{
@@ -71,10 +80,28 @@ public class KnightBattle : EnemyBattle {
         coll.enabled = false;
         anim.SetTrigger("Die");
 
+        if (peace)
+        {
+            peace.gameObject.SetActive(true);
+        }
+
+
+        deadStart = Time.time;
+
+        var disposable = new SingleAssignmentDisposable();
+        disposable.Disposable = this.UpdateAsObservable().Subscribe(_ =>
+        {
+            if (Time.time - deadStart > deadTime)
+            {
+                reviveSubject.OnNext(Unit.Default);
+                disposable.Dispose();
+            }
+            
+        });
         //dieSubject.OnNext(gameObject);
     }
 
-    void Revive()
+    public void Revive()
     {
         coll.enabled = true;
         anim.SetTrigger("Revive");

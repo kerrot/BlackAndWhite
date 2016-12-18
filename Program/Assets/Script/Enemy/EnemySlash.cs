@@ -45,7 +45,11 @@ public class EnemySlash : MonoBehaviour {
     }
 
     void UniRxUpdate() {
-        effect.SetActive(!CanSlash);
+        if (effect)
+        {
+            effect.SetActive(!CanSlash);
+        }
+        
         lockUI.SetActive(CanSlash);
 
         if (canSlash)

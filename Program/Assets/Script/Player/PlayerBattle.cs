@@ -209,7 +209,7 @@ public class PlayerBattle : UnitBattle {
             return false;
         }
 
-            if (anim.GetBool("Guard") || guardAttack)
+        if (anim.GetBool("Guard") || guardAttack)
         {
             if (attack.Type == AttackType.ATTACK_TYPE_NORMAL)
             {
@@ -266,7 +266,7 @@ public class PlayerBattle : UnitBattle {
 
         UpdateCameraEffect();
 
-        return false;
+        return true;
     }
 
     void UpdateCameraEffect()

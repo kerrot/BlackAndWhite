@@ -6,19 +6,19 @@ using System.Collections;
 public class EnemyBattle : UnitBattle
 {
     [SerializeField]
-    private float deadTime;
+    protected float deadTime;
     [SerializeField]
-    private AudioClip tumbleSE;
+    protected AudioClip tumbleSE;
     [SerializeField]
-    private AudioClip fireSE;
+    protected AudioClip fireSE;
     [SerializeField]
-    private AudioClip woodSE;
+    protected AudioClip woodSE;
     [SerializeField]
-    private AudioClip frightenSE;
+    protected AudioClip frightenSE;
     [SerializeField]
     protected GameObject wanderEffect;
     [SerializeField]
-    private GameObject energyPeace;
+    protected GameObject energyPeace;
 
     protected Subject<Unit> attackedSubject = new Subject<Unit>();
     protected Subject<GameObject> dieSubject = new Subject<GameObject>();
@@ -64,6 +64,12 @@ public class EnemyBattle : UnitBattle
         wanderHash = Animator.StringToHash("EnemyBase.Wander");
         damageHash = Animator.StringToHash("EnemyBase.DamageStart");
 
+        EnemyManager manager = GameObject.FindObjectOfType<EnemyManager>();
+        if (manager)
+        {
+            manager.AddMonster(gameObject);
+        }
+
         this.UpdateAsObservable().Subscribe(_ => UniRxUpdate());
         this.OnDestroyAsObservable().Subscribe(_ => UniRxOnDestroy());
         this.OnAnimatorMoveAsObservable().Subscribe(_ => UniRxAnimatorMove());
@@ -84,7 +90,7 @@ public class EnemyBattle : UnitBattle
         }
 
 
-        if (player)
+        if (player && wanderEffect)
         {
             anim.SetBool("Wander", player.Missing);
             wanderEffect.SetActive(player.Missing);
@@ -111,7 +117,6 @@ public class EnemyBattle : UnitBattle
         if (attack.Type == AttackType.ATTACK_TYPE_SLASH && slash.CanSlash)
         {
             Die(attack);
-            return true;
         }
         else if (attack.Type == AttackType.ATTACK_TYPE_EXPLOSION)
         {
@@ -191,7 +196,7 @@ public class EnemyBattle : UnitBattle
             }
         }
 
-        return false;
+        return true;
     }
 
     public void RecoverFromDamage()
