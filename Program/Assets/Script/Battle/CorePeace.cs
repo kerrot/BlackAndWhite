@@ -20,6 +20,8 @@ public class CorePeace : MonoBehaviour
     static private Subject<Unit> breakSubject = new Subject<Unit>();
     static public IObservable<Unit> OnBreak { get { return breakSubject; } }
 
+    private Subject<Unit> reachSubject = new Subject<Unit>();
+
     Animator anim;
     Rigidbody rd;
 
@@ -79,6 +81,24 @@ public class CorePeace : MonoBehaviour
         }
     }
 
+    void SetDestinetion(Vector3 pos)
+    {
+        var disposable = new SingleAssignmentDisposable();
+        disposable.Disposable = this.UpdateAsObservable().Subscribe(_ =>
+        {
+            if (rd)
+            {
+                rd.velocity = pos - transform.position;
+                if (Vector3.Distance(transform.position, pos) < STOP_DISTANCE)
+                {
+                    rd.velocity = Vector3.zero;
+                    reachSubject.OnNext(Unit.Default);
+                    disposable.Dispose();
+                }
+            }
+        });
+    }
+
     void Back()
     {        
         CorePeace[] ps = GameObject.FindObjectsOfType<CorePeace>();
@@ -95,24 +115,21 @@ public class CorePeace : MonoBehaviour
             anim.enabled = false;
         }
 
-        if (rd)
+        if (transform.parent)
         {
-            rd.velocity = -transform.localPosition;
-            var disposable = new SingleAssignmentDisposable();
-            disposable.Disposable = this.UpdateAsObservable().Subscribe(_ =>
-            {
-                if (transform.localPosition.magnitude < STOP_DISTANCE)
-                {
-                    gameObject.SetActive(false);
-                    rd.velocity = Vector3.zero;
-                    
-                    if (battle)
-                    {
-                        battle.Revive();
-                    }
+            SetDestinetion(transform.parent.position);
 
-                    disposable.Dispose();
+            var disposable = new SingleAssignmentDisposable();
+            disposable.Disposable = reachSubject.Subscribe(_ =>
+            {
+                gameObject.SetActive(false);
+
+                if (battle)
+                {
+                    battle.Revive();
                 }
+
+                disposable.Dispose();
             });
         }
     }
@@ -126,26 +143,19 @@ public class CorePeace : MonoBehaviour
 
         gameObject.SetActive(true);
 
-        if (rd)
+        SetDestinetion(readyPosition);
+
+        var disposable = new SingleAssignmentDisposable();
+        disposable.Disposable = reachSubject.Subscribe(_ =>
         {
-            rd.velocity = readyPosition - transform.position;
-            var disposable = new SingleAssignmentDisposable();
-            disposable.Disposable = this.UpdateAsObservable().Subscribe(_ =>
+            if (anim)
             {
-                if (Vector3.Distance(transform.position, readyPosition) < STOP_DISTANCE)
-                {
-                    rd.velocity = Vector3.zero;
+                anim.enabled = true;
+                anim.Play("Core", 0);
+            }
 
-                    if (anim)
-                    {
-                        anim.enabled = true;
-                        anim.Play("Core", 0);
-                    }
-
-                    disposable.Dispose();
-                }
-            });
-        }
+            disposable.Dispose();
+        });
     }
 
     void Union(Vector3 pos)
@@ -160,25 +170,20 @@ public class CorePeace : MonoBehaviour
             anim.enabled = false;
         }
 
-        if (rd)
-        {
-            rd.velocity = pos - transform.position;
-            var disposable = new SingleAssignmentDisposable();
-            disposable.Disposable = this.UpdateAsObservable().Subscribe(_ =>
-            {
-                if (Vector3.Distance(transform.position, pos) < STOP_DISTANCE)
-                {
-                    gameObject.SetActive(false);
-                    rd.velocity = Vector3.zero;
-                    if (Core)
-                    {
-                        Core.SetActive(true);
-                        Core.transform.position = pos;
-                    }
+        SetDestinetion(pos);
 
-                    disposable.Dispose();
-                }
-            });
-        }
+        var disposable = new SingleAssignmentDisposable();
+        disposable.Disposable = reachSubject.Subscribe(_ =>
+        {
+            gameObject.SetActive(false);
+            
+            if (Core)
+            {
+                Core.SetActive(true);
+                Core.transform.position = pos;
+            }
+
+            disposable.Dispose();
+        });
     }
 }
