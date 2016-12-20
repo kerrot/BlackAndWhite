@@ -4,7 +4,7 @@ using UnityEngine;
 using System.Collections;
 
 public class PlayerMove : UnitMove {
-    public bool CanRotate = true;
+    public static bool CanRotate = true;
 
     public float arriveRadius = 0.1f;
     public float GuardRadius = 0.2f;
@@ -33,6 +33,11 @@ public class PlayerMove : UnitMove {
 
     void StartMove(Vector2 mousePosition)
     {
+        if (PlayerBattle.IsDead)
+        {
+            return;
+        }
+
         anim.SetBool("IsMove", true);
 
         SetDestination(mousePosition);
@@ -40,6 +45,11 @@ public class PlayerMove : UnitMove {
 
     void CheckMotion(Vector2 mousePosition)
     {
+        if (PlayerBattle.IsDead)
+        {
+            return;
+        }
+
         SetDestination(mousePosition);
 
         //when cannot move, recompute for check guard.

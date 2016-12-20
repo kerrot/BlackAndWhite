@@ -14,6 +14,8 @@ public class EnemyMove : UnitMove {
     private float teleportPeriodMax;
     [SerializeField]
     private float teleportMaxDistance;
+    [SerializeField]
+    private float teleportMinDistance;
 
     public float StopRadius { get { return stopRadius; } }
 
@@ -60,7 +62,7 @@ public class EnemyMove : UnitMove {
                 agent.nextPosition = transform.position;
             }
 
-            if (distance < teleportMaxDistance)
+            if (distance > teleportMinDistance && distance < teleportMaxDistance)
             {
                 if (needRandom)
                 {

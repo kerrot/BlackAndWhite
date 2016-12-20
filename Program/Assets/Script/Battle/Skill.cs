@@ -83,15 +83,18 @@ public class Skill : MonoBehaviour {
         GameObject min = gameObject;
         EnemyManager.Enemies.ForEach(e =>
         {
-            Collider c = e.GetComponent<Collider>();
-            if (c && c.enabled && !c.isTrigger)
+            if (e)
             {
-                float tmpDistance = Vector3.Distance(e.transform.position, transform.position);
-                float tmpAngle = Mathf.Abs(Vector3.Angle(transform.forward, e.transform.position - transform.position));
-                if (tmpAngle < 10 && tmpDistance < distance)
+                Collider c = e.GetComponent<Collider>();
+                if (c && c.enabled && !c.isTrigger)
                 {
-                    distance = tmpDistance;
-                    min = e;
+                    float tmpDistance = Vector3.Distance(e.transform.position, transform.position);
+                    float tmpAngle = Mathf.Abs(Vector3.Angle(transform.forward, e.transform.position - transform.position));
+                    if (tmpAngle < 10 && tmpDistance < distance)
+                    {
+                        distance = tmpDistance;
+                        min = e;
+                    }
                 }
             }
         });

@@ -8,7 +8,11 @@ public class BasicStage : MonoBehaviour {
     [SerializeField]
     private GameObject opening;
     [SerializeField]
+    private GameObject attack;
+    [SerializeField]
     private GameObject slash;
+    [SerializeField]
+    private GameObject slashContinue;
     [SerializeField]
     private EnemyBattle LV1Enemy;
     [SerializeField]
@@ -32,7 +36,8 @@ public class BasicStage : MonoBehaviour {
     System.IDisposable waitSlash;
     System.IDisposable firstDie;
     System.IDisposable firstClear;
-
+    System.IDisposable firstCharge;
+    System.IDisposable firstSkill;
 
     void Awake()
     {
@@ -53,15 +58,20 @@ public class BasicStage : MonoBehaviour {
         PlayerSkill skill = GameObject.FindObjectOfType<PlayerSkill>();
         if (skill)
         {
-            skill.OnCharge.Subscribe(e => SkillStep());
-            skill.OnSkill.Subscribe(e => ToExit());
+            firstCharge = skill.OnCharge.Subscribe(e => SkillStep()).AddTo(this);
+            firstSkill = skill.OnSkill.Subscribe(e => ToExit()).AddTo(this);
         }
     }
 	
     void CheckSlash()
     {
-        if (slash && slash.activeSelf && Input.anyKey && system)
+        if (slash && slash.activeSelf && Input.GetKeyDown(KeyCode.S) && system)
         {
+            if (slashContinue)
+            {
+                slashContinue.SetActive(false);
+            }
+
             system.GameResume();
             waitSlash.Dispose();
         }
@@ -71,12 +81,30 @@ public class BasicStage : MonoBehaviour {
     {
         if (system)
         {
-            system.GameResume();
+            system.GamePause();
         }
 
         if (opening)
         {
             opening.SetActive(true);
+        }
+    }
+
+    public void StageStart()
+    {
+        if (system)
+        {
+            system.GameResume();
+        }
+
+        if (opening)
+        {
+            opening.SetActive(false);
+        }
+
+        if (attack)
+        {
+            attack.SetActive(true);
         }
     }
 
@@ -90,6 +118,11 @@ public class BasicStage : MonoBehaviour {
         if (system)
         {
             system.GamePause();
+        }
+
+        if (slashContinue)
+        {
+            slashContinue.SetActive(true);
         }
 
         firstSlash.Dispose();
@@ -106,9 +139,9 @@ public class BasicStage : MonoBehaviour {
             LV2.SetActive(true);
         }
 
-        if (opening)
+        if (attack)
         {
-            opening.SetActive(false);
+            attack.SetActive(false);
         }
 
         if (slash)
@@ -173,6 +206,8 @@ public class BasicStage : MonoBehaviour {
         {
             energyHint.SetActive(false);
         }
+
+        firstCharge.Dispose();
     }
 
     void ToExit()
@@ -186,5 +221,7 @@ public class BasicStage : MonoBehaviour {
         {
             exit.SetActive(true);
         }
+
+        firstSkill.Dispose();
     }
 }

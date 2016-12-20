@@ -49,6 +49,8 @@ public class ThunderSpell : AuraBattle {
                     {
                         YD.vistom = enemy;
                     }
+
+                    yellow.transform.parent = enemy.transform;
                 }
             });
         }

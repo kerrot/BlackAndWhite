@@ -25,6 +25,9 @@ public class PlayerBattle : UnitBattle {
 
     public bool Missing { get; set; }
 
+    public static bool IsDead { get { return dead; } }
+    private static bool dead;
+
     private Subject<Unit> attackSubject = new Subject<Unit>();
     public IObservable<Unit> OnAttack { get { return attackSubject; } }
 
@@ -40,12 +43,10 @@ public class PlayerBattle : UnitBattle {
     Vector3 guardPos;
     Vector3 AttackRange;
     PlayerSlash slash;
-    PlayerMove move;
 
     void Awake()
     {
         slash = GetComponent<PlayerSlash>();
-        move = GetComponent<PlayerMove>();
         if (hurtEffect)
         {
             GameObject tmp = GameObject.Find("HurtScreenEffect");
@@ -146,13 +147,13 @@ public class PlayerBattle : UnitBattle {
 
         if (CanAttack(Enemy))
         {
-            AttackEnemy(Enemy);
+            //AttackEnemy(Enemy);
         }
     }
 
     bool CanAttack(GameObject Enemy)
     {
-        if (!enabled)
+        if (dead)
         {
             return false;
         }
@@ -172,11 +173,7 @@ public class PlayerBattle : UnitBattle {
             transform.LookAt(enemy.transform);
         }
 
-        
-        if (move)
-        {
-            move.CanRotate = false;
-        }
+        PlayerMove.CanRotate = false;
         anim.SetTrigger("Attack");
 
         AudioHelper.PlaySE(gameObject, attackSE);
@@ -259,7 +256,13 @@ public class PlayerBattle : UnitBattle {
         if (nowHP <= 0)
         {
             anim.SetTrigger("Die");
+            anim.SetBool("Attack", false);
+            anim.SetBool("Skill", false);
+            anim.SetBool("Hurt", false);
+            anim.SetBool("Slash", false);
             enabled = false;
+            dead = true;
+            
 
             Observable.FromCoroutine(RestartGame).Subscribe();
         }
@@ -271,9 +274,9 @@ public class PlayerBattle : UnitBattle {
 
     void UpdateCameraEffect()
     {
-        if (nowHP < HP / 2)
+        if (nowHP < HP)
         {
-            cuurentIntensity = 0.7f - (nowHP - 1f) / HP * 2f * 0.7f;
+            cuurentIntensity = 0.6f - (nowHP - 1f) / HP * 0.6f;
         }
     }
 
@@ -282,6 +285,7 @@ public class PlayerBattle : UnitBattle {
         yield return new WaitForSeconds(3f);
 
         enabled = true;
+        dead = false;
         nowHP = HP;
 
         cuurentIntensity = 0f;

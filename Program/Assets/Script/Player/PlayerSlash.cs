@@ -115,6 +115,11 @@ public class PlayerSlash : MonoBehaviour {
 
     public bool CanSlashEnemy(GameObject Enemy)
     {
+        if (PlayerBattle.IsDead)
+        {
+            return false;
+        }
+
         if (isSlashing == false && Enemy != null)
         {
             Vector3 direction = Enemy.transform.position - transform.position;
@@ -181,11 +186,7 @@ public class PlayerSlash : MonoBehaviour {
             slashReach = false;
             TargetObject = Enemy;
 
-            PlayerMove move = GameObject.FindObjectOfType<PlayerMove>();
-            if (move)
-            {
-                move.CanRotate = false;
-            }
+            PlayerMove.CanRotate = false;
 
             anim.SetBool("IsSlashing", true);
             anim.SetTrigger("Slash");
@@ -198,16 +199,6 @@ public class PlayerSlash : MonoBehaviour {
 
     void CheckSlash()
     {
-        AudioHelper.PlaySE(gameObject, slashSE);
-        isSlashing = false;
-        anim.SetBool("IsSlashing", false);
-        anim.SetBool("IsMove", false);
-        PlayerMove move = GameObject.FindObjectOfType<PlayerMove>();
-        if (move)
-        {
-            move.CanRotate = true;
-        }
-
         if (slashSpeed < maxSpeedup)
         {
             SlashSpeedUp(slashSpeed += speedup);
@@ -237,6 +228,12 @@ public class PlayerSlash : MonoBehaviour {
                 comboSlash.OnNext(Unit.Default);
             }
         }
+
+        AudioHelper.PlaySE(gameObject, slashSE);
+        isSlashing = false;
+        anim.SetBool("IsSlashing", false);
+        anim.SetBool("IsMove", false);
+        PlayerMove.CanRotate = true;
     }
 
     void MultiSlash(Vector2 mousePosition)

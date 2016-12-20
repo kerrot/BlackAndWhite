@@ -100,6 +100,11 @@ public class PlayerSkill : MonoBehaviour
 
     public void UseSkill()
     {
+        if (PlayerBattle.IsDead)
+        {
+            return;
+        }
+
         Skill old = skills.SingleOrDefault(s => s.Type == castingType);
         if (old && old.Activated() && castingType == attri.Type)
         {

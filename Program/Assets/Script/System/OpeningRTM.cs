@@ -7,11 +7,13 @@ public class OpeningRTM : MonoBehaviour {
     private GameObject mainCamera;
 
 	private Subject<Unit> openingEnd = new Subject<Unit>();
-	public IObservable<Unit> OnOpeningEnd { get { return openingEnd; } } 
+	public IObservable<Unit> OnOpeningEnd { get { return openingEnd; } }
+
+    GameSystem system;
 
     void Start()
     {
-        GameSystem system = GameObject.FindObjectOfType<GameSystem>();
+        system = GameObject.FindObjectOfType<GameSystem>();
         if (system)
         {
             system.GamePause();
@@ -25,6 +27,11 @@ public class OpeningRTM : MonoBehaviour {
         mainCamera.SetActive(true);
         gameObject.SetActive(false);
 
-		openingEnd.OnNext (Unit.Default);
+        if (system)
+        {
+            system.GameResume();
+        }
+
+        openingEnd.OnNext(Unit.Default);
     }
 }

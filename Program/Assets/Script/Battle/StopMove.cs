@@ -14,6 +14,8 @@ public class StopMove : MonoBehaviour {
 		Destroy(gameObject, lastTime);
 		if (victom) 
 		{
+            transform.parent = victom.transform;
+
 			// every frame set to prevent clear by other
 			this.UpdateAsObservable().Subscribe(_ => victom.CanMove = false);
 			this.OnDestroyAsObservable ().Subscribe (_ => victom.CanMove = true);	

@@ -8,6 +8,8 @@ public class GFFStage : MonoBehaviour {
     protected GameObject core;
     [SerializeField]
     protected GameObject ending;
+    [SerializeField]
+    protected GameObject alert;
 
 
     void Awake ()
@@ -16,7 +18,7 @@ public class GFFStage : MonoBehaviour {
         {
             core.OnDestroyAsObservable().Subscribe(_ => GameClear()).AddTo(this);
         }
-	}
+    }
 
     void GameClear()
     {
@@ -30,6 +32,14 @@ public class GFFStage : MonoBehaviour {
         {
             Time.timeScale = 0.3f;
             system.RTM();
+        }
+    }
+
+    void BossShow()
+    {
+        if (alert)
+        {
+            alert.SetActive(true);
         }
     }
 }

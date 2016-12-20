@@ -8,19 +8,13 @@ using System.Collections.Generic;
 public class EnergyPeace : EnergyBase
 {
     [SerializeField]
-    private float gatherRadius;
-    [SerializeField]
     private float speed;
     [SerializeField]
     private EnergyBall energyBall;
 
-    public bool Destroying = false;
-    public static Subject<EnergyBase> NewBorn = new Subject<EnergyBase>();
-
     int floorLayer;
     Rigidbody rd;
-    EnergyBase target;
-    
+
     void Start()
     {
         floorLayer = LayerMask.NameToLayer("Floor");
@@ -34,65 +28,34 @@ public class EnergyPeace : EnergyBase
         {
             rd.velocity = Vector3.up * speed + new Vector3(v.x, 0, v.y);
         }
-        
-        
-        this.OnCollisionEnterAsObservable().Subscribe(o => UniRxCollisionEnter(o));
 
-        NewBorn.Subscribe(e =>
-        {
-            if (!target || target is EnergyPeace)
-            {
-                if (e.Type == Type && Vector3.Distance(e.transform.position, transform.position) < gatherRadius)
-                {
-                    target = e;
-                    if (rd)
-                    {
-                        rd.velocity = target.transform.position - transform.position;
-                    }
-                }
-            }
-        }).AddTo(this);
-
-    }
-
-    void UniRxCollisionEnter(Collision other)
-    {
-        if (other.gameObject.layer == floorLayer)
-        {
-            GetComponent<Collider>().isTrigger = true;
-            rd.useGravity = false;
-            rd.velocity = Vector3.zero;
-            this.OnTriggerEnterAsObservable().Subscribe(o => UniRxTriggerEnter(o));
-
-            // find closest gather target;
-            target = FindClosest<EnergyBall>(b => b.Type == Type && !b.Formed && b != this);
-            if (!target)
-            {
-                target = FindClosest<EnergyPeace>(p => p.Type == Type && p != this);  
-            }
-
-            if (target)
-            {
-                rd.velocity = (target.transform.position - transform.position) * speed;
-            }
-            else
-            {
-                NewBorn.OnNext(this);
-            }
-        }
+        this.OnTriggerEnterAsObservable().Subscribe(o => UniRxTriggerEnter(o));
     }
 
     void UniRxTriggerEnter(Collider other)
     {
-        if (target && !Destroying && other.gameObject.GetComponent<EnergyBase>() == target)
+        if (rd.useGravity)
+        {
+            if (other.gameObject.layer == floorLayer)
+            {
+                rd.useGravity = false;
+                rd.velocity = Vector3.zero;
+
+                float radis = GetComponent<SphereCollider>().radius;
+                if (transform.position.y < radis)
+                {
+                    transform.position = new Vector3(transform.position.x, radis, transform.position.z);
+                }
+
+                FindGatherTarget();
+            }
+        }
+        else if (gatherTarget && other.gameObject.GetComponent<EnergyBase>() == gatherTarget)
         {
             EnergyPeace p = other.gameObject.GetComponent<EnergyPeace>();
             if (p)
             {
-                p.Destroying = true;
-                GameObject ball = Instantiate(energyBall.gameObject, transform.position, Quaternion.identity) as GameObject;
-                ball.GetComponent<EnergyBall>().Type = Type;
-                Destroy(p.gameObject);
+                p.FormBall();
             }
             else
             {
@@ -102,7 +65,7 @@ public class EnergyPeace : EnergyBase
                     b.Gather();
                 }
             }
-            
+
             Destroy(gameObject);
         }
     }
@@ -117,5 +80,52 @@ public class EnergyPeace : EnergyBase
         }
 
         return null;
+    }
+
+    public void FormBall()
+    {
+        GameObject ball = Instantiate(energyBall.gameObject, transform.position, Quaternion.identity) as GameObject;
+        ball.GetComponent<EnergyBall>().Type = Type;
+        Destroy(gameObject);
+    }
+
+    void FindGatherTarget()
+    {
+        // find closest gather target;
+        gatherTarget = FindClosest<EnergyBall>(b => b.Type == Type && !b.Formed);
+        if (!gatherTarget)
+        {
+            gatherTarget = FindClosest<EnergyPeace>(p => p.Type == Type && p != this);
+        }
+
+        if (gatherTarget && gatherTarget.GatherTarget != this)
+        {
+            while (gatherTarget.GatherTarget && gatherTarget.GatherTarget != this)
+            {
+                gatherTarget = gatherTarget.GatherTarget;
+            }
+
+            var disposable = new SingleAssignmentDisposable();
+            disposable.Disposable = this.UpdateAsObservable().Subscribe(_ =>
+            {
+                if (gatherTarget)
+                {
+                    rd.velocity = (gatherTarget.transform.position - transform.position).normalized * speed;
+                }
+                else
+                {
+                    rd.velocity = Vector3.zero;
+                    rd.useGravity = true;
+                    disposable.Dispose();
+                }
+            });
+
+            // target destroyed before reach
+            gatherTarget.OnDestroyAsObservable().Subscribe(_ => FindGatherTarget());
+        }
+        else
+        {
+            gatherTarget = null;
+        }
     }
 }

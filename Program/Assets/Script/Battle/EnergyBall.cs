@@ -26,11 +26,12 @@ public class EnergyBall : EnergyBase
     int current = 0;
 
     Rigidbody rd;
-    System.IDisposable dis;
+    int floorLayer;
 
     void Start()
     {
-        EnergyPeace.NewBorn.OnNext(this);
+        floorLayer = LayerMask.NameToLayer("Floor");
+
         switch (Type)
         {
             case ElementType.ELEMENT_TYPE_RED:
@@ -49,18 +50,32 @@ public class EnergyBall : EnergyBase
         lightOn.color = tmp;
 
         rd = GetComponent<Rigidbody>();
-        rd.velocity = Vector3.up;
 
-        dis = this.UpdateAsObservable().Subscribe(_ => OnGround());
+        this.OnTriggerEnterAsObservable().Subscribe(o => OnGround(o));
     }
 
-    void OnGround()
+    void OnGround(Collider other)
     {
-        if (rd.velocity == Vector3.zero)
+        if (rd.useGravity)
         {
-            GetComponent<Collider>().isTrigger = true;
-            rd.useGravity = false;
-            dis.Dispose();
+            if (other.gameObject.layer == floorLayer)
+            {
+                rd.useGravity = false;
+                float radis = GetComponent<SphereCollider>().radius;
+                if (transform.position.y < radis)
+                {
+                    transform.position = new Vector3(transform.position.x, radis, transform.position.z);
+                }
+            }
+        }
+        else if(Formed)
+        {
+            PlayerSkill skill = other.gameObject.GetComponent<PlayerSkill>();
+            if (skill)
+            {
+                skill.Charge(Type, power);
+                Destroy(gameObject);
+            }
         }
     }
 
@@ -77,17 +92,6 @@ public class EnergyBall : EnergyBase
         {
             effectOn.gameObject.SetActive(true);
             lightOn.gameObject.SetActive(true);
-            this.OnTriggerEnterAsObservable().Subscribe(o => UniRxTriggerEnter(o));
-        }
-    }
-
-    void UniRxTriggerEnter(Collider other)
-    {
-        PlayerSkill skill = other.gameObject.GetComponent<PlayerSkill>();
-        if (skill)
-        {
-            skill.Charge(Type, power);
-            Destroy(gameObject);
         }
     }
 }

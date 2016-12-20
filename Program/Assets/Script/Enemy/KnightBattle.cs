@@ -6,6 +6,8 @@ using System.Collections;
 public class KnightBattle : EnemyBattle {
     [SerializeField]
     private CorePeace peace;
+    [SerializeField]
+    private AudioClip landingSE;
 
     private Subject<Unit> reviveSubject = new Subject<Unit>();
     public IObservable<Unit> OnRevive { get { return reviveSubject; } }
@@ -118,4 +120,10 @@ public class KnightBattle : EnemyBattle {
             Destroy(transform.parent.gameObject);
         }
     }
+
+    void Landing()
+    {
+        AudioHelper.PlaySE(gameObject, landingSE);
+    }
+
 }
