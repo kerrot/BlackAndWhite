@@ -100,7 +100,9 @@ public class CorePeace : MonoBehaviour
     }
 
     void Back()
-    {        
+    {
+
+        Core.SetActive(false);
         CorePeace[] ps = GameObject.FindObjectsOfType<CorePeace>();
         if ((ps.Length == 3 && ps.All(p => p.Ready)) || (Core && Core.activeSelf))
         {

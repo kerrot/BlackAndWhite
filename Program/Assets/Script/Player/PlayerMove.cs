@@ -28,6 +28,8 @@ public class PlayerMove : UnitMove {
         agent.updatePosition = false;
         agent.updateRotation = false;
 
+        CanRotate = true;
+
         this.FixedUpdateAsObservable ().Subscribe (_ => UniRxFixedUpdate ());
     }
 

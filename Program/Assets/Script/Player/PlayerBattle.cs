@@ -22,6 +22,8 @@ public class PlayerBattle : UnitBattle {
     private AudioClip attackSE;
     [SerializeField]
     private float strength;
+    [SerializeField]
+    private float force;
 
     public bool Missing { get; set; }
 
@@ -30,6 +32,9 @@ public class PlayerBattle : UnitBattle {
 
     private Subject<Unit> attackSubject = new Subject<Unit>();
     public IObservable<Unit> OnAttack { get { return attackSubject; } }
+
+    private Subject<Unit> deadSubject = new Subject<Unit>();
+    public IObservable<Unit> OnDead { get { return deadSubject; } }
 
     Animator anim;
 
@@ -46,6 +51,8 @@ public class PlayerBattle : UnitBattle {
 
     void Awake()
     {
+        dead = false;
+
         slash = GetComponent<PlayerSlash>();
         if (hurtEffect)
         {
@@ -189,7 +196,7 @@ public class PlayerBattle : UnitBattle {
             EnemyBattle enemy = c.GetComponent<EnemyBattle>();
             if (enemy)
             {
-                enemy.Attacked(this, CreateAttack(AttackType.ATTACK_TYPE_NORMAL, strength));
+                enemy.Attacked(this, CreateAttack(AttackType.ATTACK_TYPE_NORMAL, strength, force));
             }
         });
     }
@@ -262,9 +269,8 @@ public class PlayerBattle : UnitBattle {
             anim.SetBool("Slash", false);
             enabled = false;
             dead = true;
-            
 
-            Observable.FromCoroutine(RestartGame).Subscribe();
+            deadSubject.OnNext(Unit.Default);
         }
 
         UpdateCameraEffect();
@@ -280,10 +286,8 @@ public class PlayerBattle : UnitBattle {
         }
     }
 
-    IEnumerator RestartGame()
+    public void Revive()
     {
-        yield return new WaitForSeconds(3f);
-
         enabled = true;
         dead = false;
         nowHP = HP;

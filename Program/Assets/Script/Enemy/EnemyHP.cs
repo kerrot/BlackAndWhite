@@ -75,6 +75,7 @@ public class EnemyHP : MonoBehaviour
 
                     hpUI.RecoverUI.gameObject.SetActive(false);
                     Barrier.Value = barrierStrength;
+                    recoverSubject.OnNext(Unit.Default);
                 }
             }
 

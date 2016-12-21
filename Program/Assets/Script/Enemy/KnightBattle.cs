@@ -22,7 +22,7 @@ public class KnightBattle : EnemyBattle {
         HPState = GetComponent<EnemyHP>();
         if (HPState)
         {
-            HPState.OnRecover.Subscribe(_ => Revive()).AddTo(this);
+            HPState.OnRecover.Subscribe(_ => reviveSubject.OnNext(Unit.Default)).AddTo(this);
         }
     }
 
@@ -56,7 +56,9 @@ public class KnightBattle : EnemyBattle {
             return false;
         }
 
-		Attribute attr = GetComponent<Attribute>();
+        attackedSubject.OnNext(Unit.Default);
+
+        Attribute attr = GetComponent<Attribute>();
 		if (attr && attr.ProcessAttack(unit, attack))
 		{
 			return false;
@@ -86,21 +88,6 @@ public class KnightBattle : EnemyBattle {
         {
             peace.gameObject.SetActive(true);
         }
-
-
-        deadStart = Time.time;
-
-        var disposable = new SingleAssignmentDisposable();
-        disposable.Disposable = this.UpdateAsObservable().Subscribe(_ =>
-        {
-            if (Time.time - deadStart > deadTime)
-            {
-                reviveSubject.OnNext(Unit.Default);
-                disposable.Dispose();
-            }
-            
-        });
-        //dieSubject.OnNext(gameObject);
     }
 
     public void Revive()

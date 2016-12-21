@@ -114,6 +114,8 @@ public class EnemyBattle : UnitBattle
         }
         #endregion
 
+        bool physics = true;
+        
         if (attack.Type == AttackType.ATTACK_TYPE_SLASH && slash.CanSlash)
         {
             Die(attack);
@@ -127,12 +129,13 @@ public class EnemyBattle : UnitBattle
 
                 //Observable.FromCoroutine(_ => LateDie(attack)).Subscribe().AddTo(this);
                 slash.TriggerSlash();
+                physics = false;
             }
             else
             {
                 HPState.Barrier.Value = 0;
                 slash.TriggerSlash();
-                explosionAttacked.OnNext(gameObject);                
+                explosionAttacked.OnNext(gameObject);
             }
         }
         else if (HPState.Barrier.Value <= 0)
@@ -196,6 +199,12 @@ public class EnemyBattle : UnitBattle
             }
         }
 
+        if (physics)
+        {
+            Vector3 direction = transform.position - unit.transform.position;
+            AddForce(direction.normalized * attack.Force);
+        }
+
         return true;
     }
 
@@ -218,7 +227,7 @@ public class EnemyBattle : UnitBattle
                 act.Attacker = this;
                 act.Atk = new Attack() { Type = AttackType.ATTACK_TYPE_EXPLOSION,
                                         Element = attr && Attribute.isBase(attr.Type) ? attr.Type : attack.Element,
-										Strength = 5f};
+										Strength = 5f, Force = 100000};
             }
         }
 

@@ -7,7 +7,7 @@ public class BossWater : DelaySkill
 {
 	protected override void DelayStart()
 	{
-		OnBlow.Subscribe (_ => SkillStart ());
+		OnBlow.Subscribe (_ => SkillStart ()).AddTo(this);
 	}
 
 	void SkillStart()

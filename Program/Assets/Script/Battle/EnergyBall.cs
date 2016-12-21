@@ -22,11 +22,17 @@ public class EnergyBall : EnergyBase
     [SerializeField]
     private float power;
 
+    static private Subject<EnergyBall> formSubject = new Subject<EnergyBall>();
+    static public IObservable<EnergyBall> OnForm { get { return formSubject; } }
+
     public bool Formed { get { return current == gatherCount; } }
     int current = 0;
 
     Rigidbody rd;
     int floorLayer;
+    float radis;
+
+    System.IDisposable groundSubject;
 
     void Start()
     {
@@ -48,34 +54,22 @@ public class EnergyBall : EnergyBase
         Color tmp = Attribute.GetColor(Type, 1.0f);
         effectOn.startColor = tmp;
         lightOn.color = tmp;
+        radis = GetComponent<SphereCollider>().radius;
 
         rd = GetComponent<Rigidbody>();
 
-        this.OnTriggerEnterAsObservable().Subscribe(o => OnGround(o));
+        groundSubject = this.OnTriggerEnterAsObservable().Subscribe(o => OnGround(o));
     }
 
     void OnGround(Collider other)
     {
-        if (rd.useGravity)
+        if (other.gameObject.layer == floorLayer)
         {
-            if (other.gameObject.layer == floorLayer)
-            {
-                rd.useGravity = false;
-                float radis = GetComponent<SphereCollider>().radius;
-                if (transform.position.y < radis)
-                {
-                    transform.position = new Vector3(transform.position.x, radis, transform.position.z);
-                }
-            }
-        }
-        else if(Formed)
-        {
-            PlayerSkill skill = other.gameObject.GetComponent<PlayerSkill>();
-            if (skill)
-            {
-                skill.Charge(Type, power);
-                Destroy(gameObject);
-            }
+            rd.useGravity = false;
+            rd.velocity = Vector3.zero;
+
+            transform.position = new Vector3(transform.position.x, radis, transform.position.z);
+            groundSubject.Dispose();
         }
     }
 
@@ -92,6 +86,19 @@ public class EnergyBall : EnergyBase
         {
             effectOn.gameObject.SetActive(true);
             lightOn.gameObject.SetActive(true);
+
+            formSubject.OnNext(this);
+            this.OnTriggerStayAsObservable().Subscribe(o => PlayerCharge(o));
+        }
+    }
+
+    void PlayerCharge(Collider other)
+    {
+        PlayerSkill skill = other.gameObject.GetComponent<PlayerSkill>();
+        if (skill)
+        {
+            skill.Charge(Type, power);
+            Destroy(gameObject);
         }
     }
 }

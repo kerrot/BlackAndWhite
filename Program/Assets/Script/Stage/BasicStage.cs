@@ -12,8 +12,6 @@ public class BasicStage : MonoBehaviour {
     [SerializeField]
     private GameObject slash;
     [SerializeField]
-    private GameObject slashContinue;
-    [SerializeField]
     private EnemyBattle LV1Enemy;
     [SerializeField]
     private GameObject LV2;
@@ -28,7 +26,21 @@ public class BasicStage : MonoBehaviour {
     [SerializeField]
     private GameObject skillHint;
     [SerializeField]
+    private GameObject attri;
+    [SerializeField]
     private GameObject exit;
+    [SerializeField]
+    private ImmunityAura blueAura;
+    [SerializeField]
+    private BlockAttackAura greenAura;
+    [SerializeField]
+    private RoundDamageAura redAura;
+    [SerializeField]
+    private GameObject red;
+    [SerializeField]
+    private GameObject green;
+    [SerializeField]
+    private GameObject blue;
 
     GameSystem system;
 
@@ -38,10 +50,26 @@ public class BasicStage : MonoBehaviour {
     System.IDisposable firstClear;
     System.IDisposable firstCharge;
     System.IDisposable firstSkill;
+    System.IDisposable enemyHint;
 
     void Awake()
     {
         system = GameObject.FindObjectOfType<GameSystem>();
+
+        if (blueAura)
+        {
+            blueAura.OnBlock.Subscribe(_ => ShowEnemyHit(blue)).AddTo(this);
+        }
+
+        if (redAura)
+        {
+            redAura.OnDamage.Subscribe(_ => ShowEnemyHit(red)).AddTo(this);
+        }
+
+        if (greenAura)
+        {
+            greenAura.OnBlock.Subscribe(_ => ShowEnemyHit(green)).AddTo(this);
+        }
     }
 
     void Start ()
@@ -60,6 +88,12 @@ public class BasicStage : MonoBehaviour {
         {
             firstCharge = skill.OnCharge.Subscribe(e => SkillStep()).AddTo(this);
             firstSkill = skill.OnSkill.Subscribe(e => ToExit()).AddTo(this);
+
+            PlayerBattle battle = skill.gameObject.GetComponent<PlayerBattle>();
+            if (battle)
+            {
+                battle.OnDead.Subscribe(_ => Observable.Timer(System.TimeSpan.FromSeconds(3f)).Subscribe(t => battle.Revive())).AddTo(this);
+            }
         }
     }
 	
@@ -67,13 +101,14 @@ public class BasicStage : MonoBehaviour {
     {
         if (slash && slash.activeSelf && Input.GetKeyDown(KeyCode.S) && system)
         {
-            if (slashContinue)
-            {
-                slashContinue.SetActive(false);
-            }
-
             system.GameResume();
             waitSlash.Dispose();
+
+            PlayerSlash player = GameObject.FindObjectOfType<PlayerSlash>();
+            if (player)
+            {
+                player.Slash();
+            }
         }
     }
 
@@ -118,11 +153,6 @@ public class BasicStage : MonoBehaviour {
         if (system)
         {
             system.GamePause();
-        }
-
-        if (slashContinue)
-        {
-            slashContinue.SetActive(true);
         }
 
         firstSlash.Dispose();
@@ -202,6 +232,11 @@ public class BasicStage : MonoBehaviour {
             skillHint.SetActive(true);
         }
 
+        if (attri)
+        {
+            attri.SetActive(true);
+        }
+
         if (energyHint)
         {
             energyHint.SetActive(false);
@@ -223,5 +258,34 @@ public class BasicStage : MonoBehaviour {
         }
 
         firstSkill.Dispose();
+    }
+
+    void ShowEnemyHit(GameObject obj)
+    {
+        if (enemyHint != null)
+        {
+            enemyHint.Dispose();
+        }
+
+        if (red)
+        {
+            red.SetActive(false);
+        }
+
+        if (blue)
+        {
+            blue.SetActive(false);
+        }
+
+        if (green)
+        {
+            green.SetActive(false);
+        }
+
+        if (obj)
+        {
+            obj.SetActive(true);
+            enemyHint = Observable.Timer(System.TimeSpan.FromSeconds(3f)).Subscribe(_ => obj.SetActive(false));
+        }
     }
 }

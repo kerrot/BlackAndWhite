@@ -14,6 +14,9 @@ public class RoundDamageAura : AuraBattle
     [SerializeField]
     private AudioClip disappearSE;
 
+    private Subject<Unit> damageSubject = new Subject<Unit>();
+    public IObservable<Unit> OnDamage { get { return damageSubject; } }
+
     float attackStart;
 
     Collider coll;
@@ -94,6 +97,8 @@ public class RoundDamageAura : AuraBattle
 
             battle.Attacked(this, CreateAttack(AttackType.ATTACK_TYPE_AURA, strength));
             attackStart = Time.time;
+
+            damageSubject.OnNext(Unit.Default);
         }
     }
 }

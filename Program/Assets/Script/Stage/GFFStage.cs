@@ -12,11 +12,21 @@ public class GFFStage : MonoBehaviour {
     protected GameObject alert;
 
 
-    void Awake ()
+    void Awake()
     {
-	    if (core)
+        if (core)
         {
             core.OnDestroyAsObservable().Subscribe(_ => GameClear()).AddTo(this);
+        }
+
+        GameSystem system = GameObject.FindObjectOfType<GameSystem>();
+        if (system)
+        {
+            PlayerBattle battle = GameObject.FindObjectOfType<PlayerBattle>();
+            if (battle)
+            {
+                battle.OnDead.Subscribe(_ => system.GameOver()).AddTo(this);
+            }
         }
     }
 

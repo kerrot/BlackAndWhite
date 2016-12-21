@@ -14,6 +14,7 @@ public class EnergyPeace : EnergyBase
 
     int floorLayer;
     Rigidbody rd;
+    float radis;
 
     void Start()
     {
@@ -29,6 +30,8 @@ public class EnergyPeace : EnergyBase
             rd.velocity = Vector3.up * speed + new Vector3(v.x, 0, v.y);
         }
 
+        radis = GetComponent<SphereCollider>().radius;
+
         this.OnTriggerEnterAsObservable().Subscribe(o => UniRxTriggerEnter(o));
     }
 
@@ -41,11 +44,7 @@ public class EnergyPeace : EnergyBase
                 rd.useGravity = false;
                 rd.velocity = Vector3.zero;
 
-                float radis = GetComponent<SphereCollider>().radius;
-                if (transform.position.y < radis)
-                {
-                    transform.position = new Vector3(transform.position.x, radis, transform.position.z);
-                }
+                transform.position = new Vector3(transform.position.x, radis, transform.position.z);
 
                 FindGatherTarget();
             }
@@ -77,6 +76,23 @@ public class EnergyPeace : EnergyBase
         if (eset.Count() > 0)
         {
             return eset.Aggregate((curMin, x) => (curMin == null || (Vector3.Distance(x.transform.position, transform.position) < Vector3.Distance(curMin.transform.position, transform.position)) ? x : curMin));
+
+            //T min = null;
+            //float distance = Mathf.Infinity;
+            //eset.ToObservable().Subscribe(e =>
+            //{
+            //    if (e)
+            //    {
+            //        float tmp = Vector3.Distance(e.transform.position, transform.position);
+            //        if (tmp < distance)
+            //        {
+            //            min = e;
+            //            distance = tmp;
+            //        }
+            //    }
+            //});
+
+            //return min;
         }
 
         return null;
@@ -92,10 +108,10 @@ public class EnergyPeace : EnergyBase
     void FindGatherTarget()
     {
         // find closest gather target;
-        gatherTarget = FindClosest<EnergyBall>(b => b.Type == Type && !b.Formed);
+        gatherTarget = FindClosest<EnergyBall>(b => b && b.Type == Type && !b.Formed);
         if (!gatherTarget)
         {
-            gatherTarget = FindClosest<EnergyPeace>(p => p.Type == Type && p != this);
+            gatherTarget = FindClosest<EnergyPeace>(p => p && p.Type == Type && p != this);
         }
 
         if (gatherTarget && gatherTarget.GatherTarget != this)
@@ -104,6 +120,10 @@ public class EnergyPeace : EnergyBase
             {
                 gatherTarget = gatherTarget.GatherTarget;
             }
+
+            // target destroyed before reach
+            //var destroySubject = new SingleAssignmentDisposable();
+            //destroySubject.Disposable = gatherTarget.OnDestroyAsObservable().Subscribe(_ => FindGatherTarget());
 
             var disposable = new SingleAssignmentDisposable();
             disposable.Disposable = this.UpdateAsObservable().Subscribe(_ =>
@@ -117,11 +137,9 @@ public class EnergyPeace : EnergyBase
                     rd.velocity = Vector3.zero;
                     rd.useGravity = true;
                     disposable.Dispose();
+                    //destroySubject.Dispose();
                 }
             });
-
-            // target destroyed before reach
-            gatherTarget.OnDestroyAsObservable().Subscribe(_ => FindGatherTarget());
         }
         else
         {

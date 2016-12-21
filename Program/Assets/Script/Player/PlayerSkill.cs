@@ -38,9 +38,14 @@ public class PlayerSkill : MonoBehaviour
 
     PlayerAttribute attri;
     float lastCheck;
+    int skillHash;
+
+    bool isSkilling;
 
     void Awake()
     {
+        skillHash = Animator.StringToHash("PlayerBase.Skill");
+
         mapping.Add(ElementType.ELEMENT_TYPE_RED,  redEnergy);
         mapping.Add(ElementType.ELEMENT_TYPE_GREEN, greenEnergy);
         mapping.Add(ElementType.ELEMENT_TYPE_BLUE, blueEnergy);
@@ -55,7 +60,13 @@ public class PlayerSkill : MonoBehaviour
 
     void UniRxUpdate()
     {
-        if (Time.time - lastCheck <= costCheckTime)
+        AnimatorStateInfo info = anim.GetCurrentAnimatorStateInfo(0);
+        if (info.fullPathHash != skillHash)
+        {
+            isSkilling = false;
+        }
+
+            if (Time.time - lastCheck <= costCheckTime)
         {
             return;
         }
@@ -113,10 +124,11 @@ public class PlayerSkill : MonoBehaviour
         else
         {
             Skill now = skills.SingleOrDefault(s => s.Type == attri.Type);
-            if (now && now.CanSkill())
+            if (now && now.CanSkill() && !isSkilling)
             {
                 castingType = now.Type;
                 anim.SetTrigger("Skill");
+                isSkilling = true;
             }
         }
     }

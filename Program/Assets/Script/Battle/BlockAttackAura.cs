@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿using UniRx;
+using UniRx.Triggers;
+using UnityEngine;
 using System.Collections;
 
 public class BlockAttackAura : AuraBattle
@@ -9,6 +11,9 @@ public class BlockAttackAura : AuraBattle
     private float emissionRate;
     [SerializeField]
     private AudioClip blockSE;
+
+    private Subject<Unit> blockSubject = new Subject<Unit>();
+    public IObservable<Unit> OnBlock { get { return blockSubject; } }
 
     float nowBlock;
 	ParticleSystem.EmissionModule em;
@@ -59,6 +64,11 @@ public class BlockAttackAura : AuraBattle
             {
                 em.enabled = false;
             }
+        }
+
+        if (result)
+        {
+            blockSubject.OnNext(Unit.Default);
         }
 
         return result;

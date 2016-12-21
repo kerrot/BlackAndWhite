@@ -10,7 +10,7 @@ public class BossWood : DelaySkill
 
 	protected override void DelayStart()
 	{
-		OnBlow.Subscribe (_ => SkillStart ());
+		OnBlow.Subscribe (_ => SkillStart ()).AddTo(this);
 	}
 
 	void SkillStart()
@@ -19,7 +19,7 @@ public class BossWood : DelaySkill
 		if (c) 
 		{
 			c.enabled = true;
-			this.OnTriggerEnterAsObservable ().Subscribe (o => UniRxTriggerEnter(o));
+			this.OnTriggerStayAsObservable ().Subscribe (o => UniRxTriggerStay(o));
 		}
 
 		Animator anim = GetComponent<Animator> ();
@@ -29,10 +29,11 @@ public class BossWood : DelaySkill
 		}
 	}
 
-	void UniRxTriggerEnter(Collider other)
+	void UniRxTriggerStay(Collider other)
 	{
 		PlayerBattle player = other.gameObject.GetComponent<PlayerBattle> ();
-		if (player && player.Attacked(this, CreateAttack(AttackType.ATTACK_TYPE_SKILL, strength))) 
+		if (player && player.GetComponent<UnitMove>().CanMove 
+                    && player.Attacked(this, CreateAttack(AttackType.ATTACK_TYPE_SKILL, strength))) 
 		{
             GameObject debuff = Instantiate(GreenTrap, player.gameObject.transform.position, Quaternion.identity) as GameObject;
             debuff.GetComponent<StopMove>().victom = player.GetComponent<UnitMove>();

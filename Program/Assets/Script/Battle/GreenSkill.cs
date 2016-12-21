@@ -12,13 +12,14 @@ public class GreenSkill : UnitBattle {
 
     void Start()
     {
-        this.OnTriggerEnterAsObservable().Subscribe(o => UniRxTriggerEnter(o));
+        this.OnTriggerStayAsObservable().Subscribe(o => UniRxTriggerStay(o));
     }
 
-    void UniRxTriggerEnter(Collider other)
+    void UniRxTriggerStay(Collider other)
     {
         EnemyBattle enemy = other.GetComponent<EnemyBattle>();
-        if (enemy && enemy.Attacked(this, CreateAttack(AttackType.ATTACK_TYPE_SKILL, strength)))
+        if (enemy && enemy.GetComponent<UnitMove>().CanMove 
+                    && enemy.Attacked(this, CreateAttack(AttackType.ATTACK_TYPE_SKILL, strength)))
         {
             GameObject debuff = Instantiate(GreenTrap, enemy.gameObject.transform.position, Quaternion.identity) as GameObject;
             debuff.GetComponent<StopMove>().victom = enemy.GetComponent<EnemyMove>();

@@ -17,6 +17,9 @@ public class ImmunityAura : AuraBattle {
     [SerializeField]
     private float strength;
 
+    private Subject<Unit> blockSubject = new Subject<Unit>();
+    public IObservable<Unit> OnBlock { get { return blockSubject; } }
+
     [Serializable]
     public struct ImmunityType
     {
@@ -34,7 +37,7 @@ public class ImmunityAura : AuraBattle {
         bool result = false;
         foreach (ImmunityType d in data)
         {
-            result = (d.type == AttackType.ATTACK_TYPE_ALL && d.element == attack.Element) ||
+            result |= (d.type == AttackType.ATTACK_TYPE_ALL && d.element == attack.Element) ||
                     (d.element == ElementType.ELEMENT_TYPE_ALL && d.type == attack.Type) ||
                     (d.type == attack.Type && d.element == attack.Element);
 
@@ -49,6 +52,11 @@ public class ImmunityAura : AuraBattle {
 
                 break;
             }
+        }
+
+        if (result)
+        {
+            blockSubject.OnNext(Unit.Default);
         }
 
         return result;

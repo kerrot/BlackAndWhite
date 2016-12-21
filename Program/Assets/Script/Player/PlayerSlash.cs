@@ -22,6 +22,8 @@ public class PlayerSlash : MonoBehaviour {
     private AudioClip slashSE;
     [SerializeField]
     private float strength;
+    [SerializeField]
+    private float force;
 
     public float SlashRadius { get { return slashRadius; } }
     public bool IsSlashing { get { return isSlashing; } }
@@ -148,7 +150,7 @@ public class PlayerSlash : MonoBehaviour {
         }
     }
 
-    bool Slash()
+    public bool Slash()
     {
         if (slashList.Count > 0)
         {
@@ -213,7 +215,7 @@ public class PlayerSlash : MonoBehaviour {
             enemies.ToList().ForEach(e =>
             {
                 EnemyBattle Enemy = e.gameObject.GetComponent<EnemyBattle>();
-                if (Enemy && Enemy.Attacked(battle, battle.CreateAttack(AttackType.ATTACK_TYPE_SLASH, strength)))
+                if (Enemy && Enemy.Attacked(battle, battle.CreateAttack(AttackType.ATTACK_TYPE_SLASH, strength, force)))
                 {
                     ++count;
                 }
