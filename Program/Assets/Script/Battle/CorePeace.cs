@@ -30,6 +30,8 @@ public class CorePeace : MonoBehaviour
 
     Vector3 readyPosition;
 
+    System.IDisposable unionDis;
+
     void Awake()
     {
         anim = GetComponent<Animator>();
@@ -83,8 +85,7 @@ public class CorePeace : MonoBehaviour
 
     void SetDestinetion(Vector3 pos)
     {
-        var disposable = new SingleAssignmentDisposable();
-        disposable.Disposable = this.UpdateAsObservable().Subscribe(_ =>
+        unionDis = this.UpdateAsObservable().Subscribe(_ =>
         {
             if (rd)
             {
@@ -93,7 +94,7 @@ public class CorePeace : MonoBehaviour
                 {
                     rd.velocity = Vector3.zero;
                     reachSubject.OnNext(Unit.Default);
-                    disposable.Dispose();
+                    unionDis.Dispose();
                 }
             }
         });
@@ -101,13 +102,17 @@ public class CorePeace : MonoBehaviour
 
     void Back()
     {
-
         Core.SetActive(false);
         CorePeace[] ps = GameObject.FindObjectsOfType<CorePeace>();
         if ((ps.Length == 3 && ps.All(p => p.Ready)) || (Core && Core.activeSelf))
         {
             Core.SetActive(false);
             breakSubject.OnNext(Unit.Default);
+        }
+
+        if  (unionDis != null)
+        {
+            unionDis.Dispose();
         }
 
         ready = false;
@@ -141,6 +146,11 @@ public class CorePeace : MonoBehaviour
         if (!ready)
         {
             return;
+        }
+
+        if (unionDis != null)
+        {
+            unionDis.Dispose();
         }
 
         gameObject.SetActive(true);

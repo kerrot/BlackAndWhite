@@ -45,7 +45,6 @@ public class PlayerBattle : UnitBattle {
     int EnemyMask;
 
     bool guardAttack = false;
-    Vector3 guardPos;
     Vector3 AttackRange;
     PlayerSlash slash;
 
@@ -80,7 +79,6 @@ public class PlayerBattle : UnitBattle {
         InputController.OnAttackClick.Subscribe(u => Attack()).AddTo(this);
         EnemyManager.OnEnemyClicked.Subscribe(o => Battle(o)).AddTo(this);
         this.UpdateAsObservable().Subscribe(_ => UniRxUpdate());
-		this.LateUpdateAsObservable().Subscribe (_ => UniRxLateUpdate ());
     }
 
     void UniRxUpdate()
@@ -107,25 +105,6 @@ public class PlayerBattle : UnitBattle {
         if (effect && effect.intensity != cuurentIntensity)
         {
             effect.intensity += (cuurentIntensity > effect.intensity) ? 0.001f : -0.001f;
-        }
-
-
-        if (guardAttack && transform.position != guardPos)
-        {
-            if (GetComponent<Rigidbody>().velocity == Vector3.zero)
-            {
-                guardPos = transform.position;
-                anim.enabled = true;
-            }
-        }
-    }
-
-    void UniRxLateUpdate()
-    {
-        if (enabled && anim.enabled && guardAttack)
-        {
-            guardAttack = false;
-            transform.position = guardPos;
         }
     }
 
@@ -213,18 +192,14 @@ public class PlayerBattle : UnitBattle {
             return false;
         }
 
+        AddForce((transform.position - unit.transform.position).normalized * attack.Force);
+
         if (anim.GetBool("Guard") || guardAttack)
         {
             if (attack.Type == AttackType.ATTACK_TYPE_NORMAL)
             {
                 AudioHelper.PlaySE(gameObject, guardSE);
-                anim.enabled = false;
                 guardAttack = true;
-                guardPos = transform.position;
-
-                Vector3 force = (transform.position - unit.transform.position).normalized;
-                Rigidbody rd = GetComponent<Rigidbody>();
-                rd.velocity = force * attack.Force;
 
                 unit.Attacked(this, CreateAttack(AttackType.ATTACK_TYPE_REFLECT, 3f));
             }

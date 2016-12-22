@@ -15,6 +15,12 @@ public class EnemyHP : MonoBehaviour
     private float showHPTime;
     [SerializeField]
     private Transform HPUICenter;
+    [SerializeField]
+    private HPBarUI hpUI;
+    [SerializeField]
+    private bool alwaysShow;
+    [SerializeField]
+    private bool fixPosition;
 
     public FloatReactiveProperty HP = new FloatReactiveProperty();
     public FloatReactiveProperty Barrier = new FloatReactiveProperty();
@@ -24,7 +30,6 @@ public class EnemyHP : MonoBehaviour
 
     public IObservable<Unit> OnRecover { get { return recoverSubject; } }
 
-    HPBarUI hpUI;
     float showHPStart;
 
     void Start()
@@ -32,15 +37,21 @@ public class EnemyHP : MonoBehaviour
         HP.Value = HPMax;
         Barrier.Value = barrierStrength;
 
-        RunTimeUIGenerator ui = GameObject.FindObjectOfType<RunTimeUIGenerator>();
-        if (ui)
+        if (!hpUI)
         {
-            GameObject tmp = ui.CreateHPUI();
-            hpUI = tmp.GetComponent<HPBarUI>();
-            HP.Subscribe(v => hpUI.HPUI.value = v / HPMax);
-            Barrier.Subscribe(v => hpUI.BarrierUI.value = v / barrierStrength);
-            recover.Subscribe(v => hpUI.RecoverUI.value = v / recoverTime);
+            RunTimeUIGenerator ui = GameObject.FindObjectOfType<RunTimeUIGenerator>();
+            if (ui)
+            {
+                GameObject tmp = ui.CreateHPUI();
+                hpUI = tmp.GetComponent<HPBarUI>();
+            }
         }
+
+        HP.Subscribe(v => hpUI.HPUI.value = v / HPMax);
+        Barrier.Subscribe(v => hpUI.BarrierUI.value = v / barrierStrength);
+        recover.Subscribe(v => hpUI.RecoverUI.value = v / recoverTime);
+
+        hpUI.gameObject.SetActive(alwaysShow);
 
         EnemyBattle battle = GetComponent<EnemyBattle>();
         if (battle)
@@ -60,7 +71,10 @@ public class EnemyHP : MonoBehaviour
     {
         if (hpUI.gameObject.activeSelf)
         {
-            hpUI.transform.position = Camera.main.WorldToScreenPoint(HPUICenter.transform.position);
+            if (!fixPosition)
+            {
+                hpUI.transform.position = Camera.main.WorldToScreenPoint(HPUICenter.transform.position);
+            }
 
             if (Barrier.Value <= 0)
             {
@@ -73,7 +87,7 @@ public class EnemyHP : MonoBehaviour
                     //avoid immediately disappear when recover complete.
                     showHPStart = Time.time;
 
-                    hpUI.RecoverUI.gameObject.SetActive(false);
+                    hpUI.RecoverUI.gameObject.SetActive(false || alwaysShow);
                     Barrier.Value = barrierStrength;
                     recoverSubject.OnNext(Unit.Default);
                 }
@@ -81,7 +95,7 @@ public class EnemyHP : MonoBehaviour
 
             if (recover.Value == 0 && Time.time - showHPStart > showHPTime)
             {
-                hpUI.gameObject.SetActive(false);
+                hpUI.gameObject.SetActive(false || alwaysShow);
             }
         }
     }
