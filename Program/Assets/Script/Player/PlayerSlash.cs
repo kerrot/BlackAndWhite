@@ -24,6 +24,8 @@ public class PlayerSlash : MonoBehaviour {
     private float strength;
     [SerializeField]
     private float force;
+    [SerializeField]
+    private GameObject comboHint;
 
     public float SlashRadius { get { return slashRadius; } }
     public bool IsSlashing { get { return isSlashing; } }
@@ -68,6 +70,12 @@ public class PlayerSlash : MonoBehaviour {
 
         EnemyMask = LayerMask.GetMask("Enemy");
         skill = GameObject.FindObjectOfType<WhiteSkill>();
+
+        if (!comboHint)
+        {
+            comboHint = GameObject.Find("ComboHint");
+        }
+        comboHint.SetActive(false);
     }
 
     void Start()
@@ -92,16 +100,23 @@ public class PlayerSlash : MonoBehaviour {
             {
                 anim.SetTrigger("SlashEnd");
                 slashReach = true;
+                if (comboHint)
+                {
+                    comboHint.SetActive(true);
+                }
                 TargetObject = null;
             }
         }
         else if (info.fullPathHash == slashEndHash)
         {
-            if (AutoSlash || (skill && skill.Activated()))
+            if (comboHint && comboHint.activeSelf)
             {
-                continueSlash = true;
+                if (AutoSlash || (skill && skill.Activated()))
+                {
+                    continueSlash = true;
+                }
             }
-
+            
             if (isSlashing == false && continueSlash)
             {
                 Slash();
@@ -110,6 +125,10 @@ public class PlayerSlash : MonoBehaviour {
         else
         {
             continueSlash = false;
+            if (comboHint)
+            {
+                comboHint.SetActive(false);
+            }
         }
 
         SlashRegionDisplay.SetActive(slashList.Count > 0);
@@ -177,7 +196,7 @@ public class PlayerSlash : MonoBehaviour {
 
     public bool SlashEnemy(GameObject Enemy)
 	{
-        if (isSlashing)
+        if (comboHint && comboHint.activeSelf)
         {
             MultiSlash(Input.mousePosition);
             return true;
@@ -192,6 +211,11 @@ public class PlayerSlash : MonoBehaviour {
 
             anim.SetBool("IsSlashing", true);
             anim.SetTrigger("Slash");
+
+            if (skill && skill.Activated())
+            {
+                SlashSpeedUp(slashSpeed = maxSpeedup);
+            }
 
             return true;
         }
@@ -240,10 +264,17 @@ public class PlayerSlash : MonoBehaviour {
 
     void MultiSlash(Vector2 mousePosition)
     {
-        AnimatorStateInfo info = anim.GetCurrentAnimatorStateInfo(0);
-        if (info.fullPathHash == slashEndHash)
+        if (comboHint && comboHint.activeSelf)
         {
             continueSlash = true;
+        }
+    }
+
+    void ComboEnd()
+    {
+        if (comboHint)
+        {
+            comboHint.SetActive(false);
         }
     }
 

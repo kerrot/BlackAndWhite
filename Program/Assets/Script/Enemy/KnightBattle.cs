@@ -92,8 +92,8 @@ public class KnightBattle : EnemyBattle {
 
     public void Revive()
     {
-        coll.enabled = true;
         anim.SetTrigger("Revive");
+        anim.SetTrigger("TelePort");
         if (HPState)
         {
             HPState.Revive();
@@ -111,6 +111,7 @@ public class KnightBattle : EnemyBattle {
     void Landing()
     {
         AudioHelper.PlaySE(gameObject, landingSE);
+        coll.enabled = true;
     }
 
 }

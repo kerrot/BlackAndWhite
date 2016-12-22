@@ -41,6 +41,33 @@ public class BasicStage : MonoBehaviour {
     private GameObject green;
     [SerializeField]
     private GameObject blue;
+    [SerializeField]
+    private GameObject blueEnemy;
+    [SerializeField]
+    private GameObject blueKillHint;
+    [SerializeField]
+    private ImmunityAura weakAura1;
+    [SerializeField]
+    private ImmunityAura weakAura2;
+    [SerializeField]
+    private ImmunityAura weakAura3;
+    [SerializeField]
+    private GameObject weakHint;
+    [SerializeField]
+    private GameObject redSkillHint;
+    [SerializeField]
+    private GameObject greenSkillHint;
+    [SerializeField]
+    private GameObject blueSkillHint;
+    [SerializeField]
+    private GameObject yellowSkillHint;
+    [SerializeField]
+    private GameObject cyanSkillHint;
+    [SerializeField]
+    private GameObject magentaSkillHint;
+    [SerializeField]
+    private GameObject whiteSkillHint;
+
 
     GameSystem system;
 
@@ -50,6 +77,7 @@ public class BasicStage : MonoBehaviour {
     System.IDisposable firstClear;
     System.IDisposable firstCharge;
     System.IDisposable firstSkill;
+    System.IDisposable firstblue;
     System.IDisposable enemyHint;
 
     void Awake()
@@ -70,6 +98,21 @@ public class BasicStage : MonoBehaviour {
         {
             greenAura.OnBlock.Subscribe(_ => ShowEnemyHit(green)).AddTo(this);
         }
+
+        if (weakAura1)
+        {
+            weakAura1.OnBlock.Subscribe(_ => ShowEnemyHit(weakHint)).AddTo(this);
+        }
+
+        if (weakAura2)
+        {
+            weakAura2.OnBlock.Subscribe(_ => ShowEnemyHit(weakHint)).AddTo(this);
+        }
+
+        if (weakAura3)
+        {
+            weakAura3.OnBlock.Subscribe(_ => ShowEnemyHit(weakHint)).AddTo(this);
+        }
     }
 
     void Start ()
@@ -86,7 +129,7 @@ public class BasicStage : MonoBehaviour {
         PlayerSkill skill = GameObject.FindObjectOfType<PlayerSkill>();
         if (skill)
         {
-            firstCharge = skill.OnCharge.Subscribe(e => SkillStep()).AddTo(this);
+            firstCharge = skill.OnCharge.Subscribe(e => ToBlueKill()).AddTo(this);
             firstSkill = skill.OnSkill.Subscribe(e => ToExit()).AddTo(this);
 
             PlayerBattle battle = skill.gameObject.GetComponent<PlayerBattle>();
@@ -94,7 +137,15 @@ public class BasicStage : MonoBehaviour {
             {
                 battle.OnDead.Subscribe(_ => Observable.Timer(System.TimeSpan.FromSeconds(3f)).Subscribe(t => battle.Revive())).AddTo(this);
             }
+
+            PlayerAttribute attr = skill.gameObject.GetComponent<PlayerAttribute>();
+            if (attr)
+            {
+                attr.OnChange.Subscribe(a => ShowSkillHint(a)).AddTo(this);
+            }
         }
+
+        firstblue = blueEnemy.OnDestroyAsObservable().Subscribe(_ => SkillStep()).AddTo(this);
     }
 	
     void CheckSlash()
@@ -185,7 +236,7 @@ public class BasicStage : MonoBehaviour {
         }
 
         firstClear = EnemyManager.OnEnemyEmpty.Subscribe(o => Observable.FromCoroutine(ToLV3).Subscribe()).AddTo(this);
-        RegisterEnemy();
+        //RegisterEnemy();
     }
 
     IEnumerator ToLV3()
@@ -213,7 +264,12 @@ public class BasicStage : MonoBehaviour {
             energyHint.SetActive(true);
         }
 
-        RegisterEnemy();
+        if (attri)
+        {
+            attri.SetActive(true);
+        }
+
+        //RegisterEnemy();
     }
 
     void RegisterEnemy()
@@ -232,14 +288,24 @@ public class BasicStage : MonoBehaviour {
             skillHint.SetActive(true);
         }
 
-        if (attri)
+        if (blueKillHint)
         {
-            attri.SetActive(true);
+            blueKillHint.SetActive(false);
         }
 
+        firstblue.Dispose();
+    }
+
+    void ToBlueKill()
+    {
         if (energyHint)
         {
             energyHint.SetActive(false);
+        }
+
+        if (blueKillHint)
+        {
+            blueKillHint.SetActive(true);
         }
 
         firstCharge.Dispose();
@@ -282,10 +348,51 @@ public class BasicStage : MonoBehaviour {
             green.SetActive(false);
         }
 
+        if (weakHint)
+        {
+            weakHint.SetActive(false);
+        }
+
         if (obj)
         {
             obj.SetActive(true);
             enemyHint = Observable.Timer(System.TimeSpan.FromSeconds(3f)).Subscribe(_ => obj.SetActive(false));
+        }
+    }
+
+    void ShowSkillHint(ElementType type)
+    {
+        redSkillHint.SetActive(false);
+        greenSkillHint.SetActive(false);
+        blueSkillHint.SetActive(false);
+        yellowSkillHint.SetActive(false);
+        cyanSkillHint.SetActive(false);
+        magentaSkillHint.SetActive(false);
+        whiteSkillHint.SetActive(false);
+
+        switch (type)
+        {
+            case ElementType.ELEMENT_TYPE_RED:
+                redSkillHint.SetActive(true);
+                break;
+            case ElementType.ELEMENT_TYPE_GREEN:
+                greenSkillHint.SetActive(true);
+                break;
+            case ElementType.ELEMENT_TYPE_BLUE:
+                blueSkillHint.SetActive(true);
+                break;
+            case ElementType.ELEMENT_TYPE_YELLOW:
+                yellowSkillHint.SetActive(true);
+                break;
+            case ElementType.ELEMENT_TYPE_CYAN:
+                cyanSkillHint.SetActive(true);
+                break;
+            case ElementType.ELEMENT_TYPE_MAGENTA:
+                magentaSkillHint.SetActive(true);
+                break;
+            case ElementType.ELEMENT_TYPE_WHITE:
+                whiteSkillHint.SetActive(true);
+                break;
         }
     }
 }

@@ -41,7 +41,7 @@ public class CyanSkill : AuraBattle {
 				enemyMapping.Add (enemy, Time.time);
 			}
 
-			enemy.Attacked(this, CreateAttack(AttackType.ATTACK_TYPE_SKILL, strength));
+			enemy.Attacked(this, CreateAttack(AttackType.ATTACK_TYPE_SKILL, strength, force));
 		}
 	}
 }

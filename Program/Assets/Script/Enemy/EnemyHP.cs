@@ -21,6 +21,8 @@ public class EnemyHP : MonoBehaviour
     private bool alwaysShow;
     [SerializeField]
     private bool fixPosition;
+    
+    public bool CanRecover = true;
 
     public FloatReactiveProperty HP = new FloatReactiveProperty();
     public FloatReactiveProperty Barrier = new FloatReactiveProperty();
@@ -79,7 +81,11 @@ public class EnemyHP : MonoBehaviour
             if (Barrier.Value <= 0)
             {
                 hpUI.RecoverUI.gameObject.SetActive(true);
-                recover.Value += Time.deltaTime;
+
+                if (CanRecover)
+                {
+                    recover.Value += Time.deltaTime;
+                }
                 if (recover.Value > recoverTime)
                 {
                     recover.Value = 0;

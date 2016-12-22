@@ -49,6 +49,7 @@ public class KnightAttack : MonoBehaviour {
         }
 
         idleHash = Animator.StringToHash("EnemyBase.Idle");
+        attackHash = Animator.StringToHash("EnemyBase.Attack");
         anim = GetComponent<Animator>();
         battle = GetComponent<UnitBattle>();
         movement = GetComponent<EnemyMove>();
@@ -63,6 +64,16 @@ public class KnightAttack : MonoBehaviour {
 
     void UniRxUpdate()
     {
+        AnimatorStateInfo info = anim.GetCurrentAnimatorStateInfo(0);
+        if (info.fullPathHash != attackHash)
+        {
+            weaponCollider.enabled = false;
+            if (attackDis != null)
+            {
+                attackDis.Dispose();
+            }
+        }
+
         if (!coll.enabled)
         {
             return;
@@ -98,8 +109,8 @@ public class KnightAttack : MonoBehaviour {
             }
             else
             {
-                AnimatorStateInfo info = anim.GetCurrentAnimatorStateInfo(0);
-                if (info.fullPathHash == idleHash && Vector3.Distance(player.transform.position, transform.position) <= movement.StopRadius)
+                AnimatorStateInfo idleInfo = anim.GetCurrentAnimatorStateInfo(0);
+                if (idleInfo.fullPathHash == idleHash && Vector3.Distance(player.transform.position, transform.position) <= movement.StopRadius)
                 {
                     movement.FaceTarget(player.transform.position);
                     anim.SetTrigger("Attack");

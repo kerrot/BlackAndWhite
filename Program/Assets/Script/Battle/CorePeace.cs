@@ -21,12 +21,13 @@ public class CorePeace : MonoBehaviour
     static public IObservable<Unit> OnBreak { get { return breakSubject; } }
 
     private Subject<Unit> reachSubject = new Subject<Unit>();
+    private BoolReactiveProperty ready = new BoolReactiveProperty();
+    public IObservable<bool> OnReady { get { return ready; } }
 
     Animator anim;
     Rigidbody rd;
 
-    public bool Ready { get { return ready; } }
-    bool ready = false;
+    public bool Ready { get { return ready.Value; } }
 
     Vector3 readyPosition;
 
@@ -47,7 +48,7 @@ public class CorePeace : MonoBehaviour
 
     void OnEnable()
     {
-        if (!ready)
+        if (!ready.Value)
         {
             transform.position = Vector3.zero;
             if (anim)
@@ -60,14 +61,8 @@ public class CorePeace : MonoBehaviour
 
     void CheckUnion()
     {
-        ready = true;
+        ready.Value = true;
         readyPosition = transform.position;
-        var disposable = new SingleAssignmentDisposable();
-        disposable.Disposable = OnUnion.Subscribe(p =>
-        {
-            Union(p);
-            disposable.Dispose();
-        }).AddTo(this);
 
         CorePeace[] ps = GameObject.FindObjectsOfType<CorePeace>();
         if (ps.Length == 3 && ps.All(p => p.Ready))
@@ -85,6 +80,11 @@ public class CorePeace : MonoBehaviour
 
     void SetDestinetion(Vector3 pos)
     {
+        if (unionDis != null)
+        {
+            unionDis.Dispose();
+        }
+
         unionDis = this.UpdateAsObservable().Subscribe(_ =>
         {
             if (rd)
@@ -102,20 +102,15 @@ public class CorePeace : MonoBehaviour
 
     void Back()
     {
-        Core.SetActive(false);
         CorePeace[] ps = GameObject.FindObjectsOfType<CorePeace>();
         if ((ps.Length == 3 && ps.All(p => p.Ready)) || (Core && Core.activeSelf))
         {
-            Core.SetActive(false);
             breakSubject.OnNext(Unit.Default);
         }
 
-        if  (unionDis != null)
-        {
-            unionDis.Dispose();
-        }
-
-        ready = false;
+        Core.SetActive(false);
+        gameObject.SetActive(true);
+        ready.Value = false;
 
         if (anim)
         {
@@ -143,14 +138,9 @@ public class CorePeace : MonoBehaviour
 
     void Break()
     {
-        if (!ready)
+        if (!ready.Value)
         {
             return;
-        }
-
-        if (unionDis != null)
-        {
-            unionDis.Dispose();
         }
 
         gameObject.SetActive(true);
@@ -172,7 +162,7 @@ public class CorePeace : MonoBehaviour
 
     void Union(Vector3 pos)
     {
-        if (!ready)
+        if (!ready.Value)
         {
             return;
         }
@@ -188,7 +178,6 @@ public class CorePeace : MonoBehaviour
         disposable.Disposable = reachSubject.Subscribe(_ =>
         {
             gameObject.SetActive(false);
-            
             if (Core)
             {
                 Core.SetActive(true);
@@ -197,5 +186,10 @@ public class CorePeace : MonoBehaviour
 
             disposable.Dispose();
         });
+    }
+
+    public void Register()
+    {
+        OnUnion.Subscribe(p => Union(p)).AddTo(this);
     }
 }

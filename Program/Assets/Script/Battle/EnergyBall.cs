@@ -25,6 +25,9 @@ public class EnergyBall : EnergyBase
     static private Subject<EnergyBall> formSubject = new Subject<EnergyBall>();
     static public IObservable<EnergyBall> OnForm { get { return formSubject; } }
 
+    static private Subject<EnergyBall> newSubject = new Subject<EnergyBall>();
+    static public IObservable<EnergyBall> OnNew { get { return newSubject; } }
+
     public bool Formed { get { return current == gatherCount; } }
     int current = 0;
 
@@ -70,6 +73,8 @@ public class EnergyBall : EnergyBase
 
             transform.position = new Vector3(transform.position.x, radis, transform.position.z);
             groundSubject.Dispose();
+
+            newSubject.OnNext(this);
         }
     }
 

@@ -162,9 +162,12 @@ public class PlayerBattle : UnitBattle {
         PlayerMove.CanRotate = false;
         anim.SetTrigger("Attack");
 
-        AudioHelper.PlaySE(gameObject, attackSE);
-
         attackSubject.OnNext(Unit.Default);
+    }
+
+    void AttackStart()
+    {
+        AudioHelper.PlaySE(gameObject, attackSE);
     }
 
     void AttackHit()

@@ -19,6 +19,8 @@ public class EnemyBattle : UnitBattle
     protected GameObject wanderEffect;
     [SerializeField]
     protected GameObject energyPeace;
+    [SerializeField]
+    protected int peaceCount = 2;
 
     protected Subject<Unit> attackedSubject = new Subject<Unit>();
     protected Subject<GameObject> dieSubject = new Subject<GameObject>();
@@ -227,28 +229,28 @@ public class EnemyBattle : UnitBattle
                 act.Attacker = this;
                 act.Atk = new Attack() { Type = AttackType.ATTACK_TYPE_EXPLOSION,
                                         Element = attr && Attribute.isBase(attr.Type) ? attr.Type : attack.Element,
-										Strength = 5f, Force = 100000};
+										Strength = 5f, Force = 50000};
             }
         }
 
         
         if (attr && Attribute.isBase(attr.Type))
         {
-            ProduceEnergyPeace(attr.Type, 2);
+            ProduceEnergyPeace(attr.Type, peaceCount);
         }
         else
         {
             if ((attack.Element & ElementType.ELEMENT_TYPE_RED) != 0)
             {
-                ProduceEnergyPeace(ElementType.ELEMENT_TYPE_RED, 1);
+                ProduceEnergyPeace(ElementType.ELEMENT_TYPE_RED, peaceCount / 2);
             }
             if ((attack.Element & ElementType.ELEMENT_TYPE_GREEN) != 0)
             {
-                ProduceEnergyPeace(ElementType.ELEMENT_TYPE_GREEN, 1);
+                ProduceEnergyPeace(ElementType.ELEMENT_TYPE_GREEN, peaceCount / 2);
             }
             if ((attack.Element & ElementType.ELEMENT_TYPE_BLUE) != 0)
             {
-                ProduceEnergyPeace(ElementType.ELEMENT_TYPE_BLUE, 1);
+                ProduceEnergyPeace(ElementType.ELEMENT_TYPE_BLUE, peaceCount / 2);
             }
         }
 

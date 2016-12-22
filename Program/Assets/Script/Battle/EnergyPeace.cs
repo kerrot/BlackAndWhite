@@ -16,6 +16,9 @@ public class EnergyPeace : EnergyBase
     Rigidbody rd;
     float radis;
 
+    System.IDisposable ground;
+    System.IDisposable gather;
+
     void Start()
     {
         floorLayer = LayerMask.NameToLayer("Floor");
@@ -32,7 +35,9 @@ public class EnergyPeace : EnergyBase
 
         radis = GetComponent<SphereCollider>().radius;
 
-        this.OnTriggerEnterAsObservable().Subscribe(o => UniRxTriggerEnter(o));
+        ground = this.OnTriggerEnterAsObservable().Subscribe(o => UniRxTriggerEnter(o));
+
+        EnergyBall.OnNew.Subscribe(e => Regather(e)).AddTo(this);
     }
 
     void UniRxTriggerEnter(Collider other)
@@ -47,9 +52,16 @@ public class EnergyPeace : EnergyBase
                 transform.position = new Vector3(transform.position.x, radis, transform.position.z);
 
                 FindGatherTarget();
+
+                ground.Dispose();
+                gather = this.OnTriggerStayAsObservable().Subscribe(o => UniRxTriggerStay(o));
             }
         }
-        else if (gatherTarget && other.gameObject.GetComponent<EnergyBase>() == gatherTarget)
+    }
+
+    void UniRxTriggerStay(Collider other)
+    {
+        if (gatherTarget && other.gameObject.GetComponent<EnergyBase>() == gatherTarget)
         {
             EnergyPeace p = other.gameObject.GetComponent<EnergyPeace>();
             if (p)
@@ -64,6 +76,8 @@ public class EnergyPeace : EnergyBase
                     b.Gather();
                 }
             }
+
+            gather.Dispose();
 
             Destroy(gameObject);
         }
@@ -121,10 +135,6 @@ public class EnergyPeace : EnergyBase
                 gatherTarget = gatherTarget.GatherTarget;
             }
 
-            // target destroyed before reach
-            //var destroySubject = new SingleAssignmentDisposable();
-            //destroySubject.Disposable = gatherTarget.OnDestroyAsObservable().Subscribe(_ => FindGatherTarget());
-
             var disposable = new SingleAssignmentDisposable();
             disposable.Disposable = this.UpdateAsObservable().Subscribe(_ =>
             {
@@ -137,13 +147,23 @@ public class EnergyPeace : EnergyBase
                     rd.velocity = Vector3.zero;
                     rd.useGravity = true;
                     disposable.Dispose();
-                    //destroySubject.Dispose();
+                    ground = this.OnTriggerEnterAsObservable().Subscribe(o => UniRxTriggerEnter(o));
                 }
             });
         }
         else
         {
             gatherTarget = null;
+        }
+    }
+
+    void Regather(EnergyBall ball)
+    {
+        if (Type == ball.Type && gatherTarget is EnergyPeace)
+        {
+            FindGatherTarget();
+            ground.Dispose();
+            gather = this.OnTriggerStayAsObservable().Subscribe(o => UniRxTriggerStay(o));
         }
     }
 }

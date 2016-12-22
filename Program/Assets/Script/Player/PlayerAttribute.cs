@@ -21,6 +21,9 @@ public class PlayerAttribute : Attribute
     public IObservable<bool> GreenOn { get { return greenOn; } }
     public IObservable<bool> BlueOn { get { return blueOn; } }
 
+    private Subject<ElementType> attrChange = new Subject<ElementType>();
+    public IObservable<ElementType> OnChange { get { return attrChange; } }
+
     Material lanceEffectmat;
     
 
@@ -46,5 +49,7 @@ public class PlayerAttribute : Attribute
         {
             mapping[ele].Value = active;
         }
+
+        attrChange.OnNext(type);
     }
 }
