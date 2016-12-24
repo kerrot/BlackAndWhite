@@ -61,7 +61,14 @@ public class EnergyBall : EnergyBase
 
         rd = GetComponent<Rigidbody>();
 
-        groundSubject = this.OnTriggerEnterAsObservable().Subscribe(o => OnGround(o));
+        if (Formed)
+        {
+            this.OnTriggerStayAsObservable().Subscribe(o => PlayerCharge(o));
+        }
+        else
+        {
+            groundSubject = this.OnTriggerEnterAsObservable().Subscribe(o => OnGround(o));
+        }
     }
 
     void OnGround(Collider other)

@@ -130,7 +130,6 @@ public class BasicStage : MonoBehaviour {
         if (skill)
         {
             firstCharge = skill.OnCharge.Subscribe(e => ToBlueKill()).AddTo(this);
-            firstSkill = skill.OnSkill.Subscribe(e => ToExit()).AddTo(this);
 
             PlayerBattle battle = skill.gameObject.GetComponent<PlayerBattle>();
             if (battle)
@@ -283,6 +282,12 @@ public class BasicStage : MonoBehaviour {
 
     void SkillStep()
     {
+        PlayerSkill skill = GameObject.FindObjectOfType<PlayerSkill>();
+        if (skill)
+        {
+            firstSkill = skill.OnSkill.Subscribe(e => ToExit()).AddTo(this);
+        }
+
         if (skillHint)
         {
             skillHint.SetActive(true);

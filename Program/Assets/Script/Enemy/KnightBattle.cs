@@ -24,6 +24,8 @@ public class KnightBattle : EnemyBattle {
         {
             HPState.OnRecover.Subscribe(_ => reviveSubject.OnNext(Unit.Default)).AddTo(this);
         }
+
+        anim.SetTrigger("TelePort");
     }
 
     void Start()

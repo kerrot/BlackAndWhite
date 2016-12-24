@@ -94,7 +94,7 @@ public class EnemyManager : MonoBehaviour
 
     public void AddMonster(GameObject obj)
     {
-        if (obj != null)
+        if (obj != null && obj.GetComponentInChildren<EnemyBattle>())
         {
             if (monsters.Contains(obj))
             {
