@@ -20,7 +20,7 @@ public class EnemyMove : UnitMove {
     public float StopRadius { get { return stopRadius; } }
 
     Animator anim;
-    NavMeshAgent agent;
+    UnityEngine.AI.NavMeshAgent agent;
 
     int moveHash;
 
@@ -35,7 +35,7 @@ public class EnemyMove : UnitMove {
         anim = GetComponent<Animator>();
         player = GameObject.FindObjectOfType<PlayerBattle>();
 
-        agent = GetComponent<NavMeshAgent>();
+        agent = GetComponent<UnityEngine.AI.NavMeshAgent>();
         agent.updatePosition = false;
         agent.updateRotation = false;
 
@@ -98,8 +98,8 @@ public class EnemyMove : UnitMove {
         if (player && !player.Missing && CanMove)
         {
             Vector2 offset = Random.insideUnitCircle * stopRadius;
-            NavMeshHit navHit;
-            if (NavMesh.SamplePosition(player.transform.position + new Vector3(offset.x, 0, offset.y), out navHit, 1.0f, NavMesh.AllAreas))
+            UnityEngine.AI.NavMeshHit navHit;
+            if (UnityEngine.AI.NavMesh.SamplePosition(player.transform.position + new Vector3(offset.x, 0, offset.y), out navHit, 1.0f, UnityEngine.AI.NavMesh.AllAreas))
             {
                 transform.position = navHit.position;
             }

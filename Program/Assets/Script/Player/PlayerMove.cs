@@ -11,8 +11,8 @@ public class PlayerMove : UnitMove {
     public GameObject TargetObject;
 
     Animator anim;
-    NavMeshAgent agent;
-
+    UnityEngine.AI.NavMeshAgent agent;
+    Vector3 keyPosition;
     int floorMask;
 
     void Awake() {
@@ -22,9 +22,11 @@ public class PlayerMove : UnitMove {
 
         InputController.OnMouseDown.Subscribe(p => StartMove(p)).AddTo(this);
         InputController.OnMousePressed.Subscribe(p => CheckMotion(p)).AddTo(this);
+        InputController.OnMove.Subscribe(v => KeyMove(v)).AddTo(this);
+        InputController.OnStop.Subscribe(v => KeyStop()).AddTo(this);
         //InputController.OnMouseUp.Subscribe(p => StopGuard(p)).AddTo(this);
 
-        agent = GetComponent<NavMeshAgent>();
+        agent = GetComponent<UnityEngine.AI.NavMeshAgent>();
         agent.updatePosition = false;
         agent.updateRotation = false;
 
@@ -43,6 +45,29 @@ public class PlayerMove : UnitMove {
         anim.SetBool("IsMove", true);
 
         SetDestination(mousePosition);
+    }
+
+    void KeyMove(Vector2 moveDirection)
+    {
+        if (PlayerBattle.IsDead || !CanRotate)
+        {
+            return;
+        }
+
+        keyPosition = transform.position;
+        keyPosition.x += moveDirection.x;
+        keyPosition.z += moveDirection.y;
+
+        TargetObject.transform.position = keyPosition;
+
+        transform.LookAt(TargetObject.transform);
+
+        anim.SetBool("IsMove", true);
+    }
+
+    void KeyStop()
+    {
+        anim.SetBool("IsMove", false);
     }
 
     void CheckMotion(Vector2 mousePosition)
@@ -118,8 +143,8 @@ public class PlayerMove : UnitMove {
 			}
 			else
 			{
-				NavMeshHit navHit;
-				if (NavMesh.SamplePosition(anim.rootPosition, out navHit, 1.0f, NavMesh.AllAreas))
+				UnityEngine.AI.NavMeshHit navHit;
+				if (UnityEngine.AI.NavMesh.SamplePosition(anim.rootPosition, out navHit, 1.0f, UnityEngine.AI.NavMesh.AllAreas))
 				{
 					transform.position = navHit.position;
 				}

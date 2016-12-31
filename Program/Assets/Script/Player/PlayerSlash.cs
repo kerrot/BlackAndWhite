@@ -45,7 +45,7 @@ public class PlayerSlash : MonoBehaviour {
     bool isSlashing = false;
     bool slashReach = false;
     bool continueSlash = false;
-
+    bool slashComboStart;
     List<GameObject> slashList = new List<GameObject>();
 
     Vector3 slashRange;
@@ -249,10 +249,12 @@ public class PlayerSlash : MonoBehaviour {
         if (count > 0)
         {
             slashCount.OnNext(count);
-            if (continueSlash)
+            if (continueSlash && slashComboStart)
             {
                 comboSlash.OnNext(Unit.Default);
             }
+
+            slashComboStart = true;
         }
 
         AudioHelper.PlaySE(gameObject, slashSE);
@@ -280,6 +282,11 @@ public class PlayerSlash : MonoBehaviour {
 
     public void SlashSpeedUp(float speed)
     {
+        if (speed == 0)
+        {
+            slashComboStart = false;
+        }
+
         PlayerTime time = GetComponent<PlayerTime>();
         if (time)
         {

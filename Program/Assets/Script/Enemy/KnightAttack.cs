@@ -153,8 +153,8 @@ public class KnightAttack : MonoBehaviour {
         {
             Vector2 offset = Random.insideUnitCircle;
             Vector3 shift = new Vector3(offset.x, 0, offset.y) * movement.StopRadius + transform.position;
-            NavMeshHit navHit;
-            if (NavMesh.SamplePosition(shift, out navHit, 1.0f, NavMesh.AllAreas))
+            UnityEngine.AI.NavMeshHit navHit;
+            if (UnityEngine.AI.NavMesh.SamplePosition(shift, out navHit, 1.0f, UnityEngine.AI.NavMesh.AllAreas))
             {
                 shift = navHit.position;
             }

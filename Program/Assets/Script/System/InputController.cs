@@ -25,9 +25,13 @@ public class InputController : MonoBehaviour {
     static private Subject<Unit> attackClick = new Subject<Unit>();
     static private Subject<Unit> slashClick = new Subject<Unit>();
     static private Subject<Unit> skillClick = new Subject<Unit>();
+    static private Subject<Vector2> moveByKey = new Subject<Vector2>();
+    static private Subject<Unit> stopByKey = new Subject<Unit>();
     static public IObservable<Unit> OnAttackClick { get { return attackClick; } }
     static public IObservable<Unit> OnSlashClick { get { return slashClick; } }
     static public IObservable<Unit> OnSkillClick { get { return skillClick; } }
+    static public IObservable<Vector2> OnMove { get { return moveByKey; } }
+    static public IObservable<Unit> OnStop { get { return stopByKey; } }
 
     static private Subject<Unit> redClick = new Subject<Unit>();
     static private Subject<Unit> greenClick = new Subject<Unit>();
@@ -41,6 +45,7 @@ public class InputController : MonoBehaviour {
     private float secondClickTime;
     private bool isMousePressed = false;
     private bool pressOnUI = false;
+    private Vector2 moveDirection;
 
 	void Start()
 	{
@@ -91,6 +96,17 @@ public class InputController : MonoBehaviour {
         if (Input.GetKeyDown(KeyCode.Q))
         {
             blueClick.OnNext(Unit.Default);
+        }
+
+        if (Input.GetKey(KeyCode.UpArrow) || Input.GetKey(KeyCode.DownArrow) || Input.GetKey(KeyCode.LeftArrow) || Input.GetKey(KeyCode.RightArrow))
+        {
+            moveDirection.y = Input.GetAxis("Vertical");
+            moveDirection.x = Input.GetAxis("Horizontal");
+            moveByKey.OnNext(moveDirection);
+        }
+        else if (Input.GetKeyUp(KeyCode.UpArrow) || Input.GetKeyUp(KeyCode.DownArrow) || Input.GetKeyUp(KeyCode.LeftArrow) || Input.GetKeyUp(KeyCode.RightArrow))
+        {
+            stopByKey.OnNext(Unit.Default);
         }
 
 

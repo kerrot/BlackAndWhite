@@ -68,8 +68,8 @@ public class CorePeace : MonoBehaviour
         if (ps.Length == 3 && ps.All(p => p.Ready))
         {
             Vector3 pos = ps.Select(x => x.transform.position).Aggregate((acc, cur) => acc + cur) / ps.Length;
-            NavMeshHit navHit;
-            if (NavMesh.SamplePosition(pos, out navHit, 1.0f, NavMesh.AllAreas))
+            UnityEngine.AI.NavMeshHit navHit;
+            if (UnityEngine.AI.NavMesh.SamplePosition(pos, out navHit, 1.0f, UnityEngine.AI.NavMesh.AllAreas))
             {
                 pos = navHit.position;
             }

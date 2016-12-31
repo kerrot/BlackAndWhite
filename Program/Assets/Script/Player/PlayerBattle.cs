@@ -159,7 +159,6 @@ public class PlayerBattle : UnitBattle {
             transform.LookAt(enemy.transform);
         }
 
-        PlayerMove.CanRotate = false;
         anim.SetTrigger("Attack");
 
         attackSubject.OnNext(Unit.Default);

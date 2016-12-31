@@ -84,7 +84,7 @@ public class GameSystem : SingletonMonoBehaviour<GameSystem>
     {
         if (multiSlash && num > 1)
         {
-            multiSlash.Display(num);
+            //multiSlash.Display(num);
         }
 
         multiSlashSubject.OnNext(num);
