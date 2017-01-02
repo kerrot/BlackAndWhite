@@ -76,7 +76,7 @@ public class PlayerMove : UnitMove {
         {
             return;
         }
-
+        anim.SetBool("IsMove", true);
         SetDestination(mousePosition);
 
         //when cannot move, recompute for check guard.
@@ -145,8 +145,10 @@ public class PlayerMove : UnitMove {
 			{
 				UnityEngine.AI.NavMeshHit navHit;
 				if (UnityEngine.AI.NavMesh.SamplePosition(anim.rootPosition, out navHit, 1.0f, UnityEngine.AI.NavMesh.AllAreas))
-				{
-					transform.position = navHit.position;
+                {
+                    Vector3 pp = navHit.position;
+                    pp.y = 0;   
+                    transform.position = pp;
 				}
 			}
 		}

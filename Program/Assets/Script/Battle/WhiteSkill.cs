@@ -94,7 +94,7 @@ public class WhiteSkill : Skill
         if (flashEffect)
         {
             flash.Simulate(Time.unscaledDeltaTime, true, false);
-            if (Time.unscaledTime - flashStart > flash.duration)
+            if (Time.unscaledTime - flashStart > flash.main.duration)
             {
                 flashEffect = false;
                 flash.Stop();

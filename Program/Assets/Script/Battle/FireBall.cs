@@ -29,7 +29,7 @@ public class FireBall : AuraBattle
         tmp.y = 0;
         rd.velocity = tmp;
         radius = expolsion.GetComponent<SphereCollider>().radius;
-        Destroy(gameObject, ball.GetComponent<ParticleSystem>().duration);
+        Destroy(gameObject, ball.GetComponent<ParticleSystem>().main.duration);
 
         this.OnTriggerEnterAsObservable().Subscribe(o => UniRxTriggerEnter(o));
 	}
@@ -67,7 +67,7 @@ public class FireBall : AuraBattle
             rd.velocity = Vector3.zero;
             ball.SetActive(false);
             expolsion.SetActive(true);
-            Destroy(gameObject, expolsion.GetComponent<ParticleSystem>().duration);
+            Destroy(gameObject, expolsion.GetComponent<ParticleSystem>().main.duration);
         }
     }
 }

@@ -117,7 +117,12 @@ public class EnemyBattle : UnitBattle
         #endregion
 
         bool physics = true;
-        
+
+        if (unit == player)
+        {
+            transform.LookAt(player.transform);
+        }
+
         if (attack.Type == AttackType.ATTACK_TYPE_SLASH && slash.CanSlash)
         {
             Die(attack);
@@ -148,6 +153,10 @@ public class EnemyBattle : UnitBattle
                 coll.enabled = false;
                 anim.SetTrigger("Die");
                 deadStart = Time.time;
+            }
+            else
+            {
+                anim.SetTrigger("Hitted");
             }
         }
         else

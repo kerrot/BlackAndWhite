@@ -5,36 +5,61 @@ using System.Collections;
 
 public class TrailEffect : MonoBehaviour {
     [SerializeField]
-    private GameObject refPos;
+    private MeleeWeaponTrail attackTail;
     [SerializeField]
-    private GameObject trailObject;
+    private MeleeWeaponTrail slashTail;
+    [SerializeField]
+    private Transform effectPosition;
 
-    private GameObject current;
+    MeleeWeaponTrail attack;
+    MeleeWeaponTrail slash;
 
-    public void EffectStart()
+    public void AttackTrailStart()
     {
-        if (current == null)
+        if (!attack)
         {
-            current = Instantiate(trailObject) as GameObject;
-            current.transform.parent = refPos.transform;
-            current.transform.localPosition = Vector3.zero;
+            attack = TrailCreate(attackTail);
         }
     }
 
-    public void EffectEnd()
+    public void AttackTrailEnd()
     {
-        if (current != null)
+        TrailEnd(attack);
+        attack = null;
+    }
+
+    public void SlashTrailStart()
+    {
+        if (!slash)
         {
-            current.transform.parent = null;
-            Observable.FromCoroutine(_ => EndTrail(current)).Subscribe();
-            current = null;
+            slashTail.Material.SetColor("_TintColor", Attribute.GetColor(GetComponent<PlayerAttribute>().Type, 1.0f));
+
+            slash = TrailCreate(slashTail);
         }
     }
 
-    IEnumerator EndTrail(GameObject obj)
+    public void SlashTrailEnd()
     {
-        float time = obj.GetComponent<TrailRenderer>().time;
-        yield return new WaitForSeconds(time);
-        DestroyObject(obj);
+        TrailEnd(slash);
+        slash = null;
+    }
+
+    MeleeWeaponTrail TrailCreate( MeleeWeaponTrail prefab)
+    {
+        GameObject obj = Instantiate(prefab.gameObject);
+        obj.transform.parent = effectPosition;
+        obj.transform.localPosition = Vector3.zero;
+        obj.transform.localRotation = Quaternion.identity;
+
+        return obj.GetComponent<MeleeWeaponTrail>();
+    }
+
+    void TrailEnd(MeleeWeaponTrail instance)
+    {
+        if (instance)
+        {
+            instance.transform.parent = null;
+            instance.Emit = false;
+        }
     }
 }

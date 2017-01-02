@@ -56,9 +56,9 @@ public class BlockAttackAura : AuraBattle
 
             if (nowBlock > 0)
             {
-                var rate = em.rate;
+                var rate = em.rateOverTime;
                 rate.constantMax = nowBlock * emissionRate;
-                em.rate = rate;
+                em.rateOverTime = rate;
             }
             else
             {
@@ -90,8 +90,8 @@ public class BlockAttackAura : AuraBattle
     {
 		nowBlock = blockValue;
 		em.enabled = true;
-		var rate = em.rate;
+		var rate = em.rateOverTime;
 		rate.constantMax = nowBlock * emissionRate;
-		em.rate = rate;	
+		em.rateOverTime = rate;	
     }
 }

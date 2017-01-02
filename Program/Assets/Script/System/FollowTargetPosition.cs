@@ -20,11 +20,11 @@ public class FollowTargetPosition : MonoBehaviour
     void Awake()
     {
         currentPosition = transform.position;
+        offset = transform.position - follow.transform.position;
     }
 
 	void Start ()
 	{
-		offset = transform.position - follow.transform.position;
 		this.LateUpdateAsObservable().Subscribe (_ => UniRxLateUpdate ());
     }
 

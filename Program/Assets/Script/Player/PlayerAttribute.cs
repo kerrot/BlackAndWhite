@@ -35,6 +35,11 @@ public class PlayerAttribute : Attribute
         mapping.Add(ElementType.ELEMENT_TYPE_BLUE, blueOn);
     }
 
+    private void Start()
+    {
+        LanceEffect.gameObject.SetActive(false);
+    }
+
     public void AttributeChange(bool active, ElementType ele)
     {
         SetElement(active, ele);

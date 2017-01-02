@@ -37,25 +37,28 @@ public class EnergyBall : EnergyBase
 
     System.IDisposable groundSubject;
 
+    ParticleSystem.MainModule mod;
+
     void Start()
     {
         floorLayer = LayerMask.NameToLayer("Floor");
+        mod = effect.main;
 
         switch (Type)
         {
             case ElementType.ELEMENT_TYPE_RED:
-                effect.startColor = red;
+                mod.startColor = red;
                 break;
             case ElementType.ELEMENT_TYPE_GREEN:
-                effect.startColor = green;
+                mod.startColor = green;
                 break;
             case ElementType.ELEMENT_TYPE_BLUE:
-                effect.startColor = blue;
+                mod.startColor = blue;
                 break;
         }
 
         Color tmp = Attribute.GetColor(Type, 1.0f);
-        effectOn.startColor = tmp;
+        mod.startColor = tmp;
         lightOn.color = tmp;
         radis = GetComponent<SphereCollider>().radius;
 
@@ -93,7 +96,10 @@ public class EnergyBall : EnergyBase
         }
 
         ++current;
-        effect.startSize += 0.1f;
+        ParticleSystem.MinMaxCurve size = mod.startSize;
+        size.constantMax += 0.1f;
+        mod.startSize = size;
+
         if (Formed)
         {
             effectOn.gameObject.SetActive(true);

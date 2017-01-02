@@ -47,6 +47,7 @@ public class PlayerBattle : UnitBattle {
     bool guardAttack = false;
     Vector3 AttackRange;
     PlayerSlash slash;
+    TrailEffect trail;
 
     void Awake()
     {
@@ -66,6 +67,8 @@ public class PlayerBattle : UnitBattle {
         {
             AttackRange = AttackRegionObj.GetComponent<BoxCollider>().size / 2.0f;
         }
+
+        trail = GetComponent<TrailEffect>();
     }
 
     void Start()
@@ -105,6 +108,12 @@ public class PlayerBattle : UnitBattle {
         if (effect && effect.intensity != cuurentIntensity)
         {
             effect.intensity += (cuurentIntensity > effect.intensity) ? 0.001f : -0.001f;
+        }
+
+        AnimatorStateInfo info = anim.GetCurrentAnimatorStateInfo(0);
+        if (info.fullPathHash != attackHash)
+        {
+            trail.AttackTrailEnd();
         }
     }
 
@@ -167,6 +176,12 @@ public class PlayerBattle : UnitBattle {
     void AttackStart()
     {
         AudioHelper.PlaySE(gameObject, attackSE);
+        trail.AttackTrailStart();
+    }
+
+    void AttackEnd()
+    {
+        trail.AttackTrailEnd();
     }
 
     void AttackHit()
@@ -220,6 +235,8 @@ public class PlayerBattle : UnitBattle {
 
         recoverStart = Time.time;
         nowHP -= attack.Strength;
+
+        transform.LookAt(unit.transform);
 
         if (nowHP > 0)
         {

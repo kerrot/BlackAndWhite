@@ -5,6 +5,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
+
 public class PlayerSlash : MonoBehaviour {
     [SerializeField]
     private bool AutoSlash = false;
@@ -27,6 +28,7 @@ public class PlayerSlash : MonoBehaviour {
     [SerializeField]
     private GameObject comboHint;
 
+
     public float SlashRadius { get { return slashRadius; } }
     public bool IsSlashing { get { return isSlashing; } }
 
@@ -40,7 +42,7 @@ public class PlayerSlash : MonoBehaviour {
     float slashSpeed = 0f;
 
     int slashEndHash;
-	int slashingHash;
+    int slashingHash;
     Animator anim;
     bool isSlashing = false;
     bool slashReach = false;
@@ -55,13 +57,14 @@ public class PlayerSlash : MonoBehaviour {
     Vector3 TargetPosition;
 
     WhiteSkill skill;
+    TrailEffect trail;
 
     void Awake()
     {
         anim = GetComponent<Animator>();
-        
+
         slashEndHash = Animator.StringToHash("PlayerBase.SlashEnd");
-		slashingHash = Animator.StringToHash("PlayerBase.Slashing");
+        slashingHash = Animator.StringToHash("PlayerBase.Slashing");
         InputController.OnMouseDown.Subscribe(p => MultiSlash(p)).AddTo(this);
         InputController.OnSlashClick.Subscribe(u => Slash()).AddTo(this);
 
@@ -76,6 +79,8 @@ public class PlayerSlash : MonoBehaviour {
             comboHint = GameObject.Find("ComboHint");
         }
         comboHint.SetActive(false);
+
+        trail = GetComponent<TrailEffect>();
     }
 
     void Start()
@@ -86,8 +91,8 @@ public class PlayerSlash : MonoBehaviour {
 
     void UniRxUpdate()
     {
-		AnimatorStateInfo info = anim.GetCurrentAnimatorStateInfo(0);
-		if (info.fullPathHash == slashingHash)
+        AnimatorStateInfo info = anim.GetCurrentAnimatorStateInfo(0);
+        if (info.fullPathHash == slashingHash)
         {
             if (TargetObject)
             {
@@ -99,11 +104,13 @@ public class PlayerSlash : MonoBehaviour {
             if (isSlashing && !slashReach && Vector3.Distance(TargetPosition, transform.position) < SlashStopRadius)
             {
                 anim.SetTrigger("SlashEnd");
+
                 slashReach = true;
                 if (comboHint)
                 {
                     comboHint.SetActive(true);
                 }
+
                 TargetObject = null;
             }
         }
@@ -116,7 +123,7 @@ public class PlayerSlash : MonoBehaviour {
                     continueSlash = true;
                 }
             }
-            
+
             if (isSlashing == false && continueSlash)
             {
                 Slash();
@@ -195,14 +202,14 @@ public class PlayerSlash : MonoBehaviour {
     }
 
     public bool SlashEnemy(GameObject Enemy)
-	{
+    {
         if (comboHint && comboHint.activeSelf)
         {
             MultiSlash(Input.mousePosition);
             return true;
         }
 
-		if (CanSlashEnemy(Enemy)) {
+        if (CanSlashEnemy(Enemy)) {
             isSlashing = true;
             slashReach = false;
             TargetObject = Enemy;
@@ -212,16 +219,17 @@ public class PlayerSlash : MonoBehaviour {
             anim.SetBool("IsSlashing", true);
             anim.SetTrigger("Slash");
 
+            trail.SlashTrailStart();
+
             if (skill && skill.Activated())
             {
                 SlashSpeedUp(slashSpeed = maxSpeedup);
             }
-
             return true;
         }
 
         return false;
-	}
+    }
 
     void CheckSlash()
     {

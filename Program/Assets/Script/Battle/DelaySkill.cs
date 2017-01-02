@@ -16,11 +16,11 @@ public class DelaySkill : UnitBattle {
 	private Subject<Unit> blowSubject = new Subject<Unit> ();
 	public IObservable<Unit> OnBlow { get { return blowSubject; } }
 
-	void Start()
+    void Start()
 	{
 		if (pre) 
 		{
-			Observable.FromCoroutine(Blow).Subscribe();
+            Observable.FromCoroutine(Blow).Subscribe();
 		}
 
 		DelayStart ();
@@ -33,12 +33,12 @@ public class DelaySkill : UnitBattle {
 
 	IEnumerator Blow()
 	{
-		yield return new WaitForSeconds(pre.duration);
+		yield return new WaitForSeconds(pre.main.duration);
 
 		if (main) 
 		{
 			main.gameObject.SetActive (true);
-			DestroyObject (gameObject, main.duration);
+			DestroyObject (gameObject, main.main.duration);
 		}
 
 		blowSubject.OnNext (Unit.Default);

@@ -87,7 +87,7 @@ public class Attribute : MonoBehaviour {
     {
         if (ele == ElementType.ELEMENT_TYPE_NONE)
         {
-			return new Color(0.3f, 0.3f, 0.3f, alpha);
+			return new Color(0.1f, 0.1f, 0.1f, alpha);
         }
 
 		Color c = new Color(0f, 0f, 0f, alpha);

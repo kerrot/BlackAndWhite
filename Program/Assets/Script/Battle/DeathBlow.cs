@@ -11,7 +11,7 @@ public class DeathBlow : UnitBattle
 
     void Start()
 	{
-        ParticleSystem par = GetComponent<ParticleSystem>();
+        ParticleSystem.MainModule par = GetComponent<ParticleSystem>().main;
         par.startColor = Attribute.GetColor(GetComponent<Attribute>().Type, 1.0f);
 
         Destroy(gameObject, par.duration);
