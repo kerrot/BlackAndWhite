@@ -124,7 +124,7 @@ public class EnemyManager : MonoBehaviour
             EnemyBattle battle = Enemy.GetComponent<EnemyBattle>();
             if (battle != null && battle.DeadAction != null)
             {
-                GameObject obj = Instantiate(battle.DeadAction, Enemy.transform.position + battle.DeadEffectOffset, Quaternion.identity) as GameObject;
+                GameObject obj = Instantiate(battle.DeadAction, Enemy.transform.position, Quaternion.identity) as GameObject;
                 obj.layer = 0;
 
                 obj.GetComponent<DeadAction>().Atk = battle.DeadAction.GetComponent<DeadAction>().Atk;

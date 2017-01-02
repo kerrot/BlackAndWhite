@@ -31,7 +31,6 @@ public class EnemyBattle : UnitBattle
     public IObservable<Unit> OnAttacked { get { return attackedSubject; } }
 
     public GameObject DeadAction;
-    public Vector3 DeadEffectOffset;
 
     protected EnemySlash slash;
     protected EnemyHP HPState;

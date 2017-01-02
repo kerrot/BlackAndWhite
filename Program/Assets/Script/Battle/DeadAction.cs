@@ -4,16 +4,29 @@ using System.Linq;
 
 public class DeadAction : MonoBehaviour
 {
+    [SerializeField]
+    private ParticleSystem flash;
+    [SerializeField]
+    private float duration;
+
     public Attack Atk;
     public UnitBattle Attacker;
 
     void Start()
 	{
-        ParticleSystem.MainModule par = GetComponent<ParticleSystem>().main;
-        par.startColor = Attribute.GetColor(Atk.Element, 0.3f);
+        ParticleSystem[] pars = GetComponentsInChildren<ParticleSystem>();
+        pars.ToList().ForEach(p =>
+        {
+            ParticleSystem.MainModule mod = p.main;
+            mod.startColor = Attribute.GetColor(Atk.Element, 1f);
+        });
 
-        Destroy(gameObject, par.duration);
+        ParticleSystem.MainModule flashmod = flash.main;
+        Color tmpC = flashmod.startColor.color;
+        tmpC += Color.gray;
+        flashmod.startColor = tmpC;
 
+        Destroy(gameObject, duration);
 
         Collider[] cs = Physics.OverlapSphere(transform.position, GetComponent<SphereCollider>().radius);
         cs.ToList().ForEach(c =>
