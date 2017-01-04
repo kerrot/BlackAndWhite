@@ -9,8 +9,18 @@ public class HPBarUI : MonoBehaviour {
     private Slider barrier;
     [SerializeField]
     private Slider recover;
+    [SerializeField]
+    private Image attri;
 
     public Slider HPUI { get { return HP; } }
     public Slider BarrierUI { get { return barrier; } }
     public Slider RecoverUI { get { return recover; } }
+
+    public void SetAttribute(Color color)
+    {
+        if (attri)
+        {
+            attri.color = color;
+        }
+    }
 }

@@ -46,6 +46,7 @@ public class EnemyHP : MonoBehaviour
             {
                 GameObject tmp = ui.CreateHPUI();
                 hpUI = tmp.GetComponent<HPBarUI>();
+                hpUI.SetAttribute(Attribute.GetColor(Attribute.GetWeak(GetComponent<Attribute>().Type), 1.0f));
             }
         }
 

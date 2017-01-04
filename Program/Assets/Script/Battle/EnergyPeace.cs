@@ -33,7 +33,7 @@ public class EnergyPeace : EnergyBase
             rd.velocity = Vector3.up * speed + new Vector3(v.x, 0, v.y);
         }
 
-        radis = GetComponent<SphereCollider>().radius;
+        radis = GetComponent<SphereCollider>().radius * transform.localScale.x;
 
         ground = this.OnTriggerEnterAsObservable().Subscribe(o => UniRxTriggerEnter(o));
 

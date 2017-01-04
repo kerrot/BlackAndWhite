@@ -58,7 +58,6 @@ public class EnergyBall : EnergyBase
         }
 
         Color tmp = Attribute.GetColor(Type, 1.0f);
-        mod.startColor = tmp;
         lightOn.color = tmp;
         radis = GetComponent<SphereCollider>().radius;
 
@@ -104,6 +103,7 @@ public class EnergyBall : EnergyBase
         {
             effectOn.gameObject.SetActive(true);
             lightOn.gameObject.SetActive(true);
+            effect.gameObject.GetComponent<Animator>().enabled = true;
 
             formSubject.OnNext(this);
             this.OnTriggerStayAsObservable().Subscribe(o => PlayerCharge(o));

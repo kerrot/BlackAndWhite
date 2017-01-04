@@ -20,6 +20,8 @@ public class EnemyBattle : UnitBattle
     [SerializeField]
     protected GameObject energyPeace;
     [SerializeField]
+    private Transform textUICenter;
+    [SerializeField]
     protected int peaceCount = 2;
 
     protected Subject<Unit> attackedSubject = new Subject<Unit>();
@@ -48,6 +50,8 @@ public class EnemyBattle : UnitBattle
     protected PlayerBattle player;
     protected Attribute attr;
 
+    GameObject blockUI;
+
     //Start change to Awake, because Instantiate not call Start but Awake
     void Awake()
     {
@@ -64,6 +68,13 @@ public class EnemyBattle : UnitBattle
     {
         wanderHash = Animator.StringToHash("EnemyBase.Wander");
         damageHash = Animator.StringToHash("EnemyBase.DamageStart");
+
+        RunTimeUIGenerator ui = GameObject.FindObjectOfType<RunTimeUIGenerator>();
+        if (ui)
+        {
+            blockUI = ui.CreateBlockUI();
+            blockUI.SetActive(false);
+        }
 
         EnemyManager manager = GameObject.FindObjectOfType<EnemyManager>();
         if (manager)
@@ -96,6 +107,11 @@ public class EnemyBattle : UnitBattle
             anim.SetBool("Wander", player.Missing);
             wanderEffect.SetActive(player.Missing);
         }
+
+        if (blockUI.activeSelf)
+        {
+            blockUI.transform.position = Camera.main.WorldToScreenPoint(textUICenter.transform.position);
+        }
     }
 
     public override bool Attacked(UnitBattle unit, Attack attack)
@@ -111,6 +127,8 @@ public class EnemyBattle : UnitBattle
         Attribute attr = GetComponent<Attribute>();
         if (attr && attr.ProcessAttack(unit, attack))
         {
+            blockUI.SetActive(false);
+            blockUI.SetActive(true);
             return false;
         }
         #endregion

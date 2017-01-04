@@ -15,6 +15,10 @@ public class PlayerSkill : MonoBehaviour
     private float costCheckTime;
     [SerializeField]
     private Skill[] skills;
+    [SerializeField]
+    private ParticleSystem charge;
+    [SerializeField]
+    private AudioClip chargeSE;
 
     private Subject<ElementType> chargeSubject = new Subject<ElementType>();
     private Subject<Unit> skillSubject = new Subject<Unit>();
@@ -154,6 +158,14 @@ public class PlayerSkill : MonoBehaviour
             CheckState();
 
             chargeSubject.OnNext(ele);
+
+            ParticleSystem.MainModule mod = charge.main;
+            mod.startColor = Attribute.GetColor(ele, 1.0f);
+
+            GameObject obj = Instantiate(charge.gameObject);
+            obj.transform.parent = transform;
+            obj.transform.localPosition = Vector3.zero;
+            AudioHelper.PlaySE(gameObject, chargeSE);
         }
     }
 

@@ -87,7 +87,7 @@ public class Attribute : MonoBehaviour {
     {
         if (ele == ElementType.ELEMENT_TYPE_NONE)
         {
-			return new Color(0.1f, 0.1f, 0.1f, alpha);
+			return new Color(0.2f, 0.2f, 0.2f, alpha);
         }
 
 		Color c = new Color(0f, 0f, 0f, alpha);
@@ -114,6 +114,23 @@ public class Attribute : MonoBehaviour {
                       ele == ElementType.ELEMENT_TYPE_GREEN ||
                       ele == ElementType.ELEMENT_TYPE_BLUE;
         return result;
+    }
+
+    public static ElementType GetWeak(ElementType ele)
+    {
+        if (ele == ElementType.ELEMENT_TYPE_RED)
+        {
+            return ElementType.ELEMENT_TYPE_BLUE;
+        }
+        else if (ele == ElementType.ELEMENT_TYPE_GREEN)
+        {
+            return ElementType.ELEMENT_TYPE_RED;
+        }
+        else if (ele == ElementType.ELEMENT_TYPE_BLUE)
+        {
+            return ElementType.ELEMENT_TYPE_GREEN;
+        }
+        return ElementType.ELEMENT_TYPE_NONE;
     }
 
     public static bool IsResist(ElementType victom, ElementType attacker)

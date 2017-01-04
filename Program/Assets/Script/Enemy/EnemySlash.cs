@@ -10,6 +10,8 @@ public class EnemySlash : MonoBehaviour {
     [SerializeField]
     private Transform lockUICenter;
     [SerializeField]
+    private Transform textUICenter;
+    [SerializeField]
     private GameObject effect;
     [SerializeField]
     private AudioClip breakSE;
@@ -18,6 +20,7 @@ public class EnemySlash : MonoBehaviour {
     public IObservable<GameObject> OnCanSlash { get { return canSlashSubject; } }
 
     GameObject lockUI;
+    GameObject breakUI;
     bool canSlash = false;
     float slashStartTime;
 
@@ -36,6 +39,10 @@ public class EnemySlash : MonoBehaviour {
         {
             lockUI = ui.CreateLockUI();
             lockUI.SetActive(false);
+
+            breakUI = ui.CreateBreakUI();
+            breakUI.SetActive(false);
+
             UIanim = lockUI.GetComponent<Animator>();
             UIImage = lockUI.GetComponent<Image>();
         }
@@ -87,6 +94,11 @@ public class EnemySlash : MonoBehaviour {
                 player.RegisterSlashObject(gameObject, false);
             }
         }
+
+        if (breakUI.activeSelf)
+        {
+            breakUI.transform.position = Camera.main.WorldToScreenPoint(textUICenter.transform.position);
+        }
     }
 
     public void TriggerSlash()
@@ -103,6 +115,9 @@ public class EnemySlash : MonoBehaviour {
         }
 
         canSlashSubject.OnNext(gameObject);
+
+        breakUI.SetActive(false);
+        breakUI.SetActive(true);
     }
 
     void UniRxOnDestroy()
