@@ -59,6 +59,9 @@ public class PlayerSkill : MonoBehaviour
     {
         anim = GetComponent<Animator>();
         attri = GetComponent<PlayerAttribute>();
+
+        InputController.OnRightMouseDown.Subscribe(v => UseSkill(EnemyManager.GetEnemyByMousePosition(v))).AddTo(this);
+
         this.UpdateAsObservable().Subscribe(_ => UniRxUpdate());
     }
 
@@ -113,7 +116,7 @@ public class PlayerSkill : MonoBehaviour
         CheckState();
     }
 
-    public void UseSkill()
+    public void UseSkill(GameObject obj)
     {
         if (PlayerBattle.IsDead)
         {
@@ -130,6 +133,11 @@ public class PlayerSkill : MonoBehaviour
             Skill now = skills.SingleOrDefault(s => s.Type == attri.Type);
             if (now && now.CanSkill() && !isSkilling)
             {
+                if (obj != null)
+                {
+                    transform.LookAt(obj.transform);
+                }
+
                 castingType = now.Type;
                 anim.SetTrigger("Skill");
                 isSkilling = true;

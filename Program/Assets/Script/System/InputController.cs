@@ -15,12 +15,14 @@ public class InputController : MonoBehaviour {
     static private Subject<Vector2> mouseDown = new Subject<Vector2>();
     static private Subject<Vector2> mouseUp = new Subject<Vector2>();
     static private Subject<Vector2> mousePressed = new Subject<Vector2>();
+    static private Subject<Vector2> rightMouseDown = new Subject<Vector2>();
 
     static public IObservable<Vector2> OnMouseDoubleClick { get { return mouseDoubleClick; } }
     static public IObservable<Vector2> OnMouseSingleClick { get { return mouseSingleClick; } }
     static public IObservable<Vector2> OnMouseDown { get { return mouseDown; } }
     static public IObservable<Vector2> OnMouseUp { get { return mouseUp; } }
     static public IObservable<Vector2> OnMousePressed { get { return mousePressed; } }
+    static public IObservable<Vector2> OnRightMouseDown { get { return rightMouseDown; } }
 
     static private Subject<Unit> attackClick = new Subject<Unit>();
     static private Subject<Unit> slashClick = new Subject<Unit>();
@@ -160,5 +162,11 @@ public class InputController : MonoBehaviour {
         {
             mousePressed.OnNext(position);
         }
-	}
+
+        if (!pressOnUI && Input.GetMouseButtonDown(1))
+        {
+            rightMouseDown.OnNext(position);
+        }
+
+    }
 }

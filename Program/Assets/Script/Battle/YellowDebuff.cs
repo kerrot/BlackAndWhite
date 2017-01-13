@@ -35,10 +35,11 @@ public class YellowDebuff : AuraBattle
 
     public void End()
     {
-        PlayerBattle player = GameObject.FindObjectOfType<PlayerBattle>();
+        PlayerMove player = GameObject.FindObjectOfType<PlayerMove>();
         if (player)
         {
             player.transform.position = transform.position;
+            player.MoveStop();
         }
 
         AuraDisappear();

@@ -11,6 +11,8 @@ public class EnergyPeace : EnergyBase
     private float speed;
     [SerializeField]
     private EnergyBall energyBall;
+    [SerializeField]
+    private AudioClip groundSE;
 
     int floorLayer;
     Rigidbody rd;
@@ -46,6 +48,8 @@ public class EnergyPeace : EnergyBase
         {
             if (other.gameObject.layer == floorLayer)
             {
+                AudioHelper.PlaySE(gameObject, groundSE);
+
                 rd.useGravity = false;
                 rd.velocity = Vector3.zero;
 

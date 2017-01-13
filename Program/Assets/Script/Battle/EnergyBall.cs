@@ -21,6 +21,10 @@ public class EnergyBall : EnergyBase
     private Light lightOn;
     [SerializeField]
     private float power;
+    [SerializeField]
+    private AudioClip growSE;
+    [SerializeField]
+    private AudioClip formSE;
 
     static private Subject<EnergyBall> formSubject = new Subject<EnergyBall>();
     static public IObservable<EnergyBall> OnForm { get { return formSubject; } }
@@ -71,6 +75,8 @@ public class EnergyBall : EnergyBase
         {
             groundSubject = this.OnTriggerEnterAsObservable().Subscribe(o => OnGround(o));
         }
+
+        AudioHelper.PlaySE(gameObject, growSE);
     }
 
     void OnGround(Collider other)
@@ -105,8 +111,14 @@ public class EnergyBall : EnergyBase
             lightOn.gameObject.SetActive(true);
             effect.gameObject.GetComponent<Animator>().enabled = true;
 
+            AudioHelper.PlaySE(gameObject, formSE);
+
             formSubject.OnNext(this);
             this.OnTriggerStayAsObservable().Subscribe(o => PlayerCharge(o));
+        }
+        else
+        {
+            AudioHelper.PlaySE(gameObject, growSE);
         }
     }
 

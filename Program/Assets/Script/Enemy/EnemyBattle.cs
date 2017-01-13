@@ -21,6 +21,10 @@ public class EnemyBattle : UnitBattle
     protected GameObject energyPeace;
     [SerializeField]
     private Transform textUICenter;
+    //[SerializeField]
+    //protected ParticleSystem onFire;
+    [SerializeField]
+    protected ParticleSystem hitEffect;
     [SerializeField]
     protected int peaceCount = 2;
 
@@ -45,11 +49,12 @@ public class EnemyBattle : UnitBattle
 
     protected int wanderHash;
     protected int damageHash;
+    //protected int fireHash;
 
     bool dead;
     protected PlayerBattle player;
     protected Attribute attr;
-
+    Vector3 pos;
     GameObject blockUI;
 
     //Start change to Awake, because Instantiate not call Start but Awake
@@ -68,6 +73,7 @@ public class EnemyBattle : UnitBattle
     {
         wanderHash = Animator.StringToHash("EnemyBase.Wander");
         damageHash = Animator.StringToHash("EnemyBase.DamageStart");
+        //fireHash = Animator.StringToHash("EnemyBase.Fire");
 
         RunTimeUIGenerator ui = GameObject.FindObjectOfType<RunTimeUIGenerator>();
         if (ui)
@@ -89,7 +95,9 @@ public class EnemyBattle : UnitBattle
 
     void UniRxAnimatorMove()
     {
-        transform.position = anim.rootPosition;
+        pos = anim.rootPosition;
+        pos.y = 0;
+        transform.position = pos;
     }
 
     void UniRxUpdate()
@@ -112,6 +120,13 @@ public class EnemyBattle : UnitBattle
         {
             blockUI.transform.position = Camera.main.WorldToScreenPoint(textUICenter.transform.position);
         }
+
+        //if (onFire)
+        //{
+        //    AnimatorStateInfo info = anim.GetCurrentAnimatorStateInfo(0);
+        //    ParticleSystem.EmissionModule emis = onFire.emission;
+        //    emis.enabled = info.fullPathHash == fireHash;
+        //}
     }
 
     public override bool Attacked(UnitBattle unit, Attack attack)
@@ -127,11 +142,21 @@ public class EnemyBattle : UnitBattle
         Attribute attr = GetComponent<Attribute>();
         if (attr && attr.ProcessAttack(unit, attack))
         {
+            if (attack.Type == AttackType.ATTACK_TYPE_SLASH)
+            {
+                slash.CancelSlash();
+            }
+
             blockUI.SetActive(false);
             blockUI.SetActive(true);
             return false;
         }
         #endregion
+
+        if (hitEffect)
+        {
+            Instantiate(hitEffect.gameObject, transform.position, hitEffect.transform.rotation);
+        }
 
         bool physics = true;
 
@@ -215,10 +240,10 @@ public class EnemyBattle : UnitBattle
                         anim.SetTrigger("Frighten");
                         AudioHelper.PlaySE(gameObject, frightenSE);
                     }
-                    else
-                    {
-                        anim.SetTrigger("Hitted");
-                    }
+                    //else
+                    //{
+                    //    anim.SetTrigger("Hitted");
+                    //}
                 }
             }
             else

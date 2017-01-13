@@ -15,6 +15,8 @@ public class PlayerMove : UnitMove {
     Vector3 keyPosition;
     int floorMask;
 
+    PlayerSlash slash;
+
     void Awake() {
 		anim = GetComponent<Animator>();
 
@@ -23,7 +25,7 @@ public class PlayerMove : UnitMove {
         InputController.OnMouseDown.Subscribe(p => StartMove(p)).AddTo(this);
         InputController.OnMousePressed.Subscribe(p => CheckMotion(p)).AddTo(this);
         InputController.OnMove.Subscribe(v => KeyMove(v)).AddTo(this);
-        InputController.OnStop.Subscribe(v => KeyStop()).AddTo(this);
+        InputController.OnStop.Subscribe(v => MoveStop()).AddTo(this);
         //InputController.OnMouseUp.Subscribe(p => StopGuard(p)).AddTo(this);
 
         agent = GetComponent<UnityEngine.AI.NavMeshAgent>();
@@ -32,12 +34,14 @@ public class PlayerMove : UnitMove {
 
         CanRotate = true;
 
+        slash = GetComponent<PlayerSlash>();
+
         this.FixedUpdateAsObservable ().Subscribe (_ => UniRxFixedUpdate ());
     }
 
     void StartMove(Vector2 mousePosition)
     {
-        if (PlayerBattle.IsDead)
+        if (PlayerBattle.IsDead || slash.IsSlashing)
         {
             return;
         }
@@ -49,7 +53,7 @@ public class PlayerMove : UnitMove {
 
     void KeyMove(Vector2 moveDirection)
     {
-        if (PlayerBattle.IsDead || !CanRotate)
+        if (PlayerBattle.IsDead || !CanRotate || slash.IsSlashing)
         {
             return;
         }
@@ -65,7 +69,7 @@ public class PlayerMove : UnitMove {
         anim.SetBool("IsMove", true);
     }
 
-    void KeyStop()
+    public void MoveStop()
     {
         anim.SetBool("IsMove", false);
     }
@@ -123,7 +127,7 @@ public class PlayerMove : UnitMove {
 
     void SetDestination(Vector2 position)
     {
-        if (!CanRotate)
+        if (!CanRotate || slash.IsSlashing)
         {
             return;
         }

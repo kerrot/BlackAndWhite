@@ -51,8 +51,8 @@ public class SkillUI : MonoBehaviour {
 
 			if (powerBtn) 
 			{
-				powerBtn.OnClickAsObservable ().Subscribe (_ => skill.UseSkill ());
-				InputController.OnSkillClick.Subscribe (_ => skill.UseSkill ());
+				powerBtn.OnClickAsObservable ().Subscribe (_ => skill.UseSkill (EnemyManager.GetEnemyByMousePosition(Input.mousePosition)));
+				InputController.OnSkillClick.Subscribe (_ => skill.UseSkill (EnemyManager.GetEnemyByMousePosition(Input.mousePosition)));
 			}
 
 			RegisterEnergy (redEnergy, skill.RedEnergy);

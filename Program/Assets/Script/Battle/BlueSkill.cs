@@ -7,12 +7,12 @@ using System.Collections.Generic;
 public class BlueSkill : Skill {
     [SerializeField]
     private GameObject water;
-    float range;
+    [SerializeField]
+    private float range;
     List<Vector3> points = new List<Vector3>();
 
     void Start()
     {
-        range = water.GetComponent<SphereCollider>().radius * 2;
         this.UpdateAsObservable().Subscribe(_ => UniRxUpdate());
     }
 

@@ -139,7 +139,7 @@ public class EnemyManager : MonoBehaviour
         }
 	}
 
-    public List<GameObject> GetEnemy(Vector3 position, float radius)
+    static public List<GameObject> GetEnemy(Vector3 position, float radius)
     {
         List<GameObject> tmpList = new List<GameObject>();
 
@@ -156,7 +156,7 @@ public class EnemyManager : MonoBehaviour
         return tmpList;
     }
 
-    public List<GameObject> GetEnemy(Vector3 position, float radius, Vector3 direction, float angle)
+    static public List<GameObject> GetEnemy(Vector3 position, float radius, Vector3 direction, float angle)
     {
         List<GameObject> radiusList = GetEnemy(position, radius);
         List<GameObject> tmpList = new List<GameObject>();

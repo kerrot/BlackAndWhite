@@ -101,6 +101,20 @@ public class EnemySlash : MonoBehaviour {
         }
     }
 
+    public void CancelSlash()
+    {
+        if (canSlash)
+        {
+            canSlash = false;
+            PlayerSlash player = GameObject.FindObjectOfType<PlayerSlash>();
+            if (player)
+            {
+                player.RegisterSlashObject(gameObject, false);
+            }
+            lockUI.SetActive(false);
+        }
+    }
+
     public void TriggerSlash()
     {
         canSlash = true;

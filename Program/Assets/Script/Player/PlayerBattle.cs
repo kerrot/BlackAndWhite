@@ -124,7 +124,25 @@ public class PlayerBattle : UnitBattle {
             return;
         }
 
-        GameObject obj = EnemyManager.GetEnemyByMousePosition(Input.mousePosition);
+        List<GameObject> objs = EnemyManager.GetEnemy(transform.position, 1.5f);
+        GameObject obj = null;
+        float angle = Mathf.Infinity;
+        objs.ForEach(o =>
+        {
+            Vector3 dir = o.transform.position - transform.position;
+            float tmp = Mathf.Abs(Vector3.Angle(dir, transform.forward));
+            if (tmp < angle)
+            {
+                angle = tmp;
+                obj = o;
+            }
+        });
+
+        if (angle > 90)
+        {
+            obj = null;
+        }
+
         AttackEnemy(obj);
     }
 
