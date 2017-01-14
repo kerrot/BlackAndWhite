@@ -244,6 +244,8 @@ public class EnemyBattle : UnitBattle
                     //{
                     //    anim.SetTrigger("Hitted");
                     //}
+
+                    physics = false;
                 }
             }
             else

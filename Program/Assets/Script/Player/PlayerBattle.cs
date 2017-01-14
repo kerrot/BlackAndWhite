@@ -124,17 +124,21 @@ public class PlayerBattle : UnitBattle {
             return;
         }
 
-        List<GameObject> objs = EnemyManager.GetEnemy(transform.position, 1.5f);
         GameObject obj = null;
         float angle = Mathf.Infinity;
-        objs.ForEach(o =>
+        Collider[] cs = Physics.OverlapSphere(transform.position, 1.5f, EnemyMask);
+        cs.ToObservable().Subscribe(c =>
         {
-            Vector3 dir = o.transform.position - transform.position;
-            float tmp = Mathf.Abs(Vector3.Angle(dir, transform.forward));
-            if (tmp < angle)
+            EnemyBattle enemy = c.GetComponent<EnemyBattle>();
+            if (enemy)
             {
-                angle = tmp;
-                obj = o;
+                Vector3 dir = enemy.gameObject.transform.position - transform.position;
+                float tmp = Mathf.Abs(Vector3.Angle(dir, transform.forward));
+                if (tmp < angle)
+                {
+                    angle = tmp;
+                    obj = enemy.gameObject;
+                }
             }
         });
 
@@ -204,13 +208,15 @@ public class PlayerBattle : UnitBattle {
 
     void AttackHit()
     {
+        float power = (GetComponent<PlayerAttribute>().Type == ElementType.ELEMENT_TYPE_NONE) ? strength : strength + 1;
+
         Collider[] cs = Physics.OverlapBox(AttackRegionObj.transform.position, AttackRange, AttackRegionObj.transform.rotation, EnemyMask);
         cs.ToObservable().Subscribe(c =>
         {
             EnemyBattle enemy = c.GetComponent<EnemyBattle>();
             if (enemy)
             {
-                enemy.Attacked(this, CreateAttack(AttackType.ATTACK_TYPE_NORMAL, strength, force));
+                enemy.Attacked(this, CreateAttack(AttackType.ATTACK_TYPE_NORMAL, power, force));
             }
         });
     }
