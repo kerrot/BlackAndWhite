@@ -54,7 +54,7 @@ public class EnemyBattle : UnitBattle
     bool dead;
     protected PlayerBattle player;
     protected Attribute attr;
-    Vector3 pos;
+    Vector3 animePos;
     GameObject blockUI;
 
     //Start change to Awake, because Instantiate not call Start but Awake
@@ -93,11 +93,11 @@ public class EnemyBattle : UnitBattle
         this.OnAnimatorMoveAsObservable().Subscribe(_ => UniRxAnimatorMove());
     }
 
-    void UniRxAnimatorMove()
+    protected void UniRxAnimatorMove()
     {
-        pos = anim.rootPosition;
-        pos.y = 0;
-        transform.position = pos;
+        animePos = anim.rootPosition;
+        animePos.y = 0;
+        transform.position = animePos;
     }
 
     void UniRxUpdate()

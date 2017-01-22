@@ -12,8 +12,6 @@ public class KnightBattle : EnemyBattle {
     private Subject<Unit> reviveSubject = new Subject<Unit>();
     public IObservable<Unit> OnRevive { get { return reviveSubject; } }
 
-    Vector3 pos;
-
     void Awake()
     {
         attr = GetComponent<Attribute>();
@@ -37,13 +35,6 @@ public class KnightBattle : EnemyBattle {
         this.UpdateAsObservable().Subscribe(_ => UniRxUpdate());
         this.OnDestroyAsObservable().Subscribe(_ => UniRxOnDestroy());
         this.OnAnimatorMoveAsObservable().Subscribe(_ => UniRxAnimatorMove());
-    }
-
-    void UniRxAnimatorMove()
-    {
-        pos = anim.rootPosition;
-        pos.y = 0;
-        transform.position = pos;
     }
 
     void UniRxUpdate()
