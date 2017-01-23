@@ -24,6 +24,7 @@ public class PauseCon : MonoBehaviour {
 
     void Awake() {  
         pasueButton = GameObject.Find( "Pause Button" );
+        gameSytem = GameObject.Find( "Target" ).GetComponent<GameSystem>();
         backGround.transform.localScale = new Vector3( scalePos, scalePos, maxScalePos );
         maxScale = new Vector3( maxScalePos, maxScalePos, maxScalePos );
         pasueButton.SetActive( false ); 

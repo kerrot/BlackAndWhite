@@ -28,6 +28,8 @@ public class GFFStage : MonoBehaviour {
     protected GameObject bossHint;
     [SerializeField]
     protected GameObject sub;
+    [SerializeField]
+    protected GameObject GG;
 
     void Awake()
     {
@@ -42,8 +44,10 @@ public class GFFStage : MonoBehaviour {
             PlayerBattle battle = GameObject.FindObjectOfType<PlayerBattle>();
             if (battle)
             {
-                battle.OnDead.Subscribe(_ => system.GameOver()).AddTo(this);
+                battle.OnDead.Subscribe(_ => GameOver()).AddTo(this);
             }
+
+            this.OnDestroyAsObservable().Subscribe(_ => system.GameResume());
         }
 
         if (red)
@@ -109,6 +113,23 @@ public class GFFStage : MonoBehaviour {
 
             unionSubject.Dispose();
         }).AddTo(this);
+    }
+
+    void GameOver()
+    {
+        Observable.Timer(System.TimeSpan.FromSeconds(3f)).Subscribe(_ =>
+        {
+            GameSystem system = GameObject.FindObjectOfType<GameSystem>();
+            if (system)
+            {
+                system.GamePause();
+            }
+
+            if (GG)
+            {
+                GG.SetActive(true);
+            }
+        });
     }
 
     void GameClear()

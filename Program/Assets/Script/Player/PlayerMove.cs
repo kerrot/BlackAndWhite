@@ -6,9 +6,14 @@ using System.Collections;
 public class PlayerMove : UnitMove {
     public static bool CanRotate = true;
 
-    public float arriveRadius = 0.1f;
-    public float GuardRadius = 0.2f;
-    public GameObject TargetObject;
+    [SerializeField]
+    private float arriveRadius = 0.1f;
+    [SerializeField]
+    private float GuardRadius = 0.2f;
+    [SerializeField]
+    private GameObject TargetObject;
+    [SerializeField]
+    private GameObject targetIndex;
 
     Animator anim;
     UnityEngine.AI.NavMeshAgent agent;
@@ -49,6 +54,7 @@ public class PlayerMove : UnitMove {
         anim.SetBool("IsMove", true);
 
         SetDestination(mousePosition);
+        targetIndex.SetActive(true);
     }
 
     void KeyMove(Vector2 moveDirection)
@@ -67,6 +73,7 @@ public class PlayerMove : UnitMove {
         transform.LookAt(TargetObject.transform);
 
         anim.SetBool("IsMove", true);
+        targetIndex.SetActive(false);
     }
 
     public void MoveStop()
