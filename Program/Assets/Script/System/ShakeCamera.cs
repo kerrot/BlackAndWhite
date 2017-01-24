@@ -17,20 +17,27 @@ public class ShakeCamera : MonoBehaviour
     float counter = 0;
     float startTime = 0;
 
+    System.IDisposable subject;
+
     void Start()
     {
         startTime = Time.time;
         follower = GetComponent<FollowTargetPosition>();
-		this.LateUpdateAsObservable().Subscribe (_ => UniRxLateUpdate ());
     }
 
     void OnEnable()
     {
         startTime = Time.time;
+        subject = this.LateUpdateAsObservable().Subscribe(_ => UniRxLateUpdate());
     }
 
 	void UniRxLateUpdate()
     {
+        if (!follower)
+        {
+            return;
+        }
+
         if (offset > 0 && frequency > 0)
         {
             counter += Time.deltaTime;
@@ -49,6 +56,7 @@ public class ShakeCamera : MonoBehaviour
         if (time > 0 && Time.time - startTime > time)
         {
             enabled = false;
+            subject.Dispose();
             transform.position = follower.CurrentPosition;
         }
     }

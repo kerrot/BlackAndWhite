@@ -32,7 +32,7 @@ public class FollowTargetPosition : MonoBehaviour
 	{
         if (follow)
         {
-            Vector3 currentPosition = follow.transform.position + offset;
+            currentPosition = follow.transform.position + offset;
 
             if (useSmoothing)
             {
