@@ -149,7 +149,7 @@ public class BasicStage : MonoBehaviour {
 	
     void CheckSlash()
     {
-        if (slash && slash.activeSelf && Input.GetKeyDown(KeyCode.S) && system)
+        if (slash && slash.activeSelf && Input.GetButtonDown("Slack") && system)
         {
             system.GameResume();
             waitSlash.Dispose();

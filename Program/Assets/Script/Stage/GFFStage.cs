@@ -46,8 +46,6 @@ public class GFFStage : MonoBehaviour {
             {
                 battle.OnDead.Subscribe(_ => GameOver()).AddTo(this);
             }
-
-            this.OnDestroyAsObservable().Subscribe(_ => Time.timeScale = 1);
         }
 
         if (red)

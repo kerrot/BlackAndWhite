@@ -36,6 +36,12 @@ public class PauseCon : MonoBehaviour {
 
         if ( gameSytem.State == GameSystem.GameState.GAME_STATE_PLAYING ) {
             pasueButton.SetActive( true );
+
+            if (Input.GetButtonDown("Pause"))
+            {
+                OnPauseButtonClicke();
+            }
+
         } else {
             pasueButton.SetActive( false );
         }

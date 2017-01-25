@@ -8,8 +8,8 @@ public class PlayerMove : UnitMove {
 
     [SerializeField]
     private float arriveRadius = 0.1f;
-    [SerializeField]
-    private float GuardRadius = 0.2f;
+    //[SerializeField]
+    //private float GuardRadius = 0.2f;
     [SerializeField]
     private GameObject TargetObject;
     [SerializeField]

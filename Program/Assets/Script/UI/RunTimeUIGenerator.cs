@@ -10,6 +10,8 @@ public class RunTimeUIGenerator : MonoBehaviour {
     private GameObject breakUI;
     [SerializeField]
     private GameObject blockUI;
+    [SerializeField]
+    private GameObject hurtUI;
 
     public GameObject CreateLockUI()
     {
@@ -29,6 +31,10 @@ public class RunTimeUIGenerator : MonoBehaviour {
     public GameObject CreateBlockUI()
     {
         return CreateUI(blockUI);
+    }
+    public GameObject CreateHurtUI()
+    {
+        return CreateUI(hurtUI);
     }
 
     public GameObject CreateUI(GameObject ui)

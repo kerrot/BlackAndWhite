@@ -3,13 +3,10 @@ using UniRx.Triggers;
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
-using UnityStandardAssets.ImageEffects;
 
 public class PlayerBattle : UnitBattle {
     [SerializeField]
     private GameObject AttackRegionObj;
-    [SerializeField]
-    private Animator hurtEffect;
     [SerializeField]
     private float HP;
     [SerializeField]
@@ -36,10 +33,15 @@ public class PlayerBattle : UnitBattle {
     private Subject<Unit> deadSubject = new Subject<Unit>();
     public IObservable<Unit> OnDead { get { return deadSubject; } }
 
+    private Subject<UnitBattle> attackedSubject = new Subject<UnitBattle>();
+    public IObservable<UnitBattle> OnAttacked { get { return attackedSubject; } }
+
+    private FloatReactiveProperty HPrate = new FloatReactiveProperty(1.0f);
+    public IObservable<float> HPRate { get { return HPrate; } }
+
     Animator anim;
 
     float recoverStart;
-    float cuurentIntensity;
 
     int attackHash;
     int EnemyMask;
@@ -54,14 +56,6 @@ public class PlayerBattle : UnitBattle {
         dead = false;
 
         slash = GetComponent<PlayerSlash>();
-        if (hurtEffect)
-        {
-            GameObject tmp = GameObject.Find("HurtScreenEffect");
-            if (tmp)
-            {
-                hurtEffect = tmp.GetComponent<Animator>();
-            }
-        }
         
         if (AttackRegionObj)
         {
@@ -98,16 +92,9 @@ public class PlayerBattle : UnitBattle {
             {
                 nowHP = HP;
             }
+            HPrate.Value = nowHP / HP;
 
             recoverStart = Time.time;
-
-            UpdateCameraEffect();
-        }
-
-        VignetteAndChromaticAberration effect = Camera.main.gameObject.GetComponent<VignetteAndChromaticAberration>();
-        if (effect && effect.intensity != cuurentIntensity)
-        {
-            effect.intensity += (cuurentIntensity > effect.intensity) ? 0.001f : -0.001f;
         }
 
         AnimatorStateInfo info = anim.GetCurrentAnimatorStateInfo(0);
@@ -257,8 +244,12 @@ public class PlayerBattle : UnitBattle {
             return false;
         }
 
+        attackedSubject.OnNext(unit);
+
         recoverStart = Time.time;
         nowHP -= attack.Strength;
+
+        HPrate.Value = nowHP / HP;
 
         transform.LookAt(unit.transform);
 
@@ -266,17 +257,12 @@ public class PlayerBattle : UnitBattle {
         {
             anim.SetTrigger("Hurt");
         }
-        
-        if (attack.Strength > 0)
-        {
-            hurtEffect.SetTrigger("Play");
-        }
 
-        //ShakeCamera shake = GameObject.FindObjectOfType<ShakeCamera>();
-        //if (shake)
-        //{
-        //    shake.enabled = true;
-        //}
+        ShakeCamera shake = GameObject.FindObjectOfType<ShakeCamera>();
+        if (shake)
+        {
+            shake.enabled = true;
+        }
 
         if (nowHP <= 0)
         {
@@ -291,17 +277,7 @@ public class PlayerBattle : UnitBattle {
             deadSubject.OnNext(Unit.Default);
         }
 
-        UpdateCameraEffect();
-
         return true;
-    }
-
-    void UpdateCameraEffect()
-    {
-        if (nowHP < HP)
-        {
-            cuurentIntensity = 0.6f - (nowHP - 1f) / HP * 0.6f;
-        }
     }
 
     public void Revive()
@@ -309,13 +285,6 @@ public class PlayerBattle : UnitBattle {
         enabled = true;
         dead = false;
         nowHP = HP;
-
-        cuurentIntensity = 0f;
-        VignetteAndChromaticAberration effect = Camera.main.gameObject.GetComponent<VignetteAndChromaticAberration>();
-        if (effect)
-        {
-            effect.intensity = 0f;
-        }
 
         anim.Play("PlayerBase.Idle");
         transform.position = Vector3.zero;

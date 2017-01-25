@@ -62,6 +62,8 @@ public class GameSystem : SingletonMonoBehaviour<GameSystem>
             slash.OnSlashCount.Subscribe(i => KillInOneTime(i)).AddTo(this);
             slash.OnComboSlash.Subscribe(u => ComboSlash()).AddTo(this);
         }
+
+        this.OnDestroyAsObservable().Subscribe(_ => GameResume());
     }
 
     public void ResetSlashCount()
