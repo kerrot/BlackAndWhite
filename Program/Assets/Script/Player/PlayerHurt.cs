@@ -10,19 +10,26 @@ public class PlayerHurt : MonoBehaviour {
     [SerializeField]
     private float scale = 50;
     [SerializeField]
+    private Animator anim;
+    [SerializeField]
     private float danger = 0.5f;
 
-    RunTimeUIGenerator ui;
+    private Subject<bool> dangerSubject = new Subject<bool>();
 
-    Animator anim;
+    public IObservable<bool> OnDanger { get { return dangerSubject; } }
+
+    RunTimeUIGenerator ui;
 
     void Start ()
     {
         ui = GameObject.FindObjectOfType<RunTimeUIGenerator>();
-        anim = Camera.main.gameObject.GetComponent<Animator>();
 
         battle.OnAttacked.Subscribe(u => Attacked(u)).AddTo(this);
-        battle.HPRate.Subscribe(v => anim.SetBool("danger", v < danger));
+        battle.HPRate.Subscribe(v => 
+        {
+            anim.SetBool("danger", v < danger);
+            dangerSubject.OnNext(v < danger);
+        });
     }
 
     void Attacked(UnitBattle unit)
@@ -31,7 +38,6 @@ public class PlayerHurt : MonoBehaviour {
 
         Vector3 direction = unit.transform.position - battle.transform.position;
         float angle = ((direction.x > 0) ? -1 : 1 ) * Vector3.Angle(direction, Vector3.forward);
-        Debug.Log(direction + " " + angle);
         obj.transform.Rotate(0, 0, angle);
 
         Vector3 offset = direction.normalized * scale;

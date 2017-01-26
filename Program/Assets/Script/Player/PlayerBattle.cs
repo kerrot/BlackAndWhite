@@ -287,6 +287,8 @@ public class PlayerBattle : UnitBattle {
         nowHP = HP;
 
         anim.Play("PlayerBase.Idle");
+
+        anim.SetBool("IsMove", false);
         transform.position = Vector3.zero;
         transform.rotation = Quaternion.identity;
     }

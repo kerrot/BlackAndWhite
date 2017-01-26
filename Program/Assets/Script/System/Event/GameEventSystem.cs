@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿using UniRx;
+using UniRx.Triggers;
+using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -9,7 +11,7 @@ public class GameEventSystem : MonoBehaviour {
 
     void Start()
     {
-        events.ForEach(e => e.Launch());
+        events.ForEach(e => Register(e));
     }
 
     public void AddEvent(GameEvent e)
@@ -17,8 +19,14 @@ public class GameEventSystem : MonoBehaviour {
         if (e && !events.Contains(e))
         {
             events.Add(e);
-            e.Launch();
+            Register(e);
         }
+    }
+
+    void Register(GameEvent e)
+    {
+        e.Launch();
+        e.OnComplete.Subscribe(ev => DestroyEvent(ev)).AddTo(this);
     }
 
     void DestroyEvent(GameEvent e)

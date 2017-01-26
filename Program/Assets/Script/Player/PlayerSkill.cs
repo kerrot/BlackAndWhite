@@ -21,7 +21,7 @@ public class PlayerSkill : MonoBehaviour
     private AudioClip chargeSE;
 
     private Subject<ElementType> chargeSubject = new Subject<ElementType>();
-    private Subject<Unit> skillSubject = new Subject<Unit>();
+    private Subject<ElementType> skillSubject = new Subject<ElementType>();
 
     private BoolReactiveProperty canSkill = new BoolReactiveProperty();
     private FloatReactiveProperty redEnergy = new FloatReactiveProperty();
@@ -34,7 +34,7 @@ public class PlayerSkill : MonoBehaviour
     public float MaxEnergy { get { return maxEnergy; } }
     public IObservable<bool> CanSkill { get { return canSkill; } }
     public IObservable<ElementType> OnCharge { get { return chargeSubject; } }
-    public IObservable<Unit> OnSkill { get { return skillSubject; } }
+    public IObservable<ElementType> OnSkill { get { return skillSubject; } }
 
     ElementType castingType;
 
@@ -154,7 +154,7 @@ public class PlayerSkill : MonoBehaviour
             CheckState();
         }
 
-        skillSubject.OnNext(Unit.Default);
+        skillSubject.OnNext(castingType);
     }
 
     public void Charge(ElementType ele, float power)

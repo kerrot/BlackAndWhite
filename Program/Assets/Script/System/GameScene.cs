@@ -13,4 +13,9 @@ public class GameScene : MonoBehaviour {
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
+
+    static public void LoadScene(string name)
+    {
+        SceneManager.LoadScene(name);
+    }
 }
