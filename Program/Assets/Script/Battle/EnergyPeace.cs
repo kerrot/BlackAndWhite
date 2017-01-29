@@ -88,6 +88,11 @@ public class EnergyPeace : EnergyBase
             gather.Dispose();
         }
 
+        if (!gatherTarget)
+        {
+            return;
+        }
+
         FlytoTarget();
 
         gather = this.OnTriggerStayAsObservable().Subscribe(o => 
