@@ -14,9 +14,12 @@ public class EnergyPeace : EnergyBase
     [SerializeField]
     private AudioClip groundSE;
 
+    static private Subject<EnergyBall> newSubject = new Subject<EnergyBall>();
+    static public IObservable<EnergyBall> OnNew { get { return newSubject; } }
+
     int floorLayer;
     Rigidbody rd;
-    float radis;
+    float radius;
 
     System.IDisposable ground;
     System.IDisposable gather;
@@ -35,56 +38,79 @@ public class EnergyPeace : EnergyBase
             rd.velocity = Vector3.up * speed + new Vector3(v.x, 0, v.y);
         }
 
-        radis = GetComponent<SphereCollider>().radius * transform.localScale.x;
+        radius = GetComponent<SphereCollider>().radius * transform.localScale.x;
 
-        ground = this.OnTriggerEnterAsObservable().Subscribe(o => UniRxTriggerEnter(o));
+        FallToGround();
 
-        EnergyBall.OnNew.Subscribe(e => Regather(e)).AddTo(this);
+        EnergyPeace.OnNew.Subscribe(e => Regather(e)).AddTo(this);
     }
 
-    void UniRxTriggerEnter(Collider other)
+    void FallToGround()
     {
-        if (rd.useGravity)
+        if (ground != null)
         {
-            if (other.gameObject.layer == floorLayer)
-            {
-                AudioHelper.PlaySE(gameObject, groundSE);
-
-                rd.useGravity = false;
-                rd.velocity = Vector3.zero;
-
-                transform.position = new Vector3(transform.position.x, radis, transform.position.z);
-
-                FindGatherTarget();
-
-                ground.Dispose();
-                gather = this.OnTriggerStayAsObservable().Subscribe(o => UniRxTriggerStay(o));
-            }
+            ground.Dispose();
         }
-    }
-
-    void UniRxTriggerStay(Collider other)
-    {
-        if (gatherTarget && other.gameObject.GetComponent<EnergyBase>() == gatherTarget)
+        if (gather != null)
         {
-            EnergyPeace p = other.gameObject.GetComponent<EnergyPeace>();
-            if (p)
+            gather.Dispose();
+        }
+
+        rd.useGravity = true;
+        ground = this.OnTriggerEnterAsObservable().Subscribe(o =>
+        {
+            if (rd.useGravity)
             {
-                p.FormBall();
-            }
-            else
-            {
-                EnergyBall b = other.gameObject.GetComponent<EnergyBall>();
-                if (b)
+                if (o.gameObject.layer == floorLayer)
                 {
-                    b.Gather();
+                    AudioHelper.PlaySE(gameObject, groundSE);
+
+                    rd.useGravity = false;
+                    rd.velocity = Vector3.zero;
+
+                    transform.position = new Vector3(transform.position.x, radius, transform.position.z);
+
+                    FindGatherTarget();
+                    Union();
                 }
             }
+        });
+    }
 
-            gather.Dispose();
-
-            Destroy(gameObject);
+    void Union()
+    {
+        if (ground != null)
+        {
+            ground.Dispose();
         }
+        if (gather != null)
+        {
+            gather.Dispose();
+        }
+
+        FlytoTarget();
+
+        gather = this.OnTriggerStayAsObservable().Subscribe(o => 
+        {
+            if (gatherTarget && o.gameObject.GetComponent<EnergyBase>() == gatherTarget)
+            {
+                EnergyPeace p = o.gameObject.GetComponent<EnergyPeace>();
+                if (p)
+                {
+                    p.FormBall();
+                }
+                else
+                {
+                    EnergyBall b = o.gameObject.GetComponent<EnergyBall>();
+                    if (b)
+                    {
+                        b.Gather();
+                    }
+                }
+
+                Destroy(gameObject);
+            }
+        });
     }
 
     EnergyBase FindClosest<T>(System.Func<T, bool> predicate) where T : EnergyBase
@@ -118,15 +144,17 @@ public class EnergyPeace : EnergyBase
 
     public void FormBall()
     {
-        GameObject ball = Instantiate(energyBall.gameObject, transform.position, Quaternion.identity) as GameObject;
-        ball.GetComponent<EnergyBall>().Type = Type;
+        GameObject obj = Instantiate(energyBall.gameObject, transform.position, Quaternion.identity) as GameObject;
+        EnergyBall ball = obj.GetComponent<EnergyBall>();
+        ball.Type = Type;
+        newSubject.OnNext(ball);
         Destroy(gameObject);
     }
 
     void FindGatherTarget()
     {
         // find closest gather target;
-        gatherTarget = FindClosest<EnergyBall>(b => b && b.Type == Type && !b.Formed);
+        gatherTarget = FindClosest<EnergyBall>(b => b && b.Type == Type && b.gatherCount > 0);
         if (!gatherTarget)
         {
             gatherTarget = FindClosest<EnergyPeace>(p => p && p.Type == Type && p != this);
@@ -138,22 +166,6 @@ public class EnergyPeace : EnergyBase
             {
                 gatherTarget = gatherTarget.GatherTarget;
             }
-
-            var disposable = new SingleAssignmentDisposable();
-            disposable.Disposable = this.UpdateAsObservable().Subscribe(_ =>
-            {
-                if (gatherTarget)
-                {
-                    rd.velocity = (gatherTarget.transform.position - transform.position).normalized * speed;
-                }
-                else
-                {
-                    rd.velocity = Vector3.zero;
-                    rd.useGravity = true;
-                    disposable.Dispose();
-                    ground = this.OnTriggerEnterAsObservable().Subscribe(o => UniRxTriggerEnter(o));
-                }
-            });
         }
         else
         {
@@ -161,13 +173,34 @@ public class EnergyPeace : EnergyBase
         }
     }
 
+    void FlytoTarget()
+    {
+        var disposable = new SingleAssignmentDisposable();
+        disposable.Disposable = this.UpdateAsObservable().Subscribe(_ =>
+        {
+            if (gatherTarget)
+            {
+                rd.velocity = (gatherTarget.transform.position - transform.position).normalized * speed;
+            }
+            else
+            {
+                disposable.Dispose();
+                FallToGround();
+            }
+        });
+    }
+
     void Regather(EnergyBall ball)
     {
-        if (Type == ball.Type && gatherTarget is EnergyPeace)
+        if (gatherTarget != null && gatherTarget is EnergyBall)
         {
-            FindGatherTarget();
-            ground.Dispose();
-            gather = this.OnTriggerStayAsObservable().Subscribe(o => UniRxTriggerStay(o));
+            return;
+        }
+
+        if (Type == ball.Type)
+        {
+            gatherTarget = ball;
+            Union();
         }
     }
 }

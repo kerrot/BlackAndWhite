@@ -12,7 +12,7 @@ public class EnergyBall : EnergyBase
     [SerializeField]
     private Color green;
     [SerializeField]
-    private int gatherCount;
+    public int gatherCount;
     [SerializeField]
     private ParticleSystem effect;
     [SerializeField]
@@ -29,10 +29,7 @@ public class EnergyBall : EnergyBase
     static private Subject<EnergyBall> formSubject = new Subject<EnergyBall>();
     static public IObservable<EnergyBall> OnForm { get { return formSubject; } }
 
-    static private Subject<EnergyBall> newSubject = new Subject<EnergyBall>();
-    static public IObservable<EnergyBall> OnNew { get { return newSubject; } }
-
-    public bool Formed { get { return current == gatherCount; } }
+    public bool Formed { get { return current >= gatherCount; } }
     int current = 0;
 
     Rigidbody rd;
@@ -88,22 +85,19 @@ public class EnergyBall : EnergyBase
 
             transform.position = new Vector3(transform.position.x, radis, transform.position.z);
             groundSubject.Dispose();
-
-            newSubject.OnNext(this);
         }
     }
 
     public void Gather()
     {
-        if (Formed)
-        {
-            return;
-        }
-
         ++current;
         ParticleSystem.MinMaxCurve size = mod.startSize;
-        size.constantMax += 0.1f;
+        if (size.constantMax < 1f)
+        {
+            size.constantMax += 0.1f;
+        }
         mod.startSize = size;
+        power += 10;
 
         if (Formed)
         {

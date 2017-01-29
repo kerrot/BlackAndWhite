@@ -55,6 +55,11 @@ public class GFFStage : MonoBehaviour {
         {
             Time.timeScale = 0.3f;
             system.RTM();
+            PlayerBattle player = GameObject.FindObjectOfType<PlayerBattle>();
+            if (player)
+            {
+                player.enabled = false;
+            }
         }
     }
 }
