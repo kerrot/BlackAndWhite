@@ -8,21 +8,40 @@ public class DeathBlow : UnitBattle
     private float strength;
     [SerializeField]
     private float force;
+    [SerializeField]
+    private ParticleSystem part;
+    [SerializeField]
+    private bool all;
 
     void Start()
 	{
-        ParticleSystem.MainModule par = GetComponent<ParticleSystem>().main;
-        par.startColor = Attribute.GetColor(GetComponent<Attribute>().Type, 1.0f);
+        if (!part)
+        {
+            part = GetComponent<ParticleSystem>();
+        }
 
-        Destroy(gameObject, par.duration);
+        ParticleSystem.MainModule mod = part.main;
+        mod.startColor = Attribute.GetColor(GetComponent<Attribute>().Type, 1.0f);
+
+        Destroy(gameObject, mod.duration);
 
         Collider[] cs = Physics.OverlapSphere(transform.position, GetComponent<SphereCollider>().radius);
         cs.ToList().ForEach(c =>
         {
-            EnemyBattle battle = c.gameObject.GetComponent<EnemyBattle>();
+            UnitBattle battle = c.gameObject.GetComponent<UnitBattle>();
             if (battle)
             {
-                battle.Attacked(this, CreateAttack(AttackType.ATTACK_TYPE_EXPLOSION, strength, force));
+                if (all || battle is EnemyBattle)
+                {
+                    if (strength > 0)
+                    {
+                        battle.Attacked(this, CreateAttack(AttackType.ATTACK_TYPE_EXPLOSION, strength, force));
+                    }
+                    else
+                    {
+                        battle.AddForce((battle.transform.position - transform.position).normalized * force);
+                    }
+                }
             }
         });
     }

@@ -16,6 +16,8 @@ public class EnemyMove : UnitMove {
     private float teleportMaxDistance;
     [SerializeField]
     private float teleportMinDistance;
+    [SerializeField]
+    private GameObject warpObj;
 
     public float StopRadius { get { return stopRadius; } }
 
@@ -23,6 +25,7 @@ public class EnemyMove : UnitMove {
     UnityEngine.AI.NavMeshAgent agent;
 
     int moveHash;
+    int idleHash;
 
     bool needRandom = true;
     float teleportTime;
@@ -40,11 +43,13 @@ public class EnemyMove : UnitMove {
         agent.updateRotation = false;
 
         moveHash = Animator.StringToHash("EnemyBase.Move");
+        idleHash = Animator.StringToHash("EnemyBase.Idle");
     }
 
 	// Update is called once per frame
 	void UniRxUpdate()
     {
+        AnimatorStateInfo info = anim.GetCurrentAnimatorStateInfo(0);
         anim.SetBool("Move", false);
 
         PlayerBattle player = GameObject.FindObjectOfType<PlayerBattle>();
@@ -55,7 +60,6 @@ public class EnemyMove : UnitMove {
             float distance = Vector3.Distance(player.transform.position, transform.position);
             anim.SetBool("Move", distance > stopRadius);
 
-            AnimatorStateInfo info = anim.GetCurrentAnimatorStateInfo(0);
             if (info.fullPathHash == moveHash)
             {
                 FaceTarget(agent.steeringTarget);
@@ -80,6 +84,11 @@ public class EnemyMove : UnitMove {
                 needRandom = true;
             }
         }
+
+        if (info.fullPathHash == idleHash)
+        {
+            warpObj.SetActive(false);
+        }
     }
 
     public void FaceTarget(Vector3 target)
@@ -93,7 +102,7 @@ public class EnemyMove : UnitMove {
         }
     }
     
-    void Teleport()
+    void StartTeleport()
     {
         if (player && !player.Missing && CanMove)
         {
@@ -101,8 +110,21 @@ public class EnemyMove : UnitMove {
             UnityEngine.AI.NavMeshHit navHit;
             if (UnityEngine.AI.NavMesh.SamplePosition(player.transform.position + new Vector3(offset.x, 0, offset.y), out navHit, 1.0f, UnityEngine.AI.NavMesh.AllAreas))
             {
-                transform.position = navHit.position;
+                Vector3 pos = navHit.position;
+                pos.y = 0f;
+                warpObj.transform.position = pos;
+                
+                warpObj.SetActive(true);
             }
+        }
+    }
+
+    void Teleport()
+    {
+        warpObj.SetActive(false);
+        if (CanMove)
+        {
+            transform.position = warpObj.transform.position;
         }
     }
 }

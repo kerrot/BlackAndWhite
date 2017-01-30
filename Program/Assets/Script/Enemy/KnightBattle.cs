@@ -7,7 +7,7 @@ public class KnightBattle : EnemyBattle {
     [SerializeField]
     private CorePeace peace;
     [SerializeField]
-    private AudioClip landingSE;
+    private GameObject smoke;
 
     private Subject<Unit> reviveSubject = new Subject<Unit>();
     public IObservable<Unit> OnRevive { get { return reviveSubject; } }
@@ -107,8 +107,7 @@ public class KnightBattle : EnemyBattle {
 
     void Landing()
     {
-        AudioHelper.PlaySE(gameObject, landingSE);
+        Instantiate(smoke, transform.position, Quaternion.identity);
         coll.enabled = true;
     }
-
 }
