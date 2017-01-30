@@ -14,6 +14,8 @@ public class Skill : MonoBehaviour {
     protected bool auraType;
     [SerializeField]
     protected GameObject skillObject;
+    [SerializeField]
+    public bool castMotion = true;
 
     public float RedCost { get { return redCost; } }
 	public float GreenCost { get { return greenCost; } }
@@ -69,9 +71,24 @@ public class Skill : MonoBehaviour {
 
         if (skill)
         {
-            return  skill.BlueEnergy.Value >= blueCost && 
-                    skill.RedEnergy.Value >= redCost && 
-                    skill.GreenEnergy.Value >= greenCost;
+            bool result = true;
+
+            if (redCost > 0)
+            {
+                result &= skill.RedEnergy.Value > 0;
+            }
+
+            if (greenCost > 0)
+            {
+                result &= skill.GreenEnergy.Value > 0;
+            }
+
+            if (blueCost > 0)
+            {
+                result &= skill.BlueEnergy.Value > 0;
+            }
+
+            return result;
         }
 
         return false;

@@ -97,14 +97,13 @@ public class EnergyBall : EnergyBase
             size.constantMax += 0.1f;
         }
         mod.startSize = size;
-        power += 10;
 
         if (Formed)
         {
             effectOn.gameObject.SetActive(true);
             lightOn.gameObject.SetActive(true);
             effect.gameObject.GetComponent<Animator>().enabled = true;
-
+            power += 10;
             AudioHelper.PlaySE(gameObject, formSE);
 
             formSubject.OnNext(this);

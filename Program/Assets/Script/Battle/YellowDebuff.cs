@@ -14,6 +14,8 @@ public class YellowDebuff : AuraBattle
     {
         DoRecover();
         attri = GameObject.FindObjectOfType<PlayerAttribute>();
+
+        this.OnDestroyAsObservable().Subscribe(_ => AuraDisappear());
     }
 
     protected override void AuraDisappear()

@@ -15,6 +15,8 @@ public class WhiteSkill : Skill
     private GameObject trail;
     [SerializeField]
     private AudioClip flashSE;
+    [SerializeField]
+    private float period;
 
     Material original;
     ParticleSystem ps;
@@ -36,11 +38,6 @@ public class WhiteSkill : Skill
     void Start()
     {
         this.UpdateAsObservable().Subscribe(_ => UniRxUpdate());
-    }
-
-    public override bool IsUsing()
-    {
-        return trail.activeSelf;
     }
 
     public override bool UseSkill()
@@ -67,17 +64,6 @@ public class WhiteSkill : Skill
         return !flashEffect && CheckEnergy();
     }
 
-    public override void SkillEnd()
-    {
-        aho.material = original;
-        trail.SetActive(false);
-
-        if (PT)
-        {
-            PT.SlowMotion(1f, 1f);
-        }
-    }
-
     void StartEffect()
     {
         aho.material = lightMat;
@@ -87,6 +73,17 @@ public class WhiteSkill : Skill
         {
             PT.SlowMotion(0.2f, 0.8f);
         }
+
+        Observable.Timer(System.TimeSpan.FromSeconds(period)).Subscribe(_ =>
+        {
+            aho.material = original;
+            trail.SetActive(false);
+
+            if (PT)
+            {
+                PT.SlowMotion(1f, 1f);
+            }
+        });
     }
 
     void UniRxUpdate()

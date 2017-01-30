@@ -139,8 +139,16 @@ public class PlayerSkill : MonoBehaviour
                 }
 
                 castingType = now.Type;
-                anim.SetTrigger("Skill");
-                isSkilling = true;
+
+                if (now.castMotion)
+                {
+                    anim.SetTrigger("Skill");
+                    isSkilling = true;
+                }
+                else
+                {
+                    DoSkill();
+                }
             }
         }
     }
@@ -181,17 +189,17 @@ public class PlayerSkill : MonoBehaviour
     {
         if (s.RedCost > 0)
         {
-            redEnergy.Value -= s.RedCost;
+            redEnergy.Value = (redEnergy.Value > s.RedCost) ? redEnergy.Value - s.RedCost : 0;
         }
 
         if (s.GreenCost > 0)
         {
-            greenEnergy.Value -= s.GreenCost;
+            greenEnergy.Value = (greenEnergy.Value > s.GreenCost) ? greenEnergy.Value - s.GreenCost : 0;
         }
 
         if (s.BlueCost > 0)
         {
-            blueEnergy.Value -= s.BlueCost;
+            blueEnergy.Value = (blueEnergy.Value > s.BlueCost) ? blueEnergy.Value - s.BlueCost : 0;
         }
     }
 
