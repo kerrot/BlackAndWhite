@@ -67,10 +67,10 @@ public class KnightBattle : EnemyBattle {
 			if (HPState.Barrier.Value <= 0) {
 				Die ();
 			} 
-			else 
-			{
-				anim.SetTrigger("Hitted");
-			}
+			//else 
+			//{
+			//	anim.SetTrigger("Hitted");
+			//}
 		}
 
         return false;

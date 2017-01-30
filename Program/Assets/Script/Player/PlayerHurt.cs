@@ -3,6 +3,7 @@ using UniRx.Triggers;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 public class PlayerHurt : MonoBehaviour {
     [SerializeField]
@@ -13,10 +14,18 @@ public class PlayerHurt : MonoBehaviour {
     private Animator anim;
     [SerializeField]
     private float danger = 0.5f;
+    [SerializeField]
+    private BloodEffect[] effects;
 
     private Subject<bool> dangerSubject = new Subject<bool>();
-
     public IObservable<bool> OnDanger { get { return dangerSubject; } }
+
+    [Serializable]
+    public struct BloodEffect
+    {
+        public GameObject blood;
+        public float value;
+    }
 
     RunTimeUIGenerator ui;
 
@@ -29,6 +38,8 @@ public class PlayerHurt : MonoBehaviour {
         {
             anim.SetBool("danger", v < danger);
             dangerSubject.OnNext(v < danger);
+
+            effects.ToObservable().Subscribe(e => e.blood.SetActive(v <= e.value));
         });
     }
 

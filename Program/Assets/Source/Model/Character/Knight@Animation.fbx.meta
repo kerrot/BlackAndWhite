@@ -78,6 +78,7 @@ ModelImporter:
     7400020: Revive
     7400022: Showup0
     7400024: TelePort
+    7400026: Corpse
     9500000: //RootNode
   materials:
     importMaterials: 1
