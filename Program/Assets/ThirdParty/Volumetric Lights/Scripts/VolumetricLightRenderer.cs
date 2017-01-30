@@ -62,11 +62,11 @@ public class VolumetricLightRenderer : MonoBehaviour
 
     private RenderTexture _halfDepthBuffer;
     private RenderTexture _quarterDepthBuffer;
-    private VolumtericResolution _currentResolution = VolumtericResolution.Full;
+    private VolumtericResolution _currentResolution = VolumtericResolution.Half;
     private Texture2D _ditheringTexture;
     private Texture3D _noiseTexture;
 
-    public VolumtericResolution Resolution = VolumtericResolution.Full;
+    public VolumtericResolution Resolution = VolumtericResolution.Half;
     public Texture DefaultSpotCookie;
 
     public CommandBuffer GlobalCommandBuffer { get { return _preLightPass; } }
@@ -404,6 +404,7 @@ public class VolumetricLightRenderer : MonoBehaviour
         uint pitch = BitConverter.ToUInt32(data.bytes, 20);
         uint depth = BitConverter.ToUInt32(data.bytes, 24);
         uint formatFlags = BitConverter.ToUInt32(data.bytes, 20 * 4);
+        uint fourCC = BitConverter.ToUInt32(data.bytes, 21 * 4);
         uint bitdepth = BitConverter.ToUInt32(data.bytes, 22 * 4);
         if (bitdepth == 0)
             bitdepth = pitch / width * 8;
