@@ -12,6 +12,19 @@ public class DeadAction : MonoBehaviour
     public Attack Atk;
     public UnitBattle Attacker;
 
+    public void Blow()
+    {
+        Collider[] cs = Physics.OverlapSphere(transform.position, GetComponent<SphereCollider>().radius);
+        cs.ToList().ForEach(c =>
+        {
+            EnemyBattle battle = c.gameObject.GetComponent<EnemyBattle>();
+            if (battle != null && battle != Attacker)
+            {
+                battle.Attacked(Attacker, Atk);
+            }
+        });
+    }
+
     void Start()
 	{
         ParticleSystem[] pars = GetComponentsInChildren<ParticleSystem>();
@@ -27,15 +40,5 @@ public class DeadAction : MonoBehaviour
         flashmod.startColor = tmpC;
 
         Destroy(gameObject, duration);
-
-        Collider[] cs = Physics.OverlapSphere(transform.position, GetComponent<SphereCollider>().radius);
-        cs.ToList().ForEach(c =>
-        {
-            EnemyBattle battle = c.gameObject.GetComponent<EnemyBattle>();
-            if (battle != null && battle != Attacker)
-            {
-                battle.Attacked(Attacker, Atk);
-            }
-        });
     }
 }

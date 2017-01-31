@@ -39,7 +39,7 @@ public class GameEvent : MonoBehaviour {
 
     public void Launch()
     {
-        preAct.ForEach(a => Observable.Timer(TimeSpan.FromSeconds(a.delay)).Subscribe(_ => a.act.Launch()));
+        preAct.ForEach(a => Action(a));
         ConditionInit();
     }
 
@@ -65,7 +65,7 @@ public class GameEvent : MonoBehaviour {
             state[cond] = true;
             if (state.All(s => s.Value))
             {
-                postAct.ForEach(a => Observable.Timer(TimeSpan.FromSeconds(a.delay)).Subscribe(_ => a.act.Launch()));
+                postAct.ForEach(a => Action(a));
 
                 if (infinity)
                 {
@@ -77,6 +77,18 @@ public class GameEvent : MonoBehaviour {
                     complete.OnNext(this);
                 }
             }
+        }
+    }
+
+    void Action(ActionSetting a)
+    {
+        if (a.delay > 0)
+        {
+            Observable.Timer(TimeSpan.FromSeconds(a.delay)).Subscribe(_ => a.act.Launch());
+        }
+        else
+        {
+            a.act.Launch();
         }
     }
 }

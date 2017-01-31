@@ -35,7 +35,7 @@ public class NumberDisplayUI : MonoBehaviour {
     public void Display(int number)
     {
         int index = 0;
-
+        gameObject.SetActive(false);
         gameObject.SetActive(true);
         startTime = Time.realtimeSinceStartup;
         numbers.ForEach(n => n.gameObject.SetActive(false));
@@ -48,6 +48,11 @@ public class NumberDisplayUI : MonoBehaviour {
                 GameObject obj = Instantiate(num.gameObject, new Vector3(), num.gameObject.transform.rotation) as GameObject;
                 obj.transform.SetParent(transform);
                 numbers.Add(obj.GetComponent<NumberUI>());
+
+                Image newImg = obj.GetComponent<Image>();
+                Image oriImg = num.gameObject.GetComponent<Image>();
+
+                newImg.gameObject.UpdateAsObservable().Subscribe(_ => newImg.color = oriImg.color);
 
                 RectTransform t = numbers[index - 1].gameObject.GetComponent<RectTransform>();
                 RectTransform r = obj.GetComponent<RectTransform>();

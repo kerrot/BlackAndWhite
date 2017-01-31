@@ -40,6 +40,11 @@ public class WhiteSkill : Skill
         this.UpdateAsObservable().Subscribe(_ => UniRxUpdate());
     }
 
+    public override bool Activated()
+    {
+        return trail.activeSelf;
+    }
+
     public override bool UseSkill()
     {
         if (!flashEffect && system)

@@ -22,8 +22,13 @@ public class ShadowEffect : MonoBehaviour {
 
     private float start;
 
+    GameSystem system;
+
+
     void Start()
     {
+        system = GameObject.FindObjectOfType<GameSystem>();
+
         this.UpdateAsObservable().Subscribe(_ => UniRxUpdate());
         start = Time.realtimeSinceStartup;
 
@@ -49,6 +54,11 @@ public class ShadowEffect : MonoBehaviour {
 
     void UniRxUpdate()
     {
+        if (system && system.State != GameSystem.GameState.GAME_STATE_PLAYING)
+        {
+            return;
+        }
+
 		float diff = Time.realtimeSinceStartup - start;
 		float rate = diff / time;
 

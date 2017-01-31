@@ -127,7 +127,11 @@ public class EnemyManager : MonoBehaviour
                 GameObject obj = Instantiate(battle.DeadAction, Enemy.transform.position, Quaternion.identity) as GameObject;
                 obj.layer = 0;
 
-                obj.GetComponent<DeadAction>().Atk = battle.DeadAction.GetComponent<DeadAction>().Atk;
+                DeadAction newAction = obj.GetComponent<DeadAction>();
+                DeadAction oriAction = battle.DeadAction.GetComponent<DeadAction>();
+                newAction.Atk = oriAction.Atk;
+                newAction.Attacker = oriAction.Attacker;
+                newAction.Blow();
             }
 
             DestroyObject(Enemy);
