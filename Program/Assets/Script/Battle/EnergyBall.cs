@@ -118,7 +118,7 @@ public class EnergyBall : EnergyBase
     void PlayerCharge(Collider other)
     {
         PlayerSkill skill = other.gameObject.GetComponent<PlayerSkill>();
-        if (skill)
+        if (skill && !skill.gameObject.GetComponent<PlayerSlash>().IsSlashing)
         {
             skill.Charge(Type, power);
             Destroy(gameObject);

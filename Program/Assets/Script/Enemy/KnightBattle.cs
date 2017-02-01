@@ -23,6 +23,10 @@ public class KnightBattle : EnemyBattle {
         if (HPState)
         {
             HPState.OnRecover.Subscribe(_ => reviveSubject.OnNext(Unit.Default)).AddTo(this);
+            if (HPState.CanRecover)
+            {
+                peace.Register();
+            }
         }
 
         anim.SetTrigger("TelePort");

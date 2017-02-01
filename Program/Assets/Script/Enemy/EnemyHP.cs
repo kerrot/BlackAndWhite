@@ -66,6 +66,12 @@ public class EnemyHP : MonoBehaviour
             });
         }
 
+        if (alwaysShow)
+        {
+            gameObject.OnDisableAsObservable().Where(_ => hpUI).Subscribe(_ => hpUI.gameObject.SetActive(false));
+            gameObject.OnEnableAsObservable().Where(_ => hpUI).Subscribe(_ => hpUI.gameObject.SetActive(true));
+        }
+
         this.UpdateAsObservable().Subscribe(_ => UniRxUpdate());
         this.OnDestroyAsObservable().Subscribe(_ => UniRxOnDestroy());
     }
@@ -94,7 +100,7 @@ public class EnemyHP : MonoBehaviour
                     //avoid immediately disappear when recover complete.
                     showHPStart = Time.time;
 
-                    hpUI.RecoverUI.gameObject.SetActive(false || alwaysShow);
+                    hpUI.RecoverUI.gameObject.SetActive(alwaysShow);
                     Barrier.Value = barrierStrength;
                     recoverSubject.OnNext(Unit.Default);
                 }
@@ -102,7 +108,7 @@ public class EnemyHP : MonoBehaviour
 
             if (recover.Value == 0 && Time.time - showHPStart > showHPTime)
             {
-                hpUI.gameObject.SetActive(false || alwaysShow);
+                hpUI.gameObject.SetActive(alwaysShow && gameObject.activeSelf);
             }
         }
     }

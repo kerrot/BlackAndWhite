@@ -162,7 +162,9 @@ public class EnemyBattle : UnitBattle
 
         if (unit == player)
         {
-            transform.LookAt(player.transform);
+            Vector3 pos = player.transform.position;
+            pos.y = 0f;
+            transform.LookAt(pos);
         }
 
         if (attack.Type == AttackType.ATTACK_TYPE_SLASH && slash.CanSlash)

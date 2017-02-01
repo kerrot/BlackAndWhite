@@ -135,7 +135,9 @@ public class PlayerSkill : MonoBehaviour
             {
                 if (obj != null)
                 {
-                    transform.LookAt(obj.transform);
+                    Vector3 pos = obj.transform.position;
+                    pos.y = 0f;
+                    transform.LookAt(pos);
                 }
 
                 castingType = now.Type;

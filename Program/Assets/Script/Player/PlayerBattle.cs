@@ -174,7 +174,9 @@ public class PlayerBattle : UnitBattle {
 	{
         if (enemy != null)
         {
-            transform.LookAt(enemy.transform);
+            Vector3 pos = enemy.transform.position;
+            pos.y = 0f;
+            transform.LookAt(pos);
         }
 
         anim.SetTrigger("Attack");
@@ -251,7 +253,9 @@ public class PlayerBattle : UnitBattle {
 
         HPrate.Value = nowHP / HP;
 
-        transform.LookAt(unit.transform);
+        Vector3 pos = unit.transform.position;
+        pos.y = 0f;
+        transform.LookAt(pos);
 
         if (nowHP > 0)
         {

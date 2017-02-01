@@ -12,7 +12,9 @@ public class CorePeace : MonoBehaviour
     [SerializeField]
     private KnightBattle battle;
 
-    static private float STOP_DISTANCE = 0.01f;
+    public bool UnionReach = false;
+
+    static public float STOP_DISTANCE = 0.01f;
 
     static private Subject<Vector3> unionSubject = new Subject<Vector3>();
     static public IObservable<Vector3> OnUnion { get { return unionSubject; } }
@@ -89,8 +91,9 @@ public class CorePeace : MonoBehaviour
         {
             if (rd)
             {
-                rd.velocity = pos - transform.position;
-                if (Vector3.Distance(transform.position, pos) < STOP_DISTANCE)
+                rd.velocity = (pos - transform.position);
+                float tmp = Vector3.Distance(transform.position, pos);
+                if (tmp <= STOP_DISTANCE)
                 {
                     rd.velocity = Vector3.zero;
                     reachSubject.OnNext(Unit.Default);
@@ -108,7 +111,7 @@ public class CorePeace : MonoBehaviour
             breakSubject.OnNext(Unit.Default);
         }
 
-        Core.SetActive(false);
+        UnionReach = false;
         gameObject.SetActive(true);
         ready.Value = false;
 
@@ -180,7 +183,7 @@ public class CorePeace : MonoBehaviour
             gameObject.SetActive(false);
             if (Core)
             {
-                Core.SetActive(true);
+                UnionReach = true;
                 Core.transform.position = pos;
             }
 

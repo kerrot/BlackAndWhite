@@ -39,7 +39,7 @@ public class PlayerHurt : MonoBehaviour {
             anim.SetBool("danger", v < danger);
             dangerSubject.OnNext(v < danger);
 
-            effects.ToObservable().Subscribe(e => e.blood.SetActive(v <= e.value));
+            effects.ToObservable().Subscribe(e => e.blood.GetComponent<Animator>().SetBool("Blood", v <= e.value));
         });
     }
 

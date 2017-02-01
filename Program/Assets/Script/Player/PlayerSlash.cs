@@ -103,6 +103,7 @@ public class PlayerSlash : MonoBehaviour {
             if (TargetObject)
             {
                 TargetPosition = TargetObject.transform.position;
+                TargetPosition.y = 0f;
             }
 
             transform.LookAt(TargetPosition);

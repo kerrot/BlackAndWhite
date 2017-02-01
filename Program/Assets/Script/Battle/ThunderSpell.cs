@@ -27,7 +27,7 @@ public class ThunderSpell : AuraBattle {
 
         target = transform.position + transform.forward * MAXLENGTH;
         RaycastHit[] hits = Physics.RaycastAll(transform.position, transform.forward, MAXLENGTH);
-        var objs = hits.Where(h => h.collider.isTrigger == false);
+        var objs = hits.Where(h => h.collider.isTrigger == false || h.collider.gameObject.GetComponent<EnemyBattle>() != null);
         if (objs.Count() > 0)
         {
             float minValue = objs.Min(o => o.distance);

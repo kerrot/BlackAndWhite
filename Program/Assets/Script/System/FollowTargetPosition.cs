@@ -6,11 +6,11 @@ using System.Collections;
 public class FollowTargetPosition : MonoBehaviour
 {
     [SerializeField]
-	private GameObject follow;
+    public GameObject follow;
     [SerializeField]
-    private bool useSmoothing = true;
+    public bool useSmoothing = true;
     [SerializeField]
-    private float smoothing = 5f;       
+    private float smoothing = 1f;       
 
 	Vector3 offset;
 
@@ -36,7 +36,7 @@ public class FollowTargetPosition : MonoBehaviour
 
             if (useSmoothing)
             {
-                currentPosition = Vector3.Lerp(transform.position, currentPosition, smoothing * Time.deltaTime);
+                currentPosition = Vector3.Lerp(transform.position, currentPosition, smoothing * Time.unscaledDeltaTime);
             }
 
             transform.position = currentPosition;
