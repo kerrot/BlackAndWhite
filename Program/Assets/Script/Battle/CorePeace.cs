@@ -91,7 +91,7 @@ public class CorePeace : MonoBehaviour
         {
             if (rd)
             {
-                rd.velocity = (pos - transform.position);
+                rd.velocity = (pos - transform.position).normalized;
                 float tmp = Vector3.Distance(transform.position, pos);
                 if (tmp <= STOP_DISTANCE)
                 {
