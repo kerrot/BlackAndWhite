@@ -27,7 +27,9 @@ public class EnemyManager : MonoBehaviour
 
     void Start ()
     {
-		EnemyMask = LayerMask.GetMask ("Enemy");
+        monsters.Clear();
+
+        EnemyMask = LayerMask.GetMask ("Enemy");
  
         InputController.OnMouseSingleClick.Subscribe(p => EnemyClicked(p)).AddTo(this);
 
