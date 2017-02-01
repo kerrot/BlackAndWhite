@@ -63,8 +63,8 @@ public class CorePeace : MonoBehaviour
 
     void CheckUnion()
     {
-        ready.Value = true;
         readyPosition = transform.position;
+        ready.Value = true;
 
         CorePeace[] ps = GameObject.FindObjectsOfType<CorePeace>();
         if (ps.Length == 3 && ps.All(p => p.Ready))

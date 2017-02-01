@@ -80,6 +80,7 @@ public class EnemyBattle : UnitBattle
         {
             blockUI = ui.CreateBlockUI();
             blockUI.SetActive(false);
+            gameObject.OnDisableAsObservable().Where(_ => blockUI).Subscribe(_ => blockUI.SetActive(false));
         }
 
         EnemyManager manager = GameObject.FindObjectOfType<EnemyManager>();
@@ -338,7 +339,8 @@ public class EnemyBattle : UnitBattle
 
     void UniRxOnDestroy()
     {
-		if (transform.parent != null) {
+		if (transform.parent != null)
+        {
 			Destroy (transform.parent.gameObject);
 		}
     }
