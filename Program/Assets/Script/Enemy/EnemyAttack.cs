@@ -12,6 +12,8 @@ public class EnemyAttack : MonoBehaviour
     private float attackPower;
     [SerializeField]
     private float attackForce;
+    [SerializeField]
+    private AudioClip attackSE;
 
     int idleHash;
     Animator anim;
@@ -52,6 +54,8 @@ public class EnemyAttack : MonoBehaviour
     void Attack()
     {
         EnemyBattle battle = GetComponent<EnemyBattle>();
+
+        AudioHelper.PlaySE(gameObject, attackSE);
 
         Collider[] cs = Physics.OverlapSphere(range.gameObject.transform.position, range.radius);
         cs.ToList().ForEach(c =>

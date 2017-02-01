@@ -21,6 +21,7 @@ public class TitleStage : MonoBehaviour
     private Animator anim;
 
     System.IDisposable subject;
+    System.IDisposable aniDis;
 
     // Use this for initialization
     void Start()
@@ -31,6 +32,14 @@ public class TitleStage : MonoBehaviour
         audioSource.clip = mv.audioClip;
 
         OPPlay();
+
+        this.OnDestroyAsObservable().Subscribe(_ =>
+        {
+            if (aniDis != null)
+            {
+                aniDis.Dispose();
+            }
+        });
     }
 
     void OPStart()
@@ -64,7 +73,7 @@ public class TitleStage : MonoBehaviour
 
     void OPPlay()
     {
-        Observable.Timer(System.TimeSpan.FromSeconds(period)).Subscribe(_ =>
+        aniDis = Observable.Timer(System.TimeSpan.FromSeconds(period)).Subscribe(_ =>
         {
             anim.enabled = true;
             anim.Play("Base Layer.OP", 0, 0);

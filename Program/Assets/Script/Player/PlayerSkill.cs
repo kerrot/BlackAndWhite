@@ -177,10 +177,11 @@ public class PlayerSkill : MonoBehaviour
 
             chargeSubject.OnNext(ele);
 
-            ParticleSystem.MainModule mod = charge.main;
+            GameObject obj = Instantiate(charge.gameObject);
+
+            ParticleSystem.MainModule mod = obj.GetComponent<ParticleSystem>().main;
             mod.startColor = Attribute.GetColor(ele, 1.0f);
 
-            GameObject obj = Instantiate(charge.gameObject);
             obj.transform.parent = transform;
             obj.transform.localPosition = Vector3.zero;
             AudioHelper.PlaySE(gameObject, chargeSE);

@@ -21,7 +21,11 @@ public class GFFStage : MonoBehaviour {
     [SerializeField]
     protected KnightBattle blueBoss;
     [SerializeField]
+    protected GameObject sub;
+    [SerializeField]
     private FollowTargetPosition follow;
+    [SerializeField]
+    private AudioClip coreSE;
 
     GameSystem system;
 
@@ -30,14 +34,18 @@ public class GFFStage : MonoBehaviour {
     System.IDisposable blueDis;
     System.IDisposable RTmDis;
     System.IDisposable coreDis;
+    System.IDisposable coreEnableDis;
 
     void Awake()
     {
         if (core)
         {
+            coreEnableDis = core.OnEnableAsObservable().Subscribe(_ => AudioHelper.PlaySE(core, coreSE));
+
             core.OnDestroyAsObservable().Subscribe(_ => 
             {
                 coreDis.Dispose();
+                coreEnableDis.Dispose();
                 GameClear();
             }).AddTo(this);
         }
@@ -52,6 +60,8 @@ public class GFFStage : MonoBehaviour {
             red.Register();
             green.Register();
             blue.Register();
+
+            sub.SetActive(false);
 
             unionSubject.Dispose();
 
@@ -71,13 +81,14 @@ public class GFFStage : MonoBehaviour {
                 core.SetActive(red.UnionReach && green.UnionReach && blue.UnionReach);
             }
 
-
             if (redDis != null && blueDis != null && greenDis != null && core.activeSelf)
             {
                 redDis.Dispose();
                 blueDis.Dispose();
                 greenDis.Dispose();
-
+                redDis = null;
+                blueDis = null;
+                greenDis = null;
 
                 Observable.TimerFrame(200).Subscribe(o =>
                 {
@@ -101,7 +112,7 @@ public class GFFStage : MonoBehaviour {
             follow.follow = core;
             follow.useSmoothing = true;
 
-            Observable.TimerFrame(250).Subscribe(_ =>
+            Observable.TimerFrame(200).Subscribe(_ =>
             {
                 redDis = red.gameObject.UpdateAsObservable()
                           .TakeWhile(r => red.gameObject.activeSelf)
@@ -123,7 +134,6 @@ public class GFFStage : MonoBehaviour {
             ending.SetActive(true);
         }
 
-        GameSystem system = GameObject.FindObjectOfType<GameSystem>();
         if (system)
         {
             Time.timeScale = 0.3f;

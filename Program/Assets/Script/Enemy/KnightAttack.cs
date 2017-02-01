@@ -22,6 +22,8 @@ public class KnightAttack : MonoBehaviour {
     private float magicPeriodMin;
     [SerializeField]
     private float magicPeriodMax;
+    [SerializeField]
+    private AudioClip attackSE;
 
     Collider weaponCollider;
     Animator anim;
@@ -121,6 +123,7 @@ public class KnightAttack : MonoBehaviour {
 
     void AttackStart()
     {
+        AudioHelper.PlaySE(gameObject, attackSE);
         weaponCollider.enabled = true;
         attackDis = this.OnTriggerEnterAsObservable().Subscribe(o => UniRxTriggerEnter(o));
     }

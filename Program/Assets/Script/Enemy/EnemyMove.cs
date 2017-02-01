@@ -18,6 +18,8 @@ public class EnemyMove : UnitMove {
     private float teleportMinDistance;
     [SerializeField]
     private GameObject warpObj;
+    [SerializeField]
+    private AudioClip teleportSE;
 
     public float StopRadius { get { return stopRadius; } }
 
@@ -125,6 +127,7 @@ public class EnemyMove : UnitMove {
         if (CanMove)
         {
             transform.position = warpObj.transform.position;
+            AudioHelper.PlaySE(gameObject, teleportSE);
         }
     }
 }
