@@ -10,7 +10,7 @@ public class RoundDamageAura : AuraBattle
     [SerializeField]
     private float period;
     [SerializeField]
-    private AudioClip damage;
+    private GameObject burn;
     [SerializeField]
     private AudioClip disappearSE;
 
@@ -93,7 +93,8 @@ public class RoundDamageAura : AuraBattle
         PlayerBattle battle = obj.GetComponent<PlayerBattle>();
         if (battle && Time.time - attackStart > period)
         {
-            AudioHelper.PlaySE(gameObject, damage);
+            GameObject b = Instantiate(burn, battle.transform.position, Quaternion.identity);
+            b.transform.parent = battle.transform;
 
             battle.Attacked(this, CreateAttack(AttackType.ATTACK_TYPE_AURA, strength));
             attackStart = Time.time;
