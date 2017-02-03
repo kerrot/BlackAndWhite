@@ -112,13 +112,18 @@ public class KnightAttack : MonoBehaviour {
             else
             {
                 AnimatorStateInfo idleInfo = anim.GetCurrentAnimatorStateInfo(0);
-                if (idleInfo.fullPathHash == idleHash && Vector3.Distance(player.transform.position, transform.position) <= movement.StopRadius)
+                if (idleInfo.fullPathHash == idleHash && Vector3.Distance(player.transform.position, transform.position) <= movement.StopRadius
+                                                      && !anim.GetBool("Attack")  )
                 {
-                    movement.FaceTarget(player.transform.position);
                     anim.SetTrigger("Attack");
                 }
             }
         }
+    }
+
+    void AttackInit()
+    {
+        movement.FaceTarget(player.transform.position);
     }
 
     void AttackStart()

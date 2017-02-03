@@ -262,10 +262,20 @@ public class PlayerSlash : MonoBehaviour {
         Collider[] enemies = Physics.OverlapBox(SlashRegion.transform.position, slashRange, SlashRegion.transform.rotation, EnemyMask);
         if (battle)
         {
+            List<EnemyBattle> tmp = new List<EnemyBattle>();
+
             enemies.ToList().ForEach(e =>
             {
-                EnemyBattle Enemy = e.gameObject.GetComponent<EnemyBattle>();
-                if (Enemy && Enemy.Attacked(battle, battle.CreateAttack(AttackType.ATTACK_TYPE_SLASH, strength, force)))
+                EnemySlash Enemy = e.gameObject.GetComponent<EnemySlash>();
+                if (Enemy && Enemy.CanSlash)
+                {
+                    tmp.Add(e.gameObject.GetComponent<EnemyBattle>());
+                }
+            });
+
+            tmp.ForEach(t =>
+            {
+                if (t && t.Attacked(battle, battle.CreateAttack(AttackType.ATTACK_TYPE_SLASH, strength, force)))
                 {
                     ++count;
                 }
