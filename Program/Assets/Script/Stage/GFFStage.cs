@@ -26,6 +26,8 @@ public class GFFStage : MonoBehaviour {
     private FollowTargetPosition follow;
     [SerializeField]
     private AudioClip coreSE;
+    [SerializeField]
+    private GameObject coreHint;
 
     GameSystem system;
 
@@ -89,12 +91,14 @@ public class GFFStage : MonoBehaviour {
                 redDis = null;
                 blueDis = null;
                 greenDis = null;
+                coreHint.SetActive(true);
 
                 Observable.TimerFrame(200).Subscribe(o =>
                 {
                     system.GameResume();
                     follow.follow = GameObject.FindObjectOfType <PlayerMove>().gameObject;
                     follow.useSmoothing = false;
+                    coreHint.SetActive(false);
                 });
             }
         });

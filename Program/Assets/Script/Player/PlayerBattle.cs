@@ -44,6 +44,7 @@ public class PlayerBattle : UnitBattle {
     float recoverStart;
 
     int attackHash;
+    int slashEndHash;
     int EnemyMask;
 
     bool guardAttack = false;
@@ -68,6 +69,7 @@ public class PlayerBattle : UnitBattle {
     void Start()
     {
         attackHash = Animator.StringToHash("PlayerBase.Attack");
+        slashEndHash = Animator.StringToHash("PlayerBase.SlashEnd");
         EnemyMask = LayerMask.GetMask("Enemy");
         anim = GetComponent<Animator>();
 
@@ -129,11 +131,6 @@ public class PlayerBattle : UnitBattle {
             }
         });
 
-        if (angle > 90)
-        {
-            obj = null;
-        }
-
         AttackEnemy(obj);
     }
 
@@ -163,6 +160,12 @@ public class PlayerBattle : UnitBattle {
         }
         
         if (slash && slash.SlashEnemy(Enemy))
+        {
+            return false;
+        }
+
+        AnimatorStateInfo info = anim.GetCurrentAnimatorStateInfo(0);
+        if (info.fullPathHash == slashEndHash)
         {
             return false;
         }
