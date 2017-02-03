@@ -62,6 +62,8 @@ public class PlayerSlash : MonoBehaviour {
     PlayerBattle battle;
     GameSystem system;
 
+    Collider coll;
+
     void Awake()
     {
         anim = GetComponent<Animator>();
@@ -87,12 +89,16 @@ public class PlayerSlash : MonoBehaviour {
         playerTime = GetComponent<PlayerTime>();
         battle = GetComponent<PlayerBattle>();
         system = GameObject.FindObjectOfType<GameSystem>();
+
+        coll = GetComponent<Collider>();
     }
 
     void Start()
     {
         EnemyManager.OnEnemyClicked.Subscribe(o => SlashEnemy(o)).AddTo(this);
         this.UpdateAsObservable().Subscribe(_ => UniRxUpdate());
+
+        anim.speed = 2;
     }
 
     void UniRxUpdate()
@@ -247,6 +253,7 @@ public class PlayerSlash : MonoBehaviour {
         anim.SetTrigger("Slash");
 
         trail.SlashTrailStart();
+        coll.enabled = false;
 
         if (skill && skill.Activated())
         {
@@ -292,6 +299,7 @@ public class PlayerSlash : MonoBehaviour {
         anim.SetBool("IsSlashing", false);
         anim.SetBool("IsMove", false);
         PlayerMove.CanRotate = true;
+        coll.enabled = true;
         comboHint.SetActive(FindSlashEnemy() != null && canCombo);
     }
 
@@ -346,7 +354,7 @@ public class PlayerSlash : MonoBehaviour {
     {
         if (playerTime)
         {
-            playerTime.SpeedChange(slashSpeed = speed, this);
+            //playerTime.SpeedChange(slashSpeed = speed, this);
         }
     }
 }

@@ -131,7 +131,11 @@ public class PlayerBattle : UnitBattle {
             }
         });
 
-        AttackEnemy(obj);
+        AnimatorStateInfo info = anim.GetCurrentAnimatorStateInfo(0);
+        if (info.fullPathHash != slashEndHash)
+        {
+            AttackEnemy(obj);
+        }
     }
 
     void Battle (GameObject Enemy)
@@ -160,12 +164,6 @@ public class PlayerBattle : UnitBattle {
         }
         
         if (slash && slash.SlashEnemy(Enemy))
-        {
-            return false;
-        }
-
-        AnimatorStateInfo info = anim.GetCurrentAnimatorStateInfo(0);
-        if (info.fullPathHash == slashEndHash)
         {
             return false;
         }

@@ -93,13 +93,15 @@ public class RoundDamageAura : AuraBattle
         PlayerBattle battle = obj.GetComponent<PlayerBattle>();
         if (battle && Time.time - attackStart > period)
         {
-            GameObject b = Instantiate(burn, battle.transform.position, Quaternion.identity);
-            b.transform.parent = battle.transform;
+            if (battle.Attacked(this, CreateAttack(AttackType.ATTACK_TYPE_AURA, strength)))
+            {
+                GameObject b = Instantiate(burn, battle.transform.position, Quaternion.identity);
+                b.transform.parent = battle.transform;
 
-            battle.Attacked(this, CreateAttack(AttackType.ATTACK_TYPE_AURA, strength));
-            attackStart = Time.time;
+                attackStart = Time.time;
 
-            damageSubject.OnNext(Unit.Default);
+                damageSubject.OnNext(Unit.Default);
+            }
         }
     }
 }
