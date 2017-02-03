@@ -42,6 +42,8 @@ public class PlayerAttribute : Attribute
 
     public void AttributeChange(bool active, ElementType ele)
     {
+        ElementType old = Type;
+
         SetElement(active, ele);
 
         Color color = Attribute.GetColor(type, 0.5f) * 2;

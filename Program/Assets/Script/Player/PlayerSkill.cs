@@ -73,20 +73,11 @@ public class PlayerSkill : MonoBehaviour
             isSkilling = false;
         }
 
-            if (Time.time - lastCheck <= costCheckTime)
+        if (Time.time - lastCheck > costCheckTime)
         {
-            return;
+            CheckEnergy();
+            lastCheck = Time.time;
         }
-
-        lastCheck += costCheckTime;
-
-        Skill now = skills.SingleOrDefault(s => s.Type == castingType);
-        if (now && now.IsUsing() && !now.CanSkill())
-        {
-            now.SkillEnd();
-        }
-
-        CheckEnergy();
     }
 
     void CheckEnergy()
@@ -208,6 +199,8 @@ public class PlayerSkill : MonoBehaviour
 
     void CheckState()
     {
+        ElementType oldType = attri.Type;
+
         attri.AttributeChange(redEnergy.Value > 0, ElementType.ELEMENT_TYPE_RED);
         attri.AttributeChange(greenEnergy.Value > 0, ElementType.ELEMENT_TYPE_GREEN);
         attri.AttributeChange(blueEnergy.Value > 0, ElementType.ELEMENT_TYPE_BLUE);
@@ -216,6 +209,15 @@ public class PlayerSkill : MonoBehaviour
         if (now)
         {
             canSkill.Value = now.Activated() || now.CanSkill();
+        }
+
+        if (oldType != attri.Type)
+        {
+            Skill old = skills.SingleOrDefault(s => s.Type == oldType);
+            if (old)
+            {
+                old.SkillEnd();
+            }
         }
     }
 }
