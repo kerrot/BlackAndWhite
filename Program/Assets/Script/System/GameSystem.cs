@@ -74,9 +74,9 @@ public class GameSystem : SingletonMonoBehaviour<GameSystem>
     public void ComboSlash()
     {
         ++slashCount;
-        if (combo)
+        if (combo && slashCount > 1)
         {
-            combo.Display(slashCount);
+            combo.Display(slashCount - 1);
         }
 
         comboSubject.OnNext(slashCount);

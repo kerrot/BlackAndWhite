@@ -95,10 +95,8 @@ public class PlayerSlash : MonoBehaviour {
 
     void Start()
     {
-        EnemyManager.OnEnemyClicked.Subscribe(o => SlashEnemy(o)).AddTo(this);
+        //EnemyManager.OnEnemyClicked.Subscribe(o => SlashEnemy(o)).AddTo(this);
         this.UpdateAsObservable().Subscribe(_ => UniRxUpdate());
-
-        anim.speed = 2;
     }
 
     void UniRxUpdate()
@@ -120,8 +118,6 @@ public class PlayerSlash : MonoBehaviour {
 
                 slashReach = true;
                 canCombo = true;
-
-                TargetObject = null;
             }
         }
         else if (info.fullPathHash == slashEndHash)
@@ -132,7 +128,7 @@ public class PlayerSlash : MonoBehaviour {
 
                 if (comboHint.activeSelf)
                 {
-                    if (slashCombo || AutoSlash)
+                    if (slashCombo || AutoSlash || (skill && skill.Activated()))
                     {
                         MultiSlash(Input.mousePosition);
                     }
@@ -280,6 +276,12 @@ public class PlayerSlash : MonoBehaviour {
                 }
             });
 
+            EnemyBattle target = TargetObject.GetComponent<EnemyBattle>();
+            if (!tmp.Contains(target) && target.Attacked(battle, battle.CreateAttack(AttackType.ATTACK_TYPE_SLASH, strength, force)))
+            {
+                ++count;
+            }
+
             tmp.ForEach(t =>
             {
                 if (t && t.Attacked(battle, battle.CreateAttack(AttackType.ATTACK_TYPE_SLASH, strength, force)))
@@ -291,7 +293,7 @@ public class PlayerSlash : MonoBehaviour {
 
         if (count > 0)
         {
-            slashCount.OnNext(count);
+            comboSlash.OnNext(Unit.Default);
         }
 
         AudioHelper.PlaySE(gameObject, slashSE);
@@ -300,6 +302,7 @@ public class PlayerSlash : MonoBehaviour {
         anim.SetBool("IsMove", false);
         PlayerMove.CanRotate = true;
         coll.enabled = true;
+        TargetObject = null;
         comboHint.SetActive(FindSlashEnemy() != null && canCombo);
     }
 
@@ -323,8 +326,6 @@ public class PlayerSlash : MonoBehaviour {
                     slashSpeed = maxSpeedup;
                 }
                 SlashSpeedUp(slashSpeed);
-
-                comboSlash.OnNext(Unit.Default);
             }
         }
     }
@@ -335,7 +336,7 @@ public class PlayerSlash : MonoBehaviour {
 
         if (!isSlashing)
         {
-            if (slashCombo)
+            if (slashCombo && FindSlashEnemy())
             {
                 MultiSlash(Input.mousePosition);
             }
@@ -354,7 +355,7 @@ public class PlayerSlash : MonoBehaviour {
     {
         if (playerTime)
         {
-            //playerTime.SpeedChange(slashSpeed = speed, this);
+            playerTime.SpeedChange(slashSpeed = speed, this);
         }
     }
 }

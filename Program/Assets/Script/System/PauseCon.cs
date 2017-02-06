@@ -1,4 +1,6 @@
-﻿using System.Collections;
+﻿using UniRx;
+using UniRx.Triggers;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -8,12 +10,19 @@ public class PauseCon : MonoBehaviour {
 
     [SerializeField]
     GameSystem gameSytem;
+    [SerializeField]
+    private AudioSource BGM;
 
-    public GameObject pausePlane;
-    public GameObject backGround;
-    public GameObject yesButton;
-    public GameObject noButton;
-    public GameObject pauseText;
+    [SerializeField]
+    private GameObject pausePlane;
+    [SerializeField]
+    private GameObject backGround;
+    [SerializeField]
+    private GameObject yesButton;
+    [SerializeField]
+    private GameObject noButton;
+    [SerializeField]
+    private GameObject pauseText;
     private GameObject pasueButton;
 
     private const float scalePos = 0.01f;
@@ -27,12 +36,13 @@ public class PauseCon : MonoBehaviour {
         gameSytem = GameObject.Find( "Target" ).GetComponent<GameSystem>();
         backGround.transform.localScale = new Vector3( scalePos, scalePos, maxScalePos );
         maxScale = new Vector3( maxScalePos, maxScalePos, maxScalePos );
-        pasueButton.SetActive( false ); 
+        pasueButton.SetActive( false );
+        this.UpdateAsObservable().Subscribe(_ => UniRxUpdate());
     }
 
 	
 	// Update is called once per frame
-	void Update () {
+	void UniRxUpdate () {
 
         if ( gameSytem.State == GameSystem.GameState.GAME_STATE_PLAYING ) {
             pasueButton.SetActive( true );
@@ -71,12 +81,16 @@ public class PauseCon : MonoBehaviour {
         backGround.transform.localScale = new Vector3( scalePos, scalePos, maxScalePos );
         pausePlane.SetActive( false );
         gameSytem.GameResume();
+
+        BGM.UnPause();
     }
 
     public void OnPauseButtonClicke() {
         pausePlane.SetActive( true );
         isScale = true;
         gameSytem.GamePause();
+
+        BGM.Pause();
     }
 
 }

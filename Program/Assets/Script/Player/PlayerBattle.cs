@@ -162,7 +162,7 @@ public class PlayerBattle : UnitBattle {
         {
             return false;
         }
-        
+
         if (slash && slash.SlashEnemy(Enemy))
         {
             return false;

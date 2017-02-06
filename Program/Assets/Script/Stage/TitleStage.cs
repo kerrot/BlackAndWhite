@@ -16,6 +16,8 @@ public class TitleStage : MonoBehaviour
     private float period;
     [SerializeField]
     private Button btn;
+    [SerializeField]
+    private GameObject bgm;
 
     private AudioSource audioSource;
     private Animator anim;
@@ -67,6 +69,9 @@ public class TitleStage : MonoBehaviour
         cover.raycastTarget = false;
         audioSource.Stop();
         mv.Stop();
+
+        bgm.SetActive(false);
+        bgm.SetActive(true);
 
         OPPlay();
     }
