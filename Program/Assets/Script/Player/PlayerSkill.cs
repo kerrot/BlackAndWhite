@@ -41,6 +41,7 @@ public class PlayerSkill : MonoBehaviour
     Animator anim;
 
     PlayerAttribute attri;
+    PlayerSlash slash;
     float lastCheck;
     int skillHash;
 
@@ -59,6 +60,7 @@ public class PlayerSkill : MonoBehaviour
     {
         anim = GetComponent<Animator>();
         attri = GetComponent<PlayerAttribute>();
+        slash = GetComponent<PlayerSlash>();
 
         InputController.OnRightMouseDown.Subscribe(v => UseSkill(EnemyManager.GetEnemyByMousePosition(v))).AddTo(this);
 
@@ -110,6 +112,11 @@ public class PlayerSkill : MonoBehaviour
     public void UseSkill(GameObject obj)
     {
         if (PlayerBattle.IsDead)
+        {
+            return;
+        }
+
+        if (slash && slash.IsSlashing)
         {
             return;
         }

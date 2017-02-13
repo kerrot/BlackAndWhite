@@ -61,7 +61,7 @@ public class PlayerSlash : MonoBehaviour {
     PlayerTime playerTime;
     PlayerBattle battle;
     GameSystem system;
-
+    Rigidbody rd;
     Collider coll;
 
     void Awake()
@@ -78,6 +78,8 @@ public class PlayerSlash : MonoBehaviour {
 
         EnemyMask = LayerMask.GetMask("Enemy");
         skill = GameObject.FindObjectOfType<WhiteSkill>();
+
+        rd = GetComponent<Rigidbody>();
 
         if (!comboHint)
         {
@@ -136,7 +138,7 @@ public class PlayerSlash : MonoBehaviour {
             }
         }
         else
-        {
+        { 
             canCombo = false;
             slashCombo = false;
             if (comboHint)
@@ -170,7 +172,7 @@ public class PlayerSlash : MonoBehaviour {
     bool CanSlash()
     {
         AnimatorStateInfo info = anim.GetCurrentAnimatorStateInfo(0);
-        return PlayerBattle.IsDead == false && isSlashing == false && info.fullPathHash != slashEndHash;
+        return PlayerBattle.IsDead == false && anim.GetBool("IsSlashing") == false && info.fullPathHash != slashEndHash;
     }
 
     public void RegisterSlashObject(GameObject obj, bool canSlash)
@@ -248,6 +250,8 @@ public class PlayerSlash : MonoBehaviour {
         anim.SetBool("IsSlashing", true);
         anim.SetTrigger("Slash");
 
+        rd.velocity = Vector3.zero;
+
         trail.SlashTrailStart();
         coll.enabled = false;
 
@@ -276,10 +280,13 @@ public class PlayerSlash : MonoBehaviour {
                 }
             });
 
-            EnemyBattle target = TargetObject.GetComponent<EnemyBattle>();
-            if (!tmp.Contains(target) && target.Attacked(battle, battle.CreateAttack(AttackType.ATTACK_TYPE_SLASH, strength, force)))
+            if (TargetObject)
             {
-                ++count;
+                EnemyBattle target = TargetObject.GetComponent<EnemyBattle>();
+                if (!tmp.Contains(target) && target.Attacked(battle, battle.CreateAttack(AttackType.ATTACK_TYPE_SLASH, strength, force)))
+                {
+                    ++count;
+                }
             }
 
             tmp.ForEach(t =>
@@ -297,11 +304,10 @@ public class PlayerSlash : MonoBehaviour {
         }
 
         AudioHelper.PlaySE(gameObject, slashSE);
-        isSlashing = false;
+        
         anim.SetBool("IsSlashing", false);
         anim.SetBool("IsMove", false);
-        PlayerMove.CanRotate = true;
-        coll.enabled = true;
+        
         TargetObject = null;
         comboHint.SetActive(FindSlashEnemy() != null && canCombo);
     }
@@ -316,7 +322,7 @@ public class PlayerSlash : MonoBehaviour {
             }
         }
 
-        if (!isSlashing && slashCombo)
+        if (!anim.GetBool("IsSlashing") && slashCombo)
         {
             if (DoSlash(FindSlashEnemy()))
             {
@@ -334,7 +340,7 @@ public class PlayerSlash : MonoBehaviour {
     {
         canCombo = false;
 
-        if (!isSlashing)
+        if (!anim.GetBool("IsSlashing"))
         {
             if (slashCombo && FindSlashEnemy())
             {
@@ -342,6 +348,13 @@ public class PlayerSlash : MonoBehaviour {
             }
             else
             {
+                //when anim speed too fast, slashend state finish too quick.
+                anim.Play("PlayerBase.SlashEnd", 0, 0.3f);
+
+                PlayerMove.CanRotate = true;
+                isSlashing = false;
+                coll.enabled = true;
+
                 SlashSpeedUp(0f);
                 if (system)
                 {
@@ -355,7 +368,9 @@ public class PlayerSlash : MonoBehaviour {
     {
         if (playerTime)
         {
-            playerTime.SpeedChange(slashSpeed = speed, this);
+            slashSpeed = speed;
+
+            playerTime.SpeedChange(slashSpeed + ((skill && skill.Activated()) ? 1f : 0f), this);
         }
     }
 }

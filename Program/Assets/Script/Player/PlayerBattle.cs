@@ -113,6 +113,11 @@ public class PlayerBattle : UnitBattle {
             return;
         }
 
+        if (slash && slash.IsSlashing)
+        {
+            return;
+        }
+
         GameObject obj = null;
         float angle = Mathf.Infinity;
         Collider[] cs = Physics.OverlapSphere(transform.position, 1.5f, EnemyMask);
@@ -150,7 +155,7 @@ public class PlayerBattle : UnitBattle {
             }
         });
 
-        if (CanAttack(Enemy))
+        //if (CanAttack(Enemy))
         {
             //AttackEnemy(Enemy);
         }
@@ -244,6 +249,11 @@ public class PlayerBattle : UnitBattle {
             anim.SetTrigger("AttackFail");
 
             anim.SetBool("UnNormal", true);
+            return false;
+        }
+
+        if (attack.Strength <= 0)
+        {
             return false;
         }
 

@@ -28,6 +28,8 @@ public class TitleStage : MonoBehaviour
     // Use this for initialization
     void Start()
     {
+        Time.timeScale = 1f;
+
         anim = GetComponent<Animator>();
 
         audioSource = GetComponent<AudioSource>();

@@ -11,7 +11,16 @@ public class DeathBlow : UnitBattle
     [SerializeField]
     private ParticleSystem part;
     [SerializeField]
-    private bool all;
+    private UnitType unit = UnitType.ENEMY;
+    [SerializeField]
+    private AttackType type = AttackType.ATTACK_TYPE_NORMAL;
+
+    public enum UnitType
+    {
+        ALL,
+        ENEMY,
+        PLAYER,
+    }
 
     void Start()
 	{
@@ -31,16 +40,10 @@ public class DeathBlow : UnitBattle
             UnitBattle battle = c.gameObject.GetComponent<UnitBattle>();
             if (battle)
             {
-                if (all || battle is EnemyBattle)
+                if (unit == UnitType.ALL || (unit == UnitType.ENEMY && (battle is EnemyBattle || battle is KnightBattle))
+                                         || (unit == UnitType.PLAYER && battle is PlayerBattle))
                 {
-                    if (strength > 0)
-                    {
-                        battle.Attacked(this, CreateAttack(AttackType.ATTACK_TYPE_EXPLOSION, strength, force));
-                    }
-                    else
-                    {
-                        battle.AddForce((battle.transform.position - transform.position).normalized * force);
-                    }
+                    battle.Attacked(this, CreateAttack(type, strength, force));
                 }
             }
         });

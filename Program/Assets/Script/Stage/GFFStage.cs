@@ -40,6 +40,11 @@ public class GFFStage : MonoBehaviour {
 
     void Awake()
     {
+        this.OnDestroyAsObservable().Subscribe(_ => 
+        {
+            Time.timeScale = 1f;
+        });
+
         if (core)
         {
             coreEnableDis = core.OnEnableAsObservable().Subscribe(_ => AudioHelper.PlaySE(core, coreSE));
