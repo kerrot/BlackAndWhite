@@ -307,9 +307,14 @@ public class PlayerSlash : MonoBehaviour {
         
         anim.SetBool("IsSlashing", false);
         anim.SetBool("IsMove", false);
-        
+        PlayerMove.CanRotate = true;
+
         TargetObject = null;
         comboHint.SetActive(FindSlashEnemy() != null && canCombo);
+
+
+        anim.SetBool("Skill", false);
+        anim.SetBool("Attack", false);
     }
 
     void MultiSlash(Vector2 mousePosition)
@@ -324,6 +329,7 @@ public class PlayerSlash : MonoBehaviour {
 
         if (!anim.GetBool("IsSlashing") && slashCombo)
         {
+
             if (DoSlash(FindSlashEnemy()))
             {
                 slashSpeed += speedup;
@@ -338,6 +344,7 @@ public class PlayerSlash : MonoBehaviour {
 
     void ComboEnd()
     {
+
         canCombo = false;
 
         if (!anim.GetBool("IsSlashing"))
@@ -350,8 +357,6 @@ public class PlayerSlash : MonoBehaviour {
             {
                 //when anim speed too fast, slashend state finish too quick.
                 anim.Play("PlayerBase.SlashEnd", 0, 0.3f);
-
-                PlayerMove.CanRotate = true;
                 isSlashing = false;
                 coll.enabled = true;
 
