@@ -15,10 +15,12 @@ public class SelectButton : MonoBehaviour, IPointerEnterHandler
     private Animator anim;
     private Button btn;
     private Image img;
+
     // Use this for initialization
     void Awake()
     {
         btn = GetComponent<Button>();
+              
     }
 
     public void OnPointerEnter(PointerEventData eventData)
@@ -40,7 +42,7 @@ public class SelectButton : MonoBehaviour, IPointerEnterHandler
             img = GetComponent<Image>();
         }
 
-        img.color = Color.white;
+        img.color = Color.black;
     }
 
     public void Click()

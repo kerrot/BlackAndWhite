@@ -25,22 +25,31 @@ public class PauseCon : MonoBehaviour {
     private GameObject pauseText;
     private GameObject pasueButton;
 
-    private const float scalePos = 0.01f;
-    private const float maxScalePos = 1.0f;
-    private const float speed = 0.1f;
+    private const float SCALE_POS = 0f;
+    private const float MAXSCALE_POS = 1.0f;
+    private const float SPEED = 0.1f;
     private Vector3 maxScale;
-    private bool isScale = false;
+    private Vector3 minScale;
+    private bool onFadeIn = false;
+    private bool onFadeOut = false;
 
     void Awake() {  
         pasueButton = GameObject.Find( "Pause Button" );
         gameSytem = GameObject.Find( "Target" ).GetComponent<GameSystem>();
-        backGround.transform.localScale = new Vector3( scalePos, scalePos, maxScalePos );
-        maxScale = new Vector3( maxScalePos, maxScalePos, maxScalePos );
+        minScale = new Vector3( SCALE_POS, SCALE_POS, MAXSCALE_POS );
+        maxScale = new Vector3( MAXSCALE_POS, MAXSCALE_POS, MAXSCALE_POS );
         pasueButton.SetActive( false );
+        backGround.transform.localScale = minScale;
         this.UpdateAsObservable().Subscribe(_ => UniRxUpdate());
+       
     }
 
-	
+	void Start() {
+        pasueButton.GetComponent<Button>().OnClickAsObservable().Subscribe(_ => onFadeIn = true );
+        noButton.GetComponent<Button>().OnClickAsObservable().Subscribe(_ => onFadeOut = true );
+        yesButton.GetComponent<Button>().OnClickAsObservable().Subscribe(_ => SceneManager.LoadScene("TCATitle") );
+    }
+
 	// Update is called once per frame
 	void UniRxUpdate () {
 
@@ -49,48 +58,54 @@ public class PauseCon : MonoBehaviour {
 
             if (Input.GetButtonDown("Pause"))
             {
-                OnPauseButtonClicke();
+                onFadeIn = true;
             }
 
         } else {
             pasueButton.SetActive( false );
         }
 
-        if ( isScale ) {
-            backGround.transform.localScale = Vector3.MoveTowards( backGround.transform.localScale, pausePlane.transform.localScale, speed );
+        ButtonFadeIn();
+        ButtonFadeOut();
+	}
+
+    void ButtonFadeIn() {
+
+        if ( onFadeIn ) {
+            pausePlane.SetActive( true );
+            gameSytem.GamePause();
+            BGM.Pause();
+            backGround.transform.localScale = Vector3.MoveTowards( backGround.transform.localScale, maxScale, SPEED );
         }
 
         if ( backGround.transform.localScale == maxScale ) {
-            isScale = false;
+            onFadeIn = false;
             pauseText.SetActive( true );
             yesButton.SetActive( true );
             noButton.SetActive( true );
-        } else { 
+            pausePlane.SetActive( true );
+            gameSytem.GamePause();
+            BGM.Pause();
+        }
+    }
+
+    void ButtonFadeOut() {
+
+        if ( onFadeOut ) {
             pauseText.SetActive( false );
             yesButton.SetActive( false );
             noButton.SetActive( false );
+            backGround.transform.localScale = Vector3.MoveTowards( backGround.transform.localScale, minScale, SPEED );
+        } else {
+            return;
+        } 
+
+        if ( backGround.transform.localScale == minScale ) {
+            onFadeOut = false;
+            pausePlane.SetActive( false );
+            gameSytem.GameResume();
+            BGM.UnPause();
         }
-
-	}
-
-    public void OnYesButtonClicked() {
-        SceneManager.LoadScene("TCATitle");
-    }
-
-    public void OnNoButtonClicked() {
-        backGround.transform.localScale = new Vector3( scalePos, scalePos, maxScalePos );
-        pausePlane.SetActive( false );
-        gameSytem.GameResume();
-
-        BGM.UnPause();
-    }
-
-    public void OnPauseButtonClicke() {
-        pausePlane.SetActive( true );
-        isScale = true;
-        gameSytem.GamePause();
-
-        BGM.Pause();
     }
 
 }
