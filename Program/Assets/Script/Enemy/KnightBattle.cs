@@ -111,7 +111,8 @@ public class KnightBattle : EnemyBattle {
 
     void Landing()
     {
-        Instantiate(smoke, transform.position, Quaternion.identity);
+        GameObject obj = Instantiate(smoke, transform.position, Quaternion.identity);
+        obj.transform.parent = transform.parent;
         coll.enabled = true;
     }
 }

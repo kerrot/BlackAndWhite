@@ -90,6 +90,7 @@ public class EnemyManager : MonoBehaviour
     public GameObject CreateEnemy(GameObject obj, Vector3 position, Quaternion rotation)
     {
         GameObject tmp = Instantiate(obj, position, rotation) as GameObject;
+        tmp.transform.parent = transform;
         AddMonster(tmp);
         return tmp;
     }
@@ -128,6 +129,7 @@ public class EnemyManager : MonoBehaviour
             {
                 GameObject obj = Instantiate(battle.DeadAction, Enemy.transform.position, Quaternion.identity) as GameObject;
                 obj.layer = 0;
+                obj.transform.parent = transform;
 
                 DeadAction newAction = obj.GetComponent<DeadAction>();
                 DeadAction oriAction = battle.DeadAction.GetComponent<DeadAction>();

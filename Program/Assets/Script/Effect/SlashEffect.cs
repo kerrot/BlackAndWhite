@@ -17,6 +17,7 @@ public class SlashEffect : MonoBehaviour
         GameObject s = Instantiate(shadow) as GameObject;
         s.transform.position = transform.position;
         s.transform.rotation = transform.rotation;
+        s.transform.parent = transform.parent;
 
         GameObject target = transform.GetChild(0).gameObject;
 
@@ -31,6 +32,7 @@ public class SlashEffect : MonoBehaviour
         if (slashEffect && effectPosition)
         {
             GameObject obj = Instantiate(slashEffect.gameObject, effectPosition.transform.position, transform.rotation);
+            obj.transform.parent = transform.parent;
             obj.GetComponent<SlashFlash>().type = GetComponent<PlayerAttribute>().Type;
         }
 

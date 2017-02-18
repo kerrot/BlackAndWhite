@@ -44,7 +44,8 @@ public class Skill : MonoBehaviour {
         }
         else
         {
-            Instantiate(skillObject, transform.position, FindNearestDirection());
+            GameObject obj = Instantiate(skillObject, transform.position, FindNearestDirection());
+            obj.transform.parent = GameObject.FindObjectOfType<EnemyManager>().transform;
             return true;
         }
     }

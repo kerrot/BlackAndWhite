@@ -42,7 +42,7 @@ public class SelectButton : MonoBehaviour, IPointerEnterHandler
             img = GetComponent<Image>();
         }
 
-        img.color = Color.black;
+        img.color = (v) ? Color.white : Color.gray;
     }
 
     public void Click()

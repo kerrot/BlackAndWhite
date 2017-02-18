@@ -23,6 +23,7 @@ public class GreenSkill : UnitBattle {
         {
             GameObject debuff = Instantiate(GreenTrap, enemy.gameObject.transform.position, Quaternion.identity) as GameObject;
             debuff.GetComponent<StopMove>().victom = enemy.GetComponent<EnemyMove>();
+            debuff.transform.parent = GameObject.FindObjectOfType<EnemyManager>().transform;
         }
     }
 

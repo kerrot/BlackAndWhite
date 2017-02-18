@@ -73,7 +73,10 @@ public class EnergyBall : EnergyBase
             groundSubject = this.OnTriggerEnterAsObservable().Subscribe(o => OnGround(o));
         }
 
-        AudioHelper.PlaySE(gameObject, growSE);
+        if (gatherCount > 0)
+        {
+            AudioHelper.PlaySE(gameObject, growSE);
+        }
     }
 
     void OnGround(Collider other)

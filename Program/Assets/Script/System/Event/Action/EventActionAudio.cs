@@ -7,15 +7,13 @@ using UnityEngine;
 public class EventActionAudio : EventAction
 {
     [SerializeField]
-    private AudioSource au;
+    private AudioControl au;
     [SerializeField]
-    private AudioClip cilp;
+    private AudioClip clip;
     [SerializeField]
     private AudioAct act;
 
-    float initVolume;
-    float checkTime;
-    System.IDisposable subject;
+
 
     public enum AudioAct
     {
@@ -27,11 +25,6 @@ public class EventActionAudio : EventAction
         FADOUT,
     }
 
-    private void Start()
-    {
-        initVolume = au.volume;
-    }
-
     public override void Launch()
     {
         if (au)
@@ -39,15 +32,7 @@ public class EventActionAudio : EventAction
             switch (act)
             {
                 case AudioAct.PLAY:
-                    {
-                        if (subject != null)
-                        {
-                            subject.Dispose();
-                        }
-
-                        au.volume = initVolume;
-                        au.Play();
-                    }
+                    au.Play();
                     break;
                 case AudioAct.PAUSE:
                     au.Pause();
@@ -56,22 +41,13 @@ public class EventActionAudio : EventAction
                     au.Stop();
                     break;
                 case AudioAct.RESUME:
-                    au.UnPause();
+                    au.Resume();
                     break;
                 case AudioAct.CHANGE:
-                    au.clip = cilp;
+                    au.Change(clip);
                     break;
                 case AudioAct.FADOUT:
-                    subject = this.UpdateAsObservable().Where(w => Time.unscaledTime - checkTime > 0.05f)
-                                             .TakeWhile(t => au.volume > 0).Subscribe(l =>
-                    {
-                        au.volume -= 0.01f;
-                        checkTime = Time.unscaledTime;
-                        if (au.volume <= 0)
-                        {
-                            subject.Dispose();
-                        }
-                    });
+                    au.Fadout();
                     break;
             }
         }

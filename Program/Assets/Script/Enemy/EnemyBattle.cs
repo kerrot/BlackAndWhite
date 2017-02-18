@@ -56,6 +56,7 @@ public class EnemyBattle : UnitBattle
     protected Attribute attr;
     Vector3 animePos;
     GameObject blockUI;
+    EnemyManager manager;
 
     //Start change to Awake, because Instantiate not call Start but Awake
     void Awake()
@@ -83,7 +84,7 @@ public class EnemyBattle : UnitBattle
             gameObject.OnDisableAsObservable().Where(_ => blockUI).Subscribe(_ => blockUI.SetActive(false));
         }
 
-        EnemyManager manager = GameObject.FindObjectOfType<EnemyManager>();
+        manager = GameObject.FindObjectOfType<EnemyManager>();
         if (manager)
         {
             manager.AddMonster(gameObject);
@@ -156,7 +157,8 @@ public class EnemyBattle : UnitBattle
 
         if (hitEffect)
         {
-            Instantiate(hitEffect.gameObject, transform.position, hitEffect.transform.rotation);
+            GameObject obj = Instantiate(hitEffect.gameObject, transform.position, hitEffect.transform.rotation);
+            obj.transform.parent = transform.parent;
         }
 
         bool physics = true;
@@ -322,6 +324,7 @@ public class EnemyBattle : UnitBattle
             for (int i = 0; i < num; ++i)
             {
                 GameObject obj = Instantiate(energyPeace, transform.position, Quaternion.identity) as GameObject;
+                obj.transform.parent = manager.transform;
                 EnergyPeace peace = obj.GetComponent<EnergyPeace>();
                 if (peace)
                 {
