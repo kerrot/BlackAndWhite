@@ -37,6 +37,7 @@ public class BossWood : DelaySkill
 		{
             GameObject debuff = Instantiate(GreenTrap, player.gameObject.transform.position, Quaternion.identity) as GameObject;
             debuff.GetComponent<StopMove>().victom = player.GetComponent<UnitMove>();
+            debuff.transform.parent = player.transform.parent;
         }
 	}
 }

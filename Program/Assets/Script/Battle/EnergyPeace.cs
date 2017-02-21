@@ -150,6 +150,7 @@ public class EnergyPeace : EnergyBase
     public void FormBall()
     {
         GameObject obj = Instantiate(energyBall.gameObject, transform.position, Quaternion.identity) as GameObject;
+        obj.transform.parent = GameObject.FindObjectOfType<EnemyManager>().transform;
         EnergyBall ball = obj.GetComponent<EnergyBall>();
         ball.Type = Type;
         newSubject.OnNext(ball);

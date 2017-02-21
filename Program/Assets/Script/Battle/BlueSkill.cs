@@ -22,7 +22,8 @@ public class BlueSkill : Skill {
         {
             points.Add(transform.position);
 
-            Instantiate(water, transform.position, Quaternion.Euler(-90, 0, 0));
+            GameObject obj = Instantiate(water, transform.position, Quaternion.Euler(-90, 0, 0));
+            obj.transform.parent = GameObject.FindObjectOfType<EnemyManager>().transform;
         }
 	}
 

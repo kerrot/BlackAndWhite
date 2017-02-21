@@ -58,7 +58,7 @@ public class TrailEffect : MonoBehaviour {
     {
         if (instance)
         {
-            instance.transform.parent = null;
+            instance.transform.parent = transform.parent;
             instance.Emit = false;
         }
     }

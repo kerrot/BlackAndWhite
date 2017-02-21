@@ -179,6 +179,7 @@ public class KnightAttack : MonoBehaviour {
 
     void Magic()
     {
-        Instantiate(magicObject, transform.position, transform.rotation);
+        GameObject obj = Instantiate(magicObject, transform.position, transform.rotation);
+        obj.transform.parent = manager.transform;
     }
 }
