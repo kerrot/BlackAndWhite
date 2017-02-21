@@ -45,7 +45,7 @@ public class PauseCon : MonoBehaviour {
     }
 
 	void Start() {
-        pasueButton.GetComponent<Button>().OnClickAsObservable().Subscribe(_ => onFadeIn = true );
+        pasueButton.GetComponent<Button>().OnClickAsObservable().Subscribe(_ => OnPauseButtonClicked() );
         noButton.GetComponent<Button>().OnClickAsObservable().Subscribe(_ => onFadeOut = true );
         yesButton.GetComponent<Button>().OnClickAsObservable().Subscribe(_ => SceneManager.LoadScene("TCATitle") );
     }
@@ -72,10 +72,9 @@ public class PauseCon : MonoBehaviour {
     void ButtonFadeIn() {
 
         if ( onFadeIn ) {
-            pausePlane.SetActive( true );
-            gameSytem.GamePause();
-            BGM.Pause();
             backGround.transform.localScale = Vector3.MoveTowards( backGround.transform.localScale, maxScale, SPEED );
+        } else {
+            return;
         }
 
         if ( backGround.transform.localScale == maxScale ) {
@@ -106,6 +105,13 @@ public class PauseCon : MonoBehaviour {
             gameSytem.GameResume();
             BGM.UnPause();
         }
+    }
+
+    void OnPauseButtonClicked() {
+        pausePlane.SetActive( true );
+        onFadeIn = true;
+        gameSytem.GamePause();
+        BGM.Pause();
     }
 
 }
