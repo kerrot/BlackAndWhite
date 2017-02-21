@@ -59,23 +59,28 @@ public class KnightBattle : EnemyBattle {
 
         attackedSubject.OnNext(Unit.Default);
 
+        tmpAtk.Type = attack.Type;
+        tmpAtk.Strength = attack.Strength;
+        tmpAtk.Force = attack.Force;
+        tmpAtk.Element = attack.Element;
+
         Attribute attr = GetComponent<Attribute>();
-		if (attr && attr.ProcessAttack(unit, attack))
+		if (attr && attr.ProcessAttack(unit, tmpAtk))
 		{
 			return false;
 		}
 
 		if (HPState)
 		{
-			HPState.Barrier.Value -= attack.Strength;
+			HPState.Barrier.Value -= tmpAtk.Strength;
 			if (HPState.Barrier.Value <= 0) {
 				Die ();
-			} 
-			//else 
-			//{
-			//	anim.SetTrigger("Hitted");
-			//}
-		}
+			}
+            else
+            {
+                anim.SetTrigger("Hitted");
+            }
+        }
 
         return false;
     }

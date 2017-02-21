@@ -58,6 +58,8 @@ public class EnemyBattle : UnitBattle
     GameObject blockUI;
     EnemyManager manager;
 
+    protected Attack tmpAtk = new Attack();
+
     //Start change to Awake, because Instantiate not call Start but Awake
     void Awake()
     {
@@ -139,11 +141,16 @@ public class EnemyBattle : UnitBattle
 
         attackedSubject.OnNext(Unit.Default);
 
+        tmpAtk.Type = attack.Type;
+        tmpAtk.Strength = attack.Strength;
+        tmpAtk.Force = attack.Force;
+        tmpAtk.Element = attack.Element;
+
         #region Modify with Attribute
         Attribute attr = GetComponent<Attribute>();
-        if (attr && attr.ProcessAttack(unit, attack))
+        if (attr && attr.ProcessAttack(unit, tmpAtk))
         {
-            if (attack.Type == AttackType.ATTACK_TYPE_SLASH)
+            if (tmpAtk.Type == AttackType.ATTACK_TYPE_SLASH)
             {
                 slash.CancelSlash();
             }
@@ -169,11 +176,11 @@ public class EnemyBattle : UnitBattle
             transform.LookAt(pos);
         }
 
-        if (attack.Type == AttackType.ATTACK_TYPE_SLASH && slash.CanSlash)
+        if (tmpAtk.Type == AttackType.ATTACK_TYPE_SLASH && slash.CanSlash)
         {
-            Die(attack);
+            Die(tmpAtk);
         }
-        else if (attack.Type == AttackType.ATTACK_TYPE_EXPLOSION)
+        else if (tmpAtk.Type == AttackType.ATTACK_TYPE_EXPLOSION)
         {
             if (slash.CanSlash)
             {
@@ -193,7 +200,7 @@ public class EnemyBattle : UnitBattle
         }
         else if (HPState.Barrier.Value <= 0)
         {
-            HPState.HP.Value -= attack.Strength;
+            HPState.HP.Value -= tmpAtk.Strength;
             if (HPState.HP.Value <= 0)
             {
                 coll.enabled = false;
@@ -207,27 +214,27 @@ public class EnemyBattle : UnitBattle
         }
         else
         {
-            HPState.Barrier.Value -= attack.Strength;
+            HPState.Barrier.Value -= tmpAtk.Strength;
             if (HPState.Barrier.Value > 0)
             {
-                if (attack.Type == AttackType.ATTACK_TYPE_SKILL)
+                if (tmpAtk.Type == AttackType.ATTACK_TYPE_SKILL)
                 {
-                    if (attack.Element == ElementType.ELEMENT_TYPE_BLUE)
+                    if (tmpAtk.Element == ElementType.ELEMENT_TYPE_BLUE)
                     {
                         anim.SetTrigger("Tumble");
                         AudioHelper.PlaySE(gameObject, tumbleSE);
                     }
-                    else if (attack.Element == ElementType.ELEMENT_TYPE_RED)
+                    else if (tmpAtk.Element == ElementType.ELEMENT_TYPE_RED)
                     {
                         anim.SetTrigger("Fire");
                         AudioHelper.PlaySE(gameObject, fireSE);
                     }
-                    else if (attack.Element == ElementType.ELEMENT_TYPE_GREEN)
+                    else if (tmpAtk.Element == ElementType.ELEMENT_TYPE_GREEN)
                     {
                         anim.SetTrigger("Hitted");
                         AudioHelper.PlaySE(gameObject, woodSE);
                     }
-                    else if (attack.Element == ElementType.ELEMENT_TYPE_YELLOW)
+                    else if (tmpAtk.Element == ElementType.ELEMENT_TYPE_YELLOW)
                     {
                         anim.SetTrigger("DamageStart");
                     }
@@ -261,7 +268,7 @@ public class EnemyBattle : UnitBattle
         if (physics)
         {
             Vector3 direction = transform.position - unit.transform.position;
-            AddForce(direction.normalized * attack.Force);
+            AddForce(direction.normalized * tmpAtk.Force);
         }
 
         return true;

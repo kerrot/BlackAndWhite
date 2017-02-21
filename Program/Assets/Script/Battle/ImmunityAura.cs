@@ -78,10 +78,17 @@ public class ImmunityAura : AuraBattle {
             }
         }
 
-        imm.SetActive(false);
+        if (imm)
+        {
+            imm.SetActive(false);
+        }
+        
         if (result)
         {
-            imm.SetActive(true);
+            if (imm)
+            {
+                imm.SetActive(true);
+            }
             blockSubject.OnNext(Unit.Default);
         }
 
