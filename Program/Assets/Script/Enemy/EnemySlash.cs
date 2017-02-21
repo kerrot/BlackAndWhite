@@ -137,6 +137,7 @@ public class EnemySlash : MonoBehaviour {
     void UniRxOnDestroy()
     {
         Destroy(lockUI);
+        Destroy(breakUI);
         PlayerSlash player = GameObject.FindObjectOfType<PlayerSlash>();
         if (player)
         {

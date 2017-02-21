@@ -16,6 +16,10 @@ public class ImmunityAura : AuraBattle {
     private AudioClip blockSE;
     [SerializeField]
     private float strength;
+    [SerializeField]
+    private GameObject UIPosition;
+    [SerializeField]
+    private GameObject ImmUI;
 
     private Subject<Unit> blockSubject = new Subject<Unit>();
     public IObservable<Unit> OnBlock { get { return blockSubject; } }
@@ -25,6 +29,26 @@ public class ImmunityAura : AuraBattle {
     {
         public AttackType type;
         public ElementType element;
+    }
+
+    private GameObject imm;
+
+    protected override void AuraStart()
+    {
+        RunTimeUIGenerator ui = GameObject.FindObjectOfType<RunTimeUIGenerator>();
+        if (ui)
+        {
+            imm = ui.CreateUI(ImmUI);
+            this.OnDestroyAsObservable().Subscribe(_ => DestroyObject(imm));
+        }
+    }
+
+    protected override void AuraUpdate()
+    {
+        if (imm)
+        {
+            imm.transform.position = Camera.main.WorldToScreenPoint(UIPosition.transform.position);
+        }
     }
 
     protected override bool IsAttackBlocked(UnitBattle unit, Attack attack)
@@ -54,8 +78,10 @@ public class ImmunityAura : AuraBattle {
             }
         }
 
+        imm.SetActive(false);
         if (result)
         {
+            imm.SetActive(true);
             blockSubject.OnNext(Unit.Default);
         }
 
