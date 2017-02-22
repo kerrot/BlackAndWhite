@@ -20,6 +20,6 @@ public class ExitBtnController : MonoBehaviour {
     void OnBtnClicked() {
         GameObject.Destroy( GetComponent<Animator>() );
         btnText.GetComponent<Text>().color = Color.white;
-        btnColor.OnNext( btnText.GetComponent<Text>().color );
+        Observable.NextFrame( ).Subscribe( _ => btnColor.OnNext( btnText.GetComponent<Text>().color ) );
     }
 }
