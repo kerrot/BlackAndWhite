@@ -13,6 +13,7 @@ namespace UniRx
         bool isDisposed;
         Exception lastError;
         IObserver<T> outObserver = EmptyObserver<T>.Instance;
+        public readonly object Observable;
 
         public bool HasObservers
         {
