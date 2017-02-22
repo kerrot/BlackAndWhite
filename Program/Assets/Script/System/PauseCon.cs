@@ -58,7 +58,7 @@ public class PauseCon : MonoBehaviour {
 
             if (Input.GetButtonDown("Pause"))
             {
-                onFadeIn = true;
+               OnPauseButtonClicked();
             }
 
         } else {
@@ -82,9 +82,6 @@ public class PauseCon : MonoBehaviour {
             pauseText.SetActive( true );
             yesButton.SetActive( true );
             noButton.SetActive( true );
-            pausePlane.SetActive( true );
-            gameSytem.GamePause();
-            BGM.Pause();
         }
     }
 
