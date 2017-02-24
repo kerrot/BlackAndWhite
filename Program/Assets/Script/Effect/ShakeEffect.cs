@@ -27,9 +27,9 @@ public class ShakeEffect : MonoBehaviour
     {
         Observable.Timer(System.TimeSpan.FromSeconds(time)).Subscribe(_ => 
         {
+            transform.localPosition = initPos;
             enabled = false;
             subject.Dispose();
-            transform.localPosition = initPos;
         }).AddTo(this);
 
         subject = this.LateUpdateAsObservable().Subscribe(_ => UniRxLateUpdate());
@@ -37,6 +37,11 @@ public class ShakeEffect : MonoBehaviour
 
 	void UniRxLateUpdate()
     {
+        if (!enabled)
+        {
+            return;
+        }
+
         if (offset > 0 && frequency > 0)
         {
             counter += Time.deltaTime;

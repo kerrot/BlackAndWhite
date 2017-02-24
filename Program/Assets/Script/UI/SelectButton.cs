@@ -8,6 +8,8 @@ using UnityEngine.UI;
 
 public class SelectButton : MonoBehaviour, IPointerEnterHandler
 {
+    [SerializeField]
+    private GameObject selected;
 
     private Subject<SelectButton> mouseOver = new Subject<SelectButton>();
     public IObservable<SelectButton> OnMouseOver { get { return mouseOver; } }
@@ -43,10 +45,15 @@ public class SelectButton : MonoBehaviour, IPointerEnterHandler
         }
 
         img.color = (v) ? Color.white : Color.gray;
+
+        selected.SetActive(v);
     }
 
     public void Click()
     {
-        btn.onClick.Invoke();
+        if (btn)
+        {
+            btn.onClick.Invoke();
+        }
     }
 }

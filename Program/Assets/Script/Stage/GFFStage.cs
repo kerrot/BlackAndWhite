@@ -121,7 +121,7 @@ public class GFFStage : MonoBehaviour {
             follow.follow = core;
             follow.useSmoothing = true;
 
-            Observable.TimerFrame(200).Subscribe(_ =>
+            Observable.TimerFrame(150).Subscribe(_ =>
             {
                 redDis = red.gameObject.UpdateAsObservable()
                           .TakeWhile(r => red.gameObject.activeSelf)

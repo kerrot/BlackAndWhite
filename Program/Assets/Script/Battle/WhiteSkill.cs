@@ -66,7 +66,7 @@ public class WhiteSkill : Skill
 
     public override bool CanSkill()
     {
-        return !flashEffect && CheckEnergy();
+        return !flashEffect && CheckEnergy() && !trail.activeSelf;
     }
 
     void StartEffect()

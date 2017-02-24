@@ -34,7 +34,7 @@ public class AudioControl : MonoBehaviour {
         subject = this.UpdateAsObservable().Where(w => Time.unscaledTime - checkTime > 0.05f)
                       .TakeWhile(t => au.volume > 0).Subscribe(l =>
                       {
-                          au.volume -= 0.01f;
+                          au.volume -= 0.02f;
 
                           checkTime = Time.unscaledTime;
                           if (au.volume <= 0)

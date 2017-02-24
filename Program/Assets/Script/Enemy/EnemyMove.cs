@@ -28,6 +28,7 @@ public class EnemyMove : UnitMove {
 
     int moveHash;
     int idleHash;
+    int attackHash;
 
     bool needRandom = true;
     float teleportTime;
@@ -46,6 +47,7 @@ public class EnemyMove : UnitMove {
 
         moveHash = Animator.StringToHash("EnemyBase.Move");
         idleHash = Animator.StringToHash("EnemyBase.Idle");
+        attackHash = Animator.StringToHash("EnemyBase.Attack");
     }
 
 	// Update is called once per frame
@@ -95,10 +97,16 @@ public class EnemyMove : UnitMove {
 
     public void FaceTarget(Vector3 target)
     {
+        AnimatorStateInfo info = anim.GetCurrentAnimatorStateInfo(0);
+        if (info.fullPathHash == attackHash)
+        {
+            return;
+        }
+
         Vector3 offset = (target == transform.position) ? transform.forward : (target - transform.position).normalized;
         float angle = Vector3.Angle(offset, Vector3.forward) * ((offset.x > 0) ? 1 : -1);
         float diff = Vector3.Angle(offset, transform.forward);
-        if (Mathf.Abs(diff) > 5f)
+        if (Mathf.Abs(diff) > 10f)
         {
             transform.rotation = Quaternion.AngleAxis(angle, Vector3.up);
         }

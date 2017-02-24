@@ -192,6 +192,11 @@ public class PlayerSlash : MonoBehaviour {
 
     public bool Slash()
     {
+        if (PlayerBattle.IsDead)
+        {
+            return false;
+        }
+
         MultiSlash(Input.mousePosition);
 
         return SlashEnemy(FindSlashEnemy());
@@ -319,6 +324,11 @@ public class PlayerSlash : MonoBehaviour {
 
     void MultiSlash(Vector2 mousePosition)
     {
+        if (PlayerBattle.IsDead)
+        {
+            return;
+        }
+
         if (!slashCombo)
         {
             if (comboHint && comboHint.activeSelf)
@@ -344,7 +354,6 @@ public class PlayerSlash : MonoBehaviour {
 
     void ComboEnd()
     {
-
         canCombo = false;
 
         if (!anim.GetBool("IsSlashing"))
@@ -356,7 +365,7 @@ public class PlayerSlash : MonoBehaviour {
             else
             {
                 //when anim speed too fast, slashend state finish too quick.
-                anim.Play("PlayerBase.SlashEnd", 0, 0.3f);
+                anim.Play("PlayerBase.SlashEnd", 0, 0.35f);
                 isSlashing = false;
                 coll.enabled = true;
 

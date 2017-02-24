@@ -45,6 +45,8 @@ public class EnemySlash : MonoBehaviour {
 
             UIanim = lockUI.GetComponent<Animator>();
             UIImage = lockUI.GetComponent<Image>();
+
+            gameObject.OnDisableAsObservable().Where(_ => lockUI).Subscribe(_ => CancelSlash());
         }
 
         this.UpdateAsObservable().Subscribe(_ => UniRxUpdate());
@@ -57,7 +59,7 @@ public class EnemySlash : MonoBehaviour {
             effect.SetActive(!CanSlash);
         }
         
-        lockUI.SetActive(CanSlash);
+        lockUI.SetActive(CanSlash && gameObject.activeSelf);
 
         if (canSlash)
         {
