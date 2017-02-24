@@ -89,6 +89,7 @@ public class KnightBattle : EnemyBattle {
     {
         coll.enabled = false;
         anim.SetTrigger("Die");
+        anim.SetBool("Hitted", false);
 
         if (peace)
         {
@@ -119,5 +120,10 @@ public class KnightBattle : EnemyBattle {
         GameObject obj = Instantiate(smoke, transform.position, Quaternion.identity);
         obj.transform.parent = transform.parent;
         coll.enabled = true;
+    }
+
+    void Jump()
+    {
+        coll.enabled = false;
     }
 }
