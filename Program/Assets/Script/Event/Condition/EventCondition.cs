@@ -3,6 +3,7 @@ using UniRx.Triggers;
 using UnityEngine;
 using System.Collections;
 
+// only trigger event
 public abstract class EventCondition : MonoBehaviour
 {
     protected Subject<EventCondition> completeSubject = new Subject<EventCondition>();

@@ -6,28 +6,22 @@ using System.Collections.Generic;
 using System;
 using System.Linq;
 
+// game event: in certain codion do certain action
 public class GameEvent : MonoBehaviour {
 
     [SerializeField]
     private List<EventCondition> conditions = new List<EventCondition>();
     [SerializeField]
-    private List<ActionSetting> preAct = new List<ActionSetting>();
+    private List<ActionSetting> preAct = new List<ActionSetting>();     //actions when event launched
     [SerializeField]
-    private List<ActionSetting> postAct = new List<ActionSetting>();
+    private List<ActionSetting> postAct = new List<ActionSetting>();    //actions when condition fullfilled
     [SerializeField]
-    private bool infinity;
+    private bool infinity;                                              // always restart
 
     private Subject<GameEvent> complete = new Subject<GameEvent>();
     public IObservable<GameEvent> OnComplete { get { return complete; } }
 
     Dictionary<EventCondition, bool> state = new Dictionary<EventCondition, bool>();
-
-    //[Serializable]
-    //public struct ConditionSetting
-    //{
-    //    public AttackType type;
-    //    public ElementType element;
-    //}
 
     [Serializable]
     public struct ActionSetting
@@ -80,6 +74,7 @@ public class GameEvent : MonoBehaviour {
         }
     }
 
+    // do the action
     void Action(ActionSetting a)
     {
         if (a.delay > 0)

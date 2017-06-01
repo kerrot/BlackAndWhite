@@ -4,10 +4,11 @@ using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
 
+// play OP, skip OP
 public class TitleStage : MonoBehaviour
 {
     [SerializeField]
-    private MovieTexture mv;
+    private MovieTexture mv;    // op
     [SerializeField]
     private GameObject PV;
     [SerializeField]
@@ -25,7 +26,6 @@ public class TitleStage : MonoBehaviour
     System.IDisposable subject;
     System.IDisposable aniDis;
 
-    // Use this for initialization
     void Start()
     {
         Time.timeScale = 1f;
@@ -46,6 +46,7 @@ public class TitleStage : MonoBehaviour
         });
     }
 
+    // play op, skip with any key input
     void OPStart()
     {
         audioSource.Play();
@@ -60,6 +61,7 @@ public class TitleStage : MonoBehaviour
 
     void OPEnd()
     {
+        // start fadout
         anim.enabled = false;
         if (subject != null)
         {
@@ -80,12 +82,14 @@ public class TitleStage : MonoBehaviour
 
     void OPPlay()
     {
+        // start fadin every [period] second, base on BGM
         aniDis = Observable.Timer(System.TimeSpan.FromSeconds(period)).Subscribe(_ =>
         {
             anim.enabled = true;
             anim.Play("Base Layer.OP", 0, 0);
         });
 
+        // start game
         subject = this.UpdateAsObservable().Where(_ => Input.GetButtonDown("Attack")).Subscribe(_ => btn.onClick.Invoke());
     }
 }

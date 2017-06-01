@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+// manage all UI create in run time, like enemies' HP UI, for set path reason
 public class RunTimeUIGenerator : MonoBehaviour {
     [SerializeField]
     private GameObject lockUI;

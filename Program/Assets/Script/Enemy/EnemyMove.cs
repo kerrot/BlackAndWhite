@@ -4,10 +4,11 @@ using UniRx.Triggers;
 using UnityEngine;
 using System.Collections;
 
+// move toward player, and teleport if in certain range
 public class EnemyMove : UnitMove {
 
     [SerializeField]
-    private float stopRadius;
+    private float stopRadius;               // distance to stop
     [SerializeField]
     private float teleportPeriodMin;
     [SerializeField]
@@ -17,7 +18,7 @@ public class EnemyMove : UnitMove {
     [SerializeField]
     private float teleportMinDistance;
     [SerializeField]
-    private GameObject warpObj;
+    private GameObject warpObj;             // the mark of the position to teleport
     [SerializeField]
     private AudioClip teleportSE;
 
@@ -34,13 +35,15 @@ public class EnemyMove : UnitMove {
     float teleportTime;
     PlayerBattle player;
 
-    // Use this for initialization
+    const float MIN_ANGLE_TO_TURN = 10f;
+
     void Start () {
         this.UpdateAsObservable().Subscribe(__ => UniRxUpdate());
 		
         anim = GetComponent<Animator>();
         player = GameObject.FindObjectOfType<PlayerBattle>();
 
+        // move by root motion, only control the direction, base on navigation
         agent = GetComponent<UnityEngine.AI.NavMeshAgent>();
         agent.updatePosition = false;
         agent.updateRotation = false;
@@ -50,7 +53,7 @@ public class EnemyMove : UnitMove {
         attackHash = Animator.StringToHash("EnemyBase.Attack");
     }
 
-	// Update is called once per frame
+	
 	void UniRxUpdate()
     {
         AnimatorStateInfo info = anim.GetCurrentAnimatorStateInfo(0);
@@ -72,6 +75,7 @@ public class EnemyMove : UnitMove {
 
             if (distance > teleportMinDistance && distance < teleportMaxDistance)
             {
+                // readom the time to teleport
                 if (needRandom)
                 {
                     teleportTime = Time.time + Random.Range(teleportPeriodMin, teleportPeriodMax);
@@ -106,16 +110,18 @@ public class EnemyMove : UnitMove {
         Vector3 offset = (target == transform.position) ? transform.forward : (target - transform.position).normalized;
         float angle = Vector3.Angle(offset, Vector3.forward) * ((offset.x > 0) ? 1 : -1);
         float diff = Vector3.Angle(offset, transform.forward);
-        if (Mathf.Abs(diff) > 10f)
+        if (Mathf.Abs(diff) > MIN_ANGLE_TO_TURN)
         {
             transform.rotation = Quaternion.AngleAxis(angle, Vector3.up);
         }
     }
-    
+
+    // call by animaiton
     void StartTeleport()
     {
         if (player && !player.Missing && CanMove)
         {
+            // readon the position to teleport
             Vector2 offset = Random.insideUnitCircle * stopRadius;
             UnityEngine.AI.NavMeshHit navHit;
             if (UnityEngine.AI.NavMesh.SamplePosition(player.transform.position + new Vector3(offset.x, 0, offset.y), out navHit, 1.0f, UnityEngine.AI.NavMesh.AllAreas))
@@ -129,6 +135,7 @@ public class EnemyMove : UnitMove {
         }
     }
 
+    // call by animaiton
     void Teleport()
     {
         warpObj.SetActive(false);

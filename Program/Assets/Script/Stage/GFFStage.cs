@@ -3,6 +3,7 @@ using UniRx.Triggers;
 using UnityEngine;
 using System.Collections;
 
+// trigger boss core event
 public class GFFStage : MonoBehaviour {
     [SerializeField]
     protected GameObject core;
@@ -45,6 +46,7 @@ public class GFFStage : MonoBehaviour {
             Time.timeScale = 1f;
         });
 
+        // Game clear
         if (core)
         {
             coreEnableDis = core.OnEnableAsObservable().Subscribe(_ => AudioHelper.PlaySE(core, coreSE));
@@ -57,6 +59,8 @@ public class GFFStage : MonoBehaviour {
             }).AddTo(this);
         }
 
+
+        // core union after boss first revival
         var unionSubject = new SingleAssignmentDisposable();
         unionSubject.Disposable = CorePeace.OnUnion.Subscribe(_ =>
         {
@@ -88,6 +92,7 @@ public class GFFStage : MonoBehaviour {
                 core.SetActive(red.UnionReach && green.UnionReach && blue.UnionReach);
             }
 
+            // when all three boss dead
             if (redDis != null && blueDis != null && greenDis != null && core.activeSelf)
             {
                 redDis.Dispose();
@@ -111,6 +116,7 @@ public class GFFStage : MonoBehaviour {
 
     void UnionRTM()
     {
+        // the camera work of  core show up
         RTmDis = CorePeace.OnUnion.Take(1).Subscribe(v =>
         {
             RTmDis.Dispose();

@@ -3,6 +3,7 @@ using UniRx.Triggers;
 using UnityEngine;
 using System.Collections;
 
+// follow object, for rotaion reason, cannot be child object
 public class FollowTargetPosition : MonoBehaviour
 {
     [SerializeField]

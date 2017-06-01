@@ -12,7 +12,7 @@ public class EnergyBall : EnergyBase
     [SerializeField]
     private Color green;
     [SerializeField]
-    public int gatherCount;
+    public int gatherCount;             //amount to form ball
     [SerializeField]
     private ParticleSystem effect;
     [SerializeField]
@@ -40,11 +40,15 @@ public class EnergyBall : EnergyBase
 
     ParticleSystem.MainModule mod;
 
+    const float GROW_SIZE_PER_PEACE = 0.1f;
+    const int POWER_PER_PEACE = 10;
+
     void Start()
     {
         floorLayer = LayerMask.NameToLayer("Floor");
         mod = effect.main;
 
+        // init color
         switch (Type)
         {
             case ElementType.ELEMENT_TYPE_RED:
@@ -79,6 +83,7 @@ public class EnergyBall : EnergyBase
         }
     }
 
+    // drop on ground
     void OnGround(Collider other)
     {
         if (other.gameObject.layer == floorLayer)
@@ -91,13 +96,14 @@ public class EnergyBall : EnergyBase
         }
     }
 
+    // gather peace, to form ball, or grow
     public void Gather()
     {
         ++current;
         ParticleSystem.MinMaxCurve size = mod.startSize;
         if (size.constantMax < 1f)
         {
-            size.constantMax += 0.1f;
+            size.constantMax += GROW_SIZE_PER_PEACE;
         }
         mod.startSize = size;
 
@@ -106,7 +112,7 @@ public class EnergyBall : EnergyBase
             effectOn.gameObject.SetActive(true);
             lightOn.gameObject.SetActive(true);
             effect.gameObject.GetComponent<Animator>().enabled = true;
-            power += 10;
+            power += POWER_PER_PEACE;
             AudioHelper.PlaySE(gameObject, formSE);
 
             formSubject.OnNext(this);

@@ -10,18 +10,18 @@ public class EnemyHP : MonoBehaviour
     [SerializeField]
     private float barrierStrength;
     [SerializeField]
-    private float recoverTime;
+    private float recoverTime;      // barrier recover time
     [SerializeField]
-    private float showHPTime;
+    private float showHPTime;       // auto hide after [showHPTime] second
     [SerializeField]
-    private Transform HPUICenter;
+    private Transform HPUICenter;   // the position to show
     [SerializeField]
     private HPBarUI hpUI;
     [SerializeField]
-    private bool alwaysShow;
+    private bool alwaysShow;        // used in boss HP
     [SerializeField]
-    private bool fixPosition;
-    
+    private bool fixPosition;       // used in boss HP
+
     public bool CanRecover = true;
 
     public FloatReactiveProperty HP = new FloatReactiveProperty();
@@ -39,6 +39,7 @@ public class EnemyHP : MonoBehaviour
         HP.Value = HPMax;
         Barrier.Value = barrierStrength;
 
+        //create UI instance
         if (!hpUI)
         {
             RunTimeUIGenerator ui = GameObject.FindObjectOfType<RunTimeUIGenerator>();
@@ -50,12 +51,14 @@ public class EnemyHP : MonoBehaviour
             }
         }
 
+        // update display
         HP.Subscribe(v => hpUI.HPUI.value = v / HPMax);
         Barrier.Subscribe(v => hpUI.BarrierUI.value = v / barrierStrength);
         recover.Subscribe(v => hpUI.RecoverUI.value = v / recoverTime);
 
         hpUI.gameObject.SetActive(alwaysShow);
 
+        // show UI when attacked
         EnemyBattle battle = GetComponent<EnemyBattle>();
         if (battle)
         {
@@ -66,6 +69,7 @@ public class EnemyHP : MonoBehaviour
             });
         }
 
+        // prevent remaining in screen
         if (alwaysShow)
         {
             gameObject.OnDisableAsObservable().Where(_ => hpUI).Subscribe(_ => hpUI.gameObject.SetActive(false));
@@ -80,6 +84,7 @@ public class EnemyHP : MonoBehaviour
     {
         if (hpUI.gameObject.activeSelf)
         {
+            // follow the owner corresponding to screen except fixPosition
             if (!fixPosition)
             {
                 hpUI.transform.position = Camera.main.WorldToScreenPoint(HPUICenter.transform.position);

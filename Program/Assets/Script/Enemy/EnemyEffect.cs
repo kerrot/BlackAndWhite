@@ -4,6 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+// enemy's effect center, like being attack
 public class EnemyEffect : MonoBehaviour
 {
     [SerializeField]

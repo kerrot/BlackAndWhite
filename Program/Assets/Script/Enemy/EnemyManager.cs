@@ -4,6 +4,7 @@ using UniRx.Triggers;
 using System.Collections.Generic;
 using System.Linq;
 
+// manages all enemis in game
 public class EnemyManager : MonoBehaviour
 {
     static private float RayRadius = 0.2f;
@@ -33,6 +34,7 @@ public class EnemyManager : MonoBehaviour
  
         InputController.OnMouseSingleClick.Subscribe(p => EnemyClicked(p)).AddTo(this);
 
+        //auto register enemies in the scene not created by this manager
         GameObject.FindObjectsOfType<EnemyBattle>().ToList().ForEach(e => AddMonster(e.gameObject));
 
         if (monsters.Count == 0)
@@ -41,6 +43,7 @@ public class EnemyManager : MonoBehaviour
         }
     }
 
+    // SphereCast, choose the nearest one
     static public GameObject GetEnemyByMousePosition(Vector2 mousePosition)
     {
         Ray camRay = Camera.main.ScreenPointToRay(mousePosition);
@@ -85,8 +88,6 @@ public class EnemyManager : MonoBehaviour
         }
     }
 
-    
-
     public GameObject CreateEnemy(GameObject obj, Vector3 position, Quaternion rotation)
     {
         GameObject tmp = Instantiate(obj, position, rotation) as GameObject;
@@ -95,6 +96,7 @@ public class EnemyManager : MonoBehaviour
         return tmp;
     }
 
+    // register and put to same layer
     public void AddMonster(GameObject obj)
     {
         if (obj != null && obj.GetComponentInChildren<EnemyBattle>())
@@ -119,6 +121,7 @@ public class EnemyManager : MonoBehaviour
         }
     }
 
+    // remove the record and create explosion when enemy dead
     void EnemyDie(GameObject Enemy)
 	{
 		if (Enemy != null && monsters.Contains (Enemy)) {
@@ -164,6 +167,7 @@ public class EnemyManager : MonoBehaviour
         return tmpList;
     }
 
+    // get enemies list by range
     static public List<GameObject> GetEnemy(Vector3 position, float radius, Vector3 direction, float angle)
     {
         List<GameObject> radiusList = GetEnemy(position, radius);

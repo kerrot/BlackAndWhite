@@ -4,6 +4,7 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
+// revive the enemy when enemy dead in [reviveTime] second
 public class EnemyRevive : MonoBehaviour {
     [SerializeField]
     private float reviveTime;
@@ -39,6 +40,7 @@ public class EnemyRevive : MonoBehaviour {
 
     void UniRxUpdate()
     {
+        // check the time to revive
         if (manager)
         {
             List<ReviveData> re = revives.FindAll(r => Time.time - r.time > reviveTime);

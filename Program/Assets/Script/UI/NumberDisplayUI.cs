@@ -5,11 +5,12 @@ using UnityEngine.UI;
 using System.Collections.Generic;
 using System.Collections;
 
+// number ui
 public class NumberDisplayUI : MonoBehaviour {
     [SerializeField]
     private NumberUI num;
     [SerializeField]
-    private float displayTime;
+    private float displayTime;                      // time to hide
 
     List<NumberUI> numbers = new List<NumberUI>();
     float startTime;
@@ -25,6 +26,7 @@ public class NumberDisplayUI : MonoBehaviour {
 
     void Start()
     {
+        // auto hide
         this.UpdateAsObservable().Where(_ => gameObject.activeSelf && Time.realtimeSinceStartup - startTime > displayTime)
                                  .Subscribe(_ => gameObject.SetActive(false));
 
@@ -33,18 +35,20 @@ public class NumberDisplayUI : MonoBehaviour {
 
     private void OnEnable()
     {
-        anim.Play(animName, 0, 0);
+        ShowUI();
     }
 
     public void Display(int number)
     {
         int index = 0;
-        gameObject.SetActive(false);
+        ShowUI();
         gameObject.SetActive(true);
         startTime = Time.realtimeSinceStartup;
+
         numbers.ForEach(n => n.gameObject.SetActive(false));
         num.SetNumber(0);
 
+        // generate each digit, if don't exist
         while (number > 0)
         {
             if (numbers.Count <= index)
@@ -69,6 +73,14 @@ public class NumberDisplayUI : MonoBehaviour {
             ++index;
             number /= 10;
         }
+    }
+
+    void ShowUI()
+    {
+        if (anim)
+        {
+            anim.Play(animName, 0, 0);
+        }        
     }
 
 }

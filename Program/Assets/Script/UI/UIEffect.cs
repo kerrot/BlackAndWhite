@@ -3,6 +3,7 @@ using UniRx.Triggers;
 using UnityEngine;
 using System.Collections;
 
+//runtime ui control
 public class UIEffect : MonoBehaviour {
     [SerializeField]
     private GameObject effect;

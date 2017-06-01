@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Collections;
 
+//Generator of enemy, spawn per [spawnTime], up to [maxCount]
 public class EnemyGenerator : MonoBehaviour {
 
     [SerializeField]

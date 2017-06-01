@@ -3,6 +3,7 @@ using UniRx.Triggers;
 using UnityEngine;
 using System.Collections;
 
+// generate shadow when player slash, and slash effect
 public class SlashEffect : MonoBehaviour
 {
     [SerializeField]
@@ -27,6 +28,7 @@ public class SlashEffect : MonoBehaviour
         tmp.transform.localRotation = target.transform.localRotation;
     }
 
+    // call by Animation
     void SlashFlash()
     {
         if (slashEffect && effectPosition)

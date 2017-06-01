@@ -47,7 +47,7 @@ public class ImmunityAura : AuraBattle {
 
     protected override void AuraUpdate()
     {
-        // follow the owner correspondence to screen
+        // follow the owner corresponding to screen
         if (imm)
         {
             imm.transform.position = Camera.main.WorldToScreenPoint(UIPosition.transform.position);

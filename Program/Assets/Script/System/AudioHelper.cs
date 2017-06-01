@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+// sound effect control
 public class AudioHelper : MonoBehaviour {
 
 	public static void PlaySE(GameObject obj, AudioClip clip)

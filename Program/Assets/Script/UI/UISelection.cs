@@ -5,16 +5,22 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
 
+// select UI , click UI by key input
 public class UISelection : MonoBehaviour {
     [SerializeField]
     private List<SelectButton> btns = new List<SelectButton>();
+    [SerializeField]
+    private string conformKey = "Attack";
+    [SerializeField]
+    private string switchKey = "Horizontal";
 
-    IntReactiveProperty now = new IntReactiveProperty();
+    IntReactiveProperty now = new IntReactiveProperty();    // current select
 
     float lastTime;
     const float PERIOD = 0.3f;
+    const float SENSITIVE = 0.5f;
 
-	void Start ()
+    void Start ()
     {
         btns.ForEach(b =>
         {
@@ -27,10 +33,12 @@ public class UISelection : MonoBehaviour {
             btns[i].Select(true);
         });
 
-        this.UpdateAsObservable().Where(_ => Input.GetButtonDown("Attack")).Subscribe(_ => btns[now.Value].Click());
+        // click button
+        this.UpdateAsObservable().Where(_ => Input.GetButtonDown(conformKey)).Subscribe(_ => btns[now.Value].Click());
 
-        this.UpdateAsObservable().Where(_ => Mathf.Abs(Input.GetAxis("Horizontal")) > 0.5f && Time.unscaledTime - lastTime > PERIOD)
-                                 .Select(_ => Input.GetAxis("Horizontal"))
+        // switch button
+        this.UpdateAsObservable().Where(_ => Mathf.Abs(Input.GetAxis(switchKey)) > SENSITIVE && Time.unscaledTime - lastTime > PERIOD)
+                                 .Select(_ => Input.GetAxis(switchKey))
                                  .Subscribe(v =>
                                  {
                                      now.Value = (now.Value + ((v > 0) ? 1 : -1) + btns.Count) % btns.Count;

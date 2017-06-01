@@ -70,6 +70,7 @@ public class InputController : MonoBehaviour {
 
     void UniRxUpdate ()
     {
+        // input only valid in playing state
         if (GameSystem.Instance.State != GameSystem.GameState.GAME_STATE_PLAYING)
         {
             return;
@@ -94,21 +95,6 @@ public class InputController : MonoBehaviour {
         {
             pauseClick.OnNext(Unit.Default);
         }
-
-        //if (Input.GetKeyDown(KeyCode.W))
-        //{
-        //    redClick.OnNext(Unit.Default);
-        //}
-
-        //if (Input.GetKeyDown(KeyCode.E))
-        //{
-        //    greenClick.OnNext(Unit.Default);
-        //}
-
-        //if (Input.GetKeyDown(KeyCode.Q))
-        //{
-        //    blueClick.OnNext(Unit.Default);
-        //}
 
         moveDirection.y = Input.GetAxis("Vertical");
         moveDirection.x = Input.GetAxis("Horizontal");
@@ -152,11 +138,13 @@ public class InputController : MonoBehaviour {
             firstClickTime = secondClickTime;
             secondClickTime = now;
 
+            //double click
             if (firstClickTime > 0 && secondClickTime - firstClickTime < ClickPeriod)
             {
                 mouseDoubleClick.OnNext(position);
             }
 
+            // single click
             if (now - pressTime < ClickPeriod)
             {
                 mouseSingleClick.OnNext(position);

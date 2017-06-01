@@ -2,6 +2,7 @@
 using UnityEngine.UI;
 using System.Collections;
 
+// display number 0~9, by sprite
 public class NumberUI : MonoBehaviour {
 	[SerializeField]
 	private Sprite[] numbers;

@@ -4,30 +4,36 @@ using UnityEngine;
 using System.Collections;
 using System.Linq;
 
-
+//boss core control, ready to union state, union state
 public class CorePeace : MonoBehaviour
 {
     [SerializeField]
     private GameObject Core;
     [SerializeField]
-    private KnightBattle battle;
+    private KnightBattle battle;        // owner
 
     public bool UnionReach = false;
 
     static public float STOP_DISTANCE = 0.01f;
-
+    
+    // event when core unioned
     static private Subject<Vector3> unionSubject = new Subject<Vector3>();
     static public IObservable<Vector3> OnUnion { get { return unionSubject; } }
 
+    // event when union breaked
     static private Subject<Unit> breakSubject = new Subject<Unit>();
     static public IObservable<Unit> OnBreak { get { return breakSubject; } }
 
+    // event when reach the destinetion
     private Subject<Unit> reachSubject = new Subject<Unit>();
+    // state when reacdy to union
     private BoolReactiveProperty ready = new BoolReactiveProperty();
     public IObservable<bool> OnReady { get { return ready; } }
 
     Animator anim;
     Rigidbody rd;
+
+    const int CORE_AMOUNT = 3;
 
     public bool Ready { get { return ready.Value; } }
 
@@ -50,6 +56,7 @@ public class CorePeace : MonoBehaviour
 
     void OnEnable()
     {
+        // ready to union state
         if (!ready.Value)
         {
             transform.position = Vector3.zero;
@@ -61,14 +68,17 @@ public class CorePeace : MonoBehaviour
         }
     }
 
+    //
     void CheckUnion()
     {
         readyPosition = transform.position;
         ready.Value = true;
 
+        // when all ready, chaneg to union state
         CorePeace[] ps = GameObject.FindObjectsOfType<CorePeace>();
-        if (ps.Length == 3 && ps.All(p => p.Ready))
+        if (ps.Length == CORE_AMOUNT && ps.All(p => p.Ready))
         {
+            // compute center posiotn to union
             Vector3 pos = ps.Select(x => x.transform.position).Aggregate((acc, cur) => acc + cur) / ps.Length;
             UnityEngine.AI.NavMeshHit navHit;
             if (UnityEngine.AI.NavMesh.SamplePosition(pos, out navHit, 1.0f, UnityEngine.AI.NavMesh.AllAreas))
@@ -80,6 +90,7 @@ public class CorePeace : MonoBehaviour
         }
     }
 
+    //Set the destinetion to reach, and velocity
     void SetDestinetion(Vector3 pos)
     {
         if (unionDis != null)
@@ -103,6 +114,7 @@ public class CorePeace : MonoBehaviour
         });
     }
 
+    // return to owner
     void Back()
     {
         CorePeace[] ps = GameObject.FindObjectsOfType<CorePeace>();
@@ -139,6 +151,7 @@ public class CorePeace : MonoBehaviour
         }
     }
 
+    // break the union
     void Break()
     {
         if (!ready.Value)
@@ -163,6 +176,7 @@ public class CorePeace : MonoBehaviour
         });
     }
 
+    // union state
     void Union(Vector3 pos)
     {
         if (!ready.Value)

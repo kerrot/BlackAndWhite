@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+// the effect of slash animation
 public class SlashFlash : MonoBehaviour {
     [SerializeField]
     private float existTime;

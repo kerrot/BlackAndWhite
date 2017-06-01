@@ -9,8 +9,6 @@ public class PlayerMove : UnitMove {
 
     [SerializeField]
     private float arriveRadius = 0.1f;
-    //[SerializeField]
-    //private float GuardRadius = 0.2f;
     [SerializeField]
     private GameObject TargetObject;        // go to the object's position
     [SerializeField]
@@ -32,7 +30,6 @@ public class PlayerMove : UnitMove {
         InputController.OnMousePressed.Subscribe(p => CheckMotion(p)).AddTo(this);
         InputController.OnMove.Subscribe(v => KeyMove(v)).AddTo(this);
         InputController.OnStop.Subscribe(v => MoveStop()).AddTo(this);
-        //InputController.OnMouseUp.Subscribe(p => StopGuard(p)).AddTo(this);
 
         agent = GetComponent<UnityEngine.AI.NavMeshAgent>();
         agent.updatePosition = false;
@@ -90,17 +87,7 @@ public class PlayerMove : UnitMove {
         }
         anim.SetBool("IsMove", true);
         SetDestination(mousePosition);
-
-        //when cannot move, recompute for check guard.
-        //bool isGuard = (transform.position - ComputeDestination(mousePosition)).magnitude < GuardRadius;
-        //anim.SetBool("Guard", isGuard);
-        //anim.SetBool("IsMove", !isGuard);
     }
-
- //   void StopGuard(Vector2 mousePosition)
-	//{
-	//	anim.SetBool ("Guard", false);
-	//}
 
 	void UniRxFixedUpdate()
     {

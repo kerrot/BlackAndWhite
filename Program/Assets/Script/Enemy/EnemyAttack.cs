@@ -7,11 +7,11 @@ using System.Linq;
 public class EnemyAttack : MonoBehaviour
 {
     [SerializeField]
-    private GameObject attackRange;
+    private GameObject attackRange;  // range which enemy can attack
     [SerializeField]
-    private float attackPower;
+    private float attackPower;      // damage
     [SerializeField]
-    private float attackForce;
+    private float attackForce;      // physics
     [SerializeField]
     private AudioClip attackSE;
 
@@ -40,6 +40,7 @@ public class EnemyAttack : MonoBehaviour
 
     void UniRxUpdate()
     {
+        // if player can see player and in the attack range
         if (player && !player.Missing)
         {
             AnimatorStateInfo info = anim.GetCurrentAnimatorStateInfo(0);

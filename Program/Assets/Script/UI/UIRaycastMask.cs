@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 
+//detect UI transparent, for circle button
 [RequireComponent(typeof(RectTransform))]
 [RequireComponent(typeof(Image))]
 public class UIRaycastMask : MonoBehaviour, ICanvasRaycastFilter

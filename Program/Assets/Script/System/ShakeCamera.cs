@@ -3,16 +3,17 @@ using UniRx.Triggers;
 using UnityEngine;
 using System.Collections;
 
+// camera shake effect
 public class ShakeCamera : MonoBehaviour
 {
     [SerializeField]
-    private float time;
+    private float time;             // last time
     [SerializeField]
-    private float offset;
+    private float offset;           // shake power
     [SerializeField]
-    private float frequency;
+    private float frequency;        // shake frequency
 
-    FollowTargetPosition follower;
+    FollowTargetPosition follower;  // base position
 
     float counter = 0;
     float startTime = 0;
@@ -28,6 +29,7 @@ public class ShakeCamera : MonoBehaviour
     void OnEnable()
     {
         startTime = Time.time;
+        // after all update
         subject = this.LateUpdateAsObservable().Subscribe(_ => UniRxLateUpdate());
     }
 
@@ -45,6 +47,7 @@ public class ShakeCamera : MonoBehaviour
             {
                 counter -= frequency;
 
+                // random position offset
                 Vector2 randomVector = Random.insideUnitCircle * offset;
 
                 Vector3 shakeOffset = transform.up * randomVector.y + transform.right * randomVector.x;

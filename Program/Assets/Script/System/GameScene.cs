@@ -2,6 +2,7 @@
 using UnityEngine.SceneManagement;
 using System.Collections;
 
+// change level
 public class GameScene : MonoBehaviour {
 
 	public void LoadGame(string name)

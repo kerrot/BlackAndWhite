@@ -23,6 +23,8 @@ public class GameSystem : SingletonMonoBehaviour<GameSystem>
     bool pause = false;
     float tmpTimeScale = 0;
 
+    const float GAME_RESTART_TIME = 3f;
+
     GameState state = GameState.GAME_STATE_PLAYING;
     public enum GameState
     {
@@ -74,6 +76,7 @@ public class GameSystem : SingletonMonoBehaviour<GameSystem>
 
     public void ComboSlash()
     {
+        // show ui when count > 1
         ++slashCount;
         if (combo && slashCount > 1)
         {
@@ -140,7 +143,7 @@ public class GameSystem : SingletonMonoBehaviour<GameSystem>
 
     IEnumerator RestartGame()
     {
-        yield return new WaitForSeconds(3f);
+        yield return new WaitForSeconds(GAME_RESTART_TIME);
 
         GameScene.ReStartGame();
     }

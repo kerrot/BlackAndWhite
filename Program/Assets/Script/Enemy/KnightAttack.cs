@@ -3,21 +3,22 @@ using UniRx.Triggers;
 using UnityEngine;
 using System.Collections;
 
+// boss attack ai
 public class KnightAttack : MonoBehaviour {
     [SerializeField]
-    private GameObject weapon;
+    private GameObject weapon;          // for collider
     [SerializeField]
-    private float attackPower;
+    private float attackPower;          // damage
     [SerializeField]
-    private float attackForce;
+    private float attackForce;          // physics
     [SerializeField]
-    private float spawnTime;
+    private float spawnTime;            // summon minions period
     [SerializeField]
-    private GameObject spawnObject;
+    private GameObject spawnObject;     // minion to summon
     [SerializeField]
-    private float spawnNum;
+    private float spawnNum;             // minion amount
     [SerializeField]
-    private GameObject magicObject;
+    private GameObject magicObject;     // boss skill
     [SerializeField]
     private float magicPeriodMin;
     [SerializeField]
@@ -66,6 +67,7 @@ public class KnightAttack : MonoBehaviour {
 
     void UniRxUpdate()
     {
+        // prevent attack when not attack
         AnimatorStateInfo info = anim.GetCurrentAnimatorStateInfo(0);
         if (info.fullPathHash != attackHash)
         {
@@ -81,6 +83,7 @@ public class KnightAttack : MonoBehaviour {
             return;
         }
 
+        // priority:  summon > magic > attack
         if (spawnObject && Time.time - spawnStart > spawnTime)
         {
             spawnStart = Time.time;
@@ -96,6 +99,7 @@ public class KnightAttack : MonoBehaviour {
         {
             if (magicObject && Time.time > magicTime)
             {
+                // random the time to use skill
                 if (magicRandom)
                 {
                     magicTime = Time.time + Random.Range(magicPeriodMin, magicPeriodMax);
@@ -111,6 +115,7 @@ public class KnightAttack : MonoBehaviour {
             }
             else
             {
+                // check range. prevent wrong anim state
                 AnimatorStateInfo idleInfo = anim.GetCurrentAnimatorStateInfo(0);
                 if (idleInfo.fullPathHash == idleHash && Vector3.Distance(player.transform.position, transform.position) <= movement.StopRadius
                                                       && !anim.GetBool("Attack")  )
@@ -121,11 +126,13 @@ public class KnightAttack : MonoBehaviour {
         }
     }
 
+    // call by animation
     void AttackInit()
     {
         movement.FaceTarget(player.transform.position);
     }
 
+    // call by animation
     void AttackStart()
     {
         AudioHelper.PlaySE(gameObject, attackSE);
@@ -133,6 +140,7 @@ public class KnightAttack : MonoBehaviour {
         attackDis = this.OnTriggerEnterAsObservable().Subscribe(o => UniRxTriggerEnter(o));
     }
 
+    // call by animation
     void AttackEnd()
     {
         weaponCollider.enabled = false;
@@ -161,6 +169,7 @@ public class KnightAttack : MonoBehaviour {
         {
             Vector2 offset = Random.insideUnitCircle;
             Vector3 shift = new Vector3(offset.x, 0, offset.y) * movement.StopRadius + transform.position;
+            // check spawn in lacation that can be reached
             UnityEngine.AI.NavMeshHit navHit;
             if (UnityEngine.AI.NavMesh.SamplePosition(shift, out navHit, 1.0f, UnityEngine.AI.NavMesh.AllAreas))
             {

@@ -6,6 +6,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 
+// shadow effect when slash
 public class ShadowEffect : MonoBehaviour {
 
     [SerializeField]
@@ -34,7 +35,7 @@ public class ShadowEffect : MonoBehaviour {
 
         MeshRenderer[] renders = GetComponentsInChildren<MeshRenderer>();
 
-
+        // replace the materials of model to setting
         renders.ToList().ForEach(r =>
         {
 				Material[] tmpMaterial = new Material[r.materials.Length];
@@ -52,6 +53,7 @@ public class ShadowEffect : MonoBehaviour {
         });
     }
 
+    // make the shadow disapear little by little
     void UniRxUpdate()
     {
         if (system && system.State != GameSystem.GameState.GAME_STATE_PLAYING)

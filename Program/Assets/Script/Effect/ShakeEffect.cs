@@ -3,14 +3,15 @@ using UniRx.Triggers;
 using UnityEngine;
 using System.Collections;
 
+// shake the gameobject, according to local position
 public class ShakeEffect : MonoBehaviour
 {
     [SerializeField]
-    private float time;
+    private float time;     // last time
     [SerializeField]
-    private float offset;
+    private float offset;   // shake power
     [SerializeField]
-    private float frequency;
+    private float frequency;    // shake frequency
 
     float counter = 0;
 

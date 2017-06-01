@@ -5,9 +5,9 @@ using System.Collections;
 
 public class KnightBattle : EnemyBattle {
     [SerializeField]
-    private CorePeace peace;
+    private CorePeace peace;    // boss core
     [SerializeField]
-    private GameObject smoke;
+    private GameObject smoke;    // land effect
 
     private Subject<Unit> reviveSubject = new Subject<Unit>();
     public IObservable<Unit> OnRevive { get { return reviveSubject; } }
@@ -22,6 +22,7 @@ public class KnightBattle : EnemyBattle {
         HPState = GetComponent<EnemyHP>();
         if (HPState)
         {
+            // peace union event, after first revive
             HPState.OnRecover.Subscribe(_ => reviveSubject.OnNext(Unit.Default)).AddTo(this);
             if (HPState.CanRecover)
             {
@@ -50,6 +51,7 @@ public class KnightBattle : EnemyBattle {
         }
     }
 
+    // no barrier
     public override bool Attacked(UnitBattle unit, Attack attack)
     {
         if (!coll.enabled)
@@ -115,6 +117,7 @@ public class KnightBattle : EnemyBattle {
         }
     }
 
+    // call the animation
     void Landing()
     {
         GameObject obj = Instantiate(smoke, transform.position, Quaternion.identity);
@@ -122,6 +125,7 @@ public class KnightBattle : EnemyBattle {
         coll.enabled = true;
     }
 
+    // call the animation
     void Jump()
     {
         coll.enabled = false;

@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
 
+// skill ui setup
 public class SkillUI : MonoBehaviour {
 	[SerializeField]
 	private Button powerBtn;
@@ -40,6 +41,7 @@ public class SkillUI : MonoBehaviour {
 		skill = GameObject.FindObjectOfType<PlayerSkill> ();
 		if (skill) 
 		{
+            // center circle. can use skill
 			if (powerImage && powerBtn) 
 			{
 				skill.CanSkill.Subscribe (v => 
@@ -49,17 +51,20 @@ public class SkillUI : MonoBehaviour {
 				});
 			}
 
+            // use skill
 			if (powerBtn) 
 			{
 				powerBtn.OnClickAsObservable ().Subscribe (_ => skill.UseSkill (EnemyManager.GetEnemyByMousePosition(Input.mousePosition)));
 				InputController.OnSkillClick.Subscribe (_ => skill.UseSkill (EnemyManager.GetEnemyByMousePosition(Input.mousePosition)));
 			}
 
+            // update energy
 			RegisterEnergy (redEnergy, skill.RedEnergy);
 			RegisterEnergy (greenEnergy, skill.GreenEnergy);
 			RegisterEnergy (blueEnergy, skill.BlueEnergy);
 		}
 
+        // update Attribute
         attri = GameObject.FindObjectOfType<PlayerAttribute>();
         if (attri)
         {
@@ -89,8 +94,6 @@ public class SkillUI : MonoBehaviour {
                 {
                     powerImage.color = c;
                 }
-
-                
             });
 		}
 	}

@@ -2,6 +2,7 @@
 using UnityEngine;
 using System.Collections;
 
+// game start camera work
 public class OpeningRTM : MonoBehaviour {
     [SerializeField]
     private GameObject mainCamera;

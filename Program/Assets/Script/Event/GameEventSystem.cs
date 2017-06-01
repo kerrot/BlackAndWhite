@@ -4,6 +4,7 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
+// management of game events, create, destroy...
 public class GameEventSystem : MonoBehaviour {
 
     [SerializeField]

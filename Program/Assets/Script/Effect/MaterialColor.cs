@@ -4,7 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-
+//change models Color, used in animation
 public class MaterialColor : MonoBehaviour {
     [SerializeField]
     private Color matColor;

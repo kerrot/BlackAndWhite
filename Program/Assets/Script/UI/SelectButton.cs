@@ -6,6 +6,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
+// button select effect.
 public class SelectButton : MonoBehaviour, IPointerEnterHandler
 {
     [SerializeField]
@@ -25,6 +26,7 @@ public class SelectButton : MonoBehaviour, IPointerEnterHandler
               
     }
 
+    //mouse over to select
     public void OnPointerEnter(PointerEventData eventData)
     {
         mouseOver.OnNext(this);

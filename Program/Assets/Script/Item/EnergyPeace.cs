@@ -14,6 +14,7 @@ public class EnergyPeace : EnergyBase
     [SerializeField]
     private AudioClip groundSE;
 
+    //event when new peace created
     static private Subject<EnergyBall> newSubject = new Subject<EnergyBall>();
     static public IObservable<EnergyBall> OnNew { get { return newSubject; } }
 
@@ -27,6 +28,8 @@ public class EnergyPeace : EnergyBase
     void Start()
     {
         floorLayer = LayerMask.NameToLayer("Floor");
+
+        // init color
         Material mat = GetComponentInChildren<MeshRenderer>().material;
         mat.SetColor("_EmissionColor", Attribute.GetColor(Type, 1.0f));
 
@@ -57,6 +60,8 @@ public class EnergyPeace : EnergyBase
         }
 
         rd.useGravity = true;
+
+        // change to union state when touch ground
         ground = this.OnTriggerEnterAsObservable().Subscribe(o =>
         {
             if (rd.useGravity)
@@ -95,6 +100,7 @@ public class EnergyPeace : EnergyBase
 
         FlytoTarget();
 
+        // gather when touch each other
         gather = this.OnTriggerStayAsObservable().Subscribe(o => 
         {
             if (gatherTarget && o.gameObject.GetComponent<EnergyBase>() == gatherTarget)
@@ -118,6 +124,7 @@ public class EnergyPeace : EnergyBase
         });
     }
 
+    // closest target, with certain limitation (predicate)
     EnergyBase FindClosest<T>(System.Func<T, bool> predicate) where T : EnergyBase
     {
         T[] set = GameObject.FindObjectsOfType<T>();
@@ -125,23 +132,6 @@ public class EnergyPeace : EnergyBase
         if (eset.Count() > 0)
         {
             return eset.Aggregate((curMin, x) => (curMin == null || (Vector3.Distance(x.transform.position, transform.position) < Vector3.Distance(curMin.transform.position, transform.position)) ? x : curMin));
-
-            //T min = null;
-            //float distance = Mathf.Infinity;
-            //eset.ToObservable().Subscribe(e =>
-            //{
-            //    if (e)
-            //    {
-            //        float tmp = Vector3.Distance(e.transform.position, transform.position);
-            //        if (tmp < distance)
-            //        {
-            //            min = e;
-            //            distance = tmp;
-            //        }
-            //    }
-            //});
-
-            //return min;
         }
 
         return null;
@@ -196,6 +186,7 @@ public class EnergyPeace : EnergyBase
         });
     }
 
+    //when gather target being eaten
     void Regather(EnergyBall ball)
     {
         if (gatherTarget != null && gatherTarget is EnergyBall)

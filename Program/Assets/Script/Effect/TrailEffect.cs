@@ -3,6 +3,7 @@ using UniRx.Triggers;
 using UnityEngine;
 using System.Collections;
 
+//the flash effect of attack and slash
 public class TrailEffect : MonoBehaviour {
     [SerializeField]
     private MeleeWeaponTrail attackTail;
@@ -28,6 +29,7 @@ public class TrailEffect : MonoBehaviour {
         attack = null;
     }
 
+    // Set the Color
     public void SlashTrailStart()
     {
         if (!slash)
@@ -54,6 +56,7 @@ public class TrailEffect : MonoBehaviour {
         return obj.GetComponent<MeleeWeaponTrail>();
     }
 
+    // stop emit, not destroy immediately
     void TrailEnd(MeleeWeaponTrail instance)
     {
         if (instance)
