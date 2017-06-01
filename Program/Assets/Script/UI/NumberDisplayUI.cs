@@ -32,6 +32,11 @@ public class NumberDisplayUI : MonoBehaviour {
         //Display(1234);
     }
 
+    private void OnEnable()
+    {
+        GetComponent<Animator>().Play("Combo", 0, 0);
+    }
+
     public void Display(int number)
     {
         int index = 0;
