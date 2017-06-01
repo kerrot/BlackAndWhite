@@ -1,4 +1,6 @@
-﻿Shader "Custom/Magenta" {
+﻿// Upgrade NOTE: replaced 'mul(UNITY_MATRIX_MVP,*)' with 'UnityObjectToClipPos(*)'
+
+Shader "Custom/Magenta" {
 	Properties{
 		_Color("Main Color", Color) = (1.0, 1.0, 1.0, 1.0)
 		_Offset0("Offset 0", vector) = (0, 0, 0, 0)
@@ -37,7 +39,7 @@
 	// 在shader中要渲染自身，以及4个残影，所以要定义5个不同的vert函数
 	v2f vert_normal(appdata v) { // 渲染自身的vert函数
 		v2f o;
-		o.pos = mul(UNITY_MATRIX_MVP, v.vertex);
+		o.pos = UnityObjectToClipPos(v.vertex);
 		o.color = v.color;
 		return o;
 	}

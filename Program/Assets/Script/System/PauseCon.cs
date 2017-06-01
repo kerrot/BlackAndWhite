@@ -105,6 +105,11 @@ public class PauseCon : MonoBehaviour {
     }
 
     void OnPauseButtonClicked() {
+        if (PlayerBattle.IsDead)
+        {
+            return;
+        }
+
         pausePlane.SetActive( true );
         onFadeIn = true;
         gameSytem.GamePause();
