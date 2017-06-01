@@ -3,6 +3,7 @@ using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
 
+// the Element Type of unit in game
 public class Attribute : MonoBehaviour {
     [SerializeField]
     protected ElementType type;
@@ -11,6 +12,7 @@ public class Attribute : MonoBehaviour {
 
     public ElementType Type { get { return type; } }
 
+    // split element type of attack to base type to process
     public bool ProcessAttack(UnitBattle unit, Attack atk)
     {
         if (IsPure(atk.Element))
@@ -50,6 +52,7 @@ public class Attribute : MonoBehaviour {
         return result;
     }
 
+    // if attack by weak element, double damage.
     float PureProcess(ElementType ele, float strength)
     {
         if (IsResist(type, ele))

@@ -4,6 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+//For detecting blue aura attacked
 public class BlueEnemySpecial : MonoBehaviour {
 
     [SerializeField]

@@ -3,6 +3,7 @@ using UniRx.Triggers;
 using UnityEngine;
 using System.Collections;
 
+// damage all nearby enemy
 public class RoundDamageAura : AuraBattle
 {
     [SerializeField]
@@ -14,6 +15,7 @@ public class RoundDamageAura : AuraBattle
     [SerializeField]
     private AudioClip disappearSE;
 
+    // damage event
     private Subject<Unit> damageSubject = new Subject<Unit>();
     public IObservable<Unit> OnDamage { get { return damageSubject; } }
 
@@ -90,6 +92,7 @@ public class RoundDamageAura : AuraBattle
 
     void Attack(GameObject obj)
     {
+        // attack enemy every [period] seccond
         PlayerBattle battle = obj.GetComponent<PlayerBattle>();
         if (battle && Time.time - attackStart > period)
         {

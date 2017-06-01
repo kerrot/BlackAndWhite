@@ -2,6 +2,7 @@
 using UnityEngine;
 using System.Collections;
 
+//the effect of player skill, invisible
 public class MagentaAura : AuraBattle {
     [SerializeField]
     private AudioClip startSE;

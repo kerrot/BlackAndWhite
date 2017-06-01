@@ -3,12 +3,13 @@ using UniRx.Triggers;
 using UnityEngine;
 using System.Collections;
 
+//boss skill (only attack player)
 public class BossWood : DelaySkill 
 {
 	[SerializeField]
-	private GameObject GreenTrap;
+	private GameObject GreenTrap; //Trapped effect
 
-	protected override void DelayStart()
+    protected override void DelayStart()
 	{
 		OnBlow.Subscribe (_ => SkillStart ()).AddTo(this);
 	}
@@ -29,6 +30,7 @@ public class BossWood : DelaySkill
 		}
 	}
 
+    // stop player movement
 	void UniRxTriggerStay(Collider other)
 	{
 		PlayerBattle player = other.gameObject.GetComponent<PlayerBattle> ();
@@ -37,6 +39,7 @@ public class BossWood : DelaySkill
 		{
             GameObject debuff = Instantiate(GreenTrap, player.gameObject.transform.position, Quaternion.identity) as GameObject;
             debuff.GetComponent<StopMove>().victom = player.GetComponent<UnitMove>();
+            // Follow victom
             debuff.transform.parent = player.transform.parent;
         }
 	}

@@ -4,11 +4,13 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
+// spawn water object once every [range] distance
 public class BlueSkill : Skill {
     [SerializeField]
     private GameObject water;
     [SerializeField]
     private float range;
+
     List<Vector3> points = new List<Vector3>();
 
     void Start()

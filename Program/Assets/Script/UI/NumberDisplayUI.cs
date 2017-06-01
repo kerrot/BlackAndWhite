@@ -14,27 +14,26 @@ public class NumberDisplayUI : MonoBehaviour {
     List<NumberUI> numbers = new List<NumberUI>();
     float startTime;
 
+    const string animName = "Combo";
+    Animator anim;
+
     void Awake()
     {
+        anim = GetComponent<Animator>();
         numbers.Add(num);
     }
 
     void Start()
     {
-        this.UpdateAsObservable().Subscribe(_ => 
-        {
-            if (gameObject.activeSelf && Time.realtimeSinceStartup - startTime > displayTime)
-            {
-                gameObject.SetActive(false);
-            }
-        });
+        this.UpdateAsObservable().Where(_ => gameObject.activeSelf && Time.realtimeSinceStartup - startTime > displayTime)
+                                 .Subscribe(_ => gameObject.SetActive(false));
 
         //Display(1234);
     }
 
     private void OnEnable()
     {
-        GetComponent<Animator>().Play("Combo", 0, 0);
+        anim.Play(animName, 0, 0);
     }
 
     public void Display(int number)

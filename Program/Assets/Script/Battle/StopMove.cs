@@ -3,6 +3,7 @@ using UniRx.Triggers;
 using UnityEngine;
 using System.Collections;
 
+// stop the victom's movement
 public class StopMove : MonoBehaviour {
     [SerializeField]
     private float lastTime;

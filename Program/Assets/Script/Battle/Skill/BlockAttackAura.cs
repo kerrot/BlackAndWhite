@@ -3,20 +3,22 @@ using UniRx.Triggers;
 using UnityEngine;
 using System.Collections;
 
+// Aura block attack
 public class BlockAttackAura : AuraBattle
 {
     [SerializeField]
-    private float blockValue;
+    private float blockValue;   // max block value
     [SerializeField]
-    private float emissionRate;
+    private float emissionRate; // the rate of emission to correspondence block value
     [SerializeField]
     private AudioClip blockSE;
 
+    // block event
     private Subject<Unit> blockSubject = new Subject<Unit>();
     public IObservable<Unit> OnBlock { get { return blockSubject; } }
 
-    float nowBlock;
-	ParticleSystem.EmissionModule em;
+    float nowBlock;         // now block value
+    ParticleSystem.EmissionModule em;
 
     protected override void AuraStart()
     {
@@ -38,8 +40,9 @@ public class BlockAttackAura : AuraBattle
         if (result)
         {
             AudioHelper.PlaySE(gameObject, blockSE);
-            bool isWeak = Attribute.IsWeakness(element, attack.Element);
 
+            // cannot block attack with weak element type
+            bool isWeak = Attribute.IsWeakness(element, attack.Element);
             if (attack.Type == AttackType.ATTACK_TYPE_EXPLOSION || isWeak)
             {
                 nowBlock = 0;

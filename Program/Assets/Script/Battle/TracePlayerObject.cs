@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+//automically teleport to player position if in [range], used by boss skill
 public class TracePlayerObject : MonoBehaviour
 {
     [SerializeField]

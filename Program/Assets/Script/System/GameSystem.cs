@@ -5,12 +5,13 @@ using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using System.Collections;
 
+// controls game state
 public class GameSystem : SingletonMonoBehaviour<GameSystem>
 {
     [SerializeField]
-    NumberDisplayUI combo;
+    NumberDisplayUI combo;          // slash combo UI
     [SerializeField]
-    NumberDisplayUI multiSlash;
+    NumberDisplayUI multiSlash;     // slash amount in one slash
 
     private Subject<int> comboSubject = new Subject<int>();
     private Subject<int> multiSlashSubject = new Subject<int>();

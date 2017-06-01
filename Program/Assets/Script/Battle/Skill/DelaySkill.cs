@@ -3,12 +3,13 @@ using UniRx.Triggers;
 using UnityEngine;
 using System.Collections;
 
+// execute skill effect after [pre.main.duration] second
 public class DelaySkill : UnitBattle {
 	[SerializeField]
-	protected ParticleSystem pre;
+	protected ParticleSystem pre;   //waring effect
 	[SerializeField]
-	protected ParticleSystem main;
-	[SerializeField]
+	protected ParticleSystem main;  //real effect
+    [SerializeField]
 	protected float strength;
 	[SerializeField]
 	protected float force;

@@ -3,21 +3,22 @@ using UniRx.Triggers;
 using UnityEngine;
 using System.Collections;
 
+//can move by both mouse and key input
 public class PlayerMove : UnitMove {
-    public static bool CanRotate = true;
+    public static bool CanRotate = true;    //controls whether player can rotate
 
     [SerializeField]
     private float arriveRadius = 0.1f;
     //[SerializeField]
     //private float GuardRadius = 0.2f;
     [SerializeField]
-    private GameObject TargetObject;
+    private GameObject TargetObject;        // go to the object's position
     [SerializeField]
-    private GameObject targetIndex;
+    private GameObject targetIndex;         // cursor
 
     Animator anim;
     UnityEngine.AI.NavMeshAgent agent;
-    Vector3 keyPosition;
+    Vector3 keyPosition;                    // // used when move by key input
     int floorMask;
 
     PlayerSlash slash;
@@ -96,13 +97,14 @@ public class PlayerMove : UnitMove {
         //anim.SetBool("IsMove", !isGuard);
     }
 
-    void StopGuard(Vector2 mousePosition)
-	{
-		anim.SetBool ("Guard", false);
-	}
+ //   void StopGuard(Vector2 mousePosition)
+	//{
+	//	anim.SetBool ("Guard", false);
+	//}
 
 	void UniRxFixedUpdate()
     {
+        // check to stop
         if (Vector3.Distance(transform.position, TargetObject.transform.position) < arriveRadius)
         {
             anim.SetBool("IsMove", false);
@@ -144,6 +146,7 @@ public class PlayerMove : UnitMove {
         transform.LookAt(TargetObject.transform);
     }
 
+    // for root motion and physics, only change the direction to face
     void OnAnimatorMove()
     {
 		if (CanMove) 

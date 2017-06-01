@@ -4,6 +4,7 @@ using UnityEngine;
 using System.Linq;
 using System.Collections;
 
+// effect of player skill, Thunder effect occur
 public class ThunderSpell : AuraBattle {
 	[SerializeField]
 	private GameObject thunder;
@@ -16,12 +17,15 @@ public class ThunderSpell : AuraBattle {
 
 	LineRenderer line;
 
-    Vector3 step;
+    // for ray animation
+    Vector3 step;       
     Vector3 now;
-    Vector3 target;
+
+    Vector3 target;     // the enemy position
 
     protected override void AuraStart()
     {
+        // draw a ray. and attack the first enemy hitted by ray
 		line = GetComponent<LineRenderer> ();
 		line.SetPosition (0, transform.position);
 
@@ -36,12 +40,14 @@ public class ThunderSpell : AuraBattle {
             thunder.transform.position = min.point;
             target = min.point;
 
+            // attack all enemies in the range [SphereCollider> radius]
             Collider[] cs = Physics.OverlapSphere(thunder.transform.position, thunder.GetComponent<SphereCollider>().radius);
             cs.ToObservable().Subscribe(c =>
             {
                 EnemyBattle enemy = c.GetComponent<EnemyBattle>();
                 if (enemy)
                 {
+                    // stop enemy all action
                     enemy.Attacked(this, CreateAttack(AttackType.ATTACK_TYPE_SKILL, strength));
                     GameObject yellow = Instantiate(debuff, enemy.transform.position, Quaternion.identity) as GameObject;
                     YellowDebuff YD = yellow.GetComponent<YellowDebuff>();
@@ -66,6 +72,7 @@ public class ThunderSpell : AuraBattle {
 
     IEnumerator Disappear(float time)
     {
+        // ray disapear
         yield return new WaitForSeconds(time);
         while (line.enabled)
         {

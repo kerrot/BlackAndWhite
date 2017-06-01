@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+//player skill, occurs thunder
 public class YellowSkill : Skill {
 
     public override bool Activated()

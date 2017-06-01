@@ -4,6 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+//For detecting red aura attacks player
 public class RedEnemySpecial : MonoBehaviour {
 
     [SerializeField]

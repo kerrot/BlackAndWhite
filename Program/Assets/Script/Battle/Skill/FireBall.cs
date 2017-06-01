@@ -9,7 +9,7 @@ public class FireBall : AuraBattle
     [SerializeField]
     private GameObject ball;
     [SerializeField]
-    private GameObject expolsion;
+    private GameObject explosion;
     [SerializeField]
     private float strength;
     [SerializeField]
@@ -19,16 +19,18 @@ public class FireBall : AuraBattle
     [SerializeField]
     private bool attackPlayer;
 
-    float radius;
+    float radius;   //attack range. setting according to SphereCollider
     Rigidbody rd;
 
     protected override void AuraStart()
     {
         rd = GetComponent<Rigidbody>();
+
+        // init velocity direction to forward
         Vector3 tmp = transform.forward * speed;
-        tmp.y = 0;
         rd.velocity = tmp;
-        radius = expolsion.GetComponent<SphereCollider>().radius;
+
+        radius = explosion.GetComponent<SphereCollider>().radius;
         Destroy(gameObject, ball.GetComponent<ParticleSystem>().main.duration);
 
         this.OnTriggerEnterAsObservable().Subscribe(o => UniRxTriggerEnter(o));
@@ -60,14 +62,14 @@ public class FireBall : AuraBattle
                 }
             }
         });
-
+        // when hit. explode
         if (hit)
         {
             GetComponent<Collider>().enabled = false;
             rd.velocity = Vector3.zero;
             ball.SetActive(false);
-            expolsion.SetActive(true);
-            Destroy(gameObject, expolsion.GetComponent<ParticleSystem>().main.duration);
+            explosion.SetActive(true);
+            Destroy(gameObject, explosion.GetComponent<ParticleSystem>().main.duration);
         }
     }
 }

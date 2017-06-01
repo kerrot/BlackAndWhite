@@ -3,16 +3,17 @@ using UniRx.Triggers;
 using UnityEngine;
 using System.Collections;
 
+//Aura base class, all aura derive this class
 public class AuraBattle : UnitBattle
 {
     [SerializeField]
-    protected float lastTime = Mathf.Infinity;
+    protected float lastTime = Mathf.Infinity;  // aura last time
     [SerializeField]
     protected GameObject Effect;
     [SerializeField]
-    protected float recoverTime;
+    protected float recoverTime;    //effect restart period
     [SerializeField]
-    protected ElementType element;
+    protected ElementType element;  // all aura have element type
 
     public bool IsAura { get { return isRecover; } }
 
@@ -33,16 +34,19 @@ public class AuraBattle : UnitBattle
         return element;
     }
 
+    //for derive class start
     protected virtual void AuraStart()
     {
 
     }
 
+    //for derive class update
     protected virtual void AuraUpdate()
     {
 
     }
 
+    // check if aura last time
     void UniRxUpdate()
     {
         if (!enabled)
@@ -63,10 +67,12 @@ public class AuraBattle : UnitBattle
         AuraUpdate();
     }
 
+    // when owner being attacked
     public override bool Attacked(UnitBattle unit, Attack attack)
     {
 		bool result = IsAttackBlocked(unit, attack);
 
+        // aura is possible to disappear by attack
         if (IsAuraDisappear(unit, attack))
         {
             DoDisappear();

@@ -6,6 +6,7 @@ using UnityEngine.EventSystems;
 using System.Collections.Generic;
 using System.Collections;
 
+// main control of input. only trigger event
 public class InputController : MonoBehaviour {
     [SerializeField]
     private float ClickPeriod = 0.3f;
@@ -94,20 +95,20 @@ public class InputController : MonoBehaviour {
             pauseClick.OnNext(Unit.Default);
         }
 
-        if (Input.GetKeyDown(KeyCode.W))
-        {
-            redClick.OnNext(Unit.Default);
-        }
+        //if (Input.GetKeyDown(KeyCode.W))
+        //{
+        //    redClick.OnNext(Unit.Default);
+        //}
 
-        if (Input.GetKeyDown(KeyCode.E))
-        {
-            greenClick.OnNext(Unit.Default);
-        }
+        //if (Input.GetKeyDown(KeyCode.E))
+        //{
+        //    greenClick.OnNext(Unit.Default);
+        //}
 
-        if (Input.GetKeyDown(KeyCode.Q))
-        {
-            blueClick.OnNext(Unit.Default);
-        }
+        //if (Input.GetKeyDown(KeyCode.Q))
+        //{
+        //    blueClick.OnNext(Unit.Default);
+        //}
 
         moveDirection.y = Input.GetAxis("Vertical");
         moveDirection.x = Input.GetAxis("Horizontal");

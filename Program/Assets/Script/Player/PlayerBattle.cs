@@ -6,21 +6,21 @@ using System.Collections.Generic;
 
 public class PlayerBattle : UnitBattle {
     [SerializeField]
-    private GameObject AttackRegionObj;
+    private GameObject AttackRegionObj;     // attack range setting
     [SerializeField]
     private float HP;
     [SerializeField]
     private float nowHP;
     [SerializeField]
-    private float recoverTime;
+    private float recoverTime;  // HP recover per [recoverTime] second
     [SerializeField]
     private AudioClip guardSE;
     [SerializeField]
     private AudioClip attackSE;
     [SerializeField]
-    private float strength;
+    private float strength;      // attack power
     [SerializeField]
-    private float force;
+    private float force;        //attack physics force
 
     public bool Missing { get; set; }
 
@@ -36,6 +36,7 @@ public class PlayerBattle : UnitBattle {
     private Subject<UnitBattle> attackedSubject = new Subject<UnitBattle>();
     public IObservable<UnitBattle> OnAttacked { get { return attackedSubject; } }
 
+    // for blood effect
     private FloatReactiveProperty HPrate = new FloatReactiveProperty(1.0f);
     public IObservable<float> HPRate { get { return HPrate; } }
 
@@ -48,9 +49,9 @@ public class PlayerBattle : UnitBattle {
     int EnemyMask;
 
     bool guardAttack = false;
-    Vector3 AttackRange;
+    Vector3 AttackRange;    // region to check attack
     PlayerSlash slash;
-    TrailEffect trail;
+    TrailEffect trail;      // attack effect
 
     void Awake()
     {
@@ -75,7 +76,9 @@ public class PlayerBattle : UnitBattle {
 
         nowHP = HP;
 
+        // for key input
         InputController.OnAttackClick.Subscribe(u => Attack()).AddTo(this);
+        // for mouse input
         EnemyManager.OnEnemyClicked.Subscribe(o => Battle(o)).AddTo(this);
         this.UpdateAsObservable().Subscribe(_ => UniRxUpdate());
     }
@@ -87,6 +90,7 @@ public class PlayerBattle : UnitBattle {
             return;
         }
 
+        // hp recover when time pass
         if (Time.time - recoverStart > recoverTime)
         {
             ++nowHP;
@@ -118,6 +122,7 @@ public class PlayerBattle : UnitBattle {
             return;
         }
 
+        // automatically find target to attack
         GameObject obj = null;
         float angle = Mathf.Infinity;
         Collider[] cs = Physics.OverlapSphere(transform.position, 1.5f, EnemyMask);
@@ -145,6 +150,7 @@ public class PlayerBattle : UnitBattle {
 
     void Battle (GameObject Enemy)
     {
+        // for teleport
         YellowDebuff[] yellow = GameObject.FindObjectsOfType<YellowDebuff>();
         yellow.ToObservable().Subscribe(y => 
         {
@@ -156,9 +162,9 @@ public class PlayerBattle : UnitBattle {
         });
 
         //if (CanAttack(Enemy))
-        {
-            //AttackEnemy(Enemy);
-        }
+        //{
+        //    AttackEnemy(Enemy);
+        //}
     }
 
     bool CanAttack(GameObject Enemy)
@@ -190,6 +196,7 @@ public class PlayerBattle : UnitBattle {
         attackSubject.OnNext(Unit.Default);
     }
 
+    // attack effect, call by animation event
     void AttackStart()
     {
         AudioHelper.PlaySE(gameObject, attackSE);
@@ -201,6 +208,7 @@ public class PlayerBattle : UnitBattle {
         trail.AttackTrailEnd();
     }
 
+    // do the check of  attacking enemies
     void AttackHit()
     {
         float power = (GetComponent<PlayerAttribute>().Type == ElementType.ELEMENT_TYPE_NONE) ? strength : strength + 1;
@@ -230,6 +238,7 @@ public class PlayerBattle : UnitBattle {
 
         AddForce((transform.position - unit.transform.position).normalized * attack.Force);
 
+        // if guard, block damage
         if (anim.GetBool("Guard") || guardAttack)
         {
             if (attack.Type == AttackType.ATTACK_TYPE_NORMAL)
@@ -243,6 +252,7 @@ public class PlayerBattle : UnitBattle {
             return false;
         }
 
+        //attack enemies that cannot be melee　attack
         AnimatorStateInfo info = anim.GetCurrentAnimatorStateInfo(0);
         if (attack.Type == AttackType.ATTACK_TYPE_REFLECT && info.fullPathHash == attackHash)
         {
@@ -264,6 +274,7 @@ public class PlayerBattle : UnitBattle {
 
         HPrate.Value = nowHP / HP;
 
+        // loot at attacker
         Vector3 pos = unit.transform.position;
         pos.y = 0f;
         transform.LookAt(pos);
@@ -279,6 +290,7 @@ public class PlayerBattle : UnitBattle {
             shake.enabled = true;
         }
 
+        // dead
         if (nowHP <= 0)
         {
             anim.SetTrigger("Die");

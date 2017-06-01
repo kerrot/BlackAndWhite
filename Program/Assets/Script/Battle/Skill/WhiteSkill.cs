@@ -3,20 +3,29 @@ using UniRx.Triggers;
 using UnityEngine;
 using System.Collections;
 
+//player skill, slow motion
 public class WhiteSkill : Skill
 {
+    //for  white aura effect
     [SerializeField]
-    private MeshRenderer aho;
+    private MeshRenderer aho;   
     [SerializeField]
     private Material lightMat;
     [SerializeField]
-    private ParticleSystem flash;
-    [SerializeField]
     private GameObject trail;
+
+    // effect when  execute skill
+    [SerializeField]
+    private ParticleSystem flash;
     [SerializeField]
     private AudioClip flashSE;
     [SerializeField]
     private float period;
+
+    [SerializeField]
+    private float slowMotion = 0.2f;
+    [SerializeField]
+    private float playerSpeed = 0.8f;
 
     Material original;
     ParticleSystem ps;
@@ -45,6 +54,7 @@ public class WhiteSkill : Skill
         return trail.activeSelf;
     }
 
+    // effect when execute skill (a flash), game pause
     public override bool UseSkill()
     {
         if (!flashEffect && system)
@@ -69,6 +79,7 @@ public class WhiteSkill : Skill
         return !flashEffect && CheckEnergy() && !trail.activeSelf;
     }
 
+    // slow motion effect
     void StartEffect()
     {
         aho.material = lightMat;
@@ -76,7 +87,7 @@ public class WhiteSkill : Skill
 
         if (PT)
         {
-            PT.SlowMotion(0.2f, 0.8f);
+            PT.SlowMotion(slowMotion, playerSpeed);
         }
 
         Observable.Timer(System.TimeSpan.FromSeconds(period)).Subscribe(_ =>
@@ -85,7 +96,7 @@ public class WhiteSkill : Skill
             trail.SetActive(false);
 
             if (PT)
-            {
+            {   // recover
                 PT.SlowMotion(1f, 1f);
             }
         });
@@ -95,6 +106,7 @@ public class WhiteSkill : Skill
     {
         if (flashEffect)
         {
+            //because of game pause
             flash.Simulate(Time.unscaledDeltaTime, true, false);
             if (Time.unscaledTime - flashStart > flash.main.duration)
             {

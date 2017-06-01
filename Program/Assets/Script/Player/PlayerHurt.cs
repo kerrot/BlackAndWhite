@@ -5,17 +5,18 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 
+// blood effect
 public class PlayerHurt : MonoBehaviour {
     [SerializeField]
     private PlayerBattle battle;
     [SerializeField]
-    private float scale = 50;
+    private float scale = 50;   // for UI display
     [SerializeField]
     private Animator anim;
     [SerializeField]
     private float danger = 0.5f;
     [SerializeField]
-    private BloodEffect[] effects;
+    private BloodEffect[] effects;  // blood effect to corresponding hp
 
     private Subject<bool> dangerSubject = new Subject<bool>();
     public IObservable<bool> OnDanger { get { return dangerSubject; } }
@@ -33,9 +34,10 @@ public class PlayerHurt : MonoBehaviour {
     {
         ui = GameObject.FindObjectOfType<RunTimeUIGenerator>();
 
-        battle.OnAttacked.Subscribe(u => Attacked(u)).AddTo(this);
+        battle.OnAttacked.Subscribe(u => AttackedUI(u)).AddTo(this);
         battle.HPRate.Subscribe(v => 
         {
+            // low hp
             anim.SetBool("danger", v < danger);
             dangerSubject.OnNext(v < danger);
 
@@ -43,7 +45,7 @@ public class PlayerHurt : MonoBehaviour {
         });
     }
 
-    void Attacked(UnitBattle unit)
+    void AttackedUI(UnitBattle unit)
     {
         GameObject obj = ui.CreateHurtUI();
 

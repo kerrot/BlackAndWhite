@@ -4,6 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+//for detecting attack being invaild
 public class WeakSpecial : MonoBehaviour {
 
     [SerializeField]

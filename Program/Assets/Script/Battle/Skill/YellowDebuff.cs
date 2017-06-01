@@ -4,6 +4,7 @@ using UnityEngine;
 using System.Linq;
 using System.Collections;
 
+// debuff of thunder. teleport
 public class YellowDebuff : AuraBattle
 {
     public EnemyBattle vistom { get; set; }

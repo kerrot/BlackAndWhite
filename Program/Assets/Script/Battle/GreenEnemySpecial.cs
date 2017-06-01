@@ -4,6 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+//For detecting green aura attacked
 public class GreenEnemySpecial : MonoBehaviour {
 
     [SerializeField]

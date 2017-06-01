@@ -2,6 +2,8 @@
 using System;
 using System.Collections;
 
+
+// all attack setting
 [Flags]
 public enum ElementType
 {

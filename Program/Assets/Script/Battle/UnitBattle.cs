@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+//all unit battle base, cannot attack or be attacked without this
 public class UnitBattle : MonoBehaviour {
 
     public virtual bool Attacked(UnitBattle unit, Attack attack)

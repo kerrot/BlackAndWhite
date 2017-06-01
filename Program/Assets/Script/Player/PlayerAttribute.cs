@@ -4,9 +4,9 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
+// for Attribute state, and Attribute effect
 public class PlayerAttribute : Attribute
 {
-    
     [SerializeField]
     private MeshRenderer Lance;
     [SerializeField]
@@ -40,6 +40,7 @@ public class PlayerAttribute : Attribute
         LanceEffect.gameObject.SetActive(false);
     }
 
+    // change Lance color when attribute changed
     public void AttributeChange(bool active, ElementType ele)
     {
         ElementType old = Type;

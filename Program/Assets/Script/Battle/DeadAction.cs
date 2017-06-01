@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Linq;
 
+// process explosion attack when enemy dead
 public class DeadAction : MonoBehaviour
 {
     [SerializeField]
@@ -27,6 +28,7 @@ public class DeadAction : MonoBehaviour
 
     void Start()
 	{
+        // change explosion  to element color
         ParticleSystem[] pars = GetComponentsInChildren<ParticleSystem>();
         pars.ToList().ForEach(p =>
         {

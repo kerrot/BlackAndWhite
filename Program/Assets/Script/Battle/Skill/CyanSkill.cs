@@ -4,6 +4,7 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
+//player skill storm. attack enemy every [period] second
 public class CyanSkill : AuraBattle {
 	[SerializeField]
 	private float strength;
@@ -27,6 +28,8 @@ public class CyanSkill : AuraBattle {
 
 	void UniRxOnTriggerStay(Collider other)
 	{
+        // check if the same enemy
+
 		EnemyBattle enemy = other.gameObject.GetComponent<EnemyBattle>();
 		if (enemy)
 		{

@@ -5,6 +5,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
+// for slow motion
 public class PlayerTime : MonoBehaviour {
 
     Animator anim;
@@ -48,6 +49,7 @@ public class PlayerTime : MonoBehaviour {
         }
     }
 
+    // for specially speed up, managed by the one who do the speed up
     public void SpeedChange(float speed, MonoBehaviour behaviour)
     {
         if (behaviour)

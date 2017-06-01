@@ -3,6 +3,7 @@ using UniRx.Triggers;
 using UnityEngine;
 using System.Collections;
 
+//water object effect  (only attack enemy)
 public class BlueSpellEffect : AuraBattle {
 
     [SerializeField]
@@ -19,6 +20,7 @@ public class BlueSpellEffect : AuraBattle {
         this.OnTriggerEnterAsObservable().Subscribe(o => UniRxOnTriggerEnter(o));
     }
 
+    //stop emission when AuraDisappear
     protected override void AuraDisappear()
     {
         GetComponent<Collider>().enabled = false;
@@ -33,11 +35,5 @@ public class BlueSpellEffect : AuraBattle {
         {
             enemy.Attacked(this, CreateAttack(AttackType.ATTACK_TYPE_SKILL, strength));
         }
-
-        //PlayerBattle player = other.gameObject.GetComponent<PlayerBattle>();
-        //if (player)
-        //{
-
-        //}
     }
 }

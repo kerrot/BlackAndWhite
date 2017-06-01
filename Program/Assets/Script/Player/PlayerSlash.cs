@@ -8,17 +8,20 @@ using System.Linq;
 
 public class PlayerSlash : MonoBehaviour {
     [SerializeField]
-    private bool AutoSlash = false;
+    private bool AutoSlash = false; // for debug
+
+    // when combo, speedup
     [SerializeField]
     private float speedup;
     [SerializeField]
     private float maxSpeedup;
+
     [SerializeField]
-    private float SlashStopRadius;
+    private float SlashStopRadius;      // the distance to do the slash action
     [SerializeField]
-    private GameObject SlashRegion;
+    private GameObject SlashRegion;     // the range to check the victom
     [SerializeField]
-    private GameObject SlashRegionDisplay;
+    private GameObject SlashRegionDisplay;   // the distance which can slash
     [SerializeField]
     private AudioClip slashSE;
     [SerializeField]
@@ -81,6 +84,7 @@ public class PlayerSlash : MonoBehaviour {
 
         rd = GetComponent<Rigidbody>();
 
+        // combo UI
         if (!comboHint)
         {
             comboHint = GameObject.Find("ComboHint");
@@ -106,6 +110,7 @@ public class PlayerSlash : MonoBehaviour {
         AnimatorStateInfo info = anim.GetCurrentAnimatorStateInfo(0);
         if (info.fullPathHash == slashingHash)
         {
+            // move to enemy position to do the slash action
             if (TargetObject)
             {
                 TargetPosition = TargetObject.transform.position;
@@ -124,6 +129,7 @@ public class PlayerSlash : MonoBehaviour {
         }
         else if (info.fullPathHash == slashEndHash)
         {
+            // for auto slash
             if (comboHint)
             {
                 comboHint.SetActive(FindSlashEnemy() != null && canCombo);
@@ -139,6 +145,7 @@ public class PlayerSlash : MonoBehaviour {
         }
         else
         { 
+            // clear record
             canCombo = false;
             slashCombo = false;
             if (comboHint)
@@ -155,6 +162,7 @@ public class PlayerSlash : MonoBehaviour {
         SlashRegionDisplay.SetActive(slashList.Count > 0);
     }
 
+    // is the enemy can be slashed
     bool CanSlashEnemy(GameObject Enemy)
     {
         if (Enemy != null)
@@ -169,12 +177,14 @@ public class PlayerSlash : MonoBehaviour {
         return false;
     }
 
+    // is player can slash
     bool CanSlash()
     {
         AnimatorStateInfo info = anim.GetCurrentAnimatorStateInfo(0);
         return PlayerBattle.IsDead == false && anim.GetBool("IsSlashing") == false && info.fullPathHash != slashEndHash;
     }
 
+    //enemis in break state
     public void RegisterSlashObject(GameObject obj, bool canSlash)
     {
         if (canSlash)
@@ -202,6 +212,7 @@ public class PlayerSlash : MonoBehaviour {
         return SlashEnemy(FindSlashEnemy());
     }
 
+    // auto find enemy to slash
     GameObject FindSlashEnemy()
     {
         GameObject obj = null;
@@ -276,6 +287,7 @@ public class PlayerSlash : MonoBehaviour {
         {
             List<EnemyBattle> tmp = new List<EnemyBattle>();
 
+            // slash all enemies in region
             enemies.ToList().ForEach(e =>
             {
                 EnemySlash Enemy = e.gameObject.GetComponent<EnemySlash>();
@@ -285,6 +297,7 @@ public class PlayerSlash : MonoBehaviour {
                 }
             });
 
+            //make sure to slash main target
             if (TargetObject)
             {
                 EnemyBattle target = TargetObject.GetComponent<EnemyBattle>();
@@ -303,6 +316,7 @@ public class PlayerSlash : MonoBehaviour {
             });
         }
 
+        // slash combo counter
         if (count > 0)
         {
             comboSlash.OnNext(Unit.Default);
@@ -322,6 +336,7 @@ public class PlayerSlash : MonoBehaviour {
         anim.SetBool("Attack", false);
     }
 
+    // to do the combo slash
     void MultiSlash(Vector2 mousePosition)
     {
         if (PlayerBattle.IsDead)

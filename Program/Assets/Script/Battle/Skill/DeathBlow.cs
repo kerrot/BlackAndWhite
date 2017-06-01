@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Linq;
 
+// GM skill, skill all object in the range
 public class DeathBlow : UnitBattle
 {
     [SerializeField]

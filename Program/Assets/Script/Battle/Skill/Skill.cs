@@ -1,7 +1,9 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+// skill base class
 public class Skill : MonoBehaviour {
+    // energy cost
 	[SerializeField]
     protected float redCost;
 	[SerializeField]
@@ -11,11 +13,11 @@ public class Skill : MonoBehaviour {
 	[SerializeField]
     protected ElementType type;
 	[SerializeField]
-    protected bool auraType;
+    protected bool auraType;    // if the skill is aura type. if not aura type, effect only do once
     [SerializeField]
-    protected GameObject skillObject;
+    protected GameObject skillObject;   // skill effect
     [SerializeField]
-    public bool castMotion = true;
+    public bool castMotion = true;  // need cast animation?
 
     public float RedCost { get { return redCost; } }
 	public float GreenCost { get { return greenCost; } }
@@ -25,16 +27,19 @@ public class Skill : MonoBehaviour {
 
     protected PlayerSkill skill;
 
+    //if aura type, check whether the energy enough, or cancel aura effect
     public virtual bool IsUsing()
     {
         return auraType && skillObject.activeSelf;
     }
 
+    //for skill cannot be canceled
     public virtual bool Activated()
     {
         return IsUsing();
     }
 
+    //enable skillObject. or spawn skillObject
     public virtual bool UseSkill()
 	{
         if (auraType)
@@ -95,6 +100,7 @@ public class Skill : MonoBehaviour {
         return false;
     }
 
+    // auto find the direction of the nearest enemy
     Quaternion FindNearestDirection()
     {
         float distance = Mathf.Infinity;

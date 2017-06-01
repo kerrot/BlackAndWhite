@@ -3,6 +3,7 @@ using UniRx.Triggers;
 using UnityEngine;
 using System.Collections;
 
+//boss skill (only attack player)
 public class BossWater : DelaySkill 
 {
 	protected override void DelayStart()

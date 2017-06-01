@@ -5,18 +5,19 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
+//for using skill, and energy management
 public class PlayerSkill : MonoBehaviour
 {
     [SerializeField]
     private float maxEnergy;
     [SerializeField]
-    private float baseCost;
+    private float baseCost;         // need energy even not using skill
     [SerializeField]
-    private float costCheckTime;
+    private float costCheckTime;    // use energy for [costCheckTime] when aura type
     [SerializeField]
     private Skill[] skills;
     [SerializeField]
-    private ParticleSystem charge;
+    private ParticleSystem charge;  // effect when energy charged
     [SerializeField]
     private AudioClip chargeSE;
 
@@ -36,6 +37,7 @@ public class PlayerSkill : MonoBehaviour
     public IObservable<ElementType> OnCharge { get { return chargeSubject; } }
     public IObservable<ElementType> OnSkill { get { return skillSubject; } }
 
+    // the Element Type when casting
     ElementType castingType;
 
     Animator anim;
@@ -100,6 +102,7 @@ public class PlayerSkill : MonoBehaviour
             });
         }
 
+        // aura type
         Skill now = skills.SingleOrDefault(s => s.Type == castingType);
         if (now && now.IsUsing())
         {
@@ -121,6 +124,8 @@ public class PlayerSkill : MonoBehaviour
             return;
         }
 
+        // skill can be canceled when using aura type skill.
+        // Only do the animation, unless no need
         Skill old = skills.SingleOrDefault(s => s.Type == castingType);
         if (old && old.Activated() && castingType == attri.Type)
         {
