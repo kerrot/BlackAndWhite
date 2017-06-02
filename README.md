@@ -14,7 +14,7 @@ Another feature is the color composition used in different condition.
 
 
 # How to play
-This game is make by Unity.
-You can customize the input setting if you like.
-The default setting is like below:
+This game is make by Unity.   
+You can customize the input setting if you like.   
+The default setting is like below:   
 ![image](https://cloud.githubusercontent.com/assets/4668381/26684752/edeccf26-4722-11e7-834d-de2ef94a416e.png)
