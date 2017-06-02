@@ -11,11 +11,11 @@ Color can also be mixed to produce new color with new power, and the new color h
 Another feature is the color composition used in different condition.
 
 # Scene
-- Basic
-- GFF
-- Home
-- TCATitle <-- start from here
-- Title
+- Concept
+- Main
+- Test
+- Title <-- start from here
+- Tutorial
 
 # How to play
 This game is make by Unity.   
