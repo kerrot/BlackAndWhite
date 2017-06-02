@@ -10,11 +10,19 @@ Each color has its own power, like red means fire, blue means water.
 Color can also be mixed to produce new color with new power, and the new color holds the elements of color composition.   
 Another feature is the color composition used in different condition.
 
-# Stage
-
+# Scene
+- Basic
+- GFF
+- Home
+- TCATitle <-- start from here
+- Title
 
 # How to play
 This game is make by Unity.   
 You can customize the input setting if you like.   
 The default setting is like below:   
 ![image](https://cloud.githubusercontent.com/assets/4668381/26684752/edeccf26-4722-11e7-834d-de2ef94a416e.png)
+
+# Version
+[ver 0.3.5]   
+Complete a playable stage shows the battle system with tutorial.
