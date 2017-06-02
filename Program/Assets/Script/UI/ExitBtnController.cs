@@ -10,7 +10,7 @@ public class ExitBtnController : MonoBehaviour {
     [SerializeField]
     private GameScene gameScene;
     [SerializeField]
-    private string stageName = "GFF";
+    private string stageName = "Main";
 
     public GameObject btnText;
     private Subject<Color> btnColor = new Subject<Color>();

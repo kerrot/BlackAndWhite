@@ -16,7 +16,7 @@ public class PlayerMove : UnitMove {
 
     Animator anim;
     UnityEngine.AI.NavMeshAgent agent;
-    Vector3 keyPosition;                    // // used when move by key input
+    Vector3 keyPosition;                    // used when move by key input
     int floorMask;
 
     PlayerSlash slash;

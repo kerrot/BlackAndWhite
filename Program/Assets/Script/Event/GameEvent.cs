@@ -37,12 +37,14 @@ public class GameEvent : MonoBehaviour {
         ConditionInit();
     }
 
+    // init condition state and register event
     void ConditionInit()
     {
         conditions.ForEach(c =>
         {
             state.Add(c, false);
 
+            // if any conditoin completed
             var disposable = new SingleAssignmentDisposable();
             disposable.Disposable = c.OnComplete.Subscribe(cond =>
             {
@@ -52,6 +54,7 @@ public class GameEvent : MonoBehaviour {
         });
     }
 
+    // Check all conditions and do the action
     void ConditionComplete(EventCondition cond)
     {
         if (state.ContainsKey(cond))

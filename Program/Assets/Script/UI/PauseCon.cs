@@ -12,6 +12,8 @@ public class PauseCon : MonoBehaviour {
     GameSystem gameSytem;
     [SerializeField]
     private AudioSource BGM;
+    [SerializeField]
+    private string title = "Title";
 
     [SerializeField]
     private GameObject pausePlane;
@@ -47,7 +49,7 @@ public class PauseCon : MonoBehaviour {
 	void Start() {
         pasueButton.GetComponent<Button>().OnClickAsObservable().Subscribe(_ => OnPauseButtonClicked() );
         noButton.GetComponent<Button>().OnClickAsObservable().Subscribe(_ => onFadeOut = true );
-        yesButton.GetComponent<Button>().OnClickAsObservable().Subscribe(_ => SceneManager.LoadScene("TCATitle") );
+        yesButton.GetComponent<Button>().OnClickAsObservable().Subscribe(_ => SceneManager.LoadScene(title) );
     }
 
 	// Update is called once per frame

@@ -52,7 +52,7 @@ public class Attribute : MonoBehaviour {
         return result;
     }
 
-    // if attack by weak element, double damage.
+    // if attack by weak element, double damage...
     float PureProcess(ElementType ele, float strength)
     {
         if (IsResist(type, ele))
