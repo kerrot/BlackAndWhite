@@ -24,7 +24,7 @@ public class ImmunityAura : AuraBattle {
 
     // block event
     private Subject<Unit> blockSubject = new Subject<Unit>();
-    public IObservable<Unit> OnBlock { get { return blockSubject; } }
+    public UniRx.IObservable<Unit> OnBlock { get { return blockSubject; } }
 
     [Serializable]
     public struct ImmunityType

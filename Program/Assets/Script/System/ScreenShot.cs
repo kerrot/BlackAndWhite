@@ -12,6 +12,6 @@ public class ScreenShot : MonoBehaviour {
     private void Start()
     {
         this.UpdateAsObservable().Where(_ => Input.GetMouseButtonDown(0))
-                                 .Subscribe(_ => Application.CaptureScreenshot(filename));
+                                 .Subscribe(_ => ScreenCapture.CaptureScreenshot(filename));
     }
 }

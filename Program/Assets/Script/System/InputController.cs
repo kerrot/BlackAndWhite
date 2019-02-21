@@ -18,12 +18,12 @@ public class InputController : MonoBehaviour {
     static private Subject<Vector2> mousePressed = new Subject<Vector2>();
     static private Subject<Vector2> rightMouseDown = new Subject<Vector2>();
 
-    static public IObservable<Vector2> OnMouseDoubleClick { get { return mouseDoubleClick; } }
-    static public IObservable<Vector2> OnMouseSingleClick { get { return mouseSingleClick; } }
-    static public IObservable<Vector2> OnMouseDown { get { return mouseDown; } }
-    static public IObservable<Vector2> OnMouseUp { get { return mouseUp; } }
-    static public IObservable<Vector2> OnMousePressed { get { return mousePressed; } }
-    static public IObservable<Vector2> OnRightMouseDown { get { return rightMouseDown; } }
+    static public UniRx.IObservable<Vector2> OnMouseDoubleClick { get { return mouseDoubleClick; } }
+    static public UniRx.IObservable<Vector2> OnMouseSingleClick { get { return mouseSingleClick; } }
+    static public UniRx.IObservable<Vector2> OnMouseDown { get { return mouseDown; } }
+    static public UniRx.IObservable<Vector2> OnMouseUp { get { return mouseUp; } }
+    static public UniRx.IObservable<Vector2> OnMousePressed { get { return mousePressed; } }
+    static public UniRx.IObservable<Vector2> OnRightMouseDown { get { return rightMouseDown; } }
 
     static private Subject<Unit> attackClick = new Subject<Unit>();
     static private Subject<Unit> slashClick = new Subject<Unit>();
@@ -31,19 +31,19 @@ public class InputController : MonoBehaviour {
     static private Subject<Unit> pauseClick = new Subject<Unit>();
     static private Subject<Vector2> moveByKey = new Subject<Vector2>();
     static private Subject<Unit> stopByKey = new Subject<Unit>();
-    static public IObservable<Unit> OnAttackClick { get { return attackClick; } }
-    static public IObservable<Unit> OnSlashClick { get { return slashClick; } }
-    static public IObservable<Unit> OnSkillClick { get { return skillClick; } }
-    static public IObservable<Unit> OnPauseClick { get { return pauseClick; } }
-    static public IObservable<Vector2> OnMove { get { return moveByKey; } }
-    static public IObservable<Unit> OnStop { get { return stopByKey; } }
+    static public UniRx.IObservable<Unit> OnAttackClick { get { return attackClick; } }
+    static public UniRx.IObservable<Unit> OnSlashClick { get { return slashClick; } }
+    static public UniRx.IObservable<Unit> OnSkillClick { get { return skillClick; } }
+    static public UniRx.IObservable<Unit> OnPauseClick { get { return pauseClick; } }
+    static public UniRx.IObservable<Vector2> OnMove { get { return moveByKey; } }
+    static public UniRx.IObservable<Unit> OnStop { get { return stopByKey; } }
 
     static private Subject<Unit> redClick = new Subject<Unit>();
     static private Subject<Unit> greenClick = new Subject<Unit>();
     static private Subject<Unit> blueClick = new Subject<Unit>();
-    static public IObservable<Unit> OnRedClick { get { return redClick; } }
-    static public IObservable<Unit> OnGreenClick { get { return greenClick; } }
-    static public IObservable<Unit> OnBlueClick { get { return blueClick; } }
+    static public UniRx.IObservable<Unit> OnRedClick { get { return redClick; } }
+    static public UniRx.IObservable<Unit> OnGreenClick { get { return greenClick; } }
+    static public UniRx.IObservable<Unit> OnBlueClick { get { return blueClick; } }
 
     private float pressTime;
     private float firstClickTime;

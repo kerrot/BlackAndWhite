@@ -19,7 +19,7 @@ public class PlayerHurt : MonoBehaviour {
     private BloodEffect[] effects;  // blood effect to corresponding hp
 
     private Subject<bool> dangerSubject = new Subject<bool>();
-    public IObservable<bool> OnDanger { get { return dangerSubject; } }
+    public UniRx.IObservable<bool> OnDanger { get { return dangerSubject; } }
 
     [Serializable]
     public struct BloodEffect
