@@ -19,7 +19,7 @@ public class GameEvent : MonoBehaviour {
     private bool infinity;                                              // always restart
 
     private Subject<GameEvent> complete = new Subject<GameEvent>();
-    public UniRx.IObservable<GameEvent> OnComplete { get { return complete; } }
+    public IObservable<GameEvent> OnComplete { get { return complete; } }
 
     Dictionary<EventCondition, bool> state = new Dictionary<EventCondition, bool>();
 

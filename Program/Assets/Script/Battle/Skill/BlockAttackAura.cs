@@ -1,6 +1,7 @@
 ﻿using UniRx;
 using UniRx.Triggers;
 using UnityEngine;
+using System;
 using System.Collections;
 
 // Aura block attack

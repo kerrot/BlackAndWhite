@@ -1,6 +1,7 @@
 ﻿using UniRx;
 using UniRx.Triggers;
 using UnityEngine;
+using System;
 using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
@@ -33,7 +34,7 @@ public class EnergyPeace : EnergyBase
         Material mat = GetComponentInChildren<MeshRenderer>().material;
         mat.SetColor("_EmissionColor", Attribute.GetColor(Type, 1.0f));
 
-        Vector2 v = Random.insideUnitCircle;
+        Vector2 v = UnityEngine.Random.insideUnitCircle;
 
         rd = GetComponent<Rigidbody>();
         if (rd)

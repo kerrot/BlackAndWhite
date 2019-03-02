@@ -3,6 +3,7 @@ using UniRx.Triggers;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using System;
 using System.Collections;
 
 // controls game state

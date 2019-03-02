@@ -2,6 +2,7 @@
 using UniRx.Triggers;
 using UnityEngine;
 using UnityEngine.UI;
+using System;
 using System.Collections;
 
 // skill ui setup
