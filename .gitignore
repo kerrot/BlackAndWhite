@@ -28,3 +28,5 @@ sysinfo.txt
 /Program/obj
 /Program/Temp
 /Art/Character/Effect/.mayaSwatches/*.swatches
+/Program/.vs
+/Program/Logs
