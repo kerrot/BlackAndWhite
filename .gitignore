@@ -30,3 +30,7 @@ sysinfo.txt
 /Art/Character/Effect/.mayaSwatches/*.swatches
 /Program/.vs
 /Program/Logs
+/Program/UserSettings
+/Program/*.vsconfig
+/Program/UpgradeLog.htm
+/Program/UpgradeLog2.htm
