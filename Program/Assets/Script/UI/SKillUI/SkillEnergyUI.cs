@@ -1,6 +1,8 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UniRx;
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -13,6 +15,10 @@ public class SkillEnergyUI : MonoBehaviour
     [SerializeField] public float MinScale;
     [SerializeField] float percent;
     [SerializeField] GameObject Full;
+
+    BoolReactiveProperty energyFull = new BoolReactiveProperty();
+    public IReadOnlyReactiveProperty<bool> EnergyFull { get { return energyFull; } }
+
     public float Percent
     {
         get { return percent; }
@@ -22,7 +28,8 @@ public class SkillEnergyUI : MonoBehaviour
             float s = MinScale + percent * (MaxScale - MinScale);
             transform.localScale = new Vector3(s, s, s);
 
-            Full?.SetActive(percent >= 1f);
+            energyFull.Value = (percent >= 1f);
+            Full?.SetActive(energyFull.Value);
         }
     }
 }
